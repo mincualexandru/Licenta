@@ -12,8 +12,6 @@ export class UploadFileService {
 
   SERVER_URL: string = "http://localhost:8080/";
 
-  objectSend;
-
   constructor(private http: HttpClient) { }
 
   pushFileToStorage(file: File, userName: string): Observable<HttpEvent<{}>> {
@@ -21,13 +19,6 @@ export class UploadFileService {
 
     formdata.append('file', file);
     formdata.append('userName', userName);
-
-    this.objectSend = {
-      file: file,
-      userName: userName
-    }
-
-    console.log(this.objectSend);
 
     const req = new HttpRequest('POST', `${this.SERVER_URL}/${'post'}`, formdata, {
       reportProgress: true,
