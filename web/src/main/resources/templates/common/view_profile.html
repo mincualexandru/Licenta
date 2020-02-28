@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Sign up</title>
+<base href="/">
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" th:href="@{css/style.css}"/>
+<style>
+ul.menu li {
+  display:inline;
+}
+nav {
+  display: flex;
+  flex-flow: row nowrap;
+  align-content: center;
+  align-items: center;
+  justify-content: space-around;
+}
+
+nav button {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.modal {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-flow: column nowrap;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0,0,0,0.9);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  color: white;
+}
+
+.modal button.close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  border: 0;
+  background: transparent;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: white;
+}
+
+.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+</style>
+</head>
+<body>
+	<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-8 mx-auto">
+			<div class="about-me">
+				<h1>Despre mine</h1>
+				<p th:text="${account.accountInformation.description}"></p>
+			</div>
+			<div class="experiences">
+				<h1>Experienta profesionala</h1>
+				<ul class="menu" th:each="experience : ${account.accountInformation.experiences}">
+					<li th:text="${experience.name}"></li>
+					<li th:text="${experience.city}"></li>
+					<li th:text="${experience.start}"></li>
+					<li th:text="${experience.end}"></li>
+					<a th:href="@{/}">Edit</a>
+					<a th:href="@{/}">Delete</a>
+				</ul>
+			</div>
+			<div class="education">
+				<h1>Educatie</h1>
+				<ul class="menu" th:each="ed : ${account.accountInformation.education}">
+					<li th:text="${ed.name}"></li>
+					<li th:text="${ed.city}"></li>
+					<li th:text="${ed.start}"></li>
+					<li th:text="${ed.end}"></li>
+					<a th:href="@{/}">Edit</a>
+					<a th:href="@{/}">Delete</a>
+				</ul>
+			</div>
+			<div class="skills">
+				<h1>Abilitati</h1>
+				<ul class="menu" th:each="skill : ${account.accountInformation.skills}">
+					<li th:text="${skill.description}"></li>
+					<a th:href="@{/}">Edit</a>
+					<a th:href="@{/}">Delete</a>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<nav>
+  <button data-modal="yoga"> Yoga Bootcamp </button>
+  <button data-modal="meditation"> Meditation </button>
+  <button data-modal="pregnancy"> Pregnancy </button>
+</nav>
+
+<div class="modal" id="yoga">
+  <button class="close">&times;</button>
+  <h4>Yoga Bootcamp</h4>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis totam iure ad, quasi vero blanditiis.</p>
+</div>
+
+<div class="modal" id="meditation">
+  <button class="close">&times;</button>
+  <h4>Meditation</h4>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis totam iure ad, quasi vero blanditiis.</p>
+</div>
+
+<div class="modal" id="pregnancy">
+  <button class="close">&times;</button>
+  <h4>Pregnancy</h4>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis totam iure ad, quasi vero blanditiis.</p>
+</div>
+<script>
+let buttons = document.querySelectorAll('nav button');
+let modals = document.querySelectorAll('.modal');
+
+function showModal(id) {
+  let m = document.getElementById(id);
+  m.classList.add('visible');
+}
+
+function hideModals() {
+  modals.forEach(m => {
+    m.classList.remove('visible');
+  });
+}
+
+buttons.forEach(b => {
+  b.addEventListener('click', event => {
+    hideModals();
+    showModal(b.dataset.modal);
+  });
+});
+
+modals.forEach(m => {
+  let x = m.querySelector('button.close');
+  x.addEventListener('click', hideModals);
+});
+</script>
+</body>
+</html>

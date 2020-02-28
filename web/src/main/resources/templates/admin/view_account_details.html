@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Sign up</title>
+<base href="/">
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" th:href="@{css/style.css}"/>
+</head>
+<body>
+	<div class="container">
+			<div style="position: relative; top: 110px; left: 250px;">
+				<h3>Informatii cont</h3>
+				<div class="row">
+					<p th:text="${account.username}"></p>
+					<ul th:each="skill : ${accountInformation.skills}">
+						<li th:text="${skill.description}"></li>
+					</ul>
+					<ul th:each="education : ${accountInformation.education}">
+						<li th:text="${education.name}"></li>
+						<li th:text="${education.city}"></li>
+						<li th:text="${education.start}"></li>
+						<li th:text="${education.end}"></li>
+					</ul>
+					<ul th:each="experience : ${accountInformation.experiences}">
+						<li th:text="${experience.name}"></li>
+						<li th:text="${experience.city}"></li>
+						<li th:text="${experience.start}"></li>
+						<li th:text="${experience.end}"></li>
+					</ul>
+				</div>
+				<div class="row">
+						<a th:href="@{/users}" class="btn btn-success"> Inapoi</a>
+				</div>
+			</div>
+	</div>
+</body>
+</html>
