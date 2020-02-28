@@ -44,12 +44,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
           .antMatchers("/").permitAll()
           .antMatchers("/login").permitAll()
           .antMatchers("/signup").permitAll()
+          
           .antMatchers("/users").access("hasRole('ROLE_ADMIN')")
           .antMatchers("/admin").access("hasRole('ROLE_ADMIN')")
           .antMatchers("/validations-accounts").access("hasRole('ROLE_ADMIN')")
+          .antMatchers("/validate-account").access("hasRole('ROLE_ADMIN')")
+          .antMatchers("/view_account_details").access("hasRole('ROLE_ADMIN')")
+          
           .antMatchers("/home").access("hasRole('ROLE_USER')")
+          
           .antMatchers("/nutritionist").access("hasRole('ROLE_NUTRITIONIST')")
+          
           .antMatchers("/trainer").access("hasRole('ROLE_TRAINER')")
+          
+          .antMatchers("/curriculum-vitae").access("hasRole('ROLE_NUTRITIONIST') or hasRole('ROLE_TRAINER')")
+          .antMatchers("/view_profile").access("hasRole('ROLE_NUTRITIONIST') or hasRole('ROLE_TRAINER')")
+          
           .anyRequest().authenticated()
           .and()
           .formLogin()

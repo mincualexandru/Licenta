@@ -5,157 +5,321 @@
 <title>Sign up</title>
 <base href="/">
 <link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
 	rel="stylesheet" id="bootstrap-css">
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" th:href="@{css/style.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{css/style.css}" />
 <style>
 ul.menu li {
-  display:inline;
-}
-nav {
-  display: flex;
-  flex-flow: row nowrap;
-  align-content: center;
-  align-items: center;
-  justify-content: space-around;
-}
-
-nav button {
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-.modal {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  flex-flow: column nowrap;
-  align-content: center;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-  background: rgba(0,0,0,0.9);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.5s ease;
-  color: white;
-}
-
-.modal button.close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  border: 0;
-  background: transparent;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: white;
-}
-
-.visible {
-  opacity: 1;
-  pointer-events: all;
+	display: inline;
 }
 </style>
 </head>
 <body>
+	<a th:href="@{/logout}">Logout</a>
 	<div class="container-fluid">
-	<div class="row">
-		<div class="col-md-8 mx-auto">
-			<div class="about-me">
-				<h1>Despre mine</h1>
-				<p th:text="${account.accountInformation.description}"></p>
-			</div>
-			<div class="experiences">
-				<h1>Experienta profesionala</h1>
-				<ul class="menu" th:each="experience : ${account.accountInformation.experiences}">
-					<li th:text="${experience.name}"></li>
-					<li th:text="${experience.city}"></li>
-					<li th:text="${experience.start}"></li>
-					<li th:text="${experience.end}"></li>
-					<a th:href="@{/}">Edit</a>
-					<a th:href="@{/}">Delete</a>
-				</ul>
-			</div>
-			<div class="education">
-				<h1>Educatie</h1>
-				<ul class="menu" th:each="ed : ${account.accountInformation.education}">
-					<li th:text="${ed.name}"></li>
-					<li th:text="${ed.city}"></li>
-					<li th:text="${ed.start}"></li>
-					<li th:text="${ed.end}"></li>
-					<a th:href="@{/}">Edit</a>
-					<a th:href="@{/}">Delete</a>
-				</ul>
-			</div>
-			<div class="skills">
-				<h1>Abilitati</h1>
-				<ul class="menu" th:each="skill : ${account.accountInformation.skills}">
-					<li th:text="${skill.description}"></li>
-					<a th:href="@{/}">Edit</a>
-					<a th:href="@{/}">Delete</a>
-				</ul>
+		<div class="row">
+			<div class="col-md-8 mx-auto">
+				<div class="about-me">
+					<h1>Despre mine</h1>
+					<p th:text="${account.accountInformation.description}"></p>
+				</div>
+				<div class="experiences">
+					<h1>Experienta profesionala</h1>
+					<ul class="menu"
+						th:each="experience : ${account.accountInformation.experiences}">
+						<li th:text="${experience.name}"></li>
+						<li th:text="${experience.city}"></li>
+						<li th:text="${experience.start}"></li>
+						<li th:text="${experience.end}"></li>
+						<button data-toggle="modal" data-target="#modal-experience"
+							th:attr="data-target='#modal-experience'+${experience.experienceId}">
+							<span class="glyphicon glyphicon-trash"></span>Editeaza experienta
+						</button>
+						<button data-toggle="modal" data-target="#modal-experience-delete"
+							th:attr="data-target='#modal-experience-delete'+${experience.experienceId}">
+							<span class="glyphicon glyphicon-trash"></span>Sterge experienta
+						</button>
+						<form th:action="@{/delete_experience}" method="post">
+						<input type="hidden" name="experienceId" th:value="${experience.experienceId}"/>
+						<div class="modal modal-experience-delete fade in" th:id="modal-experience-delete+${experience.experienceId}" >
+    						<div class="modal-dialog">
+        					<div class="modal-content">
+            				<div class="modal-header">
+                				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    				<span aria-hidden="true">×</span></button>
+                					<h5 class="modal-title">Sterge experienta</h5>
+            				</div>
+            				<div class="modal-body">
+                				<h3>Esti sigur ca vrei sa faci asta?</h3>
+            				</div>
+            				<div class="modal-footer">
+                				<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+                				<button type="submit" class="btn btn-danger">Yes</button>
+            				</div>
+        				</div>
+    					</div>
+						</div>
+						</form>
+						<form th:action="@{/update_experience}" method="post">	
+						<input type="hidden" name="experienceId" th:value="${experience.experienceId}"/>
+						<div class="modal modal-experience fade in"
+							th:id="modal-experience+${experience.experienceId}">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal"
+											aria-label="Close">
+											<span aria-hidden="true">×</span>
+										</button>
+										<h5 class="modal-title">Editeaza experienta</h5>
+									</div>
+									<div class="modal-body">
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Nume</label>
+													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+														<input type="text" name="name" th:value="${experience.name}"
+														class="form-control validation"
+														autofocus>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Oras</label>
+													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+														<input type="text" name="city" th:value="${experience.city}"
+														class="form-control validation"
+														autofocus>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Inceput</label>
+													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+														<input type="text" name="start" th:value="${experience.start}"
+														class="form-control validation"
+														autofocus>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Sfarsit</label>
+													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+														<input type="text" name="end" th:value="${experience.end}"
+														class="form-control validation"
+														autofocus>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-success">Salveaza</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						</form>
+					</ul>
+				</div>
+				<div class="education">
+					<h1>Educatie</h1>
+					<ul class="menu"
+						th:each="ed : ${account.accountInformation.education}">
+						<li th:text="${ed.name}"></li>
+						<li th:text="${ed.city}"></li>
+						<li th:text="${ed.start}"></li>
+						<li th:text="${ed.end}"></li>
+						<button data-toggle="modal" data-target="#modal-education"
+							th:attr="data-target='#modal-education'+${ed.educationId}">
+							<span class="glyphicon glyphicon-trash"></span>Editeaza educatia
+						</button>
+						<button data-toggle="modal" data-target="#modal-education-delete"
+							th:attr="data-target='#modal-education-delete'+${ed.educationId}">
+							<span class="glyphicon glyphicon-trash"></span>Sterge educatia
+						</button>
+						<form th:action="@{/delete_education}" method="post">
+						<input type="hidden" name="educationId" th:value="${ed.educationId}"/>
+						<div class="modal modal-education-delete fade in" th:id="modal-education-delete+${ed.educationId}" >
+    						<div class="modal-dialog">
+        					<div class="modal-content">
+            				<div class="modal-header">
+                				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    				<span aria-hidden="true">×</span></button>
+                					<h5 class="modal-title">Sterge educatia</h5>
+            				</div>
+            				<div class="modal-body">
+                				<h3>Esti sigur ca vrei sa faci asta?</h3>
+            				</div>
+            				<div class="modal-footer">
+                				<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+                				<button type="submit" class="btn btn-danger">Yes</button>
+            				</div>
+        				</div>
+    					</div>
+						</div>
+						</form>
+						<form th:action="@{/update_education}" method="post">	
+						<input type="hidden" name="educationId" th:value="${ed.educationId}"/>
+						<div class="modal modal-education fade in"
+							th:id="modal-education+${ed.educationId}">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal"
+											aria-label="Close">
+											<span aria-hidden="true">×</span>
+										</button>
+										<h5 class="modal-title">Editeaza educatia</h5>
+									</div>
+									<div class="modal-body">
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Nume</label>
+													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+														<input type="text" name="name" th:value="${ed.name}"
+														class="form-control validation"
+														autofocus>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Oras</label>
+													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+														<input type="text" name="city" th:value="${ed.city}"
+														class="form-control validation"
+														autofocus>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Inceput</label>
+													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+														<input type="text" name="start" th:value="${ed.start}"
+														class="form-control validation"
+														autofocus>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Sfarsit</label>
+													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+														<input type="text" name="end" th:value="${ed.end}"
+														class="form-control validation"
+														autofocus>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-success">Salveaza</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						</form>
+					</ul>
+				</div>
+				<div class="skills">
+					<h1>Abilitati</h1>
+					<ul class="menu"
+						th:each="skill : ${account.accountInformation.skills}">
+						<li th:text="${skill.description}"></li>
+						<button data-toggle="modal" data-target="#modal-skill"
+							th:attr="data-target='#modal-skill'+${skill.skillId}">
+							<span class="glyphicon glyphicon-trash"></span>Editeaza abilitatea
+						</button>
+						<button data-toggle="modal" data-target="#modal-skill-delete"
+							th:attr="data-target='#modal-skill-delete'+${skill.skillId}">
+							<span class="glyphicon glyphicon-trash"></span>Sterge abilitatea
+						</button>
+						<form th:action="@{/delete_skill}" method="post">
+						<input type="hidden" name="skillId" th:value="${skill.skillId}"/>
+						<div class="modal modal-skill-delete fade in" th:id="modal-skill-delete+${skill.skillId}" >
+    						<div class="modal-dialog">
+        					<div class="modal-content">
+            				<div class="modal-header">
+                				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    				<span aria-hidden="true">×</span></button>
+                					<h5 class="modal-title">Sterge educatia</h5>
+            				</div>
+            				<div class="modal-body">
+                				<h3>Esti sigur ca vrei sa faci asta?</h3>
+            				</div>
+            				<div class="modal-footer">
+                				<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+                				<button type="submit" class="btn btn-danger">Yes</button>
+            				</div>
+        				</div>
+    					</div>
+						</div>
+						</form>
+						<form th:action="@{/update_skill}" method="post">	
+						<input type="hidden" name="skillId" th:value="${skill.skillId}"/>
+						<div class="modal modal-skill fade in"
+							th:id="modal-skill+${skill.skillId}">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal"
+											aria-label="Close">
+											<span aria-hidden="true">×</span>
+										</button>
+										<h5 class="modal-title">Editeaza abilitatea</h5>
+									</div>
+									<div class="modal-body">
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Descriere</label>
+													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+														<input type="text" name="description" th:value="${skill.description}"
+														class="form-control validation"
+														autofocus>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-success">Salveaza</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						</form>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
-<nav>
-  <button data-modal="yoga"> Yoga Bootcamp </button>
-  <button data-modal="meditation"> Meditation </button>
-  <button data-modal="pregnancy"> Pregnancy </button>
-</nav>
-
-<div class="modal" id="yoga">
-  <button class="close">&times;</button>
-  <h4>Yoga Bootcamp</h4>
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis totam iure ad, quasi vero blanditiis.</p>
-</div>
-
-<div class="modal" id="meditation">
-  <button class="close">&times;</button>
-  <h4>Meditation</h4>
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis totam iure ad, quasi vero blanditiis.</p>
-</div>
-
-<div class="modal" id="pregnancy">
-  <button class="close">&times;</button>
-  <h4>Pregnancy</h4>
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis totam iure ad, quasi vero blanditiis.</p>
-</div>
-<script>
-let buttons = document.querySelectorAll('nav button');
-let modals = document.querySelectorAll('.modal');
-
-function showModal(id) {
-  let m = document.getElementById(id);
-  m.classList.add('visible');
-}
-
-function hideModals() {
-  modals.forEach(m => {
-    m.classList.remove('visible');
-  });
-}
-
-buttons.forEach(b => {
-  b.addEventListener('click', event => {
-    hideModals();
-    showModal(b.dataset.modal);
-  });
-});
-
-modals.forEach(m => {
-  let x = m.querySelector('button.close');
-  x.addEventListener('click', hideModals);
-});
-</script>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </body>
 </html>
