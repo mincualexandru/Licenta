@@ -20,26 +20,26 @@ public class Education {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "education_id")
 	private Integer educationId;
-	
+
 	@Column(name = "start")
 	@Pattern(regexp = "^(194[5-9]|19[5-9]\\d|200\\d|201[0-9])$", message = "Anul trebuie sa fie cuprins intre 1945 - 2019")
 	private String start;
-	
+
 	@Column(name = "end")
 	@Pattern(regexp = "^(194[5-9]|19[5-9]\\d|200\\d|201[0-9]|2020)$", message = "Anul trebuie sa fie cuprins intre 1945 - 2020")
 	private String end;
-	
+
 	@Column(name = "name")
 	@Size(min = 4, message = "Valoarea minima a dimensiunii campului este de 4 caractere")
 	private String name;
-	
+
 	@Column(name = "city")
 	@Pattern(regexp = "^[A-Z][a-zA-Z]{3,15}$", message = "Orasul introdus gresit")
 	private String city;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "account_information_id")
-    private AccountInformation accountInformation;
+	private AccountInformation accountInformation;
 
 	public Education() {
 		super();
@@ -58,8 +58,6 @@ public class Education {
 		this.city = city;
 		this.accountInformation = accountInformation;
 	}
-
-
 
 	public Integer getEducationId() {
 		return educationId;

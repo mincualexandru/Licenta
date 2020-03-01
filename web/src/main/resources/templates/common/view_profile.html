@@ -24,273 +24,24 @@ ul.menu li {
 				<div class="about-me">
 					<h1>Despre mine</h1>
 					<p th:text="${account.accountInformation.description}"></p>
-				</div>
-				<div class="experiences">
-					<h1>Experienta profesionala</h1>
-					<ul class="menu"
-						th:each="experience : ${account.accountInformation.experiences}">
-						<li th:text="${experience.name}"></li>
-						<li th:text="${experience.city}"></li>
-						<li th:text="${experience.start}"></li>
-						<li th:text="${experience.end}"></li>
-						<button data-toggle="modal" data-target="#modal-experience"
-							th:attr="data-target='#modal-experience'+${experience.experienceId}">
-							<span class="glyphicon glyphicon-trash"></span>Editeaza experienta
-						</button>
-						<button data-toggle="modal" data-target="#modal-experience-delete"
-							th:attr="data-target='#modal-experience-delete'+${experience.experienceId}">
-							<span class="glyphicon glyphicon-trash"></span>Sterge experienta
-						</button>
-						<form th:action="@{/delete_experience}" method="post">
-						<input type="hidden" name="experienceId" th:value="${experience.experienceId}"/>
-						<div class="modal modal-experience-delete fade in" th:id="modal-experience-delete+${experience.experienceId}" >
-    						<div class="modal-dialog">
-        					<div class="modal-content">
-            				<div class="modal-header">
-                				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    				<span aria-hidden="true">×</span></button>
-                					<h5 class="modal-title">Sterge experienta</h5>
-            				</div>
-            				<div class="modal-body">
-                				<h3>Esti sigur ca vrei sa faci asta?</h3>
-            				</div>
-            				<div class="modal-footer">
-                				<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-                				<button type="submit" class="btn btn-danger">Yes</button>
-            				</div>
-        				</div>
-    					</div>
-						</div>
-						</form>
-						<form th:action="@{/update_experience}" method="post">	
-						<input type="hidden" name="experienceId" th:value="${experience.experienceId}"/>
-						<div class="modal modal-experience fade in"
-							th:id="modal-experience+${experience.experienceId}">
-							<div class="modal-dialog">
+					<button type="button" data-toggle="modal"
+						data-target="#about-me" data-backdrop="static"
+						data-keyboard="false" class="btn btn-primary">Editeaza descrierea</button>
+					<form id="aboutMe" th:action="@{/update_about_me}" method="post" th:object=${account.accountInformation}>
+						<input type="hidden" name="accountInformationId"
+							th:value="${account.accountInformation.accountInformationId}" />
+						<div class="modal fade" id="about-me" tabindex="-1"
+							role="dialog" aria-labelledby="about-meLabel"
+							aria-hidden="true">
+							<div class="modal-dialog" role="document">
 								<div class="modal-content">
 									<div class="modal-header">
+										<h5 class="modal-title" id="about-meLabel">Editeaza
+											Descrierea</h5>
 										<button type="button" class="close" data-dismiss="modal"
 											aria-label="Close">
-											<span aria-hidden="true">×</span>
+											<span aria-hidden="true">&times;</span>
 										</button>
-										<h5 class="modal-title">Editeaza experienta</h5>
-									</div>
-									<div class="modal-body">
-										<div class="row">
-											<div class="col-md-6">
-												<div class="form-group">
-													<label>Nume</label>
-													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-														<input type="text" name="name" th:value="${experience.name}"
-														class="form-control validation"
-														autofocus>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-md-6">
-												<div class="form-group">
-													<label>Oras</label>
-													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-														<input type="text" name="city" th:value="${experience.city}"
-														class="form-control validation"
-														autofocus>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-md-6">
-												<div class="form-group">
-													<label>Inceput</label>
-													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-														<input type="text" name="start" th:value="${experience.start}"
-														class="form-control validation"
-														autofocus>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-md-6">
-												<div class="form-group">
-													<label>Sfarsit</label>
-													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-														<input type="text" name="end" th:value="${experience.end}"
-														class="form-control validation"
-														autofocus>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-										<button type="submit" class="btn btn-success">Salveaza</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						</form>
-					</ul>
-				</div>
-				<div class="education">
-					<h1>Educatie</h1>
-					<ul class="menu"
-						th:each="ed : ${account.accountInformation.education}">
-						<li th:text="${ed.name}"></li>
-						<li th:text="${ed.city}"></li>
-						<li th:text="${ed.start}"></li>
-						<li th:text="${ed.end}"></li>
-						<button data-toggle="modal" data-target="#modal-education"
-							th:attr="data-target='#modal-education'+${ed.educationId}">
-							<span class="glyphicon glyphicon-trash"></span>Editeaza educatia
-						</button>
-						<button data-toggle="modal" data-target="#modal-education-delete"
-							th:attr="data-target='#modal-education-delete'+${ed.educationId}">
-							<span class="glyphicon glyphicon-trash"></span>Sterge educatia
-						</button>
-						<form th:action="@{/delete_education}" method="post">
-						<input type="hidden" name="educationId" th:value="${ed.educationId}"/>
-						<div class="modal modal-education-delete fade in" th:id="modal-education-delete+${ed.educationId}" >
-    						<div class="modal-dialog">
-        					<div class="modal-content">
-            				<div class="modal-header">
-                				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    				<span aria-hidden="true">×</span></button>
-                					<h5 class="modal-title">Sterge educatia</h5>
-            				</div>
-            				<div class="modal-body">
-                				<h3>Esti sigur ca vrei sa faci asta?</h3>
-            				</div>
-            				<div class="modal-footer">
-                				<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-                				<button type="submit" class="btn btn-danger">Yes</button>
-            				</div>
-        				</div>
-    					</div>
-						</div>
-						</form>
-						<form th:action="@{/update_education}" method="post">	
-						<input type="hidden" name="educationId" th:value="${ed.educationId}"/>
-						<div class="modal modal-education fade in"
-							th:id="modal-education+${ed.educationId}">
-							<div class="modal-dialog">
-								<div class="modal-content">
-									<div class="modal-header">
-										<button type="button" class="close" data-dismiss="modal"
-											aria-label="Close">
-											<span aria-hidden="true">×</span>
-										</button>
-										<h5 class="modal-title">Editeaza educatia</h5>
-									</div>
-									<div class="modal-body">
-										<div class="row">
-											<div class="col-md-6">
-												<div class="form-group">
-													<label>Nume</label>
-													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-														<input type="text" name="name" th:value="${ed.name}"
-														class="form-control validation"
-														autofocus>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-md-6">
-												<div class="form-group">
-													<label>Oras</label>
-													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-														<input type="text" name="city" th:value="${ed.city}"
-														class="form-control validation"
-														autofocus>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-md-6">
-												<div class="form-group">
-													<label>Inceput</label>
-													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-														<input type="text" name="start" th:value="${ed.start}"
-														class="form-control validation"
-														autofocus>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-md-6">
-												<div class="form-group">
-													<label>Sfarsit</label>
-													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-														<input type="text" name="end" th:value="${ed.end}"
-														class="form-control validation"
-														autofocus>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-										<button type="submit" class="btn btn-success">Salveaza</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						</form>
-					</ul>
-				</div>
-				<div class="skills">
-					<h1>Abilitati</h1>
-					<ul class="menu"
-						th:each="skill : ${account.accountInformation.skills}">
-						<li th:text="${skill.description}"></li>
-						<button data-toggle="modal" data-target="#modal-skill"
-							th:attr="data-target='#modal-skill'+${skill.skillId}">
-							<span class="glyphicon glyphicon-trash"></span>Editeaza abilitatea
-						</button>
-						<button data-toggle="modal" data-target="#modal-skill-delete"
-							th:attr="data-target='#modal-skill-delete'+${skill.skillId}">
-							<span class="glyphicon glyphicon-trash"></span>Sterge abilitatea
-						</button>
-						<form th:action="@{/delete_skill}" method="post">
-						<input type="hidden" name="skillId" th:value="${skill.skillId}"/>
-						<div class="modal modal-skill-delete fade in" th:id="modal-skill-delete+${skill.skillId}" >
-    						<div class="modal-dialog">
-        					<div class="modal-content">
-            				<div class="modal-header">
-                				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    				<span aria-hidden="true">×</span></button>
-                					<h5 class="modal-title">Sterge educatia</h5>
-            				</div>
-            				<div class="modal-body">
-                				<h3>Esti sigur ca vrei sa faci asta?</h3>
-            				</div>
-            				<div class="modal-footer">
-                				<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-                				<button type="submit" class="btn btn-danger">Yes</button>
-            				</div>
-        				</div>
-    					</div>
-						</div>
-						</form>
-						<form th:action="@{/update_skill}" method="post">	
-						<input type="hidden" name="skillId" th:value="${skill.skillId}"/>
-						<div class="modal modal-skill fade in"
-							th:id="modal-skill+${skill.skillId}">
-							<div class="modal-dialog">
-								<div class="modal-content">
-									<div class="modal-header">
-										<button type="button" class="close" data-dismiss="modal"
-											aria-label="Close">
-											<span aria-hidden="true">×</span>
-										</button>
-										<h5 class="modal-title">Editeaza abilitatea</h5>
 									</div>
 									<div class="modal-body">
 										<div class="row">
@@ -298,28 +49,586 @@ ul.menu li {
 												<div class="form-group">
 													<label>Descriere</label>
 													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-														<input type="text" name="description" th:value="${skill.description}"
-														class="form-control validation"
-														autofocus>
+														<input type="text" id="descriptionAccountInformation" name="descriptionAccountInformation"
+															th:value="${account.accountInformation.description}" class="form-control validation"
+															autofocus>
+														<div id="showErrorAboutMe"></div>
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
 									<div class="modal-footer">
-										<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-										<button type="submit" class="btn btn-success">Salveaza</button>
+										<button type="button" class="btn btn-secondary"
+											data-dismiss="modal">Close</button>
+										<button class="btn btn-primary">Save changes</button>
 									</div>
 								</div>
 							</div>
 						</div>
+					</form>
+				</div>
+				<div class="education">
+					<h1>Educatie</h1>
+					<button type="button" data-toggle="modal"
+						data-target="#addEducation" data-backdrop="static"
+						data-keyboard="false" class="btn btn-primary">Adauga
+						Educatie</button>
+					<form class="education" th:action="@{/add_education}" method="post"
+						th:object="${education}">
+						<input type="hidden" name="accountInformationId"
+							th:value="${account.accountInformation.accountInformationId}" />
+						<div class="modal fade" id="addEducation" tabindex="-1"
+							role="dialog" aria-labelledby="addEducationLabel"
+							aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="addEducationLabel">Adauga
+											Educatie</h5>
+										<button type="button" class="close" data-dismiss="modal"
+											aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Institutie</label>
+													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+														<input type="text" name="description"
+															th:field="*{name}" class="form-control validation"
+															autofocus onblur="justLetters(this.value,event,0)">
+														<div th:class="showErrorNameCreate00"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Oras</label>
+													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+														<input type="text" name="name"
+															th:field="*{city}" style="text-transform:capitalize;" class="form-control validation"
+															autofocus>
+															<div id="cityEducation"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Start</label>
+													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+														<input type="text" name="start"
+															th:field="*{start}" onblur="year(this, this.value,event,0)" class="form-control validation"
+															autofocus>
+															<div class="showErrorStartYearCreate01"></div>
+															<div class="showErrorStartYearCreate02"></div>
+															<div class="showErrorStartYearCreate03"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Sfarsit</label>
+													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+														<input type="text" name="end"
+															th:field="*{end}" onblur="year(this, this.value,event,3)" class="form-control validation"
+															autofocus>
+															<div class="showErrorEndYearCreate31"></div>
+															<div class="showErrorEndYearCreate32"></div>
+															<div class="showErrorEndYearCreate33"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div th:class="minimDuration"></div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary"
+											data-dismiss="modal">Close</button>
+										<button class="btn btn-primary" id="adaugaEducatie">Save changes</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+									<ul class="menu"
+						th:each="ed : ${account.accountInformation.education}">
+						<li th:text="${ed.name}"></li>
+						<li th:text="${ed.city}"></li>
+						<li th:text="${ed.start}"></li>
+						<li th:text="${ed.end}"></li>
+<!-- 						<button th:onclick="|selecteazaEducatia('${ed.educationId}')|" data-toggle="modal" data-target="#modal-education" -->
+						<button th:onclick="|selecteazaEducatia('${ed.educationId}')|" data-toggle="modal" data-target="#modal-education"
+							th:attr="data-target='#modal-education'+${ed.educationId}">
+							<span class="glyphicon glyphicon-trash"></span>Editeaza educatia
+						</button>
+						<form th:action="@{/update_education}" method="post" id="editEducation">
+							<input type="hidden" name="educationId"
+								th:value="${ed.educationId}" />
+							<div class="modal modal-education fade in"
+								th:id="modal-education+${ed.educationId}">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button>
+											<h5 class="modal-title">Editeaza educatiaaaaa</h5>
+										</div>
+										<div class="modal-body">
+											<div class="row">
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Nume</label>
+														<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+															<input type="text" id="editName" onblur="justLetters2(this.value,event,3)" name="editName" th:value="${ed.name}"
+																class="form-control validation" autofocus>
+															<div th:class="showErrorNameEdit31"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Oras</label>
+														<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+															<input type="text" id="editCity" name="editCity" style="text-transform:capitalize;" th:value="${ed.city}"
+																class="form-control validation" autofocus>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Inceput</label>
+														<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+															<input type="text" id="editStart" name="editStart" onblur="yearValidation(this,this.value,event,6)"th:value="${ed.start}"
+																class="form-control validation" autofocus>
+															<div th:class="showErrorStartYearEdit61+${ed.educationId}"></div>
+															<div th:class="showErrorStartYearEdit62+${ed.educationId}"></div>
+															<div th:class="showErrorStartYearEdit63+${ed.educationId}"></div>	
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Sfarsit</label>
+														<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+															<input type="text" id="editEnd" name="editEnd" onblur="yearValidation(this,this.value,event,9)" th:value="${ed.end}"
+																class="form-control validation" autofocus>
+															<div th:class="showErrorEndYearEdit91+${ed.educationId}"></div>
+															<div th:class="showErrorEndYearEdit92+${ed.educationId}"></div>
+															<div th:class="showErrorEndYearEdit93+${ed.educationId}"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div th:class="minimDuration"></div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-outline pull-left"
+												data-dismiss="modal">Close</button>
+											<button type="submit">Save</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+						<button data-toggle="modal" data-target="#modal-education-delete"
+							th:attr="data-target='#modal-education-delete'+${ed.educationId}">
+							<span class="glyphicon glyphicon-trash"></span>Sterge educatia
+						</button>
+						<form th:action="@{/delete_education}" method="post">
+							<input type="hidden" name="educationId"
+								th:value="${ed.educationId}" />
+							<div class="modal modal-education-delete fade in"
+								th:id="modal-education-delete+${ed.educationId}">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button>
+											<h5 class="modal-title">Sterge educatia</h5>
+										</div>
+										<div class="modal-body">
+											<h3>Esti sigur ca vrei sa faci asta?</h3>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-outline pull-left"
+												data-dismiss="modal">Close</button>
+											<button type="submit" class="btn btn-danger">Yes</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+					</ul>
+				<div class="experiences">
+					<h1>Experienta profesionala</h1>
+					<button type="button" data-toggle="modal"
+						data-target="#addExperience" data-backdrop="static"
+						data-keyboard="false" class="btn btn-primary">Adauga
+						Experienta</button>
+					<form class="experience" th:action="@{/add_experience}" method="post"
+						th:object="${experience}">
+						<input type="hidden" name="accountInformationId"
+							th:value="${account.accountInformation.accountInformationId}" />
+						<div class="modal fade" id="addExperience" tabindex="-1"
+							role="dialog" aria-labelledby="addExperienceLabel"
+							aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="addExperienceLabel">Adauga
+											Experienta</h5>
+										<button type="button" class="close" data-dismiss="modal"
+											aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Institutie</label>
+													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+														<input type="text" id="expName" name="expName"
+															th:field="*{name}" class="form-control validation"
+															autofocus onblur="justLetters(this.value,event,1)">
+														<div th:class="showErrorNameCreate10"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Oras</label>
+													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+														<input type="text" id="expCity" name="expCity"
+															th:field="*{city}" style="text-transform:capitalize;" class="form-control validation"
+															autofocus>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Start</label>
+													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+														<input type="text" id="expStart" name="expStart"
+															th:field="*{start}" onblur="year(this,this.value,event,1)" class="form-control validation"
+															autofocus>
+															<div class="showErrorStartYearCreate11"></div>
+															<div class="showErrorStartYearCreate12"></div>
+															<div class="showErrorStartYearCreate13"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Sfarsit</label>
+													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+														<input type="text" id="expEnd" name="expEnd"
+															th:field="*{end}" onblur="year(this,this.value,event,2)" class="form-control validation"
+															autofocus>
+															<div class="showErrorEndYearCreate21"></div>
+															<div class="showErrorEndYearCreate22"></div>
+															<div class="showErrorEndYearCreate23"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div th:class="minimDuration"></div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary"
+											data-dismiss="modal">Close</button>
+										<button class="btn btn-primary">Save changes</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+					<ul class="menu"
+						th:each="experience : ${account.accountInformation.experiences}">
+						<li th:text="${experience.name}"></li>
+						<li th:text="${experience.city}"></li>
+						<li th:text="${experience.start}"></li>
+						<li th:text="${experience.end}"></li>
+						<button th:onclick="|selecteazaEducatia('${experience.experienceId}')|" data-toggle="modal" data-target="#modal-experience"
+							th:attr="data-target='#modal-experience'+${experience.experienceId}">
+							<span class="glyphicon glyphicon-trash"></span>Editeaza
+							experienta
+						</button>
+						<button data-toggle="modal" data-target="#modal-experience-delete"
+							th:attr="data-target='#modal-experience-delete'+${experience.experienceId}">
+							<span class="glyphicon glyphicon-trash"></span>Sterge experienta
+						</button>
+						<form th:action="@{/delete_experience}" method="post">
+							<input type="hidden" name="experienceId"
+								th:value="${experience.experienceId}" />
+							<div class="modal modal-experience-delete fade in"
+								th:id="modal-experience-delete+${experience.experienceId}">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button>
+											<h5 class="modal-title">Sterge experienta</h5>
+										</div>
+										<div class="modal-body">
+											<h3>Esti sigur ca vrei sa faci asta?</h3>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-outline pull-left"
+												data-dismiss="modal">Close</button>
+											<button type="submit" class="btn btn-danger">Yes</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+						<form th:action="@{/update_experience}" method="post" id="editExperience">
+							<input type="hidden" name="experienceId"
+								th:value="${experience.experienceId}" />
+							<div class="modal modal-experience fade in"
+								th:id="modal-experience+${experience.experienceId}">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button>
+											<h5 class="modal-title">Editeaza experienta</h5>
+										</div>
+										<div class="modal-body">
+											<div class="row">
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Nume</label>
+														<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+															<input type="text" id="expEditName" name="expEditName"
+																th:value="${experience.name}"
+																class="form-control validation" autofocus
+																onblur="justLetters2(this.value,event,1)">
+															<div th:class="showErrorNameEdit11"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Oras</label>
+														<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+															<input type="text" id="expEditCity" name="expEditCity"
+																th:value="${experience.city}"
+																class="form-control validation" autofocus>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Inceput</label>
+														<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+															<input type="text" id="expEditStart" name="editStart"
+																th:value="${experience.start}"
+																class="form-control validation" autofocus
+																onblur="yearValidation(this,this.value,event,7)">
+															<div th:class="showErrorStartYearEdit71+${experience.experienceId}"></div>
+															<div th:class="showErrorStartYearEdit72+${experience.experienceId}"></div>
+															<div th:class="showErrorStartYearEdit73+${experience.experienceId}"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Sfarsit</label>
+														<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+															<input type="text" id="expEditEnd" name="editEnd"
+																th:value="${experience.end}"
+																class="form-control validation" autofocus
+																onblur="yearValidation(this,this.value,event,5)">
+															<div th:class="showErrorEndYearEdit51+${experience.experienceId}"></div>
+															<div th:class="showErrorEndYearEdit52+${experience.experienceId}"></div>
+															<div th:class="showErrorEndYearEdit53+${experience.experienceId}"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div th:class="minimDuration"></div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-outline pull-left"
+												data-dismiss="modal">Close</button>
+											<button type="submit" class="btn btn-success">Salveaza</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+					</ul>
+				</div>
+				<div class="skills">
+					<h1>Abilitati</h1>
+					<button type="button" data-toggle="modal"
+						data-target="#exampleModal" data-backdrop="static"
+						data-keyboard="false" class="btn btn-primary">Adauga
+						Abilitate</button>
+					<form id="myForm" th:action="@{/add_skill}" method="post"
+						th:object="${skill}">
+						<input type="hidden" name="accountInformationId"
+							th:value="${account.accountInformation.accountInformationId}" />
+						<div class="modal fade" id="exampleModal" tabindex="-1"
+							role="dialog" aria-labelledby="exampleModalLabel"
+							aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="exampleModalLabel">Adauga
+											Abilitate</h5>
+										<button type="button" class="close" data-dismiss="modal"
+											aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Descriere</label>
+													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+														<input type="text" name="description"
+															th:field="*{description}" class="form-control validation"
+															autofocus>
+													</div>
+													<div id="showError"></div>
+													<div th:if="${#fields.hasErrors('description')}"
+														th:errors="*{description}"></div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary"
+											data-dismiss="modal">Close</button>
+										<button class="btn btn-primary">Save changes</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+					<ul class="menu"
+						th:each="skill : ${account.accountInformation.skills}">
+						<li th:text="${skill.description}"></li>
+						<button data-toggle="modal" data-target="#modal-skill"
+							th:attr="data-target='#modal-skill'+${skill.skillId}">
+							<span class="glyphicon glyphicon-trash"></span>Editeaza
+							abilitatea
+						</button>
+						<button data-toggle="modal" data-target="#modal-skill-delete"
+							th:attr="data-target='#modal-skill-delete'+${skill.skillId}">
+							<span class="glyphicon glyphicon-trash"></span>Sterge abilitatea
+						</button>
+						<form th:action="@{/delete_skill}" method="post">
+							<input type="hidden" name="skillId" th:value="${skill.skillId}" />
+							<div class="modal modal-skill-delete fade in"
+								th:id="modal-skill-delete+${skill.skillId}">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button>
+											<h5 class="modal-title">Sterge educatia</h5>
+										</div>
+										<div class="modal-body">
+											<h3>Esti sigur ca vrei sa faci asta?</h3>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-outline pull-left"
+												data-dismiss="modal">Close</button>
+											<button type="submit" class="btn btn-danger">Yes</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+						<form th:action="@{/update_skill}" method="post" id="editSkill">
+							<input type="hidden" name="skillId" th:value="${skill.skillId}" />
+							<div class="modal modal-skill fade in"
+								th:id="modal-skill+${skill.skillId}">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button>
+											<h5 class="modal-title">Editeaza abilitateaaaaaaa</h5>
+										</div>
+										<div class="modal-body">
+											<div class="row">
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Descriere</label>
+														<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+															<input type="text" id="description2" name="description2"
+																th:value="${skill.description}"
+																class="form-control validation" autofocus>
+																<div id="showError2"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-outline pull-left"
+												data-dismiss="modal">Close</button>
+											<button class="btn btn-success">Salveaza</button>
+										</div>
+									</div>
+								</div>
+							</div>
 						</form>
 					</ul>
 				</div>
 			</div>
 		</div>
 	</div>
-	<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<script type="text/javascript" th:src="@{/js/validationcv.js}"></script>
 </body>
 </html>

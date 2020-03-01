@@ -39,6 +39,7 @@ public class CurriculumVitaeController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Account account = userService.findByUsername(auth.getName());
 		if (!model.containsAttribute("curriculumVitae")) {
+			System.out.println("Intra aici");
 			AccountInformation curriculumVitae = new AccountInformation();
 			curriculumVitae.setSkills(new ArrayList<Skill>());
 			curriculumVitae.setEducation(new ArrayList<Education>());
@@ -50,12 +51,20 @@ public class CurriculumVitaeController {
 	}
 
 	@PostMapping(path = { "/curriculumVitaeSave" })
-	public String curriculumVitaeSave(
-			@Valid @ModelAttribute("curriculumVitae") AccountInformation curriculumVitae, BindingResult bindingResult,
-			RedirectAttributes attr, @RequestParam Integer accountId, Model model) {
+	public String curriculumVitaeSave(@Valid @ModelAttribute("curriculumVitae") AccountInformation curriculumVitae,
+			BindingResult bindingResult, RedirectAttributes attr, @RequestParam Integer accountId, Model model) {
 
-		System.out.println("Erori " + bindingResult.getErrorCount());
 		if (bindingResult.hasErrors()) {
+			curriculumVitae.getSkills().removeIf(element -> element.getDescription() == "");
+			curriculumVitae.getEducation().removeIf(element -> element.getCity() == "" && element.getEnd() == ""
+					&& element.getStart() == "" && element.getName() == "");
+			curriculumVitae.getExperiences().removeIf(element -> element.getCity() == "" && element.getEnd() == ""
+					&& element.getStart() == "" && element.getName() == "");
+			curriculumVitae.getSkills().removeIf(element -> element.getDescription() == null);
+			curriculumVitae.getEducation().removeIf(element -> element.getCity() == null && element.getEnd() == null
+					&& element.getStart() == null && element.getName() == null);
+			curriculumVitae.getExperiences().removeIf(element -> element.getCity() == null && element.getEnd() == null
+					&& element.getStart() == null && element.getName() == null);
 			attr.addFlashAttribute("org.springframework.validation.BindingResult.curriculumVitae", bindingResult);
 			attr.addFlashAttribute("curriculumVitae", curriculumVitae);
 			return "redirect:/curriculum-vitae";
