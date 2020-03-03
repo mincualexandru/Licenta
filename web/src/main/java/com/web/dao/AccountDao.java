@@ -7,15 +7,14 @@ import org.springframework.stereotype.Repository;
 
 import com.web.model.Account;
 
+@Repository("accountDao")
+public interface AccountDao extends CrudRepository<Account, Integer> {
 
-@Repository("userDao")
-public interface AccountDao extends CrudRepository<Account, Integer>{
-	
 	@Override
-    Set<Account> findAll();
+	Set<Account> findAll();
 
 	Set<Account> findAllByActive(boolean b);
 
 	Account findByUsername(String name);
-	
+
 }

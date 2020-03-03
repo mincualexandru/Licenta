@@ -1,1 +1,90 @@
-<h1>Salut utilizator</h1>
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Sign up</title>
+<base href="/">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://kit.fontawesome.com/8f58d13ed0.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" th:href="@{css/style.css}" />
+</head>
+<body>
+	<h1>Salut utilizator</h1>
+	<h1>Dispozitive pe care le poti cumpara</h1>
+	<div>
+		<div th:unless="${addBandToShoppingCart}">
+			<form th:action="@{/buy_band}" method="post">
+				<button>Cumpara Bratara</button>
+			</form>
+		</div>
+		<div th:text="${soldOutForScales}"></div>
+		<div th:text="${soldOutForBands}"></div>
+		<div th:unless="${addScaleToShoppingCart}">
+			<form th:action="@{/buy_scale}" method="post">
+				<button>Cumpara Cantar</button>
+			</form>
+		</div>
+	</div>
+	<div class="container main">
+		<div class="row">
+			<div class="col-lg-12"></div>
+		</div>
+		<div class="row">
+			<div class="col-lg-6 col-md-6">
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-xs-6">
+								<h2>Sold Curent:</h2>
+							</div>
+							<div class="col-xs-6 text-right">
+								<h1>
+									<span th:text="${user.transaction.availableBalance + ' lei'}"></span>
+									<i class="fas fa-money-bill-alt"></i>
+								</h1>
+							</div>
+						</div>
+					</div>
+					<a th:href="@{/current_balance}">
+						<div class="panel-footer">
+							<span class="pull-left">Vezi Detalii</span> 
+							<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+							<div class="clearfix"></div>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class="col-lg-6 col-md-6">
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-xs-6">
+								<h2>Cosul Meu</h2>
+							</div>
+							<div class="col-xs-6 text-right">
+								<h1>
+									<span th:text="${10 + ' produse'}"></span>
+								</h1>
+							</div>
+						</div>
+					</div>
+					<a th:href="@{/shopping_cart}">
+						<div class="panel-footer">
+							<span class="pull-left">Vezi Detalii</span> 
+							<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+							<div class="clearfix"></div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<script type="text/javascript" th:src="@{/js/validationcv.js}"></script>
+</body>
+</html>

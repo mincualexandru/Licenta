@@ -7,62 +7,62 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.web.dao.RoleDao;
 import com.web.dao.AccountDao;
+import com.web.dao.RoleDao;
 import com.web.model.Account;
 
-@Service("userService")
-public class AccountServiceImpl implements AccountService{
-	
+@Service("accountService")
+public class AccountServiceImpl implements AccountService {
+
 	@Autowired
-	private AccountDao userDao;
-	
+	private AccountDao accountDao;
+
 	@Autowired
 	private RoleDao roleDao;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Override
 	public void save(Account user) {
-		userDao.save(user);
+		accountDao.save(user);
 	}
 
 	@Override
 	public Optional<Account> findById(Integer id) {
-		return userDao.findById(id);
+		return accountDao.findById(id);
 	}
 
 	@Override
 	public void delete(Account user) {
-		userDao.delete(user);
+		accountDao.delete(user);
 	}
 
 	@Override
 	public void deleteById(Integer id) {
-		userDao.deleteById(id);
+		accountDao.deleteById(id);
 	}
 
 	@Override
 	public Set<Account> findAll() {
-		return userDao.findAll();
+		return accountDao.findAll();
 	}
 
 	@Override
 	public void saveUser(Account user, String chooseRoleName) {
 		user.getRoles().add(roleDao.findByName(chooseRoleName));
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-		userDao.save(user);
+		accountDao.save(user);
 	}
 
 	@Override
 	public Account findByUsername(String name) {
-		return userDao.findByUsername(name);
+		return accountDao.findByUsername(name);
 	}
 
 	@Override
 	public Set<Account> findAllByActive(boolean b) {
-		return userDao.findAllByActive(b);
+		return accountDao.findAllByActive(b);
 	}
 
 }

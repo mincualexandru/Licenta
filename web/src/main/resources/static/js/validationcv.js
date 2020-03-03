@@ -65,14 +65,14 @@ function year(input, year, event, number) {
 
 			var maxYear = 2019;
 			if (
-				(year < 1965 && year.length == 4) ||
+				(year < 1945 && year.length == 4) ||
 				(year > maxYear && year.length == 4)
 			) {
 				$(".showErrorStartYearCreate" + number + 3).html(
-					"Anul trebuie sa fie intre 1965 si 2019"
+					"Anul trebuie sa fie intre 1945 si 2019"
 				);
 				return false;
-			} else if (year > 1965 || year < maxYear) {
+			} else if (year > 1945 || year < maxYear) {
 				$(".showErrorStartYearCreate" + number + 3).text("");
 			}
 			return true;
@@ -98,14 +98,14 @@ function year(input, year, event, number) {
 
 			var current_year = new Date().getFullYear();
 			if (
-				(year < 1965 && year.length == 4) ||
+				(year < 1945 && year.length == 4) ||
 				(year > current_year && year.length == 4)
 			) {
 				$(".showErrorEndYearCreate" + number + 3).html(
-					"Anul trebuie sa fie intre 1965 si anul curent"
+					"Anul trebuie sa fie intre 1945 si anul curent"
 				);
 				return false;
-			} else if (year > 1965 || year < current_year) {
+			} else if (year > 1945 || year < current_year) {
 				$(".showErrorEndYearCreate" + number + 3).text("");
 			}
 			return true;
@@ -140,14 +140,14 @@ function yearValidation(input, year, event, number) {
 
 			var maxYear = 2019;
 			if (
-				(year < 1965 && year.length == 4) ||
+				(year < 1945 && year.length == 4) ||
 				(year > maxYear && year.length == 4)
 			) {
 				$(".showErrorStartYearEdit" + number + 3 + select).html(
-					"Anul trebuie sa fie intre 1965 si 2019"
+					"Anul trebuie sa fie intre 1945 si 2019"
 				);
 				return false;
-			} else if (year > 1965 || year < maxYear) {
+			} else if (year > 1945 || year < maxYear) {
 				$(".showErrorStartYearEdit" + number + 3 + select).text("");
 			}
 			return true;
@@ -173,14 +173,14 @@ function yearValidation(input, year, event, number) {
 
 			var current_year = new Date().getFullYear();
 			if (
-				(year < 1965 && year.length == 4) ||
+				(year < 1945 && year.length == 4) ||
 				(year > current_year && year.length == 4)
 			) {
 				$(".showErrorEndYearEdit" + number + 3 + select).html(
-					"Anul trebuie sa fie intre 1965 si anul curent"
+					"Anul trebuie sa fie intre 1945 si anul curent"
 				);
 				return false;
-			} else if (year > 1965 || year < current_year) {
+			} else if (year > 1945 || year < current_year) {
 				$(".showErrorEndYearEdit" + number + 3 + select).text("");
 			}
 			return true;
@@ -205,7 +205,7 @@ function yearValidation2(year, yearType) {
 
 			var maxYear = 2019;
 			if (
-				(year < 1965 && year.length == 4) ||
+				(year < 1945 && year.length == 4) ||
 				(year > maxYear && year.length == 4)
 			) {
 				return false;
@@ -222,7 +222,7 @@ function yearValidation2(year, yearType) {
 
 			var current_year = new Date().getFullYear();
 			if (
-				(year < 1965 && year.length == 4) ||
+				(year < 1945 && year.length == 4) ||
 				(year > current_year && year.length == 4)
 			) {
 				return false;

@@ -52,6 +52,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
           .antMatchers("/view_account_details").access("hasRole('ROLE_ADMIN')")
           
           .antMatchers("/home").access("hasRole('ROLE_USER')")
+          .antMatchers("/buy_band").access("hasRole('ROLE_USER')")
+          .antMatchers("/buy_scale").access("hasRole('ROLE_USER')")
+          .antMatchers("/current_balance").access("hasRole('ROLE_USER')")
+          .antMatchers("/shopping_cart").access("hasRole('ROLE_USER')")
           
           .antMatchers("/nutritionist").access("hasRole('ROLE_NUTRITIONIST')")
           

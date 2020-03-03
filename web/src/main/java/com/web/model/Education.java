@@ -30,7 +30,7 @@ public class Education {
 	private String end;
 
 	@Column(name = "name")
-	@Size(min = 4, message = "Valoarea minima a dimensiunii campului este de 4 caractere")
+	@Size(min = 3, message = "Valoarea minima a dimensiunii campului este de 3 caractere")
 	private String name;
 
 	@Column(name = "city")
@@ -47,7 +47,7 @@ public class Education {
 
 	public Education(Integer educationId, @Past(message = "Nu poti introduce o data din viitor") String start,
 			@Past(message = "Nu poti introduce o data din viitor") String end,
-			@Size(min = 3, message = "Valoarea minima a dimensiunii campului este de 3 caractere") String name,
+			@Size(min = 4, message = "Valoarea minima a dimensiunii campului este de 4 caractere") String name,
 			@Pattern(regexp = "^[A-Z][a-zA-Z]{3,15}(?: [A-Z][a-zA-Z]*){0,2}$", message = "Orasul introdus gresit") String city,
 			AccountInformation accountInformation) {
 		super();

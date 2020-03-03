@@ -29,7 +29,7 @@ import com.web.service.AccountService;
 public class CurriculumVitaeController {
 
 	@Autowired
-	private AccountService userService;
+	private AccountService accountService;
 
 	@Autowired
 	private AccountInformationDao accountInformationDao;
@@ -37,9 +37,8 @@ public class CurriculumVitaeController {
 	@GetMapping(path = { "/curriculum-vitae" })
 	public String curriculumVitae(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Account account = userService.findByUsername(auth.getName());
+		Account account = accountService.findByUsername(auth.getName());
 		if (!model.containsAttribute("curriculumVitae")) {
-			System.out.println("Intra aici");
 			AccountInformation curriculumVitae = new AccountInformation();
 			curriculumVitae.setSkills(new ArrayList<Skill>());
 			curriculumVitae.setEducation(new ArrayList<Education>());
@@ -47,7 +46,7 @@ public class CurriculumVitaeController {
 			model.addAttribute("curriculumVitae", curriculumVitae);
 		}
 		model.addAttribute("account", account);
-		return "authentication/curriculum-vitae";
+		return "common/curriculum-vitae";
 	}
 
 	@PostMapping(path = { "/curriculumVitaeSave" })
@@ -69,7 +68,7 @@ public class CurriculumVitaeController {
 			attr.addFlashAttribute("curriculumVitae", curriculumVitae);
 			return "redirect:/curriculum-vitae";
 		} else {
-			Account currentAccount = userService.findById(accountId).get();
+			Account currentAccount = accountService.findById(accountId).get();
 
 			curriculumVitae.getSkills().removeIf(element -> element.getDescription() == null);
 			curriculumVitae.getEducation().removeIf(element -> element.getCity() == null);
@@ -87,7 +86,7 @@ public class CurriculumVitaeController {
 			currentAccount.setAccountInformation(curriculumVitae);
 			curriculumVitae.setAccount(currentAccount);
 			accountInformationDao.save(curriculumVitae);
-			userService.save(currentAccount);
+			accountService.save(currentAccount);
 
 			for (Role role : currentAccount.getRoles()) {
 				if (role.getName().equals("ROLE_TRAINER")) {

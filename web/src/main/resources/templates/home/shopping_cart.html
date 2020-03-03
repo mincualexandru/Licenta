@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Admin</title>
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+<div th:unless="${#lists.size(userDevices)}">
+	Nu ai selectat niciun produs
+</div>
+<div th:if="${#lists.size(userDevices)}">
+<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Cosul meu</h3>
+<form th:action="@{/buy_shopping_cart}" method="post">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="row">
+					<div class="col-md-10 mx-auto">
+						<table class="table table-striped">
+							<thead class="center-align">
+								<tr>
+									<th>Nume</th>
+								</tr>
+							</thead>
+							<tbody class="center-align">
+								<th:block th:each="userDevice, iterStat : ${userDevices}">
+									<tr>
+										<td th:text="${userDevice.device.name}"></td>
+									</tr>
+								</th:block>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		<h4 th:text="${insufficientBalance}"></h4>
+		<input type="hidden" name="totalCostOfTrainingPlans"/>
+		<input type="hidden" name="totalCostOfDevices" th:value="${totalCostOfDevices}"/>
+		<input type="hidden" name="userId" th:value="${user.accountId}"/>
+		<button type="submit" class="btn btn-success">Cumpara</button>
+	</form>
+</div>
+</body>
+</html>

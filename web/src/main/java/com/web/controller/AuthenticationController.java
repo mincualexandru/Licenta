@@ -2,6 +2,7 @@ package com.web.controller;
 
 import java.util.Iterator;
 import java.util.Set;
+
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
@@ -15,23 +16,28 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.web.model.Role;
 import com.web.model.Account;
-import com.web.service.RoleService;
-import com.web.utils.Gender;
+import com.web.model.Role;
+import com.web.model.Transaction;
 import com.web.service.AccountService;
+import com.web.service.RoleService;
+import com.web.service.TransactionService;
+import com.web.utils.Gender;
 
 @Controller
 public class AuthenticationController {
 
 	@Autowired
-	private AccountService userService;
+	private AccountService accountService;
 
 	@Autowired
 	private RoleService roleService;
-	
+
+	@Autowired
+	private TransactionService transactionService;
+
 	private Logger logger = Logger.getLogger(AuthenticationController.class);
-	
+
 	@GetMapping(path = { "/", "/login" })
 	public String login() {
 		logger.info("This is an info log entry");
@@ -58,9 +64,9 @@ public class AuthenticationController {
 
 			}
 		}
-		
+
 		model.addAttribute("sex", Gender.values());
-		
+
 		model.addAttribute("roles", roles);
 		return "authentication/signup";
 	}
@@ -75,12 +81,19 @@ public class AuthenticationController {
 			attr.addFlashAttribute("chooseRoleName", chooseRoleName);
 			return "redirect:/signup";
 		} else {
-			if(chooseRoleName.equals("ROLE_USER")) {
+			if (chooseRoleName.equals("ROLE_USER")) {
 				user.setActive(true);
-				userService.saveUser(user, chooseRoleName);
-			} else if(chooseRoleName.equals("ROLE_TRAINER") || chooseRoleName.equals("ROLE_NUTRITIONIST")) {
+				accountService.saveUser(user, chooseRoleName);
+				Transaction transaction = new Transaction();
+				transaction.setAccount(user);
+				transaction.setAvailableBalance(0);
+				transaction.setPayments(0);
+				transactionService.save(transaction);
+				user.setTransaction(transaction);
+				accountService.save(user);
+			} else if (chooseRoleName.equals("ROLE_TRAINER") || chooseRoleName.equals("ROLE_NUTRITIONIST")) {
 				user.setActive(false);
-				userService.saveUser(user, chooseRoleName);
+				accountService.saveUser(user, chooseRoleName);
 			}
 		}
 

@@ -14,12 +14,12 @@ import com.web.service.AccountService;
 public class TrainerController {
 
 	@Autowired
-	private AccountService userService;
+	private AccountService accountService;
 	
 	@GetMapping(path = {"/trainer"})
 	public String trainer(Model model, RedirectAttributes redirectAttributes) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Account account = userService.findByUsername(auth.getName());
+		Account account = accountService.findByUsername(auth.getName());
 		model.addAttribute("account", account);
 		return "trainer/trainer";
 	}

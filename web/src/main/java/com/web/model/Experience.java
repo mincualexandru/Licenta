@@ -1,4 +1,5 @@
 package com.web.model;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,34 +20,34 @@ public class Experience {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "experience_id")
 	private Integer experienceId;
-	
+
 	@Column(name = "start")
 	@Pattern(regexp = "^(194[5-9]|19[5-9]\\d|200\\d|201[0-9])$", message = "Anul trebuie sa fie cuprins intre 1945 - 2019")
 	private String start;
-	
+
 	@Column(name = "end")
 	@Pattern(regexp = "^(194[5-9]|19[5-9]\\d|200\\d|201[0-9]|2020)$", message = "Anul trebuie sa fie cuprins intre 1945 - 2020")
 	private String end;
-	
+
 	@Column(name = "name")
-	@Size(min = 3, message = "Valoarea minima a dimensiunii campului este de 3 caractere")
+	@Size(min = 4, message = "Valoarea minima a dimensiunii campului este de 4 caractere")
 	private String name;
-	
+
 	@Column(name = "city")
 	@Pattern(regexp = "^[A-Z][a-zA-Z]{3,15}$", message = "Orasul introdus gresit")
 	private String city;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "account_information_id")
-    private AccountInformation accountInformation;
+	private AccountInformation accountInformation;
 
 	public Experience() {
 		super();
 	}
-	
+
 	public Experience(Integer experienceId, @Past(message = "Nu poti introduce o data din viitor") String start,
 			@Past(message = "Nu poti introduce o data din viitor") String end,
-			@Size(min = 3, message = "Valoarea minima a dimensiunii campului este de 3 caractere") String name,
+			@Size(min = 4, message = "Valoarea minima a dimensiunii campului este de 4 caractere") String name,
 			@Pattern(regexp = "^[A-Z][a-zA-Z]{3,15}(?: [A-Z][a-zA-Z]*){0,2}$", message = "Orasul introdus gresit") String city,
 			AccountInformation accountInformation) {
 		super();
@@ -57,8 +58,6 @@ public class Experience {
 		this.city = city;
 		this.accountInformation = accountInformation;
 	}
-
-
 
 	public Integer getExperienceId() {
 		return experienceId;
