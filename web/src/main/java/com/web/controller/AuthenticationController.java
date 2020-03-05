@@ -75,6 +75,12 @@ public class AuthenticationController {
 	public String signupSave(@Valid @ModelAttribute("user") Account user, BindingResult bindingResult,
 			RedirectAttributes attr, Model model, @RequestParam String chooseRoleName) {
 
+		Account userExist = accountService.findByUsername(user.getUsername());
+		if (userExist != null) {
+			attr.addFlashAttribute("errorMessage", "Acest utilizator deja exista ! Selecteaza alt nume de utilizator.");
+			return "redirect:/signup";
+		}
+
 		if (bindingResult.hasErrors()) {
 			attr.addFlashAttribute("org.springframework.validation.BindingResult.user", bindingResult);
 			attr.addFlashAttribute("user", user);

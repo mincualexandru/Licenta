@@ -65,4 +65,9 @@ public class AccountServiceImpl implements AccountService {
 		return accountDao.findAllByActive(b);
 	}
 
+	@Override
+	public Set<Account> findAllByRolesNameOrRolesName(String trainer, String nutritionist) {
+		return accountDao.findAllByRolesNameOrRolesName(trainer, nutritionist);
+	}
+
 }

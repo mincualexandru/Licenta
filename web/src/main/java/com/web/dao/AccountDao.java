@@ -17,4 +17,5 @@ public interface AccountDao extends CrudRepository<Account, Integer> {
 
 	Account findByUsername(String name);
 
+	Set<Account> findAllByRolesNameOrRolesName(String trainer, String nutritionist);
 }

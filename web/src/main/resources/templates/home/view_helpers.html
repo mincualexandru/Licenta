@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Admin</title>
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+<div th:unless="${#lists.size(trainersOrNutrituserionists)}">
+	Nu exista niciun antrenor sau nutritionist disponibil
+</div>
+	<div th:if="${#lists.size(trainersOrNutrituserionists)}">
+		<h3
+			style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Antrenori
+			sau Nutritionisti</h3>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-10 mx-auto">
+							<table class="table table-striped">
+								<thead class="center-align">
+									<tr>
+										<th>Nume</th>
+										<th>Actiuni</th>
+									</tr>
+								</thead>
+								<tbody class="center-align">
+									<th:block
+										th:each="trainerOrNutritionist, iterStat : ${trainersOrNutrituserionists}">
+										<tr>
+											<td th:text="${trainerOrNutritionist.username}"></td>
+											<td>
+												<div th:each="role : ${trainerOrNutritionist.roles}">
+													<div th:if="${role.name == 'ROLE_TRAINER'}">
+														<form th:action="@{/trainer_training_plans}" method="post">
+															<input type="hidden" name="trainerId" th:value="${trainerOrNutritionist.accountId}"/>
+															<button type="submit" class="btn btn-success">Vezi Antrenamente</button>
+														</form>
+													</div>
+													<div th:if="${role.name == 'ROLE_NUTRITIONIST'}">
+														<form th:action="@{/nutritionist_diet_plans}" method="post">
+															<input type="hidden" name="nutritionistId" th:value="${trainerOrNutritionist.accountId}"/>
+															<button type="submit" class="btn btn-success">Vezi Diete</button>
+														</form>
+													</div>
+												</div>
+											</td>
+										</tr>
+									</th:block>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+		<script>
+		$(document).ready(function() {
+			$('[data-toggle="toggle"]').change(function(){
+				$(this).parents().next('.hide').toggle();
+			});
+		});
+		</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Admin</title>
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+	<div th:unless="${#lists.size(allTrainersOrNutritionists)}">
+	Nu exista niciun antrenor sau nutritionist disponibil
+</div>
+	<div th:if="${#lists.size(allTrainersOrNutritionists)}">
+		<h3
+			style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Antrenori
+			sau Nutritionisti</h3>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-10 mx-auto">
+							<table class="table table-striped">
+								<thead class="center-align">
+									<tr>
+										<th>Nume</th>
+										<th>Vezi Detalii</th>
+									</tr>
+								</thead>
+								<tbody class="center-align">
+									<th:block
+										th:each="trainerOrNutritionist, iterStat : ${allTrainersOrNutritionists}">
+										<tr>
+											<td th:text="${trainerOrNutritionist.username}"></td>
+											<td><button data-toggle="modal"
+												data-target="#modal-trainer-nutritionist"
+												th:attr="data-target='#modal-trainer-nutritionist'+${trainerOrNutritionist.accountId}">
+												<span class="glyphicon glyphicon-trash"></span>Mai mult..
+											</button></td>
+											<form th:action="@{/choose_helper_save}" method="post">
+											<input type="hidden" name="helperId" th:value="${trainerOrNutritionist.accountId}"/>
+												<div class="modal modal-trainer-nutritionist fade in"
+													th:id="modal-trainer-nutritionist+${trainerOrNutritionist.accountId}">
+													<div class="modal-dialog">
+														<div class="modal-content">
+															<div class="modal-header">
+																<button type="button" class="close" data-dismiss="modal"
+																	aria-label="Close">
+																	<span aria-hidden="true">×</span>
+																</button>
+																<h5 class="modal-title">Informatii</h5>
+															</div>
+															<div class="modal-body">
+																<h5 th:text="${trainerOrNutritionist.firstName}"></h5>
+																<h5 th:text="${trainerOrNutritionist.lastName}"></h5>
+																<h5 th:text="${trainerOrNutritionist.accountInformation.description}"></h5>
+																<div th:each="skill : ${trainerOrNutritionist.accountInformation.skills}">
+																	<h5 th:text="${skill.description}"></h5>
+																</div>
+																<div th:each="experience : ${trainerOrNutritionist.accountInformation.experiences}">
+																	<h5 th:text="${experience.name}"></h5>
+																	<h5 th:text="${experience.city}"></h5>
+																	<h5 th:text="${experience.start}"></h5>
+																	<h5 th:text="${experience.end}"></h5>
+																</div>
+																<div th:each="edu : ${trainerOrNutritionist.accountInformation.education}">
+																	<h5 th:text="${edu.name}"></h5>
+																	<h5 th:text="${edu.city}"></h5>
+																	<h5 th:text="${edu.start}"></h5>
+																	<h5 th:text="${edu.end}"></h5>
+																</div>
+															</div>
+															<div class="modal-footer">
+																<button type="button" class="btn btn-outline pull-left"
+																	data-dismiss="modal">Close</button>
+																<button type="submit" class="btn btn-success">Yes</button>
+															</div>
+														</div>
+													</div>
+												</div>
+											</form>
+										</tr>
+									</th:block>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</body>
+</html>

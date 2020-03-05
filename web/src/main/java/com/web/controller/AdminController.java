@@ -52,6 +52,7 @@ public class AdminController {
 	@PostMapping(path = { "/validate-account-save" })
 	public String validateAccountSave(@RequestParam Integer accountId, Model model) {
 		Account account = accountService.findById(accountId).get();
+		logger.info("Arata id " + account.getAccountId());
 		account.setActive(true);
 		accountService.save(account);
 		return "redirect:/validations-accounts";

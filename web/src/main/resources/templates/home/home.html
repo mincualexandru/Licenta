@@ -15,14 +15,14 @@
 	<div>
 		<div th:unless="${addBandToShoppingCart}">
 			<form th:action="@{/buy_band}" method="post">
-				<button>Cumpara Bratara</button>
+				<button>Alege Bratara</button>
 			</form>
 		</div>
 		<div th:text="${soldOutForScales}"></div>
 		<div th:text="${soldOutForBands}"></div>
 		<div th:unless="${addScaleToShoppingCart}">
 			<form th:action="@{/buy_scale}" method="post">
-				<button>Cumpara Cantar</button>
+				<button>Alege Cantar</button>
 			</form>
 		</div>
 	</div>
@@ -72,6 +72,42 @@
 					<a th:href="@{/shopping_cart}">
 						<div class="panel-footer">
 							<span class="pull-left">Vezi Detalii</span> 
+							<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+							<div class="clearfix"></div>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class="col-lg-6 col-md-6">
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-xs-6">
+								<h2>Alege expert</h2>
+							</div>
+						</div>
+					</div>
+					<a th:href="@{/choose_helper}">
+						<div class="panel-footer">
+							<span class="pull-left">Antrenori sau Nutritionisti</span> 
+							<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+							<div class="clearfix"></div>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class="col-lg-6 col-md-6">
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-xs-6">
+								<h2>Expertii tai</h2>
+							</div>
+						</div>
+					</div>
+					<a th:href="@{/view_helpers}">
+						<div class="panel-footer">
+							<span class="pull-left">Detalii</span> 
 							<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
 							<div class="clearfix"></div>
 						</div>

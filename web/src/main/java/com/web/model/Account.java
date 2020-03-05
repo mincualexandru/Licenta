@@ -78,11 +78,6 @@ public class Account {
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "accounts_roles", joinColumns = { @JoinColumn(name = "account_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "role_id") })
-	private Set<Role> roles = new HashSet<>();
-
 	@OneToOne(mappedBy = "account")
 	private AccountInformation accountInformation;
 
@@ -91,6 +86,22 @@ public class Account {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
 	private Set<UserDevice> userDevices = new HashSet<>();
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
+	private Set<UserTraining> userTrainingPlans = new HashSet<>();
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "trainer", orphanRemoval = true)
+	private Set<TrainingPlan> trainingPlans = new HashSet<>();
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "users_helpers", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "helper_id") })
+	private Set<Account> helpers = new HashSet<>();
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "accounts_roles", joinColumns = { @JoinColumn(name = "account_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "role_id") })
+	private Set<Role> roles = new HashSet<>();
 
 	public Account() {
 	}
@@ -229,6 +240,30 @@ public class Account {
 
 	public void setTransaction(Transaction transaction) {
 		this.transaction = transaction;
+	}
+
+	public Set<TrainingPlan> getTrainingPlans() {
+		return trainingPlans;
+	}
+
+	public void setTrainingPlans(Set<TrainingPlan> trainingPlans) {
+		this.trainingPlans = trainingPlans;
+	}
+
+	public Set<Account> getHelpers() {
+		return helpers;
+	}
+
+	public void setHelpers(Set<Account> helpers) {
+		this.helpers = helpers;
+	}
+
+	public Set<UserTraining> getUserTrainingPlans() {
+		return userTrainingPlans;
+	}
+
+	public void setUserTrainingPlans(Set<UserTraining> userTrainingPlans) {
+		this.userTrainingPlans = userTrainingPlans;
 	}
 
 	@Override

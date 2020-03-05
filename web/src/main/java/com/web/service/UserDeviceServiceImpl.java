@@ -44,4 +44,9 @@ public class UserDeviceServiceImpl implements UserDeviceService {
 	public Set<UserDevice> findAllByBoughtAndUserAccountId(boolean b, Integer userId) {
 		return userDeviceDao.findAllByBoughtAndUserAccountId(b, userId);
 	}
+
+	@Override
+	public UserDevice findByUserAccountIdAndDeviceDeviceId(Integer userId, Integer productId) {
+		return userDeviceDao.findByUserAccountIdAndDeviceDeviceId(userId, productId);
+	}
 }

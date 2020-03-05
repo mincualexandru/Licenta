@@ -14,4 +14,6 @@ public interface UserDeviceDao extends CrudRepository<UserDevice, Integer> {
 	Set<UserDevice> findAll();
 
 	Set<UserDevice> findAllByBoughtAndUserAccountId(boolean b, Integer userId);
+
+	UserDevice findByUserAccountIdAndDeviceDeviceId(Integer userId, Integer productId);
 }
