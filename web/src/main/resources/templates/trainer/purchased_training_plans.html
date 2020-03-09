@@ -13,7 +13,8 @@
 <body>
 	<div th:unless="${#lists.size(trainingPlans)}">Nu ai creat niciun plan de antrenament momentan</div>
 	<div th:if="${#lists.size(trainingPlans)}">
-		<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Antrenamente Necumparate</h3>
+		<h3
+			style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Antrenamente Cumparate</h3>
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12">
@@ -27,20 +28,19 @@
 									</tr>
 								</thead>
 								<tbody class="center-align">
-									<th:block th:each="trainingPlan, iterStat : ${trainingPlans}">
+									<th:block th:each="tp, iterStat : ${trainingPlans}">
 										<tr>
-											<td th:text="${trainingPlan.name}"></td>
+											<td th:text="${tp.trainingPlan.name}"></td>
 											<td>
 												<form th:action="@{/exercises_training_plan}" method="post">
-													<input type="hidden" name="trainingPlanId" th:value="${trainingPlan.trainingPlanId}"/>
+													<input type="hidden" name="trainingPlanId" th:value="${tp.trainingPlan.trainingPlanId}"/>
 													<button type="submit" class="btn btn-success">Vezi
 														Exercitii</button>
 												</form>
 												<form th:action="@{/edit_training_plan}" method="post">
-													<input type="hidden" name="trainingPlanId" th:value="${trainingPlan.trainingPlanId}"/>
+													<input type="hidden" name="trainingPlanId" th:value="${tp.trainingPlan.trainingPlanId}"/>
 													<button type="submit" class="btn btn-success">Editeaza Antrenamentul</button>
 												</form>
-												<a th:href="@{/create_exercise_for_training_plan/{id}(id = ${trainingPlan.trainingPlanId})}" class="btn btn-success">Creeaza exercitiu</a>
 											</td>
 										</tr>
 									</th:block>

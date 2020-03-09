@@ -100,6 +100,13 @@ public class AuthenticationController {
 			} else if (chooseRoleName.equals("ROLE_TRAINER") || chooseRoleName.equals("ROLE_NUTRITIONIST")) {
 				user.setActive(false);
 				accountService.saveUser(user, chooseRoleName);
+				Transaction transaction = new Transaction();
+				transaction.setAccount(user);
+				transaction.setAvailableBalance(0);
+				transaction.setPayments(0);
+				transactionService.save(transaction);
+				user.setTransaction(transaction);
+				accountService.save(user);
 			}
 		}
 

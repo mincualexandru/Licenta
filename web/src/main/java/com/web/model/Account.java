@@ -93,6 +93,9 @@ public class Account {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "trainer", orphanRemoval = true)
 	private Set<TrainingPlan> trainingPlans = new HashSet<>();
 
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
+	private Set<ExerciseDone> exerciseDone = new HashSet<>();
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_helpers", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "helper_id") })
@@ -264,6 +267,14 @@ public class Account {
 
 	public void setUserTrainingPlans(Set<UserTraining> userTrainingPlans) {
 		this.userTrainingPlans = userTrainingPlans;
+	}
+
+	public Set<ExerciseDone> getExerciseDone() {
+		return exerciseDone;
+	}
+
+	public void setExerciseDone(Set<ExerciseDone> exerciseDone) {
+		this.exerciseDone = exerciseDone;
 	}
 
 	@Override

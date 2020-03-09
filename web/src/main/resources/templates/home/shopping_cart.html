@@ -34,7 +34,7 @@
 											<td th:text="${product.price}"></td>
 										</div>
 										<div th:if="${product.type == 'trainingPlan'}">
-											<td th:text="${product.productName + ' ' + product.forWho.toLowerCase()}"></td>
+											<td th:text="${product.productName + ' ' + product.forWho}"></td>
 											<td th:text="${product.price}"></td>
 										</div>
 										<td>

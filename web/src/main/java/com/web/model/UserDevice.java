@@ -1,5 +1,7 @@
 package com.web.model;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "users_devices")
@@ -29,15 +33,20 @@ public class UserDevice {
 	@Column(name = "bought")
 	private boolean bought;
 
+	@Column(name = "date_of_purchase")
+	@CreationTimestamp
+	private Timestamp dateOfPurchase;
+
 	public UserDevice() {
 	}
 
-	public UserDevice(Integer userDeviceId, Account user, Device device, boolean bought) {
+	public UserDevice(Integer userDeviceId, Account user, Device device, boolean bought, Timestamp dateOfPurchase) {
 		super();
 		this.userDeviceId = userDeviceId;
 		this.user = user;
 		this.device = device;
 		this.bought = bought;
+		this.dateOfPurchase = dateOfPurchase;
 	}
 
 	public Integer getUserDeviceId() {
@@ -70,6 +79,14 @@ public class UserDevice {
 
 	public void setBought(boolean bought) {
 		this.bought = bought;
+	}
+
+	public Timestamp getDateOfPurchase() {
+		return dateOfPurchase;
+	}
+
+	public void setDateOfPurchase(Timestamp dateOfPurchase) {
+		this.dateOfPurchase = dateOfPurchase;
 	}
 
 	@Override

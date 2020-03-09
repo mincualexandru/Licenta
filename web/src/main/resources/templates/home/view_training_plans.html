@@ -11,9 +11,12 @@
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 <body>
-	<div th:unless="${#lists.size(trainingPlans)}">Nu ai creat niciun plan de antrenament momentan</div>
-	<div th:if="${#lists.size(trainingPlans)}">
-		<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Antrenamente Necumparate</h3>
+	<div th:unless="${#lists.size(userTrainings)}">Nu exista niciun
+		antrenor sau nutritionist disponibil</div>
+	<div th:if="${#lists.size(userTrainings)}">
+		<h3
+			style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Antrenori
+			sau Nutritionisti</h3>
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12">
@@ -27,20 +30,15 @@
 									</tr>
 								</thead>
 								<tbody class="center-align">
-									<th:block th:each="trainingPlan, iterStat : ${trainingPlans}">
+									<th:block th:each="userTraining, iterStat : ${userTrainings}">
 										<tr>
-											<td th:text="${trainingPlan.name}"></td>
+											<td th:text="${userTraining.trainingPlan.name}"></td>
 											<td>
 												<form th:action="@{/exercises_training_plan}" method="post">
-													<input type="hidden" name="trainingPlanId" th:value="${trainingPlan.trainingPlanId}"/>
+													<input type="hidden" name="trainingPlanId" th:value="${userTraining.trainingPlan.trainingPlanId}"/>
 													<button type="submit" class="btn btn-success">Vezi
-														Exercitii</button>
+														Exercitiile Nefacute</button>
 												</form>
-												<form th:action="@{/edit_training_plan}" method="post">
-													<input type="hidden" name="trainingPlanId" th:value="${trainingPlan.trainingPlanId}"/>
-													<button type="submit" class="btn btn-success">Editeaza Antrenamentul</button>
-												</form>
-												<a th:href="@{/create_exercise_for_training_plan/{id}(id = ${trainingPlan.trainingPlanId})}" class="btn btn-success">Creeaza exercitiu</a>
 											</td>
 										</tr>
 									</th:block>
@@ -57,5 +55,14 @@
 		crossorigin="anonymous"></script>
 	<script
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<script>
+		let selectedTrainingId = 0;
+		let selectedUserId = 0;
+		
+		function selectTrainingIdAndUserId(trainingId, userId) {
+			selectedTrainingId = trainingId;
+			selectedUserId = userId;
+		}
+	</script>
 </body>
 </html>

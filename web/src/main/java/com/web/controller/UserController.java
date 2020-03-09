@@ -16,12 +16,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.web.model.Account;
 import com.web.model.Device;
+import com.web.model.ExerciseDone;
 import com.web.model.TrainingPlan;
 import com.web.model.Transaction;
 import com.web.model.UserDevice;
 import com.web.model.UserTraining;
 import com.web.service.AccountService;
 import com.web.service.DeviceService;
+import com.web.service.ExerciseDoneService;
+import com.web.service.ExerciseService;
 import com.web.service.TrainingPlanService;
 import com.web.service.TransactionService;
 import com.web.service.UserDeviceService;
@@ -50,6 +53,12 @@ public class UserController {
 
 	@Autowired
 	private TransactionService transactionService;
+
+	@Autowired
+	private ExerciseDoneService exerciseDoneService;
+
+	@Autowired
+	private ExerciseService exerciseService;
 
 	@GetMapping(path = { "/home" })
 	public String home(Model model) {
@@ -206,6 +215,9 @@ public class UserController {
 							.setAvailableBalance(user.getTransaction().getAvailableBalance() - trainingPlanPrice);
 					if (!ok) {
 						user.getTransaction().setPayments(user.getTransaction().getPayments() - totalSum);
+						Account trainer = userTraining.getTrainingPlan().getTrainer();
+						trainer.getTransaction()
+								.setAvailableBalance(trainer.getTransaction().getAvailableBalance() + totalSum);
 					}
 					userTraining.setBought(true);
 					userTrainingService.save(userTraining);
@@ -278,17 +290,33 @@ public class UserController {
 		return "home/trainer_training_plans";
 	}
 
-//	private String generateRandomSerialNumber() {
-//		int leftLimit = 48;
-//		int rightLimit = 122;
-//		int targetStringLength = 10;
-//		Random random = new Random();
-//
-//		String generatedString = random.ints(leftLimit, rightLimit + 1)
-//				.filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97)).limit(targetStringLength)
-//				.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
-//
-//		return generatedString;
-//	}
+	@GetMapping(path = { "/view_training_plans" })
+	public String viewTrainingPlans(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Account user = accountService.findByUsername(auth.getName());
+		Set<UserTraining> userTrainings = userTrainingService.findAllByBoughtAndUserAccountId(true,
+				user.getAccountId());
+		model.addAttribute("userTrainings", userTrainings);
+		model.addAttribute("user", user);
+		return "home/view_training_plans";
+	}
+
+	@GetMapping(path = { "/exercises_done" })
+	public String exercisesDone(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Account user = accountService.findByUsername(auth.getName());
+		Set<ExerciseDone> exercisesDone = exerciseDoneService.findAllByUserAccountId(user.getAccountId());
+		model.addAttribute("exercisesDone", exercisesDone);
+		return "home/exercises_done";
+	}
+
+	@PostMapping(path = { "/perfom_this_exercise" })
+	public String perfomThisExercise(Model model, @RequestParam Integer accountId, @RequestParam Integer exerciseId) {
+		ExerciseDone exerciseDone = new ExerciseDone();
+		exerciseDone.setExercise(exerciseService.findById(exerciseId).get());
+		exerciseDone.setUser(accountService.findById(accountId).get());
+		exerciseDoneService.save(exerciseDone);
+		return "redirect:/exercises_done";
+	}
 
 }

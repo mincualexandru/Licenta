@@ -1,4 +1,4 @@
-package com.web.service;
+package com.web.serviceimpl;
 
 import java.util.Optional;
 import java.util.Set;
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.web.dao.UserTrainingDao;
 import com.web.model.UserTraining;
+import com.web.service.UserTrainingService;
 
 @Service("userTrainingService")
 public class UserTrainingServiceImpl implements UserTrainingService {

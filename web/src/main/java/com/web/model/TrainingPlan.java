@@ -1,11 +1,14 @@
 package com.web.model;
 
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +16,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.validator.constraints.Range;
+
+import com.web.utils.Gender;
 
 @Entity
 @Table(name = "trainings_plans")
@@ -28,33 +38,46 @@ public class TrainingPlan {
 	private Account trainer;
 
 	@Column(name = "name")
+	@NotEmpty(message = "Campul este obligatoriu !")
 	private String name;
 
 	@Column(name = "intensity")
+	@NotEmpty(message = "Campul este obligatoriu !")
 	private String intensity;
 
-	@Column(name = "day")
-	private String day;
-
 	@Column(name = "for_who")
-	private String forWho;
+	@Enumerated(EnumType.STRING)
+	private Gender forWho;
 
 	@Column(name = "price")
+	@Range(min = 0, message = "Valorile negative nu sunt permise")
+	@NotNull(message = "Campul este obligatoriu !")
 	private Integer price;
+
+	@Column(name = "creation_date")
+	@CreationTimestamp
+	private Timestamp dateOfMeasurement;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "trainingPlan", orphanRemoval = true)
 	private Set<UserTraining> userTrainingPlans = new HashSet<>();
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "trainingPlan", orphanRemoval = true)
+	private Set<Exercise> exercises = new HashSet<>();
 
 	public TrainingPlan() {
 
 	}
 
-	public TrainingPlan(String name, String intensity, String day, String forWho, Integer price) {
+	public TrainingPlan(int trainingPlanId, Account trainer, String name, String intensity, Gender forWho,
+			Integer price, Timestamp dateOfMeasurement, Set<UserTraining> userTrainingPlans) {
+		this.trainingPlanId = trainingPlanId;
+		this.trainer = trainer;
 		this.name = name;
 		this.intensity = intensity;
-		this.day = day;
 		this.forWho = forWho;
 		this.price = price;
+		this.dateOfMeasurement = dateOfMeasurement;
+		this.userTrainingPlans = userTrainingPlans;
 	}
 
 	public int getTrainingPlanId() {
@@ -81,19 +104,11 @@ public class TrainingPlan {
 		this.intensity = intensity;
 	}
 
-	public String getDay() {
-		return day;
-	}
-
-	public void setDay(String day) {
-		this.day = day;
-	}
-
-	public String getForWho() {
+	public Gender getForWho() {
 		return forWho;
 	}
 
-	public void setForWho(String forWho) {
+	public void setForWho(Gender forWho) {
 		this.forWho = forWho;
 	}
 
@@ -113,6 +128,14 @@ public class TrainingPlan {
 		this.price = price;
 	}
 
+	public Timestamp getDateOfMeasurement() {
+		return dateOfMeasurement;
+	}
+
+	public void setDateOfMeasurement(Timestamp dateOfMeasurement) {
+		this.dateOfMeasurement = dateOfMeasurement;
+	}
+
 	public Set<UserTraining> getUserTrainingPlans() {
 		return userTrainingPlans;
 	}
@@ -121,9 +144,11 @@ public class TrainingPlan {
 		this.userTrainingPlans = userTrainingPlans;
 	}
 
-	@Override
-	public String toString() {
-		return "TrainingPlan [trainingPlanId=" + trainingPlanId + ", trainer=" + trainer + ", name=" + name
-				+ ", intensity=" + intensity + ", day=" + day + ", forWho=" + forWho + ", price=" + price + "]";
+	public Set<Exercise> getExercises() {
+		return exercises;
+	}
+
+	public void setExercises(Set<Exercise> exercises) {
+		this.exercises = exercises;
 	}
 }

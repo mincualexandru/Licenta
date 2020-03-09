@@ -10,14 +10,14 @@ public class Product {
 
 	String companyName;
 
-	String forWho;
+	Gender forWho;
 
 	String type;
 
 	public Product() {
 	}
 
-	public Product(Integer productId, String productName, Integer price, String companyName, String forWho,
+	public Product(Integer productId, String productName, Integer price, String companyName, Gender forWho,
 			String type) {
 		super();
 		this.productId = productId;
@@ -60,11 +60,11 @@ public class Product {
 		this.companyName = companyName;
 	}
 
-	public String getForWho() {
+	public Gender getForWho() {
 		return forWho;
 	}
 
-	public void setForWho(String forWho) {
+	public void setForWho(Gender forWho) {
 		this.forWho = forWho;
 	}
 

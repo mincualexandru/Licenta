@@ -252,7 +252,7 @@ $(".experience").submit(function () {
 					yearValidation2(start, "start") &&
 					yearValidation2(end, "end") &&
 					city.length > 3,
-					end - start > 1
+					end - start >= 1
 				) {
 					//submit the form again, but set valid data so you don't do another Ajax request
 					$(".experience").data("valid", true);
@@ -286,7 +286,7 @@ $("#editExperience").submit(function () {
 					yearValidation2(start, "start") &&
 					yearValidation2(end, "end") &&
 					city.length > 3,
-					end - start > 1
+					end - start >= 1
 				) {
 					$("#editExperience").data("valid", true);
 					$("#editExperience").submit();
@@ -319,7 +319,7 @@ $(".education").submit(function () {
 					yearValidation2(start, "start") &&
 					yearValidation2(end, "end") &&
 					city.length > 3,
-					end - start > 1
+					end - start >= 1
 				) {
 					//submit the form again, but set valid data so you don't do another Ajax request
 					$(".education").data("valid", true);
@@ -353,7 +353,7 @@ $("#editEducation").submit(function () {
 					yearValidation2(start, "start") &&
 					yearValidation2(end, "end") &&
 					city.length > 3,
-					end - start > 1
+					end - start >= 1
 				) {
 					$("#editEducation").data("valid", true);
 					$("#editEducation").submit();
@@ -396,6 +396,9 @@ $("#myForm").submit(function () {
 	$(this).data("valid", false);
 });
 
+
+console.log($("#editSkill"));
+console.log(document.getElementById("description2").value);
 $("#editSkill").submit(function (ev) {
 	let description = document.getElementById("description2").value;
 	if ($(this).data("valid")) {

@@ -1,4 +1,4 @@
-package com.web.service;
+package com.web.serviceimpl;
 
 import java.util.Optional;
 import java.util.Set;
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.web.dao.DeviceDao;
 import com.web.model.Device;
+import com.web.service.DeviceService;
 
 @Service("deviceService")
 public class DeviceServiceImpl implements DeviceService {
