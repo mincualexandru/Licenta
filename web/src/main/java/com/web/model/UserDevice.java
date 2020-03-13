@@ -1,7 +1,10 @@
 package com.web.model;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -36,6 +40,9 @@ public class UserDevice {
 	@Column(name = "date_of_purchase")
 	@CreationTimestamp
 	private Timestamp dateOfPurchase;
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "userDevice", orphanRemoval = true)
+	private Set<Measurement> measurements = new HashSet<>();
 
 	public UserDevice() {
 	}
@@ -87,6 +94,14 @@ public class UserDevice {
 
 	public void setDateOfPurchase(Timestamp dateOfPurchase) {
 		this.dateOfPurchase = dateOfPurchase;
+	}
+
+	public Set<Measurement> getMeasurements() {
+		return measurements;
+	}
+
+	public void setMeasurements(Set<Measurement> measurements) {
+		this.measurements = measurements;
 	}
 
 	@Override

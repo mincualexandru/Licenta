@@ -25,6 +25,7 @@ import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.web.utils.Gender;
 
 @Entity
@@ -79,31 +80,39 @@ public class Account {
 	private Gender gender;
 
 	@OneToOne(mappedBy = "account")
+	@JsonIgnore
 	private AccountInformation accountInformation;
 
 	@OneToOne(mappedBy = "account")
+	@JsonIgnore
 	private Transaction transaction;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
+	@JsonIgnore
 	private Set<UserDevice> userDevices = new HashSet<>();
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
+	@JsonIgnore
 	private Set<UserTraining> userTrainingPlans = new HashSet<>();
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "trainer", orphanRemoval = true)
+	@JsonIgnore
 	private Set<TrainingPlan> trainingPlans = new HashSet<>();
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
+	@JsonIgnore
 	private Set<ExerciseDone> exerciseDone = new HashSet<>();
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_helpers", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "helper_id") })
+	@JsonIgnore
 	private Set<Account> helpers = new HashSet<>();
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "accounts_roles", joinColumns = { @JoinColumn(name = "account_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "role_id") })
+	@JsonIgnore
 	private Set<Role> roles = new HashSet<>();
 
 	public Account() {
