@@ -16,5 +16,4 @@ public interface TrainingPlanDao extends CrudRepository<TrainingPlan, Integer> {
 
 	@Query(value = "select * from trainings_plans where trainer_id = ?1 and training_plan_id not in (select ut.training_plan_id from users_trainings ut);", nativeQuery = true)
 	Set<TrainingPlan> findAllByTrainingPlanNotAssociated(Integer trainerId);
-
 }

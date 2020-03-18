@@ -50,4 +50,9 @@ public class UserTrainingServiceImpl implements UserTrainingService {
 	public UserTraining findByUserAccountIdAndTrainingPlanTrainingPlanId(Integer userId, Integer productId) {
 		return userTrainingDao.findByUserAccountIdAndTrainingPlanTrainingPlanId(userId, productId);
 	}
+
+	@Override
+	public Set<UserTraining> findAllByUserAccountId(Integer accountId) {
+		return userTrainingDao.findAllByUserAccountId(accountId);
+	}
 }

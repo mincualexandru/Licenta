@@ -37,8 +37,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests().antMatchers("/css/**").permitAll().antMatchers("/js/**").permitAll()
-				.antMatchers("/").permitAll().antMatchers("/login").permitAll().antMatchers("/signup").permitAll()
+		http.csrf().disable().authorizeRequests().antMatchers("/css/**").permitAll().antMatchers("/vendor/**")
+				.permitAll().antMatchers("/js/**").permitAll().antMatchers("/").permitAll().antMatchers("/login")
+				.permitAll().antMatchers("/signup").permitAll()
 
 				.antMatchers("/users").access("hasRole('ROLE_ADMIN')").antMatchers("/admin")
 				.access("hasRole('ROLE_ADMIN')").antMatchers("/validations-accounts").access("hasRole('ROLE_ADMIN')")
@@ -55,7 +56,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/trainer").access("hasRole('ROLE_TRAINER')")
 
 				.antMatchers("/curriculum-vitae").access("hasRole('ROLE_NUTRITIONIST') or hasRole('ROLE_TRAINER')")
-				.antMatchers("/view_profile").access("hasRole('ROLE_NUTRITIONIST') or hasRole('ROLE_TRAINER')");
+				.antMatchers("/view_profile")
+				.access("hasRole('ROLE_NUTRITIONIST') or hasRole('ROLE_TRAINER') or hasRole('ROLE_USER')");
 
 		http.authorizeRequests().and().formLogin().loginPage("/login").successHandler(customSuccessHandler)
 				.failureUrl("/login?error=true").usernameParameter("name").passwordParameter("password").and().logout()

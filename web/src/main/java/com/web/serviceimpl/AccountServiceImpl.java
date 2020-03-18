@@ -71,4 +71,9 @@ public class AccountServiceImpl implements AccountService {
 		return accountDao.findAllByRolesNameOrRolesName(trainer, nutritionist);
 	}
 
+	@Override
+	public Set<Integer> findAllLearnersByHelperId(Integer accountId) {
+		return accountDao.findAllLearnersByHelperId(accountId);
+	}
+
 }

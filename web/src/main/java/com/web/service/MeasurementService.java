@@ -24,8 +24,16 @@ public interface MeasurementService {
 
 	Set<Measurement> findAllByNameAndUserDeviceUserDeviceId(String bodyFatPercentage, Integer userDeviceId);
 
-	void buildMap(Map<String, Float> chartMap, Set<Measurement> bodyFatPercentageMeasurements);
-
-	Set<Measurement> findAllByUserDeviceUserDeviceIdAndStartDateBetween(Integer userDeviceId,
+	Set<Measurement> findAllByNameAndUserDeviceUserDeviceIdAndStartDateBetween(String name, Integer userDeviceId,
 			Timestamp timestampStartDate, Timestamp timestampEndDate);
+
+	void buildMap(Map<String, Float> chartMap, Set<Measurement> measurementsBetweenTimestamps);
+
+	Optional<Measurement> findByName(String hkquantitytypeidentifierheight);
+
+	Set<Measurement> findAllByName(String scaleTypeMeasurement);
+
+	Set<Measurement> findLast3ByNameAndUserDeviceId(String name, Integer userDeviceId);
+
+	Measurement findByEndDate(Timestamp timestamp);
 }

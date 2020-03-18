@@ -6,9 +6,13 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -35,6 +39,11 @@ public class Device {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "device", orphanRemoval = true)
 	private Set<UserDevice> userDevices = new HashSet<>();
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "device_type_measurement", joinColumns = {
+			@JoinColumn(name = "device_id") }, inverseJoinColumns = { @JoinColumn(name = "type_measurement_id") })
+	private Set<TypeMeasurement> typeMeasurements = new HashSet<>();
 
 	public Device() {
 	}
@@ -96,6 +105,14 @@ public class Device {
 
 	public void setPrice(Integer price) {
 		this.price = price;
+	}
+
+	public Set<TypeMeasurement> getTypeMeasurements() {
+		return typeMeasurements;
+	}
+
+	public void setTypeMeasurements(Set<TypeMeasurement> typeMeasurements) {
+		this.typeMeasurements = typeMeasurements;
 	}
 
 	@Override

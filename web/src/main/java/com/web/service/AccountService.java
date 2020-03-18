@@ -24,4 +24,6 @@ public interface AccountService {
 	Account findByUsername(String name);
 
 	Set<Account> findAllByRolesNameOrRolesName(String trainer, String nutritionist);
+
+	Set<Integer> findAllLearnersByHelperId(Integer accountId);
 }

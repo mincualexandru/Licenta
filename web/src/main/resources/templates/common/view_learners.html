@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Admin</title>
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+	<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Cursanti</h3>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="row">
+					<div class="col-md-10 mx-auto">
+						<table class="table table-striped">
+							<thead class="center-align">
+								<tr>
+									<th>Nume Utilizator</th>
+									<th>Nume</th>
+									<th>Prenume</th>
+									<th>Email</th>
+									<th>Telefon</th>
+									<th>Data Nasterii</th>
+									<th>Sex</th>
+									<th>Actiuni</th>
+								</tr>
+							</thead>
+							<tbody class="center-align">
+								<th:block th:each="account, iterStat : ${learners}">
+									<tr>
+										<td th:text="${account.username}"></td>
+										<td th:text="${account.firstName}"></td>
+										<td th:text="${account.lastName}"></td>
+										<td th:text="${account.email}"></td>
+										<td th:text="${account.phoneNumber}"></td>
+										<td th:text="${account.bornDate}"></td>
+										<td th:text="${account.gender}"></td>
+										<td>
+											<form th:action="@{/view_progress}" method="post">
+												<input type="hidden" name="learnerId" th:value="${account.accountId}"/>
+												<button>Vezi Progres</button>
+											</form>
+										</td>
+									</tr>
+								</th:block>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

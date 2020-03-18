@@ -39,6 +39,10 @@ public class Measurement {
 	@Column(name = "end_date")
 	private Timestamp endDate;
 
+//	@OneToOne(mappedBy = "measurement")
+//	@JsonIgnore
+//	private MeasurementInformation measurementInformation;
+
 	public Measurement() {
 	}
 
@@ -105,6 +109,14 @@ public class Measurement {
 	public void setEndDate(Timestamp endDate) {
 		this.endDate = endDate;
 	}
+
+//	public MeasurementInformation getMeasurementInformation() {
+//		return measurementInformation;
+//	}
+//
+//	public void setMeasurementInformation(MeasurementInformation measurementInformation) {
+//		this.measurementInformation = measurementInformation;
+//	}
 
 	@Override
 	public String toString() {

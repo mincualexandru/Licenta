@@ -2,6 +2,7 @@ package com.web.utils;
 
 public enum BandTypeMeasurement {
 
+	HKQUANTITYTYPEIDENTIFIERACTIVEENERGYBURNED("HKQuantityTypeIdentifierActiveEnergyBurned"),
 	HKQUANTITYTYPEIDENTIFIERHEARTRATE("HKQuantityTypeIdentifierHeartRate"),
 	HKQUANTITYTYPEIDENTIFIERSTEPCOUNT("HKQuantityTypeIdentifierStepCount"),
 	HKCATEGORYTYPEIDENTIFIERSLEEPANALYSIS("HKCategoryTypeIdentifierSleepAnalysis"),

@@ -103,6 +103,10 @@ public class Account {
 	@JsonIgnore
 	private Set<ExerciseDone> exerciseDone = new HashSet<>();
 
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
+	@JsonIgnore
+	private Set<ExerciseFeedback> exercisesFeedback = new HashSet<>();
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_helpers", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "helper_id") })
@@ -284,6 +288,14 @@ public class Account {
 
 	public void setExerciseDone(Set<ExerciseDone> exerciseDone) {
 		this.exerciseDone = exerciseDone;
+	}
+
+	public Set<ExerciseFeedback> getExercisesFeedback() {
+		return exercisesFeedback;
+	}
+
+	public void setExercisesFeedback(Set<ExerciseFeedback> exercisesFeedback) {
+		this.exercisesFeedback = exercisesFeedback;
 	}
 
 	@Override

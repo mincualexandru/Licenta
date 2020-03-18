@@ -19,7 +19,6 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +28,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.web.dao.UserDeviceDao;
 import com.web.model.Measurement;
 import com.web.model.UserDevice;
 import com.web.service.XmlParserService;
@@ -43,15 +41,11 @@ public class XmlParserServiceImpl implements XmlParserService {
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	@Autowired
-	private UserDeviceDao userDeviceDao;
-
 	@Override
 	public boolean readAllMeasurementsFromXmlFile(Set<UserDevice> userDevices) throws ParseException {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		try {
 			Document doc = readXML(factory);
-			System.out.println(doc.toString());
 			Node parentNode = doc.getDocumentElement();
 			removeEmptyNodes(doc);
 			NodeList childNodes = parentNode.getChildNodes();
@@ -97,16 +91,6 @@ public class XmlParserServiceImpl implements XmlParserService {
 
 	@Override
 	public NodeList getAllMeasurements(NodeList childNodes, Set<UserDevice> userDevices) throws ParseException {
-		BandTypeMeasurement[] bandTypeMeasurement = BandTypeMeasurement.values();
-		ScaleTypeMeasurement[] scaleTypeMeasurement = ScaleTypeMeasurement.values();
-//		ArrayList<String> typesOfMeasurementsForBand = new ArrayList<String>(
-//				Arrays.asList("HKQuantityTypeIdentifierHeartRate", "HKQuantityTypeIdentifierStepCount",
-//						"HKCategoryTypeIdentifierSleepAnalysis", "HKQuantityTypeIdentifierDistanceWalkingRunning",
-//						"HKQuantityTypeIdentifierFlightsClimbed"));
-//		ArrayList<String> typesOfMeasurementsForScale = new ArrayList<String>(
-//				Arrays.asList("HKQuantityTypeIdentifierActiveEnergyBurned", "HKQuantityTypeIdentifierBodyFatPercentage",
-//						"HKQuantityTypeIdentifierLeanBodyMass", "HKQuantityTypeIdentifierBodyMassIndex",
-//						"HKQuantityTypeIdentifierHeight", "HKQuantityTypeIdentifierBodyMass"));
 		for (int i = 2; i < childNodes.getLength(); i++) {
 			Node node = childNodes.item(i);
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -116,37 +100,52 @@ public class XmlParserServiceImpl implements XmlParserService {
 				String unitOfMeasurement = element.getAttribute("unit");
 				String startDate = element.getAttribute("startDate");
 				String endDate = element.getAttribute("endDate");
-				Measurement measure = new Measurement();
+				String value = element.getAttribute("value");
 				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
 				Date parsedStartDate = dateFormat.parse(startDate);
 				Timestamp startTimestamp = new java.sql.Timestamp(parsedStartDate.getTime());
 				Date parsedEndDate = dateFormat.parse(endDate);
 				Timestamp endTimestamp = new java.sql.Timestamp(parsedEndDate.getTime());
-				measure.setStartDate(startTimestamp);
-				measure.setEndDate(endTimestamp);
-				measure.setUnitOfMeasurement(unitOfMeasurement);
-				measure.setName(name);
-				for (UserDevice userDevice : userDevices) {
-					if (userDevice.getDevice().getName().equals("Bratara") && BandTypeMeasurement.contains(name)) {
-						measure.setUserDevice(userDevice);
-					} else if (userDevice.getDevice().getName().equals("Cantar Inteligent")
-							&& ScaleTypeMeasurement.contains(name)) {
-						measure.setUserDevice(userDevice);
+				boolean goodValue = true;
+				if (value.equals("HKCategoryValueSleepAnalysisAwake")
+						|| value.equals("HKCategoryValueSleepAnalysisInBed")) {
+					goodValue = false;
+				}
+				if (goodValue) {
+					Measurement measure = new Measurement();
+					measure.setStartDate(startTimestamp);
+					measure.setEndDate(endTimestamp);
+					measure.setUnitOfMeasurement(unitOfMeasurement);
+					measure.setName(name);
+					if (name.equals("HKCategoryTypeIdentifierSleepAnalysis")) {
+						Integer difference = (int) (parsedEndDate.getTime() - parsedStartDate.getTime());
+						Integer differenceMinutes = difference / (60 * 1000);
+						measure.setValue(differenceMinutes);
+						if (differenceMinutes > 1) {
+							measure.setUnitOfMeasurement("minutes");
+						} else {
+							measure.setUnitOfMeasurement("minute");
+						}
+					} else {
+						measure.setValue(Float.parseFloat(valueOfMeasurement));
 					}
+					for (UserDevice userDevice : userDevices) {
+						if (userDevice.getDevice().getName().equals("Bratara") && BandTypeMeasurement.contains(name)) {
+							measure.setUserDevice(userDevice);
+						} else if (userDevice.getDevice().getName().equals("Cantar Inteligent")
+								&& ScaleTypeMeasurement.contains(name)) {
+							measure.setUserDevice(userDevice);
+						}
+					}
+					insertMeasure(measure);
 				}
-				if (name.equals("HKCategoryTypeIdentifierSleepAnalysis")) {
-					measure.setValue(0);
-				} else {
-					measure.setValue(Float.parseFloat(valueOfMeasurement));
-				}
-				insertWithQuery(measure);
 			}
 		}
 		return childNodes;
 	}
 
 	@Transactional
-	public void insertWithQuery(Measurement measure) {
+	public void insertMeasure(Measurement measure) {
 		entityManager.createNativeQuery(
 				"INSERT INTO measurements (user_device_id, name, value, unit_of_measurement, start_date, end_date) VALUES (?,?,?,?,?,?)")
 				.setParameter(1, measure.getUserDevice()).setParameter(2, measure.getName())

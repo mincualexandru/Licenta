@@ -24,7 +24,7 @@
 		<p>Trebuie sa astepti pana la validarea contului</p>
 	</div>
 	<div th:if="${account.active eq true}">
-		<a th:href="{@/view_profile}">Vezi profil</a>
+		<a th:href="@{/view_profile}">Vezi profil</a>
 	</div>
 </body>
 </html>

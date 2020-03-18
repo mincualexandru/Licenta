@@ -57,8 +57,8 @@ public class MeasurementServiceImpl implements MeasurementService {
 	}
 
 	@Override
-	public void buildMap(Map<String, Float> chartMap, Set<Measurement> bodyFatPercentageMeasurements) {
-		for (Measurement measurement : bodyFatPercentageMeasurements) {
+	public void buildMap(Map<String, Float> chartMap, Set<Measurement> measurementsBetweenTimestamps) {
+		for (Measurement measurement : measurementsBetweenTimestamps) {
 			LocalDateTime startDate = measurement.getStartDate().toLocalDateTime();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 			String startDateFormatter = startDate.format(formatter);
@@ -67,10 +67,29 @@ public class MeasurementServiceImpl implements MeasurementService {
 	}
 
 	@Override
-	public Set<Measurement> findAllByUserDeviceUserDeviceIdAndStartDateBetween(Integer userDeviceId,
+	public Set<Measurement> findAllByNameAndUserDeviceUserDeviceIdAndStartDateBetween(String name, Integer userDeviceId,
 			Timestamp timestampStartDate, Timestamp timestampEndDate) {
-		return measurementDao.findAllByUserDeviceUserDeviceIdAndStartDateBetween(userDeviceId, timestampStartDate,
-				timestampEndDate);
+		return measurementDao.findAllByNameAndUserDeviceUserDeviceIdAndStartDateBetween(name, userDeviceId,
+				timestampStartDate, timestampEndDate);
 	}
 
+	@Override
+	public Optional<Measurement> findByName(String hkquantitytypeidentifierheight) {
+		return measurementDao.findByName(hkquantitytypeidentifierheight);
+	}
+
+	@Override
+	public Set<Measurement> findAllByName(String scaleTypeMeasurement) {
+		return measurementDao.findAllByName(scaleTypeMeasurement);
+	}
+
+	@Override
+	public Set<Measurement> findLast3ByNameAndUserDeviceId(String name, Integer userDeviceId) {
+		return measurementDao.findLast3ByNameAndUserDeviceId(name, userDeviceId);
+	}
+
+	@Override
+	public Measurement findByEndDate(Timestamp timestamp) {
+		return measurementDao.findByEndDate(timestamp);
+	}
 }

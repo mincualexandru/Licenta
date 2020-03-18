@@ -12,19 +12,16 @@
 <link rel="stylesheet" type="text/css" th:href="@{css/style.css}" />
 </head>
 <body>
-<h1>Cumpara Bratara</h1>
-<p>Descriere Descriere Descriere</p>
-<p>Bratara bratara bratara</p>
-<p>Descriere Descriere Descriere</p>
-<p>Bratara bratara bratara</p>
-<p>Descriere Descriere Descriere</p>
-<p>Bratara bratara bratara</p>
-<p>Descriere Descriere Descriere</p>
-<form th:action="@{/add_to_shopping_cart}" method="post">
-	<input type="hidden" name="accountId" th:value="${account.accountId}" />
-	<input type="hidden" name="deviceId" th:value="${device.deviceId}" />
-	<button type="submit">Adauga in Cos</button>
-</form>
+	<ul th:each="typeMeasurement, iterStat : ${typeMeasurements}">
+		<li th:text="${typeMeasurement.type}"></li>
+		<li th:text="${typeMeasurement.purpose}"></li>
+		<li th:text="${typeMeasurement.goal}"></li>
+	</ul>
+	<form th:action="@{/add_to_shopping_cart}" method="post">
+		<input type="hidden" name="accountId" th:value="${account.accountId}" />
+		<input type="hidden" name="deviceId" th:value="${device.deviceId}" />
+		<button type="submit">Adauga in Cos</button>
+	</form>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
 		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
 		crossorigin="anonymous"></script>

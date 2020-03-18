@@ -76,6 +76,9 @@ public class Exercise {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "exercise", orphanRemoval = true)
 	private Set<ExerciseDone> exerciseDone = new HashSet<>();
 
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "exercise", orphanRemoval = true)
+	private Set<ExerciseFeedback> exercisesFeedback = new HashSet<>();
+
 	public Exercise() {
 	}
 
@@ -183,6 +186,14 @@ public class Exercise {
 
 	public void setExerciseDone(Set<ExerciseDone> exerciseDone) {
 		this.exerciseDone = exerciseDone;
+	}
+
+	public Set<ExerciseFeedback> getExercisesFeedback() {
+		return exercisesFeedback;
+	}
+
+	public void setExercisesFeedback(Set<ExerciseFeedback> exercisesFeedback) {
+		this.exercisesFeedback = exercisesFeedback;
 	}
 
 	@Override

@@ -16,4 +16,6 @@ public interface UserTrainingDao extends CrudRepository<UserTraining, Integer> {
 	Set<UserTraining> findAllByBoughtAndUserAccountId(boolean b, Integer accountId);
 
 	UserTraining findByUserAccountIdAndTrainingPlanTrainingPlanId(Integer userId, Integer productId);
+
+	Set<UserTraining> findAllByUserAccountId(Integer accountId);
 }

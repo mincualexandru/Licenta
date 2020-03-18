@@ -12,14 +12,11 @@
 <link rel="stylesheet" type="text/css" th:href="@{css/style.css}" />
 </head>
 <body>
-<h1>Cumpara Cantar</h1>
-<p>Descriere Descriere Descriere</p>
-<p>Bratara bratara bratara</p>
-<p>Descriere Descriere Descriere</p>
-<p>Bratara bratara bratara</p>
-<p>Descriere Descriere Descriere</p>
-<p>Bratara bratara bratara</p>
-<p>Descriere Descriere Descriere</p>
+<ul th:each="typeMeasurement, iterStat : ${typeMeasurements}">
+		<li th:text="${typeMeasurement.type}"></li>
+		<li th:text="${typeMeasurement.purpose}"></li>
+		<li th:text="${typeMeasurement.goal}"></li>
+	</ul>
 <form th:action="@{/add_to_shopping_cart}" method="post">
 	<input type="hidden" name="accountId" th:value="${account.accountId}" />
 	<input type="hidden" name="deviceId" th:value="${device.deviceId}" />

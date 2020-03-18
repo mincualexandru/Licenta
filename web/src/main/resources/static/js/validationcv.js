@@ -451,3 +451,33 @@ $("#aboutMe").submit(function (ev) {
 	$(this).data("valid", false);
 });
 
+//$("#chart").submit(function (ev) {
+//	let startDateInput = document.getElementById("startDateInput").value;
+//	let endDateInput = document.getElementById("endDateInput").value;
+//	console.log(startDateInput + " " + endDateInput);
+//	if ($(this).data("valid")) {
+//		return true;
+//	} else {
+//		$.ajax({
+//			url: "/view_profile",
+//			type: "get",
+//			success: function (valid) {
+//				if (isValid(description)) {
+//					$("#chart").data("valid", true);
+//					$("#chart").submit();
+//				} else {
+//					ev.preventDefault();
+//					$("#errorStartDateInput").html(
+//						"Data nu este valida"
+//					);
+//					$("#errorEndDateInput").html(
+//							"Data nu este valida"
+//						);
+//				}
+//			}
+//		});
+//		return false;
+//	}
+//
+//	$(this).data("valid", false);
+//});

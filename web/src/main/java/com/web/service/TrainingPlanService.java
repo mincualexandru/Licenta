@@ -18,4 +18,5 @@ public interface TrainingPlanService {
 	Set<TrainingPlan> findAll();
 
 	Set<TrainingPlan> findAllByTrainingPlanNotAssociated(Integer trainerId);
+
 }
