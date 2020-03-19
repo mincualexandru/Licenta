@@ -125,6 +125,9 @@ public class UserController {
 			}
 		}
 
+		Integer payments = account.getTransaction().getPayments();
+		Integer availableBalance = account.getTransaction().getAvailableBalance();
+
 //		try {
 //			xmlParsersService.readAllMeasurementsFromXmlFile(
 //					userDeviceService.findAllByBoughtAndUserAccountId(true, account.getAccountId()));
@@ -141,6 +144,8 @@ public class UserController {
 		model.addAttribute("user", account);
 		model.addAttribute("typeMeasurements", typeMeasurements);
 		model.addAttribute("userMeasurements", userMeasurementsSorted);
+		model.addAttribute("payments", Math.abs(payments));
+		model.addAttribute("availableBalance", availableBalance);
 		return "home/home";
 
 	}

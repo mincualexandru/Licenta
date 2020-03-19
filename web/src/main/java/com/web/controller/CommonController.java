@@ -28,6 +28,7 @@ import com.web.model.Account;
 import com.web.model.AccountInformation;
 import com.web.model.Education;
 import com.web.model.ExerciseDone;
+import com.web.model.ExerciseFeedback;
 import com.web.model.Experience;
 import com.web.model.Measurement;
 import com.web.model.Role;
@@ -239,6 +240,19 @@ public class CommonController {
 		model.addAttribute("account", account);
 		model.addAttribute("learners", learners);
 		return "common/view_learners";
+	}
+
+	@GetMapping(path = { "/view_feedbacks" })
+	public String viewFeedbacks(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Account account = accountService.findByUsername(auth.getName());
+		Set<Integer> learnersIds = accountService.findAllLearnersByHelperId(account.getAccountId());
+		Set<ExerciseFeedback> exerciseFeedbacks = new HashSet<>();
+		for (Integer integer : learnersIds) {
+			exerciseFeedbacks.addAll(exerciseFeedbackService.findAllByUserAccountId(integer));
+		}
+		model.addAttribute("exerciseFeedbacks", exerciseFeedbacks);
+		return "common/view_feedbacks";
 	}
 
 	@PostMapping(path = { "/view_progress" })

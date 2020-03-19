@@ -13,4 +13,5 @@ public interface ExerciseFeedbackDao extends CrudRepository<ExerciseFeedback, In
 	@Override
 	Set<ExerciseFeedback> findAll();
 
+	Set<ExerciseFeedback> findAllByUserAccountId(Integer integer);
 }

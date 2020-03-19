@@ -41,4 +41,8 @@ public class ExerciseFeedbackServiceImpl implements ExerciseFeedbackService {
 		return exerciseFeedbackDao.findAll();
 	}
 
+	@Override
+	public Set<ExerciseFeedback> findAllByUserAccountId(Integer integer) {
+		return exerciseFeedbackDao.findAllByUserAccountId(integer);
+	}
 }

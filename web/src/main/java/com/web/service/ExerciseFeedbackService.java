@@ -16,4 +16,6 @@ public interface ExerciseFeedbackService {
 	void deleteById(Integer id);
 
 	Set<ExerciseFeedback> findAll();
+
+	Set<ExerciseFeedback> findAllByUserAccountId(Integer integer);
 }
