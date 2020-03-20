@@ -45,13 +45,13 @@ export class AuthComponent implements OnDestroy{
         // }
 
         authObs.subscribe(responseData => {
-            console.log('Data primita este' + responseData);
+            console.log('Data primita este' + responseData.username);
             this.isLoading = false;
             this.router.navigate(['/data-transfer']);
         }, 
         errorMessage => {
             console.log(errorMessage);
-            //console.log(errorMessage.error.text);
+            console.log(errorMessage.error.text);
             this.error = errorMessage;
             this.showErrorAlert(errorMessage);
             this.isLoading = false;

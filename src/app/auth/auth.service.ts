@@ -7,14 +7,16 @@ import { environment } from '../../environments/environment';
 import { User } from '../model/user.model';
 
 export interface AuthResponseData {
-    userId: number,
-    userName: string,
-    encrytedPassword: string,
-    name: string,
-    gender: string,
-    bornDate: string,
+    accountId: number,
+    username: string,
+    firstName: string,
+    lastName: string,
+    password: string,
     email: string,
-    mobile: string
+    phoneNumber: string,
+    bornDate: string,
+    active: boolean,
+    gender: string
 }
 
 @Injectable({
@@ -22,7 +24,7 @@ export interface AuthResponseData {
 })
 export class AuthService {
 
-    //SERVER_URL: string = "http://172.20.10.3:8080/";
+    //SERVER_URL: string = "http://172.20.10.2:8080/";
 
     SERVER_URL: string = "http://localhost:8080/";
 
@@ -39,14 +41,16 @@ export class AuthService {
         .post<AuthResponseData>(`${this.SERVER_URL}/${'loginResource'}`, userName)
         .pipe(tap(respData => {
                 this.handleAuthentication(
-                    respData.userId,
-                    respData.userName,
-                    respData.encrytedPassword,
-                    respData.name,
-                    respData.gender,
-                    respData.bornDate,
+                    respData.accountId,
+                    respData.username,
+                    respData.firstName,
+                    respData.lastName,
+                    respData.password,
                     respData.email,
-                    respData.mobile
+                    respData.phoneNumber,
+                    respData.bornDate,
+                    respData.active,
+                    respData.gender
                 );
             }));
     }
@@ -58,32 +62,38 @@ export class AuthService {
     }
 
     private handleAuthentication(
-        userId: number,
-        userName: string,
-        encrytedPassword: string,
-        name: string,
-        gender: string,
-        bornDate: string,
+        accountId: number,
+        username: string,
+        firstName: string,
+        lastName: string,
+        password: string,
         email: string,
-        mobile: string
+        phoneNumber: string,
+        bornDate: string,
+        active: boolean,
+        gender: string
     ) {
-        console.log(userId);
-        console.log(userName);
-        console.log(encrytedPassword);
-        console.log(name);
-        console.log(gender);
-        console.log(bornDate);
+        console.log(accountId);
+        console.log(username);
+        console.log(firstName);
+        console.log(lastName);
+        console.log(password);
         console.log(email);
-        console.log(mobile);
+        console.log(phoneNumber);
+        console.log(bornDate);
+        console.log(active);
+        console.log(gender);
             const user = new User(
-                userId, 
-                userName,
-                encrytedPassword,
-                name,
-                gender,
-                bornDate,
+                accountId,
+                username,
+                firstName,
+                lastName,
+                password,
                 email,
-                mobile
+                phoneNumber,
+                bornDate,
+                active,
+                gender
             );
             this.user.next(user);
             localStorage.setItem('userData', JSON.stringify(user));

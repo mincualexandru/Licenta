@@ -7,7 +7,6 @@ import { HeaderComponent } from './header/header.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 import { MyMaterialModule } from './material.module';
-import { DetailsUploadComponent } from './upload/details-upload/details-upload.component';
 import { DataTransferComponent } from './data-transfer/data-transfer.component';
 import { FormUploadComponent } from './upload/form-upload/form-upload.component';
 import { LoginComponent } from './login/login.component';
@@ -17,7 +16,6 @@ import { LoginComponent } from './login/login.component';
     AppComponent,
     HeaderComponent,
     FormUploadComponent,
-    DetailsUploadComponent,
     DataTransferComponent,
     LoginComponent
   ],

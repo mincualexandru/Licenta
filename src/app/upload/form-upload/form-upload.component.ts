@@ -28,7 +28,7 @@ export class FormUploadComponent implements OnInit {
   constructor(private uploadService: UploadFileService, private shared: AuthService) { 
     shared._value
         .subscribe(r => {
-            this.userName = r.userName;
+            this.userName = r.username;
         });
   }
 

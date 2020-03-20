@@ -8,7 +8,7 @@ import { User } from '../model/user.model';
 })
 export class UploadFileService {
 
-  //SERVER_URL: string = "http://172.20.10.3:8080/";
+  //SERVER_URL: string = "http://172.20.10.2:8080/";
 
   SERVER_URL: string = "http://localhost:8080/";
 
@@ -20,15 +20,11 @@ export class UploadFileService {
     formdata.append('file', file);
     formdata.append('userName', userName);
 
-    const req = new HttpRequest('POST', `${this.SERVER_URL}/${'post'}`, formdata, {
+    const req = new HttpRequest('POST', `${this.SERVER_URL}${'post'}`, formdata, {
       reportProgress: true,
       responseType: 'text'
     });
 
     return this.http.request(req);
   }
-
-  // public loginUser(user) {
-  //   return this.http.post<User>(`${this.SERVER_URL}/${'loginResource'}`, user);
-  // }
 }

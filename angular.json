@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "recipebook3": {
+    "mobiledatatransfer": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/recipebook3",
+            "outputPath": "dist/mobiledatatransfer",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -64,18 +64,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "recipebook3:build"
+            "browserTarget": "mobiledatatransfer:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "recipebook3:build:production"
+              "browserTarget": "mobiledatatransfer:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "recipebook3:build"
+            "browserTarget": "mobiledatatransfer:build"
           }
         },
         "test": {
@@ -112,15 +112,15 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "recipebook3:serve"
+            "devServerTarget": "mobiledatatransfer:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "recipebook3:serve:production"
+              "devServerTarget": "mobiledatatransfer:serve:production"
             }
           }
         }
       }
     }},
-  "defaultProject": "recipebook3"
+  "defaultProject": "mobiledatatransfer"
 }
