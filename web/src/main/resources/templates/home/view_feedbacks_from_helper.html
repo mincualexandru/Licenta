@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Admin</title>
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+	<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Helpers</h3>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="row">
+					<div class="col-md-10 mx-auto">
+						<table class="table table-striped">
+							<thead class="center-align">
+								<tr>
+									<th>Helper</th>
+									<th>Calificativ</th>
+									<th>Motiv</th>
+									<th>Data</th>
+								</tr>
+							</thead>
+							<tbody class="center-align">
+								<th:block th:each="feedback, iterStat : ${feedbacks}">
+									<tr>
+										<td th:text="${feedback.helper.username}"></td>
+										<td th:text="${feedback.qualifying}"></td>
+										<td th:text="${feedback.reason}"></td>
+										<td th:text="${feedback.dateOfFeedbackProvied}"></td>
+									</tr>
+								</th:block>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

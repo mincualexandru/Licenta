@@ -396,9 +396,6 @@ $("#myForm").submit(function () {
 	$(this).data("valid", false);
 });
 
-
-console.log($("#editSkill"));
-console.log(document.getElementById("description2").value);
 $("#editSkill").submit(function (ev) {
 	let description = document.getElementById("description2").value;
 	if ($(this).data("valid")) {
@@ -416,6 +413,40 @@ $("#editSkill").submit(function (ev) {
 					$("#showError2").html(
 						"Dimensiunea campului este de minim 3 caractere"
 					);
+				}
+			}
+		});
+		return false;
+	}
+
+	$(this).data("valid", false);
+});
+
+let advice = 50;
+let exercitiu = 100;
+
+function selecteazaSfat(sfatId,exercitiuId) {
+	advice = sfatId;
+	exercitiu = exercitiuId;
+	let validName = document.getElementById("validName"+advice).children[0].value;
+	console.log(validName);
+}
+
+$(".editAdvice").submit(function (ev) {
+	let validName = document.getElementById("validName"+advice).children[0].value;
+	if ($(this).data("valid")) {
+		return true;
+	} else {
+		$.ajax({
+			url: "/view_exercise/"+1,
+			type: "get",
+			success: function (valid) {
+				if (isValid(validName)) {
+					$(".editAdvice").data("valid", true);
+					$(".editAdvice").submit();
+				} else {
+					ev.preventDefault();
+					$("#showError"+advice).html("Dimensiunea campului este de minim 3 caractere");
 				}
 			}
 		});

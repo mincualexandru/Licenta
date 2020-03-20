@@ -1,6 +1,8 @@
 package com.web.controller;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -38,7 +40,7 @@ import com.web.utils.TrainedMuscleGroup;
 @Controller
 public class TrainerController {
 
-	private Logger logger = Logger.getLogger(AuthenticationController.class);
+	private Logger LOGGER = Logger.getLogger(AuthenticationController.class);
 
 	@Autowired
 	private AccountService accountService;
@@ -111,27 +113,34 @@ public class TrainerController {
 		}
 	}
 
-	@PostMapping(path = { "/edit_training_plan" })
-	public String editTrainingPlan(Model model, @RequestParam Integer trainingPlanId) {
-		model.addAttribute("trainingPlan", trainingPlanService.findById(trainingPlanId).get());
+	@GetMapping(path = { "/edit_training_plan/{id}" })
+	public String editTrainingPlan(Model model, @PathVariable("id") Integer trainingPlanId) {
+		if (!model.containsAttribute("trainingPlan")) {
+			TrainingPlan trainingPlan = trainingPlanService.findById(trainingPlanId).get();
+			model.addAttribute("trainingPlan", trainingPlan);
+		}
 		model.addAttribute("sex", Gender.values());
 		return "trainer/edit_training_plan";
 	}
 
 	@PostMapping(path = { "/edit_training_plan_save" })
-	public String editTrainingPlanSave(Model model, @RequestParam Integer trainingPlanId, @RequestParam String name,
-			@RequestParam String intensity, @RequestParam String forWho, @RequestParam Integer price) {
-		TrainingPlan trainingPlan = trainingPlanService.findById(trainingPlanId).get();
-		trainingPlan.setIntensity(intensity);
-		trainingPlan.setName(name);
-		trainingPlan.setPrice(price);
-		if (forWho.equals("BARBAT")) {
-			trainingPlan.setForWho(Gender.BARBAT);
-		} else if (forWho.equals("FEMEIE")) {
-			trainingPlan.setForWho(Gender.FEMEIE);
+	public String editTrainingPlanSave(@Valid @ModelAttribute("trainingPlan") TrainingPlan trainingPlan,
+			BindingResult bindingResult, RedirectAttributes attr, Model model, @RequestParam Integer trainingPlanId) {
+		if (bindingResult.hasErrors()) {
+			attr.addFlashAttribute("org.springframework.validation.BindingResult.trainingPlan", bindingResult);
+			attr.addFlashAttribute("trainingPlan", trainingPlan);
+			return "redirect:/edit_training_plan/" + trainingPlanId;
+		} else {
+			TrainingPlan oldTrainingPlan = trainingPlanService.findById(trainingPlanId).get();
+			oldTrainingPlan.setForWho(trainingPlan.getForWho());
+			oldTrainingPlan.setIntensity(trainingPlan.getIntensity());
+			oldTrainingPlan.setName(trainingPlan.getName());
+			oldTrainingPlan.setPrice(trainingPlan.getPrice());
+			oldTrainingPlan.setDateOfCreation(oldTrainingPlan.getDateOfCreation());
+			oldTrainingPlan.setTrainer(oldTrainingPlan.getTrainer());
+			trainingPlanService.save(oldTrainingPlan);
+			return "redirect:/training_plans";
 		}
-		trainingPlanService.save(trainingPlan);
-		return "redirect:/training_plans";
 	}
 
 	@GetMapping(path = { "/create_exercise_for_training_plan/{id}" })
@@ -184,10 +193,14 @@ public class TrainerController {
 			return "redirect:/error";
 		}
 		Exercise exercise = exerciseService.findById(exerciseId).get();
+		Set<ExerciseAdvice> exerciseAdvice = exercise.getExerciseAdvices();
+		List<ExerciseAdvice> exerciseAdviceSorted = exerciseAdvice.stream()
+				.sorted((e1, e2) -> e1.getAdvice().compareTo(e2.getAdvice())).collect(Collectors.toList());
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Account account = accountService.findByUsername(auth.getName());
 		model.addAttribute("account", account);
 		model.addAttribute("exercise", exercise);
+		model.addAttribute("exerciseAdviceSorted", exerciseAdviceSorted);
 		model.addAttribute("exerciseImage", new ExerciseImage());
 		model.addAttribute("exerciseAdvice", new ExerciseAdvice());
 		return "common/view_exercise";

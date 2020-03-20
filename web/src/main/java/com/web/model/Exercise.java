@@ -57,6 +57,7 @@ public class Exercise {
 	private Integer numberOfReps;
 
 	@Column(name = "execution")
+	@NotEmpty(message = "Campul este obligatoriu !")
 	private String execution;
 
 	@Column(name = "trainedMuscleGroup")

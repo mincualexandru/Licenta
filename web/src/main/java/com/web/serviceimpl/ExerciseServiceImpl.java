@@ -52,4 +52,9 @@ public class ExerciseServiceImpl implements ExerciseService {
 		return exerciseDao.findAllNotPerfomerdExercisesForTrainingPlanId(trainingPlanId);
 	}
 
+	@Override
+	public Set<Exercise> findAllNotPerfomerdExercises() {
+		return exerciseDao.findAllNotPerfomerdExercises();
+	}
+
 }

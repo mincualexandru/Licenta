@@ -36,10 +36,7 @@
 													<button type="submit" class="btn btn-success">Vezi
 														Exercitii</button>
 												</form>
-												<form th:action="@{/edit_training_plan}" method="post">
-													<input type="hidden" name="trainingPlanId" th:value="${trainingPlan.trainingPlanId}"/>
-													<button type="submit" class="btn btn-success">Editeaza Antrenamentul</button>
-												</form>
+												<a th:href="@{/edit_training_plan/{id}(id=${trainingPlan.trainingPlanId})}" class="btn btn-success">Editeaza Antrenamentul</a>
 												<a th:href="@{/create_exercise_for_training_plan/{id}(id = ${trainingPlan.trainingPlanId})}" class="btn btn-success">Creeaza exercitiu</a>
 											</td>
 										</tr>

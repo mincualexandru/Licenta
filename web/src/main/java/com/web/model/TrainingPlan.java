@@ -56,7 +56,7 @@ public class TrainingPlan {
 
 	@Column(name = "creation_date")
 	@CreationTimestamp
-	private Timestamp dateOfMeasurement;
+	private Timestamp dateOfCreation;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "trainingPlan", orphanRemoval = true)
 	private Set<UserTraining> userTrainingPlans = new HashSet<>();
@@ -69,14 +69,14 @@ public class TrainingPlan {
 	}
 
 	public TrainingPlan(int trainingPlanId, Account trainer, String name, String intensity, Gender forWho,
-			Integer price, Timestamp dateOfMeasurement, Set<UserTraining> userTrainingPlans) {
+			Integer price, Timestamp dateOfCreation, Set<UserTraining> userTrainingPlans) {
 		this.trainingPlanId = trainingPlanId;
 		this.trainer = trainer;
 		this.name = name;
 		this.intensity = intensity;
 		this.forWho = forWho;
 		this.price = price;
-		this.dateOfMeasurement = dateOfMeasurement;
+		this.dateOfCreation = dateOfCreation;
 		this.userTrainingPlans = userTrainingPlans;
 	}
 
@@ -128,12 +128,12 @@ public class TrainingPlan {
 		this.price = price;
 	}
 
-	public Timestamp getDateOfMeasurement() {
-		return dateOfMeasurement;
+	public Timestamp getDateOfCreation() {
+		return dateOfCreation;
 	}
 
-	public void setDateOfMeasurement(Timestamp dateOfMeasurement) {
-		this.dateOfMeasurement = dateOfMeasurement;
+	public void setDateOfCreation(Timestamp dateOfCreation) {
+		this.dateOfCreation = dateOfCreation;
 	}
 
 	public Set<UserTraining> getUserTrainingPlans() {
@@ -150,5 +150,12 @@ public class TrainingPlan {
 
 	public void setExercises(Set<Exercise> exercises) {
 		this.exercises = exercises;
+	}
+
+	@Override
+	public String toString() {
+		return "TrainingPlan [trainingPlanId=" + trainingPlanId + ", trainer=" + trainer + ", name=" + name
+				+ ", intensity=" + intensity + ", forWho=" + forWho + ", price=" + price + ", dateOfCreation="
+				+ dateOfCreation + ", userTrainingPlans=" + userTrainingPlans + ", exercises=" + exercises + "]";
 	}
 }

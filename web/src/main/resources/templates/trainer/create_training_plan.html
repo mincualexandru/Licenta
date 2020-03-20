@@ -29,9 +29,6 @@
 									class="form-control validation" id="firstName" placeholder="Nume"
 									autofocus>
 							</div>
-							<div th:unless="${#fields.hasErrors('name')}">
-								<p class="errorMessage"></p>
-							</div>
 							<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
 						</div>
 					</div>
@@ -44,9 +41,6 @@
 								<input type="text" th:field="*{intensity}"
 									class="form-control validation" id="intensity" placeholder="Intensitate"
 									autofocus>
-							</div>
-							<div th:unless="${#fields.hasErrors('intensity')}">
-								<p class="errorMessage"></p>
 							</div>
 							<div th:if="${#fields.hasErrors('intensity')}" th:errors="*{intensity}"></div>
 						</div>

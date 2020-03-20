@@ -1,5 +1,6 @@
 package com.web.controller;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -27,14 +28,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.web.model.Account;
 import com.web.model.AccountInformation;
 import com.web.model.Education;
+import com.web.model.Exercise;
 import com.web.model.ExerciseDone;
 import com.web.model.ExerciseFeedback;
 import com.web.model.Experience;
+import com.web.model.HelperFeedback;
 import com.web.model.Measurement;
 import com.web.model.Role;
 import com.web.model.Skill;
 import com.web.model.UserDevice;
-import com.web.model.UserTraining;
 import com.web.service.AccountInformationService;
 import com.web.service.AccountService;
 import com.web.service.EducationService;
@@ -42,13 +44,11 @@ import com.web.service.ExerciseDoneService;
 import com.web.service.ExerciseFeedbackService;
 import com.web.service.ExerciseService;
 import com.web.service.ExperienceService;
+import com.web.service.HelperFeedbackService;
 import com.web.service.MeasurementService;
 import com.web.service.SkillService;
-import com.web.service.TrainingPlanService;
-import com.web.service.TypeMeasurementService;
-import com.web.service.UserDeviceService;
 import com.web.service.UserTrainingService;
-import com.web.service.XmlParserService;
+import com.web.utils.Qualifying;
 import com.web.utils.ScaleTypeMeasurement;
 
 @Controller
@@ -72,9 +72,6 @@ public class CommonController {
 	private AccountInformationService accountInformationService;
 
 	@Autowired
-	private UserDeviceService userDeviceService;
-
-	@Autowired
 	private MeasurementService measurementService;
 
 	@Autowired
@@ -84,26 +81,18 @@ public class CommonController {
 	private ExerciseService exerciseService;
 
 	@Autowired
-	private XmlParserService xmlParsersService;
-
-	@Autowired
-	private TypeMeasurementService typeMeasurementService;
-
-	@Autowired
 	private ExerciseFeedbackService exerciseFeedbackService;
 
 	@Autowired
-	private TrainingPlanService trainingPlanService;
+	private UserTrainingService userTrainingService;
 
 	@Autowired
-	private UserTrainingService userTrainingService;
+	private HelperFeedbackService helperFeedbackService;
 
 	@GetMapping(path = { "/view_profile" })
 	public String viewProfile(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Account account = accountService.findByUsername(auth.getName());
-		Float height = 0f;
-		Float weight = 0f;
 		if (!model.containsAttribute("skill")) {
 			model.addAttribute("skill", new Skill());
 		}
@@ -264,12 +253,9 @@ public class CommonController {
 		Map<String, Integer> chartBurnedCalories = new TreeMap<>();
 		for (Role role : helper.getRoles()) {
 			if (role.getName().equals("ROLE_TRAINER")) {
-				Integer numberOfExercises = 0;
-				Set<UserTraining> userTrainingPlans = userTrainingService
-						.findAllByUserAccountId(learner.getAccountId());
-				for (UserTraining userTraining : userTrainingPlans) {
-					numberOfExercises += userTraining.getTrainingPlan().getExercises().size();
-				}
+				Integer numberOfExercisesUnDone = 0;
+				Set<Exercise> totalExercises = exerciseService.findAllNotPerfomerdExercises();
+				numberOfExercisesUnDone = totalExercises.size();
 				Integer numberOfExercisesDone = 0;
 				Set<ExerciseDone> exercisesDoneForLearner = exerciseDoneService
 						.findAllByUserAccountId(learner.getAccountId());
@@ -293,18 +279,26 @@ public class CommonController {
 					chartBurnedCalories.put(value, numberOfCaloriesPerExerciseDay);
 				}
 				numberOfExercisesDone = exercisesDoneForLearner.size();
-				model.addAttribute("numberOfExercises", numberOfExercises);
+
+				model.addAttribute("numberOfExercisesUnDone", numberOfExercisesUnDone);
 				model.addAttribute("numberOfExercisesDone", numberOfExercisesDone);
-				for (UserDevice userDevice : learner.getUserDevices()) {
-					getHeightAndWeight(model, userDevice);
-				}
 				model.addAttribute("chartBurnedCalories", chartBurnedCalories);
 				model.addAttribute("chartExercisesDone", chartExercisesDone);
+				model.addAttribute("exercisesDoneForLearner", exercisesDoneForLearner);
+				model.addAttribute("totalExercises", totalExercises);
 			} else if (role.getName().equals("ROLE_NUTRITIONIST")) {
 
 			}
 		}
+		boolean noFeedbackWasProvided = true;
+		if (helperFeedbackService.findByLearnerAccountId(learner.getAccountId()).isPresent()) {
+			noFeedbackWasProvided = false;
+		}
+		for (UserDevice userDevice : learner.getUserDevices()) {
+			getHeightAndWeight(model, userDevice);
+		}
 		model.addAttribute("learner", learner);
+		model.addAttribute("noFeedbackWasProvided", noFeedbackWasProvided);
 		return "common/view_progress";
 	}
 
@@ -313,10 +307,10 @@ public class CommonController {
 		Float weight;
 		if (userDevice.getDevice().getName().equals("Cantar Inteligent")) {
 			Optional<Measurement> heightMeasurement = measurementService
-					.findByName(ScaleTypeMeasurement.HKQUANTITYTYPEIDENTIFIERHEIGHT.getScaleTypeMeasurement());
+					.findByName(ScaleTypeMeasurement.HEIGHT.getScaleTypeMeasurement());
 			Optional<Measurement> weightMeasurement = measurementService
-					.findAllByName(ScaleTypeMeasurement.HKQUANTITYTYPEIDENTIFIERBODYMASS.getScaleTypeMeasurement())
-					.stream().reduce((prev, next) -> next);
+					.findAllByName(ScaleTypeMeasurement.MASS.getScaleTypeMeasurement()).stream()
+					.reduce((prev, next) -> next);
 			if (heightMeasurement.isPresent() && weightMeasurement.isPresent()) {
 				height = heightMeasurement.get().getValue();
 				model.addAttribute("height", Math.round(height));
@@ -324,6 +318,32 @@ public class CommonController {
 				model.addAttribute("weight", Math.round(weight));
 			}
 		}
+	}
+
+	private Account getAccountConnected() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Account user = accountService.findByUsername(auth.getName());
+		return user;
+	}
+
+	@PostMapping(path = { "/helper_offers_feedback" })
+	public String trainerOffersFeedback(Model model, @RequestParam Integer learnerId) {
+		model.addAttribute("learnerId", learnerId);
+		model.addAttribute("qualifyings", Qualifying.values());
+		return "common/helper_offers_feedback";
+	}
+
+	@PostMapping(path = { "/helper_offers_feedback_save" })
+	public String trainerOffersFeedbackSave(Model model, @RequestParam Integer learnerId, @RequestParam String reason,
+			@RequestParam Qualifying qualifying) {
+		HelperFeedback helperFeedback = new HelperFeedback();
+		helperFeedback.setDateOfFeedbackProvied(new Timestamp(System.currentTimeMillis()));
+		helperFeedback.setHelper(getAccountConnected());
+		helperFeedback.setLearner(accountService.findById(learnerId).get());
+		helperFeedback.setQualifying(qualifying);
+		helperFeedback.setReason(reason);
+		helperFeedbackService.save(helperFeedback);
+		return "redirect:/view_learners";
 	}
 
 }

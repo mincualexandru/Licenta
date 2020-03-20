@@ -19,4 +19,6 @@ public interface ExerciseService {
 	Set<Exercise> findAllByTrainingPlanTrainingPlanId(Integer trainingPlanId);
 
 	Set<Exercise> findAllNotPerfomerdExercisesForTrainingPlanId(Integer trainingPlanId);
+
+	Set<Exercise> findAllNotPerfomerdExercises();
 }

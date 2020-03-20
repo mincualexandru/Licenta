@@ -152,28 +152,14 @@
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 <body>
-	<form id="ratingForm" th:action="@{/review_for_exercise_save}" method="post">
-		<input type="hidden" name="exerciseId" th:value="${exerciseId}"/>
-		<h3>Ofera FEEDBACK</h3>
-		<label>Mesaj</label> 
-		<input type="text" name="messageReview" /> 
-		<label>Cat a durat exercitiul?</label> 
-		<input type="number" name="numberOfMinutes" />
-		<input type="hidden" id="number" name="number" value="">
-		<div id="status"></div> 
-		<fieldset class="rating">
-			<legend style="font-weight: 600; font-size: 19px;">Nota exercitiului</legend>
-			<input type="radio" id="star5" name="rating" value="5">
-			<label for="star5" title="Rocks!">5 stars</label> 
-			<input type="radio"id="star4" name="rating" value="4">
-			<label for="star4" title="Pretty good">4 stars</label> 
-			<input type="radio" id="star3" name="rating" value="3">
-			<label for="star3" title="Meh">3 stars</label> 
-			<input type="radio" id="star2" name="rating" value="2">
-			<label for="star2" title="Kinda bad">2 stars</label> 
-			<input type="radio" id="star1" name="rating" value="1">
-			<label for="star1" title="Sucks big time">1 star</label>
-		</fieldset>
+	<form th:action="@{/helper_offers_feedback_save}" method="post">
+		<input type="hidden" name="learnerId" th:value="${learnerId}"/>
+		<label>Calificativ</label>
+		<select name="qualifying">
+			<option th:each="qualifying : ${qualifyings}" th:text="${qualifying.getQualifying()}" th:value="${qualifying}"></option>
+		</select>
+		<label>Motivul</label>
+		<input type="text" name="reason"/>
 		<button type="submit">Trimite</button>
 	</form>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
@@ -182,20 +168,5 @@
 	<script
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 	<script type="text/javascript" th:src="@{/js/validationcv.js}"></script>
-	<script>
-	$(document).ready(function() {
-	    $("form#ratingForm").submit(function(e) 
-	    {
-	        if ($("#ratingForm :radio:checked").length == 0) {
-	            $('#status').html("nothing checked");
-	            return false;
-	        } else {
-	        	$('#number').val($('input:radio[name=rating]:checked').val());
-	            $('#status').html( 'You picked ' + $('input:radio[name=rating]:checked').val() );
-	        }
-	        return true;
-	    });
-	});
-	</script>
 </body>
 </html>

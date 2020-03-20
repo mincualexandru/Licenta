@@ -1,17 +1,11 @@
 package com.web.controller;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
@@ -22,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -32,6 +25,7 @@ import com.web.model.Device;
 import com.web.model.Exercise;
 import com.web.model.ExerciseDone;
 import com.web.model.ExerciseFeedback;
+import com.web.model.HelperFeedback;
 import com.web.model.Measurement;
 import com.web.model.TrainingPlan;
 import com.web.model.Transaction;
@@ -43,6 +37,7 @@ import com.web.service.DeviceService;
 import com.web.service.ExerciseDoneService;
 import com.web.service.ExerciseFeedbackService;
 import com.web.service.ExerciseService;
+import com.web.service.HelperFeedbackService;
 import com.web.service.MeasurementService;
 import com.web.service.TrainingPlanService;
 import com.web.service.TransactionService;
@@ -50,10 +45,7 @@ import com.web.service.TypeMeasurementService;
 import com.web.service.UserDeviceService;
 import com.web.service.UserTrainingService;
 import com.web.service.XmlParserService;
-import com.web.utils.BandTypeMeasurement;
-import com.web.utils.MeasurementObiective;
 import com.web.utils.Product;
-import com.web.utils.ScaleTypeMeasurement;
 
 @Controller
 public class UserController {
@@ -96,8 +88,8 @@ public class UserController {
 	@Autowired
 	private ExerciseFeedbackService exerciseFeedbackService;
 
-//	@Autowired
-//	private RangeValuesService rangeValuesService;
+	@Autowired
+	private HelperFeedbackService helperFeedbackService;
 
 	@GetMapping(path = { "/home" })
 	public String home(Model model) {
@@ -148,6 +140,16 @@ public class UserController {
 		model.addAttribute("availableBalance", availableBalance);
 		return "home/home";
 
+	}
+
+	@GetMapping(path = { "/view_feedbacks_from_helper" })
+	public String viewFeedbacks(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Account account = accountService.findByUsername(auth.getName());
+		Set<HelperFeedback> feedbacks = helperFeedbackService.findAllByLearnerAccountId(account.getAccountId());
+		LOGGER.info(feedbacks.size());
+		model.addAttribute("feedbacks", feedbacks);
+		return "home/view_feedbacks_from_helper";
 	}
 
 	@PostMapping(path = { "/buy_scale" })
@@ -366,7 +368,13 @@ public class UserController {
 	@PostMapping(path = { "/trainer_training_plans" })
 	public String viewTrainingsOrDiets(Model model, @RequestParam Integer trainerId) {
 		Account user = getAccountConnected();
-		model.addAttribute("trainingPlans", trainingPlanService.findAllByTrainingPlanNotAssociated(trainerId));
+		Set<TrainingPlan> trainingPlans = trainingPlanService.findAllByTrainingPlanNotAssociated(trainerId);
+		if (user.getGender().getGender().equals("Barbat")) {
+			trainingPlans.removeIf(element -> element.getForWho().getGender().equals("Femeie"));
+		} else if (user.getGender().getGender().equals("Femeie")) {
+			trainingPlans.removeIf(element -> element.getForWho().getGender().equals("Barbat"));
+		}
+		model.addAttribute("trainingPlans", trainingPlans);
 		model.addAttribute("user", user);
 		return "home/trainer_training_plans";
 	}
@@ -385,8 +393,6 @@ public class UserController {
 	public String exercisesDone(Model model) {
 		Account user = getAccountConnected();
 		Set<ExerciseDone> exercisesDone = exerciseDoneService.findAllByUserAccountId(user.getAccountId());
-		// ExerciseFeedback exerciseFeedback =
-		// exerciseFeedbackService.findByUserAccountIdAndExerciseExerciseId();
 		model.addAttribute("exercisesDone", exercisesDone);
 		return "home/exercises_done";
 	}
@@ -413,36 +419,7 @@ public class UserController {
 			}
 		}
 		redirectAttributes.addFlashAttribute("exerciseId", exerciseId);
-		return "redirect:/review_for_exercise";
-	}
-
-	@GetMapping(path = { "/review_for_exercise" })
-	public String reviewForExercise(@ModelAttribute("exerciseId") Integer exerciseId, Model model) {
-		LOGGER.info("Id exercitiu " + exerciseId);
-		model.addAttribute("exerciseId", exerciseId);
-		return "home/review_for_exercise";
-	}
-
-	@PostMapping(path = { "/review_for_exercise_save" })
-	public String reviewForExerciseSave(Model model, @RequestParam Integer exerciseId,
-			@RequestParam Integer numberOfMinutes, @RequestParam String messageReview, @RequestParam Integer number) {
-		Account user = getAccountConnected();
-		Exercise exercise = exerciseService.findById(exerciseId).get();
-		Measurement measurement = measurementService.findByEndDate(null);
-		Timestamp startDate = measurement.getStartDate();
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(startDate.getTime());
-		calendar.add(Calendar.MINUTE, numberOfMinutes);
-		Timestamp endDate = new Timestamp(calendar.getTime().getTime());
-		measurement.setEndDate(endDate);
-		measurementService.save(measurement);
-		ExerciseFeedback exerciseFeedback = new ExerciseFeedback();
-		exerciseFeedback.setExercise(exercise);
-		exerciseFeedback.setUser(user);
-		exerciseFeedback.setMessage(messageReview);
-		exerciseFeedback.setRating(number);
-		exerciseFeedbackService.save(exerciseFeedback);
-		return "redirect:/exercises_done";
+		return "redirect:/offers_feedback";
 	}
 
 	@GetMapping(path = { "/view_devices" })
@@ -452,312 +429,33 @@ public class UserController {
 		return "home/view_devices";
 	}
 
-	@PostMapping(path = { "/view_measurements_for_device" })
-	public String viewMeasurementsForDevice(Model model, @RequestParam Integer userDeviceId) {
-		UserDevice userDevice = userDeviceService.findById(userDeviceId).get();
-		List<Measurement> measurements = measurementService
-				.findAllByUserDeviceUserDeviceId(userDevice.getUserDeviceId());
-		model.addAttribute("measurements", measurements);
-		model.addAttribute("userDevice", userDevice);
-		return "home/view_measurements_for_device";
+	@GetMapping(path = { "/offers_feedback" })
+	public String reviewForExercise(@ModelAttribute("exerciseId") Integer exerciseId, Model model) {
+		LOGGER.info("Id exercitiu " + exerciseId);
+		model.addAttribute("exerciseId", exerciseId);
+		return "common/offers_feedback";
 	}
 
-	@GetMapping(path = { "/view_charts_for_device/{chartOption}/{userDeviceId}" })
-	public String viewChartsForDevice(@ModelAttribute("betweenTimestamp") String betweenTimestamp, Model model,
-			@PathVariable Integer userDeviceId, @PathVariable String chartOption) {
-		@SuppressWarnings("unchecked")
-		Set<Measurement> measurementsBetweenTimestamps = (Set<Measurement>) model.asMap()
-				.get("measurementsBetweenTimestamps");
-		UserDevice userDevice = userDeviceService.findById(userDeviceId).get();
-		TypeMeasurement typeMeasurement = new TypeMeasurement();
-		Set<Measurement> chosenMeasurements = new HashSet<>();
-		Set<MeasurementObiective> goalMeasurements = new HashSet<>();
-		Map<String, Float> chartMap = new TreeMap<>();
-		Float sum = 0f;
-		String previousValue = null;
-		Float maximValue = 0f;
-		Float minimValue = 0f;
-		switch (chartOption) {
-		case "activeEnergyBurned":
-			LOGGER.info("Optiunea aleasa este " + chartOption);
-			String activeEnergyBurned = BandTypeMeasurement.HKQUANTITYTYPEIDENTIFIERACTIVEENERGYBURNED
-					.getBandTypeMeasurement();
-			typeMeasurement = typeMeasurementService.findByType(activeEnergyBurned);
-			if (betweenTimestamp.equals("notSelectedTimestamp")) {
-				chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(activeEnergyBurned,
-						userDevice.getUserDeviceId());
-				for (Measurement measurement : measurementsBetweenTimestamps) {
-					LocalDateTime startDate = measurement.getStartDate().toLocalDateTime();
-					LocalDate localDate = startDate.toLocalDate();
-					Integer hour = startDate.getHour();
-					Integer nextHour = hour + 1;
-					String value = hour + "-" + nextHour + " " + localDate;
-					if (!value.equals(previousValue)) {
-						sum = 0f;
-						previousValue = value;
-					}
-					sum += measurement.getValue();
-					chartMap.put(localDate + " " + String.format("%02d", hour), sum);
-				}
-			} else {
-				chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(activeEnergyBurned,
-						userDevice.getUserDeviceId());
-				for (Measurement measurement : chosenMeasurements) {
-					LocalDateTime startDate = measurement.getStartDate().toLocalDateTime();
-					LocalDate localDate = startDate.toLocalDate();
-					Integer hour = startDate.getHour();
-					Integer nextHour = hour + 1;
-					String value = hour + "-" + nextHour + " " + localDate;
-					LOGGER.info(value);
-					if (!value.equals(previousValue)) {
-						sum = 0f;
-						previousValue = value;
-					}
-					sum += measurement.getValue();
-					chartMap.put(localDate + " " + String.format("%02d", hour), sum);
-				}
-			}
-			break;
-		case "sleepAnalysis":
-			LOGGER.info("Optiunea aleasa este " + chartOption);
-			String sleepAnalysis = BandTypeMeasurement.HKCATEGORYTYPEIDENTIFIERSLEEPANALYSIS.getBandTypeMeasurement();
-			typeMeasurement = typeMeasurementService.findByType(sleepAnalysis);
-			if (betweenTimestamp.equals("notSelectedTimestamp")) {
-				for (Measurement measurement : measurementsBetweenTimestamps) {
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-					LocalDateTime startDateTime = measurement.getStartDate().toLocalDateTime();
-					LocalDate startDate = startDateTime.toLocalDate();
-					String formatDate = startDate.format(formatter);
-					if (!formatDate.equals(previousValue)) {
-						sum = 0f;
-						previousValue = formatDate;
-					}
-					sum += measurement.getValue();
-					chartMap.put(formatDate, sum);
-				}
-			} else {
-				chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(sleepAnalysis,
-						userDevice.getUserDeviceId());
-				for (Measurement measurement : chosenMeasurements) {
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-					LocalDateTime startDateTime = measurement.getStartDate().toLocalDateTime();
-					LocalDate startDate = startDateTime.toLocalDate();
-					String formatDate = startDate.format(formatter);
-					if (!formatDate.equals(previousValue)) {
-						sum = 0f;
-						previousValue = formatDate;
-					}
-					sum += measurement.getValue();
-					chartMap.put(formatDate, sum);
-				}
-			}
-			break;
-		case "heartRate":
-			LOGGER.info("Optiunea aleasa este " + chartOption);
-			String heartRate = BandTypeMeasurement.HKQUANTITYTYPEIDENTIFIERHEARTRATE.getBandTypeMeasurement();
-			typeMeasurement = typeMeasurementService.findByType(heartRate);
-			if (betweenTimestamp.equals("notSelectedTimestamp")) {
-				measurementService.buildMap(chartMap, measurementsBetweenTimestamps);
-			} else {
-				chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(heartRate,
-						userDevice.getUserDeviceId());
-				measurementService.buildMap(chartMap, chosenMeasurements);
-			}
-			break;
-		case "stepCount":
-			LOGGER.info("Optiunea aleasa este " + chartOption);
-			String stepCount = BandTypeMeasurement.HKQUANTITYTYPEIDENTIFIERSTEPCOUNT.getBandTypeMeasurement();
-			typeMeasurement = typeMeasurementService.findByType(stepCount);
-			if (betweenTimestamp.equals("notSelectedTimestamp")) {
-				chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(stepCount,
-						userDevice.getUserDeviceId());
-				for (Measurement measurement : measurementsBetweenTimestamps) {
-					LocalDateTime startDate = measurement.getStartDate().toLocalDateTime();
-					LocalDate localDate = startDate.toLocalDate();
-					Integer hour = startDate.getHour();
-					Integer nextHour = hour + 1;
-					String value = hour + "-" + nextHour + " " + localDate;
-					if (!value.equals(previousValue)) {
-						sum = 0f;
-						previousValue = value;
-					}
-					sum += measurement.getValue();
-					chartMap.put(localDate + " " + String.format("%02d", hour), sum);
-				}
-			} else {
-				chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(stepCount,
-						userDevice.getUserDeviceId());
-				for (Measurement measurement : chosenMeasurements) {
-					LocalDateTime startDate = measurement.getStartDate().toLocalDateTime();
-					LocalDate localDate = startDate.toLocalDate();
-					Integer hour = startDate.getHour();
-					Integer nextHour = hour + 1;
-					String value = hour + "-" + nextHour + " " + localDate;
-					if (!value.equals(previousValue)) {
-						sum = 0f;
-						previousValue = value;
-					}
-					sum += measurement.getValue();
-					chartMap.put(localDate + " " + String.format("%02d", hour), sum);
-				}
-			}
-			break;
-		case "bodyFatPercentage":
-			LOGGER.info("Optiunea aleasa este " + chartOption);
-			String bodyFatPercentage = ScaleTypeMeasurement.HKQUANTITYTYPEIDENTIFIERBODYFATPERCENTAGE
-					.getScaleTypeMeasurement();
-			typeMeasurement = typeMeasurementService.findByType(bodyFatPercentage);
-			if (betweenTimestamp.equals("notSelectedTimestamp")) {
-				measurementService.buildMap(chartMap, measurementsBetweenTimestamps);
-			} else {
-				chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(bodyFatPercentage,
-						userDevice.getUserDeviceId());
-				measurementService.buildMap(chartMap, chosenMeasurements);
-			}
-			break;
-		case "bodyMassIndex":
-			LOGGER.info("Optiunea aleasa este " + chartOption);
-			String bodyMassIndex = ScaleTypeMeasurement.HKQUANTITYTYPEIDENTIFIERBODYMASSINDEX.getScaleTypeMeasurement();
-			typeMeasurement = typeMeasurementService.findByType(bodyMassIndex);
-			if (betweenTimestamp.equals("notSelectedTimestamp")) {
-				measurementService.buildMap(chartMap, measurementsBetweenTimestamps);
-			} else {
-				chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(bodyMassIndex,
-						userDevice.getUserDeviceId());
-				measurementService.buildMap(chartMap, chosenMeasurements);
-			}
-			break;
-		case "bodyMass":
-			LOGGER.info("Optiunea aleasa este " + chartOption);
-			String bodyMass = ScaleTypeMeasurement.HKQUANTITYTYPEIDENTIFIERBODYMASS.getScaleTypeMeasurement();
-			typeMeasurement = typeMeasurementService.findByType(bodyMass);
-			if (betweenTimestamp.equals("notSelectedTimestamp")) {
-				measurementService.buildMap(chartMap, measurementsBetweenTimestamps);
-			} else {
-				chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(bodyMass,
-						userDevice.getUserDeviceId());
-				measurementService.buildMap(chartMap, chosenMeasurements);
-			}
-			break;
-		case "leanBodyMass":
-			LOGGER.info("Optiunea aleasa este " + chartOption);
-			String leanBodyMass = ScaleTypeMeasurement.HKQUANTITYTYPEIDENTIFIERLEANBODYMASS.getScaleTypeMeasurement();
-			typeMeasurement = typeMeasurementService.findByType(leanBodyMass);
-			if (betweenTimestamp.equals("notSelectedTimestamp")) {
-				measurementService.buildMap(chartMap, measurementsBetweenTimestamps);
-			} else {
-				chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(leanBodyMass,
-						userDevice.getUserDeviceId());
-				measurementService.buildMap(chartMap, chosenMeasurements);
-			}
-			break;
-		default:
-			break;
-		}
-		for (Map.Entry<String, Float> entry : chartMap.entrySet()) {
-			String key = entry.getKey();
-			Float value = entry.getValue();
-			if (typeMeasurement.getGoalMin() < value && typeMeasurement.getGoalMax() > value
-					&& goalMeasurements.size() < 3) {
-				goalMeasurements.add(new MeasurementObiective(typeMeasurement.getType(), key, value));
-			}
-			String maximumDate = chartMap.keySet().stream().max(String::compareTo).get();
-			String minimumDate = chartMap.keySet().stream().min(String::compareTo).get();
-			boolean datesAreEquals = false;
-			if (minimumDate.equals(maximumDate)) {
-				datesAreEquals = true;
-			}
-			minimValue = Collections.min(chartMap.values());
-			maximValue = Collections.max(chartMap.values());
-			model.addAttribute("minimumDate", minimumDate);
-			model.addAttribute("maximumDate", maximumDate);
-			model.addAttribute("datesAreEquals", datesAreEquals);
-			model.addAttribute("minimValue", minimValue);
-			model.addAttribute("maximValue", maximValue);
-		}
-		model.addAttribute("chartMap", chartMap);
-		model.addAttribute("chosenMeasurements", chosenMeasurements);
-		model.addAttribute("goalMeasurements", goalMeasurements);
-		model.addAttribute("chartOption", chartOption);
-		model.addAttribute("userDeviceId", userDeviceId);
-
-		return "home/view_charts_for_device";
-	}
-
-	@PostMapping(path = { "/view_charts_between_dates" })
-	public String viewChartsBetweenDates(Model model, @RequestParam String chartOption,
-			@RequestParam Integer userDeviceId, @RequestParam String startDateInput, @RequestParam String endDateInput,
-			RedirectAttributes redirectAttributes) {
-		try {
-			Set<Measurement> measurementsBetweenTimestamps = new HashSet<>();
-			LocalDate startDate = LocalDate.parse(startDateInput, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-			LocalDate endDate = LocalDate.parse(endDateInput, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-			Timestamp timestampStartDate = Timestamp.valueOf(startDate.atStartOfDay());
-			Timestamp timestampEndDate = Timestamp.valueOf(endDate.plusDays(1).atStartOfDay());
-			switch (chartOption) {
-			case "activeEnergyBurned":
-				String activeEnergyBurned = BandTypeMeasurement.HKQUANTITYTYPEIDENTIFIERACTIVEENERGYBURNED
-						.getBandTypeMeasurement();
-				measurementsBetweenTimestamps = measurementService
-						.findAllByNameAndUserDeviceUserDeviceIdAndStartDateBetween(activeEnergyBurned, userDeviceId,
-								timestampStartDate, timestampEndDate);
-				break;
-			case "sleepAnalysis":
-				String sleepAnalysis = BandTypeMeasurement.HKCATEGORYTYPEIDENTIFIERSLEEPANALYSIS
-						.getBandTypeMeasurement();
-				measurementsBetweenTimestamps = measurementService
-						.findAllByNameAndUserDeviceUserDeviceIdAndStartDateBetween(sleepAnalysis, userDeviceId,
-								timestampStartDate, timestampEndDate);
-				break;
-			case "stepCount":
-				String stepCount = BandTypeMeasurement.HKQUANTITYTYPEIDENTIFIERSTEPCOUNT.getBandTypeMeasurement();
-				measurementsBetweenTimestamps = measurementService
-						.findAllByNameAndUserDeviceUserDeviceIdAndStartDateBetween(stepCount, userDeviceId,
-								timestampStartDate, timestampEndDate);
-				break;
-			case "heartRate":
-				String heartRate = BandTypeMeasurement.HKQUANTITYTYPEIDENTIFIERHEARTRATE.getBandTypeMeasurement();
-				measurementsBetweenTimestamps = measurementService
-						.findAllByNameAndUserDeviceUserDeviceIdAndStartDateBetween(heartRate, userDeviceId,
-								timestampStartDate, timestampEndDate);
-				break;
-			case "bodyFatPercentage":
-				String bodyFatPercentage = ScaleTypeMeasurement.HKQUANTITYTYPEIDENTIFIERBODYFATPERCENTAGE
-						.getScaleTypeMeasurement();
-				measurementsBetweenTimestamps = measurementService
-						.findAllByNameAndUserDeviceUserDeviceIdAndStartDateBetween(bodyFatPercentage, userDeviceId,
-								timestampStartDate, timestampEndDate);
-				break;
-			case "bodyMassIndex":
-				String bodyMassIndex = ScaleTypeMeasurement.HKQUANTITYTYPEIDENTIFIERBODYMASSINDEX
-						.getScaleTypeMeasurement();
-				measurementsBetweenTimestamps = measurementService
-						.findAllByNameAndUserDeviceUserDeviceIdAndStartDateBetween(bodyMassIndex, userDeviceId,
-								timestampStartDate, timestampEndDate);
-				break;
-			case "bodyMass":
-				String bodyMass = ScaleTypeMeasurement.HKQUANTITYTYPEIDENTIFIERBODYMASS.getScaleTypeMeasurement();
-				measurementsBetweenTimestamps = measurementService
-						.findAllByNameAndUserDeviceUserDeviceIdAndStartDateBetween(bodyMass, userDeviceId,
-								timestampStartDate, timestampEndDate);
-				break;
-			case "leanBodyMass":
-				String leanBodyMass = ScaleTypeMeasurement.HKQUANTITYTYPEIDENTIFIERLEANBODYMASS
-						.getScaleTypeMeasurement();
-				measurementsBetweenTimestamps = measurementService
-						.findAllByNameAndUserDeviceUserDeviceIdAndStartDateBetween(leanBodyMass, userDeviceId,
-								timestampStartDate, timestampEndDate);
-				break;
-			default:
-				break;
-			}
-			redirectAttributes.addFlashAttribute("measurementsBetweenTimestamps", measurementsBetweenTimestamps);
-			redirectAttributes.addFlashAttribute("betweenTimestamp", "notSelectedTimestamp");
-
-		} catch (Exception e) {
-
-		}
-		return "redirect:/view_charts_for_device/" + chartOption + "/" + userDeviceId;
+	@PostMapping(path = { "/offers_feedback_save" })
+	public String reviewForExerciseSave(Model model, @RequestParam Integer exerciseId,
+			@RequestParam Integer numberOfMinutes, @RequestParam String messageReview, @RequestParam Integer number) {
+		Account user = getAccountConnected();
+		Exercise exercise = exerciseService.findById(exerciseId).get();
+		ExerciseFeedback exerciseFeedback = new ExerciseFeedback();
+		exerciseFeedback.setExercise(exercise);
+		exerciseFeedback.setUser(user);
+		exerciseFeedback.setMessage(messageReview);
+		exerciseFeedback.setRating(number);
+		Measurement measurement = measurementService.findByEndDate(null);
+		Timestamp startDate = measurement.getStartDate();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(startDate.getTime());
+		calendar.add(Calendar.MINUTE, numberOfMinutes);
+		Timestamp endDate = new Timestamp(calendar.getTime().getTime());
+		measurement.setEndDate(endDate);
+		measurementService.save(measurement);
+		exerciseFeedbackService.save(exerciseFeedback);
+		return "redirect:/exercises_done";
 	}
 
 	private String generateRandomSerialNumber() {

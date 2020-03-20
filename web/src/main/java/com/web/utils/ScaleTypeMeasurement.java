@@ -2,11 +2,9 @@ package com.web.utils;
 
 public enum ScaleTypeMeasurement {
 
-	HKQUANTITYTYPEIDENTIFIERBODYFATPERCENTAGE("HKQuantityTypeIdentifierBodyFatPercentage"),
-	HKQUANTITYTYPEIDENTIFIERLEANBODYMASS("HKQuantityTypeIdentifierLeanBodyMass"),
-	HKQUANTITYTYPEIDENTIFIERBODYMASSINDEX("HKQuantityTypeIdentifierBodyMassIndex"),
-	HKQUANTITYTYPEIDENTIFIERBODYMASS("HKQuantityTypeIdentifierBodyMass"),
-	HKQUANTITYTYPEIDENTIFIERHEIGHT("HKQuantityTypeIdentifierHeight");
+	FATPERCENTAGE("HKQuantityTypeIdentifierBodyFatPercentage"), LEANMASS("HKQuantityTypeIdentifierLeanBodyMass"),
+	MASSINDEX("HKQuantityTypeIdentifierBodyMassIndex"), MASS("HKQuantityTypeIdentifierBodyMass"),
+	HEIGHT("HKQuantityTypeIdentifierHeight");
 
 	private final String scaleTypeMeasurement;
 

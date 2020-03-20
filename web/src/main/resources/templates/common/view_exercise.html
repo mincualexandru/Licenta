@@ -153,10 +153,10 @@ div.desc {
 							</div>
 						</div>
 					</form>
-					<ul th:each="adv, iterStat : ${exercise.exerciseAdvices}">
+					<ul th:each="adv, iterStat : ${exerciseAdviceSorted}">
 						<li th:text="${adv.advice}"></li>
-						<button data-toggle="modal" data-target="#modal-edit-advice" th:attr="data-target='#modal-edit-advice'+${adv.exerciseAdviceId}">Editeaza Sfat</button>
-						<form id="editSkill" th:action="@{/edit_advice_exercise}" method="post">
+						<button th:onclick="|selecteazaSfat('${adv.exerciseAdviceId}', '${exercise.exerciseId}')|" data-toggle="modal" data-target="#modal-edit-advice" th:attr="data-target='#modal-edit-advice'+${adv.exerciseAdviceId}">Editeaza Sfat</button>
+						<form class="editAdvice" th:action="@{/edit_advice_exercise}" method="post">
 							<div class="modal modal-edit-advice fade in"
 								th:id="modal-edit-advice+${adv.exerciseAdviceId}">
 								<div class="modal-dialog">
@@ -173,11 +173,11 @@ div.desc {
 												<div class="col-md-6">
 													<div class="form-group">
 														<label>Sfat</label>
-														<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+														<div class="input-group mb-2 mr-sm-2 mb-sm-0" th:id="validName+${adv.exerciseAdviceId}">
 															<input type="text" id="description2" name="editName" th:value="${adv.advice}">
 															<input type="hidden" name="adviceId" th:value="${adv.exerciseAdviceId}"/>
 															<input type="hidden" th:value="${exercise.exerciseId}" name="exerciseId"/>
-															<div id="showError2"></div>
+															<div th:id="showError+${adv.exerciseAdviceId}"></div>
 														</div>
 													</div>
 												</div>

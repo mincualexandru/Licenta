@@ -107,6 +107,14 @@ public class Account {
 	@JsonIgnore
 	private Set<ExerciseFeedback> exercisesFeedback = new HashSet<>();
 
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "helper", orphanRemoval = true)
+	@JsonIgnore
+	private Set<HelperFeedback> helperFeedback = new HashSet<>();
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "learner", orphanRemoval = true)
+	@JsonIgnore
+	private Set<HelperFeedback> userFeedback = new HashSet<>();
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_helpers", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "helper_id") })
@@ -296,6 +304,22 @@ public class Account {
 
 	public void setExercisesFeedback(Set<ExerciseFeedback> exercisesFeedback) {
 		this.exercisesFeedback = exercisesFeedback;
+	}
+
+	public Set<HelperFeedback> getHelperFeedback() {
+		return helperFeedback;
+	}
+
+	public void setHelperFeedback(Set<HelperFeedback> helperFeedback) {
+		this.helperFeedback = helperFeedback;
+	}
+
+	public Set<HelperFeedback> getUserFeedback() {
+		return userFeedback;
+	}
+
+	public void setUserFeedback(Set<HelperFeedback> userFeedback) {
+		this.userFeedback = userFeedback;
 	}
 
 	@Override
