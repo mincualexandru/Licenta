@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<style>
+	.rating .stars {
+  margin-right: 15px;
+}
+
+.rating .stars .star {
+  float: left;
+  padding: 5px 2px;
+  cursor: pointer;
+}
+
+.rating .stars .star:before {
+  font-family: 'FontAwesome';
+  content: '\f005';
+  color: #d0e8f0;
+  font-size: 3em;
+}
+
+.rating .stars .star:hover:before,
+.rating .stars .star.to_rate:before,
+.rating .stars .star.rated:before {
+  color: #80c1d5;
+}
+
+.rating .stars .star.no_to_rate:before {
+  color: #d0e8f0;
+}
+.rating {
+    float:left;
+}
+
+/* :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
+   follow these rules. Every browser that supports :checked also supports :not(), so
+   it doesn’t make the test unnecessarily selective */
+.rating:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+    clip:rect(0,0,0,0);
+}
+
+.rating:not(:checked) > label {
+    float:right;
+    width:1em;
+    padding:0 .1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:200%;
+    line-height:1.2;
+    color:#ddd;
+    text-shadow:1px 1px #bbb, 2px 2px #666, .1em .1em .2em rgba(0,0,0,.5);
+}
+
+
+
+.rating > input:checked ~ label {
+    color: #f70;
+    text-shadow:1px 1px #c60, 2px 2px #940, .1em .1em .2em rgba(0,0,0,.5);
+}
+
+.rating:not(:checked) > label:hover,
+.rating:not(:checked) > label:hover ~ label {
+    color: gold;
+    text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
+}
+
+.rating > input:checked + label:hover,
+.rating > input:checked + label:hover ~ label,
+.rating > input:checked ~ label:hover,
+.rating > input:checked ~ label:hover ~ label,
+.rating > label:hover ~ input:checked ~ label {
+    color: #ea0;
+    text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
+}
+
+.rating > label:active {
+    position:relative;
+    top:2px;
+    left:2px;
+}
+
+/* end of Lea's code */
+
+/*
+ * Clearfix from html5 boilerplate
+ */
+
+.clearfix:before,
+.clearfix:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+/*
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+
+.clearfix {
+    *zoom: 1;
+}
+
+/* my stuff */
+#status, button {
+    margin: 20px 0;
+}
+.rating:not(:checked) > label:before {
+    content: '★ ';
+}
+.stars-outer {
+  position: relative;
+  display: inline-block;
+}
+
+.stars-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+
+.stars-outer::before {
+  content: '★ ★★★★';
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  color: #ccc;
+}
+
+.stars-inner::before {
+  content: '★★★★★ ';
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  color: #f8ce0b;
+}
+</style>
+<title>Admin</title>
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+	<form id="ratingForm" th:action="@{/offers_feedback_save}" method="post">
+		<input type="hidden" name="exerciseId" th:value="${exerciseId}"/>
+		<h3>Ofera FEEDBACK</h3>
+		<label>Mesaj</label> 
+		<input type="text" name="messageReview" /> 
+		<label>Cat a durat exercitiul?</label> 
+		<input type="number" name="numberOfMinutes" />
+		<input type="hidden" id="number" name="number" value="">
+		<div id="status"></div> 
+		<fieldset class="rating">
+			<legend style="font-weight: 600; font-size: 19px;">Nota exercitiului</legend>
+			<input type="radio" id="star5" name="rating" value="5">
+			<label for="star5" title="Rocks!">5 stars</label> 
+			<input type="radio"id="star4" name="rating" value="4">
+			<label for="star4" title="Pretty good">4 stars</label> 
+			<input type="radio" id="star3" name="rating" value="3">
+			<label for="star3" title="Meh">3 stars</label> 
+			<input type="radio" id="star2" name="rating" value="2">
+			<label for="star2" title="Kinda bad">2 stars</label> 
+			<input type="radio" id="star1" name="rating" value="1">
+			<label for="star1" title="Sucks big time">1 star</label>
+		</fieldset>
+		<button type="submit">Trimite</button>
+	</form>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<script type="text/javascript" th:src="@{/js/validationcv.js}"></script>
+	<script>
+	$(document).ready(function() {
+	    $("form#ratingForm").submit(function(e) 
+	    {
+	        if ($("#ratingForm :radio:checked").length == 0) {
+	            $('#status').html("nothing checked");
+	            return false;
+	        } else {
+	        	$('#number').val($('input:radio[name=rating]:checked').val());
+	            $('#status').html( 'You picked ' + $('input:radio[name=rating]:checked').val() );
+	        }
+	        return true;
+	    });
+	});
+	</script>
+</body>
+</html>

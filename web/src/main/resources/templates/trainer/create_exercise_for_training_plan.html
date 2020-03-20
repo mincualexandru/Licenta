@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Sign up</title>
+<base href="/">
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" th:href="@{css/style.css}"/>
+</head>
+<body>
+	<div class="container">
+		<form class="form-horizontal" role="form" method="post"
+			th:action="@{/create_exercise_for_training_plan_save}" th:object="${exercise}">
+			<input type="hidden" name="trainingPlanId" th:value="${trainingPlanId}"/>
+			<div style="position: relative; top: 110px; left: 250px;">
+				<h3>Creaza Exercitiu</h3>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Nume</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+								<input type="text" th:field="*{name}"
+									class="form-control validation" id="firstName" placeholder="Nume"
+									autofocus>
+							</div>
+							<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Numar Calorii Arse</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+								<input type="number" th:field="*{caloriesBurned}"
+									class="form-control validation" id="caloriesBurned" placeholder="Calorii"
+									autofocus>
+							</div>
+							<div th:if="${#fields.hasErrors('caloriesBurned')}" th:errors="*{caloriesBurned}"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group has-danger">
+							<label>Grupa Musculara Folosita</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+								<select th:field="*{trainedMuscleGroup}">
+									<option 
+									th:each="s : ${muscleGroups}" 
+									th:text="${s.muscleGroup}"
+									th:value="${s}"></option>
+								</select>
+							</div>
+							<div th:if="${#fields.hasErrors('trainedMuscleGroup')}" th:errors="*{trainedMuscleGroup}"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Numar Serii Efectuate</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+								<input type="number" th:field="*{numberOfSeries}"
+									class="form-control validation" id="numberOfSeries" placeholder="Numar Serii"
+									autofocus>
+							</div>
+							<div th:if="${#fields.hasErrors('numberOfSeries')}" th:errors="*{numberOfSeries}"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Numar Repetari Efectuate</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+								<input type="number" th:field="*{numberOfReps}"
+									class="form-control validation" id="numberOfReps" placeholder="Numar Repetari"
+									autofocus>
+							</div>
+							<div th:if="${#fields.hasErrors('numberOfReps')}" th:errors="*{numberOfReps}"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Executie</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+								<input type="text" th:field="*{execution}"
+									class="form-control validation" id="execution" placeholder="Executie"
+									autofocus>
+							</div>
+							<div th:if="${#fields.hasErrors('execution')}" th:errors="*{execution}"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3"></div>
+					<div class="col-md-6">
+						<button type="submit" class="btn btn-success">
+							<i class="fa fa-user-plus"></i> Register
+						</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<script type="text/javascript" th:src="@{/js/signup.js}"></script>
+</body>
+</html>

@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<style>
+	.ns-wrap-bottom-left,.ns-wrap-bottom-right,.ns-wrap-top-left,.ns-wrap-top-right
+{
+	position: fixed;
+	z-index: 1060;
+}
+@media (max-width:767px)
+{
+	.ns-wrap-bottom-left,.ns-wrap-bottom-right,.ns-wrap-top-left,.ns-wrap-top-right
+	{
+		left: 5px;
+		right: 5px;
+		top: 5px;
+	}
+}
+@media (min-width:768px)
+{
+	.ns-wrap-top-left,.ns-wrap-top-right
+	{
+		top: 50px;
+	}
+	.ns-wrap-bottom-left,.ns-wrap-bottom-right
+	{
+		bottom: 50px;
+	}
+	.ns-wrap-bottom-left,.ns-wrap-top-left
+	{
+		left: 20px;
+	}
+	.ns-wrap-bottom-right,.ns-wrap-top-right
+	{
+		right: 20px;
+	}
+}
+.ns-box
+{
+	box-shadow: 0 0 4px 0 rgba(0,0,0,.1);
+	display: block;
+	margin: 10px;
+	max-width: 340px;
+	padding: 0;
+	position: relative;
+}
+.ns-box .close
+{
+	color: #bfbfbf;
+	float: none;
+	font-size: 13px;
+	opacity: 1;
+	outline: 0;
+	padding: 8px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	z-index: 1;
+}
+.ns-box .ns-box-inner
+{
+	border-radius: 3px;
+	box-shadow: none;
+	opacity: .95;
+	overflow: hidden;
+	transition: box-shadow .2s ease-in-out,opacity .2s ease-in-out;
+	webkit-transition: box-shadow .2s ease-in-out,opacity .2s ease-in-out;
+}
+.ns-box .ns-box-inner:hover
+{
+	opacity: 1;
+}
+.ns-box .ns-content-title
+{
+	font-size: 14px;
+	font-weight: 700;
+	margin: 0 0 3px;
+}
+.ns-box .ns-content
+{
+	background-color: #fff;
+	font-size: 13px;
+	min-height: 62px;
+	padding: 15px 25px 15px 15px;
+}
+.ns-box .ns-content b,.ns-box .ns-content strong
+{
+	font-weight: 600;
+}
+.ns-box .ns-content p
+{
+	margin: 0;
+}
+.ns-box .ns-content .ns-content-footer
+{
+	margin: 5px 0 0;
+}
+.ns-box .thumbnail-wrapper
+{
+	left: 8px;
+	position: absolute;
+	top: 25px;
+	width: 82px;
+	z-index: 3;
+}
+.ns-box .thumbnail-wrapper+.ns-content
+{
+	min-height: 82px;
+}
+@media (min-width:992px)
+{
+	.ns-box .thumbnail-wrapper+.ns-content
+	{
+		padding-left: 90px;
+	}
+}
+@media (max-width:991px)
+{
+	.ns-box .thumbnail-wrapper
+	{
+		display: none;
+	}
+}
+@media (min-width:768px)
+{
+	.ns-box
+	{
+		width: 340px;
+	}
+}
+.ns-effect-slide
+{
+	opacity: 0;
+	transform: translateX(-100%);
+	transition: transform .2s ease-in-out,-webkit-transform .2s ease-in-out,opacity .2s ease-in-out;
+	webkit-transform: translateX(-100%);
+}
+.ns-effect-slide.ns-show
+{
+	opacity: 1;
+	transform: translateX(0);
+	webkit-transform: translateX(0);
+}
+.ns-effect-slide.ns-show .ns-box-inner
+{
+	box-shadow: 0 2px 30px -1px rgba(0,0,0,.15);
+}
+.ns-wrap-bottom-right .ns-effect-slide,.ns-wrap-top-right .ns-effect-slide
+{
+	transform: translateX(100%);
+	webkit-transform: translateX(100%);
+}
+.ns-wrap-bottom-right .ns-effect-slide.ns-show,.ns-wrap-top-right .ns-effect-slide.ns-show
+{
+	transform: translateX(0);
+	webkit-transform: translateX(0);
+}
+.ns-effect-thumbslide .close
+{
+	opacity: 0;
+	transition: opacity 0 ease-in-out;
+	transition-delay: 0s;
+	webkit-transition: opacity 0 ease-in-out;
+	webkit-transition-delay: 0s;
+}
+.ns-effect-thumbslide .ns-content p
+{
+	opacity: 0;
+	transition: opacity .2s ease-in-out;
+	transition-delay: .1s;
+	webkit-transition: opacity .2s ease-in-out;
+	webkit-transition-delay: .1s;
+}
+.ns-effect-thumbslide .ns-content
+{
+	transform: translateX(-100%);
+	transition: transform .2s ease-in-out,-webkit-transform .4s ease-in-out,opacity .2s ease-in-out;
+	transition-delay: .1s;
+	webkit-transform: translateX(-100%);
+	webkit-transition-delay: .1s;
+}
+.ns-effect-thumbslide .thumbnail-wrapper
+{
+	opacity: 0;
+	transition: opacity .2s ease-in-out;
+	transition-delay: .4s;
+	webkit-transition: opacity .2s ease-in-out;
+	webkit-transition-delay: .4s;
+}
+.ns-effect-thumbslide.ns-show .close
+{
+	opacity: 1;
+	transition-delay: .6s;
+	transition-duration: .2s;
+	webkit-transition-delay: .6s;
+	webkit-transition-duration: .2s;
+}
+.ns-effect-thumbslide.ns-show .ns-content p
+{
+	opacity: 1;
+	transition-delay: .6s;
+	webkit-transition-delay: .6s;
+}
+.ns-effect-thumbslide.ns-show .ns-content
+{
+	transform: translateX(0);
+	transition-delay: .4s;
+	transition-duration: .2s;
+	webkit-transform: translateX(0);
+	webkit-transition-delay: .4s;
+	webkit-transition-duration: .2s;
+}
+.ns-effect-thumbslide.ns-show .thumbnail-wrapper
+{
+	opacity: 1;
+	transition-delay: 0s;
+	webkit-transition-delay: 0s;
+}
+.ns-effect-thumbslide.ns-show .ns-box-inner
+{
+	box-shadow: 0 2px 30px -1px rgba(0,0,0,.15);
+	transition-delay: .4s;
+	webkit-transition-delay: .4s;
+}
+.ns-type-browserupgrade .ns-content
+{
+	background-color: #ff0;
+}
+.ns-type-danger .thumbnail-wrapper,.ns-type-error .thumbnail-wrapper,.ns-type-success .thumbnail-wrapper,.ns-type-warning .thumbnail-wrapper
+{
+	padding: 0;
+	width: 70px;
+}
+.ns-type-danger .thumbnail-wrapper+.ns-content,.ns-type-error .thumbnail-wrapper+.ns-content,.ns-type-success .thumbnail-wrapper+.ns-content,.ns-type-warning .thumbnail-wrapper+.ns-content
+{
+	padding-left: 75px;
+}
+.ns-type-danger .thumbnail-wrapper .thumbnail,.ns-type-error .thumbnail-wrapper .thumbnail,.ns-type-success .thumbnail-wrapper .thumbnail,.ns-type-warning .thumbnail-wrapper .thumbnail
+{
+	bottom: 0;
+	right: 0;
+	top: 20px;
+}
+.ns-type-danger .thumbnail-wrapper .em,.ns-type-error .thumbnail-wrapper .em,.ns-type-success .thumbnail-wrapper .em,.ns-type-warning .thumbnail-wrapper .em
+{
+	border-radius: 45px;
+	font-size: 20px;
+	padding: 5px 10px;
+}
+.ns-type-success .thumbnail-wrapper .em
+{
+	background: #090;
+	color: #fff;
+}
+.ns-type-danger .thumbnail-wrapper .em,.ns-type-error .thumbnail-wrapper .em
+{
+	background: 0 0;
+	color: #ef2809;
+	font-size: 42px;
+	padding: 0;
+}
+.ns-type-warning .thumbnail-wrapper .em
+{
+	background: #f90;
+	color: #fff;
+}
+.ns-container-fluid
+{
+	max-height: 600px;
+	overflow: hidden;
+	transition: max-height 1s ease-in;
+	webkit-transition: max-height 1s ease-in;
+}
+.ns-container-fluid:empty
+{
+	max-height: 0;
+}
+.ns-container-fluid .ns-box
+{
+	margin: 0;
+	max-width: 100%;
+	width: 100%;
+}
+.alert {
+    position: relative;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+}
+
+.alert-heading {
+    color: inherit;
+}
+
+.alert-link {
+    font-weight: 700;
+}
+
+.alert-dismissible {
+    padding-right: 4rem;
+}
+
+.alert-dismissible .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.75rem 1.25rem;
+    color: inherit;
+}
+
+.alert-primary {
+    color: #3e6f7c;
+    background-color: #e4f7fc;
+    border-color: #d9f3fb;
+}
+
+.alert-primary hr {
+    border-top-color: #c2ecf9;
+}
+
+.alert-primary .alert-link {
+    color: #2d515a;
+}
+
+.alert-secondary {
+    color: #383d41;
+    background-color: #e2e3e5;
+    border-color: #d6d8db;
+}
+
+.alert-secondary hr {
+    border-top-color: #c8cbcf;
+}
+
+.alert-secondary .alert-link {
+    color: #202326;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.alert-success hr {
+    border-top-color: #b1dfbb;
+}
+
+.alert-success .alert-link {
+    color: #0b2e13;
+}
+
+.alert-info {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+}
+
+.alert-info hr {
+    border-top-color: #abdde5;
+}
+
+.alert-info .alert-link {
+    color: #062c33;
+}
+
+.alert-warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}
+
+.alert-warning hr {
+    border-top-color: #ffe8a1;
+}
+
+.alert-warning .alert-link {
+    color: #533f03;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.alert-danger hr {
+    border-top-color: #f1b0b7;
+}
+
+.alert-danger .alert-link {
+    color: #491217;
+}
+
+.alert-light {
+    color: #818182;
+    background-color: #fefefe;
+    border-color: #fdfdfe;
+}
+
+.alert-light hr {
+    border-top-color: #ececf6;
+}
+
+.alert-light .alert-link {
+    color: #686868;
+}
+
+.alert-dark {
+    color: #1b1e21;
+    background-color: #d6d8d9;
+    border-color: #c6c8ca;
+}
+
+.alert-dark hr {
+    border-top-color: #b9bbbe;
+}
+
+.alert-dark .alert-link {
+    color: #040505;
+}
+</style>
+<title>Admin</title>
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+<div th:unless="${#lists.size(exercisesDone)}">
+	Nu ai facut niciun exercitiu pana acum !
+</div>
+	<div th:if="${#lists.size(exercisesDone)}">
+	<div class="ns-wrap-top-right">
+        <div th:if="${addExerciseDone eq true}">
+            <div class="alert alert-succes">
+            	<h4>Esti activ, tocmai ce ai facut un exercitiu.</h4>
+            	<h3>Poti vizualiza <a th:href="@{/view_charts_for_device/activeEnergyBurned/1}">caloriile arse</a></h3>
+            </div>
+        </div>
+    </div>
+		<h3
+			style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Exercitii Efectuate</h3>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-10 mx-auto">
+							<table class="table table-striped">
+								<thead class="center-align">
+									<tr>
+										<th>Nume Exercitiu</th>
+										<th>Nume Antrenament</th>
+										<th>Nume Antrenor</th>
+									</tr>
+								</thead>
+								<tbody class="center-align">
+									<th:block
+										th:each="ex, iterStat : ${exercisesDone}">
+										<tr>
+											<td th:text="${ex.exercise.name}"></td>
+											<td th:text="${ex.exercise.trainingPlan.name}"></td>
+											<td th:text="${ex.exercise.trainingPlan.trainer.username}"></td>										</tr>
+									</th:block>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
+</body>
+</html>

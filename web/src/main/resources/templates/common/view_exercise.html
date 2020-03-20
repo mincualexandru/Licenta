@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<style>
+div.gallery {
+	margin: 5px;
+	border: 1px solid #ccc;
+	float: left;
+	width: 180px;
+}
+
+div.gallery:hover {
+	border: 1px solid #777;
+}
+
+div.gallery img {
+	width: 100%;
+	height: auto;
+}
+
+div.desc {
+	padding: 15px;
+	text-align: center;
+}
+</style>
+<title>Admin</title>
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+<div th:each="role, iterStat : ${account.roles}">
+	<div th:if="${role.name == 'ROLE_USER'}">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-8 mx-auto">
+				<h1>Poze Exercitiu</h1>
+					<div class="gallery" th:each="photo, iterStat : ${exercise.exerciseImages}">
+						<img th:src="@{${'/images/' + photo.fileName}}" alt="Cinque Terre" width="600" height="400">
+					</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-8 mx-auto">
+				<h1>Sfaturi Exercitiu</h1>
+					<ul th:each="adv, iterStat : ${exercise.exerciseAdvices}">
+						<li th:text="${adv.advice}"></li>
+					</ul>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-8 mx-auto">
+				<form th:action="@{/perfom_this_exercise}" method="post">
+					<input type="hidden" name="exerciseId" th:value="${exercise.exerciseId}"/>
+					<input type="hidden" name="accountId" th:value="${account.accountId}"/>
+					<input type="hidden" name="trainerId" th:value="${exercise.trainingPlan.trainer.accountId}"/>
+					<input type="hidden" name="trainingPlanId" th:value="${exercise.trainingPlan.trainingPlanId}"/>
+					<button type="submit" class="btn btn-success">Executa Exercitiul</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	</div>
+	<div th:if="${role.name == 'ROLE_TRAINER'}">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-8 mx-auto">
+				<div class="photos">
+					<h1>Poze Exercitiu</h1>
+					<button type="button" data-toggle="modal" data-target="#addPhoto"
+						data-backdrop="static" data-keyboard="false"
+						class="btn btn-primary">Adauga Poza</button>
+					<form class="photo" th:action="@{/add_photo_for_exercise_save}"
+						th:object="${exerciseImage}" method="POST"
+						enctype="multipart/form-data">
+						<div class="modal fade" id="addPhoto" tabindex="-1" role="dialog"
+							aria-labelledby="addPhotoLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="addPhotoLabel">Adauga Poza</h5>
+										<button type="button" class="close" data-dismiss="modal"
+											aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<input type="hidden" name="exerciseImageId"
+											th:field="*{exerciseImagesId}"> <input type="hidden"
+											th:value="${exercise.exerciseId}" name="exerciseId" /> <input
+											type="file" name="imageFile">
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary"
+											data-dismiss="modal">Close</button>
+										<button class="btn btn-primary">Save changes</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+					<div class="gallery"
+						th:each="photo, iterStat : ${exercise.exerciseImages}">
+						<img th:src="@{${'/images/' + photo.fileName}}" alt="Cinque Terre"
+							width="600" height="400">
+						<div class="desc">
+							<form method="post" th:action="@{/delete_photo_from_exercise}">
+								<input type="hidden" name="photoId"
+									th:value="${photo.exerciseImagesId}" /> <input type="hidden"
+									name="exerciseId" th:value="${exercise.exerciseId}" />
+								<button type="submit">Sterge Poza</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-8 mx-auto">
+				<div class="advices">
+					<h1>Sfaturi Exercitiu</h1>
+					<button type="button" data-toggle="modal" data-target="#advice"
+						data-backdrop="static" data-keyboard="false"
+						class="btn btn-primary">Adauga Sfat</button>
+					<form id="aboutMe" class="advice" th:action="@{/add_advice_for_exercise_save}"
+						th:object="${exerciseAdvice}" method="POST">
+						<div class="modal fade" id="advice" tabindex="-1" role="dialog"
+							aria-labelledby="adviceLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="advice">Adauga Sfat</h5>
+										<button type="button" class="close" data-dismiss="modal"
+											aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<input type="text" id="descriptionAccountInformation" name="advice" th:field="*{advice}">
+  										<input type="hidden" name="exerciseId" th:value="${exercise.exerciseId}"/>
+  										<div id="showErrorAboutMe"></div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary"
+											data-dismiss="modal">Close</button>
+										<button class="btn btn-primary">Save changes</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+					<ul th:each="adv, iterStat : ${exerciseAdviceSorted}">
+						<li th:text="${adv.advice}"></li>
+						<button th:onclick="|selecteazaSfat('${adv.exerciseAdviceId}', '${exercise.exerciseId}')|" data-toggle="modal" data-target="#modal-edit-advice" th:attr="data-target='#modal-edit-advice'+${adv.exerciseAdviceId}">Editeaza Sfat</button>
+						<form class="editAdvice" th:action="@{/edit_advice_exercise}" method="post">
+							<div class="modal modal-edit-advice fade in"
+								th:id="modal-edit-advice+${adv.exerciseAdviceId}">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button>
+											<h5 class="modal-title">Editeaza Sfatul</h5>
+										</div>
+										<div class="modal-body">
+											<div class="row">
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Sfat</label>
+														<div class="input-group mb-2 mr-sm-2 mb-sm-0" th:id="validName+${adv.exerciseAdviceId}">
+															<input type="text" id="description2" name="editName" th:value="${adv.advice}">
+															<input type="hidden" name="adviceId" th:value="${adv.exerciseAdviceId}"/>
+															<input type="hidden" th:value="${exercise.exerciseId}" name="exerciseId"/>
+															<div th:id="showError+${adv.exerciseAdviceId}"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-outline pull-left"
+												data-dismiss="modal">Close</button>
+											<button type="submit">Save</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+						<form th:action="@{/delete_advice_exercise}" method="post">
+							<input type="hidden" name="adviceId" th:value="${adv.exerciseAdviceId}"/>
+							<input type="hidden" th:value="${exercise.exerciseId}" name="exerciseId"/>
+							<button type="submit">Sterge Sfat</button>
+						</form>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+</div>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+		<script type="text/javascript" th:src="@{/js/validationcv.js}"></script>
+</body>
+</html>

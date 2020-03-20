@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Sign up</title>
+<base href="/">
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" th:href="@{css/style.css}"/>
+</head>
+<body>
+	<div class="container">
+		<form class="form-horizontal" role="form" method="POST"
+			th:action="@{/curriculumVitaeSave}" th:object="${curriculumVitae}">
+			<input type="hidden" name="accountId" th:value="${account.accountId}"/>
+			<div style="position: relative; top: 110px; left: 250px;">
+				<h3>Curriculum Vitae</h3>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Descriere</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+								<textarea rows="4" cols="50" th:field="*{description}"
+									class="form-control validation" id="description" placeholder="Descriere"
+									autofocus></textarea>
+							</div>
+							<div th:unless="${#fields.hasErrors('description')}">
+								<p class="errorMessage"></p>
+							</div>
+							<div th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Obiectivul Job-ului</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+								<textarea rows="4" cols="50" th:field="*{jobObiective}"
+									class="form-control validation" id="jobObiective" placeholder="Obiectivul Job-ului"
+									autofocus></textarea>
+							</div>
+							<div th:unless="${#fields.hasErrors('jobObiective')}">
+								<p class="errorMessage"></p>
+							</div>
+							<div th:if="${#fields.hasErrors('jobObiective')}" th:errors="*{jobObiective}"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6" id="skillList">
+						<div style="background-color: gray;">
+ 							<h2>Abilitate</h2>
+ 							<input type="button" onclick="addSkill()" value="Adauga" />
+						</div>
+						<div class="row">
+                        	<div class="col form-group">Descriere</div>
+                    	</div>
+                    <div class="row item" th:each="skill, status : ${curriculumVitae.skills}">
+                        <div class="col form-group input-group mb-2 mr-sm-2 mb-sm-0">
+                            <input th:field="*{skills[__${status.index}__].description}" type="text" class="form-control">
+                        </div>
+                        <div 
+                        th:if="${#fields.hasErrors('skills[__${status.index}__].description')}"  
+                        th:errors="*{skills[__${status.index}__].description}">
+    					</div>
+                    </div>
+                    </div>
+               </div>
+               <div class="row">
+                    <div class="col-md-6" id="educationList">
+						<div style="background-color: gray;">
+ 							<h2>Educație</h2>
+ 							<input type="button" onclick="addEducation()" value="Adauga" />
+						</div> 
+						<div class="row">
+                        	<div class="col form-group">Institutie</div>
+                        	<div class="col form-group">Oras</div>
+                        	<div class="col form-group">Inceput</div>
+                        	<div class="col form-group">Sfarsit</div>
+                    	</div>
+                    <div class="row item" th:each="edu, status : ${curriculumVitae.education}">
+                        <div class="col form-group input-group mb-2 mr-sm-2 mb-sm-0">
+                            <input th:field="*{education[__${status.index}__].name}" type="text" class="form-control">
+                        </div>
+                        <div class="col form-group input-group mb-2 mr-sm-2 mb-sm-0">
+                            <input th:field="*{education[__${status.index}__].city}" type="text" class="form-control">
+                        </div>
+                        <div class="col form-group input-group mb-2 mr-sm-2 mb-sm-0">
+                            <input th:field="*{education[__${status.index}__].start}" type="text" class="form-control">
+                        </div>
+                        <div class="col form-group input-group mb-2 mr-sm-2 mb-sm-0">
+                            <input th:field="*{education[__${status.index}__].end}" type="text" class="form-control">
+                        </div>
+                        <div 
+                        th:if="${#fields.hasErrors('education[__${status.index}__].name')}"  
+                        th:errors="*{education[__${status.index}__].name}">
+    					</div>
+    					<div 
+                        th:if="${#fields.hasErrors('education[__${status.index}__].city')}"  
+                        th:errors="*{education[__${status.index}__].city}">
+    					</div>
+    					<div 
+                        th:if="${#fields.hasErrors('education[__${status.index}__].start')}"  
+                        th:errors="*{education[__${status.index}__].start}">
+    					</div>
+    					<div 
+                        th:if="${#fields.hasErrors('education[__${status.index}__].end')}"  
+                        th:errors="*{education[__${status.index}__].end}">
+    					</div>
+                        </div>
+                    </div>
+				</div>
+				<div class="row">
+                    <div class="col-md-6" id="experienceList">
+						<div style="background-color: gray;">
+ 							<h2>Experienta</h2>
+ 							<input type="button" onclick="addExperience()" value="Adauga" />
+						</div> 
+						<div class="row">
+                        	<div class="col form-group d-none">id</div>
+                        	<div class="col form-group">Post</div>
+                        	<div class="col form-group">Oras</div>
+                        	<div class="col form-group">Inceput</div>
+                        	<div class="col form-group">Sfarsit</div>
+                    	</div>
+                    <div class="row item" th:each="exp, status : ${curriculumVitae.experiences}">
+                        <div class="col form-group input-group mb-2 mr-sm-2 mb-sm-0">
+                            <input th:field="*{experiences[__${status.index}__].name}" type="text" class="form-control">
+                        </div>
+                        <div class="col form-group input-group mb-2 mr-sm-2 mb-sm-0">
+                            <input th:field="*{experiences[__${status.index}__].city}" type="text" class="form-control">
+                        </div>
+                        <div class="col form-group input-group mb-2 mr-sm-2 mb-sm-0">
+                            <input th:field="*{experiences[__${status.index}__].start}" type="text" class="form-control">
+                        </div>
+                        <div class="col form-group input-group mb-2 mr-sm-2 mb-sm-0">
+                            <input th:field="*{experiences[__${status.index}__].end}" type="text" class="form-control">
+                        </div>
+                        <div 
+                        th:if="${#fields.hasErrors('experiences[__${status.index}__].name')}"  
+                        th:errors="*{experiences[__${status.index}__].name}">
+    					</div>
+    					<div 
+                        th:if="${#fields.hasErrors('experiences[__${status.index}__].city')}"  
+                        th:errors="*{experiences[__${status.index}__].city}">
+    					</div>
+    					<div 
+                        th:if="${#fields.hasErrors('experiences[__${status.index}__].start')}"  
+                        th:errors="*{experiences[__${status.index}__].start}">
+    					</div>
+    					<div 
+                        th:if="${#fields.hasErrors('experiences[__${status.index}__].end')}"  
+                        th:errors="*{experiences[__${status.index}__].end}">
+    					</div>
+                        </div>
+                    </div>
+				</div>
+				<div class="row">
+					<div class="col-md-3"></div>
+					<div class="col-md-6">
+						<button type="submit" class="btn btn-success">
+							<i class="fa fa-user-plus"></i> Trimite
+						</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<script th:inline="javascript">
+	let addSkill = function () {
+        let listName = 'skills'; //list name in Catalog.class
+        let fieldsNames = ['description']; //field names from Movie.class
+        let rowIndex = document.querySelectorAll('.item').length; //we can add mock class to each movie-row
+
+        let row = document.createElement('div');
+        row.classList.add('row', 'item');
+
+        fieldsNames.forEach((fieldName) => {
+            let col = document.createElement('div');
+            col.classList.add('col', 'form-group');
+
+            let input = document.createElement('input');
+            input.type = 'text';
+            input.classList.add('form-control');
+            input.id = listName + rowIndex + '.' + fieldName;
+            input.setAttribute('name', listName + '[' + rowIndex + '].' + fieldName);
+
+            col.appendChild(input);
+            row.appendChild(col);
+        });
+
+        document.getElementById('skillList').appendChild(row);
+};
+
+let addEducation = function () {
+	console.log("A intrat aici 2");
+    let listName = 'education'; //list name in Catalog.class
+    let fieldsNames = ['name', 'city', 'start', 'end']; //field names from Movie.class
+    let rowIndex = document.querySelectorAll('.item').length; //we can add mock class to each movie-row
+
+    let row = document.createElement('div');
+    row.classList.add('row', 'item');
+
+    fieldsNames.forEach((fieldName) => {
+        let col = document.createElement('div');
+        col.classList.add('col', 'form-group');
+        if (fieldName === 'id') {
+            col.classList.add('d-none'); //field with id - hidden
+        }
+
+        let input = document.createElement('input');
+        input.type = 'text';
+        input.classList.add('form-control');
+        input.id = listName + rowIndex + '.' + fieldName;
+        input.setAttribute('name', listName + '[' + rowIndex + '].' + fieldName);
+
+        col.appendChild(input);
+        row.appendChild(col);
+    });
+
+    document.getElementById('educationList').appendChild(row);
+};
+
+let addExperience = function () {
+	console.log("A intrat aici 3");
+    let listName = 'experiences'; //list name in Catalog.class
+    let fieldsNames2 = ['name', 'city', 'start', 'end']; //field names from Movie.class
+    let rowIndex = document.querySelectorAll('.item').length; //we can add mock class to each movie-row
+
+    let row = document.createElement('div');
+    row.classList.add('row', 'item');
+
+    fieldsNames2.forEach((fieldName) => {
+        let col = document.createElement('div');
+        col.classList.add('col', 'form-group');
+        if (fieldName === 'id') {
+            col.classList.add('d-none'); //field with id - hidden
+        }
+
+        let input = document.createElement('input');
+        input.type = 'text';
+        input.classList.add('form-control');
+        input.id = listName + rowIndex + '.' + fieldName;
+        input.setAttribute('name', listName + '[' + rowIndex + '].' + fieldName);
+
+        col.appendChild(input);
+        row.appendChild(col);
+    });
+
+    document.getElementById('experienceList').appendChild(row);
+};
+
+	</script>
+<!-- 	<script type="text/javascript" th:src="@{/js/signup.js}"></script> -->
+</body>
+</html>

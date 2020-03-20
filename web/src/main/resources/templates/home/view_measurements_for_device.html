@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Admin</title>
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+<div th:unless="${#lists.size(measurements)}">
+	Se pare ca nu ai niciun dispozitiv cumparat
+</div>
+	<div th:if="${#lists.size(measurements)}">
+		<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Optiuni Tipuri Grafice</h3>
+		<div style="text-align:center;">
+			<div th:if="${userDevice.device.name eq 'Bratara'}">
+				<a th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'heartRate', userDeviceId = ${userDevice.userDeviceId})}" class="btn btn-success">Ritm Cardiac</a>
+				<a th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'stepCount', userDeviceId = ${userDevice.userDeviceId})}" class="btn btn-success">Pasi</a>
+				<a th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'sleepAnalysis', userDeviceId = ${userDevice.userDeviceId})}" class="btn btn-success">Analiza Somn</a>
+				<a th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'activeEnergyBurned', userDeviceId = ${userDevice.userDeviceId})}" class="btn btn-success">Energie Activa</a>
+			</div>
+			<div th:if="${userDevice.device.name eq 'Cantar Inteligent'}">
+				<a th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'bodyFatPercentage', userDeviceId = ${userDevice.userDeviceId})}" class="btn btn-success">Procentaj Grasime</a>
+				<a th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'bodyMassIndex', userDeviceId = ${userDevice.userDeviceId})}" class="btn btn-success">Indice Masa Corporala</a>
+				<a th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'bodyMass', userDeviceId = ${userDevice.userDeviceId})}" class="btn btn-success">Masa Corporala</a>
+				<a th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'leanBodyMass', userDeviceId = ${userDevice.userDeviceId})}" class="btn btn-success">Lean Body Mass</a>
+			</div>
+		</div>
+		<h3
+			style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Masuratori</h3>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-10 mx-auto">
+							<table class="table table-striped">
+								<thead class="center-align">
+									<tr>
+										<th>Nume</th>
+										<th>Valoare</th>
+										<th>Unitate de Masura</th>
+										<th>Data Inceput</th>
+										<th>Data Sfarsit</th>
+										<th>Actiuni</th>
+									</tr>
+								</thead>
+								<tbody class="center-align">
+									<th:block
+										th:each="measure, iterStat : ${measurements}">
+										<tr>
+											<td th:text="${measure.name}"></td>
+											<td th:text="${measure.value}"></td>
+											<td th:text="${measure.unitOfMeasurement}"></td>
+											<td th:text="${measure.startDate}"></td>
+											<td th:text="${measure.endDate}"></td>
+										</tr>
+									</th:block>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
+</body>
+</html>
