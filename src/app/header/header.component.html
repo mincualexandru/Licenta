@@ -1,0 +1,17 @@
+<nav class="navbar" style="background-color:white;">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a routerLink="/data-transfer" class="navbar-brand" style="font-size:25px; font-weight: 600;">Data Transfer</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li routerLinkActive="active" *ngIf="!isAuthenticated"><a routerLink="/auth" style="font-size:18px; cursor:pointer;">Authenticate</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li *ngIf="isAuthenticated">
+                    <a style="cursor:pointer;" (click)="onLogout()" style="font-size:18px; cursor:pointer;">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
