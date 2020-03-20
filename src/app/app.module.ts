@@ -10,6 +10,7 @@ import { MyMaterialModule } from './material.module';
 import { DataTransferComponent } from './data-transfer/data-transfer.component';
 import { FormUploadComponent } from './upload/form-upload/form-upload.component';
 import { LoginComponent } from './login/login.component';
+import { TestComponent } from './test/test.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { LoginComponent } from './login/login.component';
     HeaderComponent,
     FormUploadComponent,
     DataTransferComponent,
-    LoginComponent
+    LoginComponent,
+    TestComponent
   ],
   imports: [
     BrowserModule,
