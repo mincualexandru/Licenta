@@ -10,6 +10,11 @@ import { MyMaterialModule } from './material.module';
 import { DataTransferComponent } from './data-transfer/data-transfer.component';
 import { LoginComponent } from './login/login.component';
 import { FormUploadComponent } from './form-upload/form-upload.component';
+import { DeviceCardComponent } from './data-transfer/device-card/device-card.component';
+
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -17,14 +22,18 @@ import { FormUploadComponent } from './form-upload/form-upload.component';
     HeaderComponent,
     DataTransferComponent,
     LoginComponent,
-    FormUploadComponent
+    FormUploadComponent,
+    DeviceCardComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     SharedModule,
-    MyMaterialModule
+    MyMaterialModule,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule
   ],
   bootstrap: [AppComponent]
 })

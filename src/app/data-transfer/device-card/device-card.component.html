@@ -1,0 +1,19 @@
+
+<mat-card>
+        <mat-card-header>
+            <div 
+            mat-card-avatar
+            [ngStyle]="{ 'background-image': 'url(' + image + ')'}"></div>
+            <mat-card-title>{{device.name}}</mat-card-title>
+            <mat-card-subtitle>{{device.company}}</mat-card-subtitle>
+        </mat-card-header>
+        <div *ngIf="device.name === 'Bratara'">
+            <img mat-card-image src="/assets/img/band.jpg">
+        </div>
+        <div *ngIf="device.name === 'Cantar Inteligent'">
+            <img mat-card-image src="/assets/img/scale.jpg">
+        </div>
+        <mat-card-actions>
+            <button mat-raised-button color="primary">Informatii</button>
+        </mat-card-actions>
+</mat-card>

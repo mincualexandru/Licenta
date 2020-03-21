@@ -1,11 +1,7 @@
 <div *ngIf="user.role === 'ROLE_USER'">
-    <ul *ngFor = "let device of devices">
-        <li>{{ device.deviceId }}</li>
-        <li>{{ device.name }}</li>
-        <li>{{ device.company }}</li>
-        <li>{{ device.serialNumber }}</li>
-        <li>{{ device.price }}</li>
-    </ul>
+    <app-device-card 
+    *ngFor = "let device of devices"
+    [device]="device"></app-device-card>
     <form-upload></form-upload>
 </div>
 <div *ngIf="user.role === 'ROLE_TRAINER'">
