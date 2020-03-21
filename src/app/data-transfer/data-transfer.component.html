@@ -1,1 +1,13 @@
-<form-upload></form-upload>
+<div *ngIf="user.role === 'ROLE_USER'">
+    <ul *ngFor = "let device of devices">
+        <li>{{ device.deviceId }}</li>
+        <li>{{ device.name }}</li>
+        <li>{{ device.company }}</li>
+        <li>{{ device.serialNumber }}</li>
+        <li>{{ device.price }}</li>
+    </ul>
+    <form-upload></form-upload>
+</div>
+<div *ngIf="user.role === 'ROLE_TRAINER'">
+    <h6>Ne pare rau, contul tau are rol de {{ user.role }}</h6>
+</div>

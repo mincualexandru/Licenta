@@ -9,7 +9,8 @@ export class User {
         public phoneNumber: string,
         public bornDate: string,
         public active: boolean,
-        public gender: string
+        public gender: string,
+        public role: string
   ) {}
   }
   

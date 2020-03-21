@@ -1,0 +1,62 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+        <div class="red-square">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-lg-5 mx-auto card-file">
+                <div class="card" style="text-align: center;">
+                  <img class="card-img-top" src="https://res.cloudinary.com/mhmd/image/upload/v1557366994/img_epm3iz.png"
+                    alt="Card image cap" style="width: 50%;">
+                  <div class="card-block">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div style="width: fit-content; margin:0 auto;">
+                          <div *ngIf="currentFileUpload && !(typeOfFile === OTHER_TYPE)" class="progress"
+                            style="margin-bottom:15px;">
+                            <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+                              attr.aria-valuenow="{{progress.percentage}}" aria-valuemin="0" aria-valuemax="100"
+                              [ngStyle]="{width:progress.percentage+'%'}">
+                              {{progress.percentage}}%
+                            </div>
+                          </div>
+                          <div class="btn-group-vertical">
+                            <div *ngIf="selectedFile" style="color: #00B4DB; margin-bottom: -15px;">
+                              {{ selectedFile.name }}</div>
+                            <div *ngIf="!selectedFile" style="color: #00B4DB; margin-bottom: -15px;">Nothing was selected
+                            </div>
+                            <input id="myInput" type="file" style="visibility:hidden;" (change)="selectFile($event)"
+                              multiple="multiple" accept=".zip,.rar,.7zip" class="form-control" />
+                            <span title="Attach file" class="btn " onclick="document.getElementById('myInput').click()"
+                              style="background: linear-gradient(to right, #0083B0, #00B4DB); color:white; border-radius:20px;">
+                              Attach file
+                            </span>
+                            <div *ngIf="typeOfFile === OTHER_TYPE" style="color: red;
+                              font-size: 12px;
+                              font-weight: 600;
+                              margin-top: 15px;">
+                              <p>This file type cannot be transferred.</p>
+                              <p>Please select other file.</p>
+                            </div>
+                            <div *ngIf="alreadyTransferred" style="color: red;
+                              font-size: 12px;
+                              font-weight: 600;
+                              margin-top: 15px;">
+                              <p>The file has already <br> been transferred.</p>
+                            </div>
+                            <button class="btn" [disabled]="!selectedFiles || typeOfFile === OTHER_TYPE"
+                              (click)="upload()" style="background: linear-gradient(to right, #0083B0, #00B4DB);
+                              color: white; border-radius:20px; margin-top: 15px;">Upload this file</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>

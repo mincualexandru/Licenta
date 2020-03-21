@@ -1,10 +1,10 @@
 import { Component, ComponentFactoryResolver, ViewChild, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AuthService, AuthResponseData } from './auth.service';
 import { Observable, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { AlertComponent } from '../shared/alert/alert.component';
 import { PlaceHolderDirective } from '../shared/placeholder.directive';
+import { AuthService, AuthResponseData } from '../services/auth.service';
 
 @Component({
     selector: 'app-auth',
@@ -30,28 +30,19 @@ export class AuthComponent implements OnDestroy{
         }
         const userName = form.value.username;
         const password = form.value.password;
-        console.log(userName);
-        console.log(password);
 
         let authObs: Observable<AuthResponseData>;
 
         this.isLoading = true;
-        console.log('A intrat pana in login service');
         if(this.isLoginMode){
             authObs = this.authSerivce.login(userName);
-        } 
-        // else {
-        //     authObs = this.authSerivce.signup(email, password);
-        // }
+        }
 
         authObs.subscribe(responseData => {
-            console.log('Data primita este' + responseData.username);
             this.isLoading = false;
             this.router.navigate(['/data-transfer']);
         }, 
         errorMessage => {
-            console.log(errorMessage);
-            console.log(errorMessage.error.text);
             this.error = errorMessage;
             this.showErrorAlert(errorMessage);
             this.isLoading = false;

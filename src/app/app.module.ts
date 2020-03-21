@@ -8,18 +8,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 import { MyMaterialModule } from './material.module';
 import { DataTransferComponent } from './data-transfer/data-transfer.component';
-import { FormUploadComponent } from './upload/form-upload/form-upload.component';
 import { LoginComponent } from './login/login.component';
-import { TestComponent } from './test/test.component';
+import { FormUploadComponent } from './form-upload/form-upload.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    FormUploadComponent,
     DataTransferComponent,
     LoginComponent,
-    TestComponent
+    FormUploadComponent
   ],
   imports: [
     BrowserModule,
