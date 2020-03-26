@@ -11,8 +11,11 @@
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 <body>
-<form th:action="@{/buy_shopping_cart}" method="post">
-<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Cosul meu</h3>
+<div th:unles="${#lists.size(products)}">
+	Nu ai selectat niciun produs momentan
+</div>
+<div th:if="${#lists.size(products)}">
+	<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Cosul meu</h3>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
@@ -57,9 +60,11 @@
 	<h4 th:text="${insufficientBalance}"></h4>
 	<h4>Suma totala a produselor este de <span th:text="${totalSum}"></span> lei</h4>
 	<h4>Soldul tau curent este de <span th:text="${user.transaction.availableBalance}"></span></h4>
+	<form th:action="@{/buy_shopping_cart}" method="post">
 	<input type="hidden" name="userId" th:value="${user.accountId}"/>
 	<input type="hidden" name="totalSum" th:value="${totalSum}"/>
 	<button type="submit" class="btn btn-success">Cumpara</button>
 	</form>
+</div>
 </body>
 </html>

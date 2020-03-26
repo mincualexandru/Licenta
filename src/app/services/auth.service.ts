@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpParams } from "@angular/common/http";
 import { catchError, tap } from "rxjs/operators";
-import { throwError, Subject, BehaviorSubject } from "rxjs";
+import { throwError, Subject, BehaviorSubject, Observable } from "rxjs";
 import { Router } from "@angular/router";
 import { environment } from "../../environments/environment";
-import { User } from "../model/user.model";
+import { User } from "../models/user.model";
 
 export interface AuthResponseData {
   accountId: number;
@@ -25,9 +25,9 @@ export interface AuthResponseData {
   providedIn: "root"
 })
 export class AuthService {
-  //SERVER_URL: string = "http://172.20.10.2:8080/";
+  //SERVER_URL: string = "https://172.20.10.2:8443/";
 
-  SERVER_URL: string = "http://localhost:8080/";
+  SERVER_URL: string = "https://localhost:8443/";
 
   user = new BehaviorSubject<User>(null);
 
@@ -35,9 +35,13 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  login(userName: string) {
+  login(userName: string, password: string) {
+    console.log("URL " + this.SERVER_URL);
+    let params = new HttpParams()
+    .set('userName', userName)
+    .set('password', password);
     return this.http
-      .post<AuthResponseData>(`${this.SERVER_URL}/${"loginResource"}`, userName)
+      .post<AuthResponseData>(`${this.SERVER_URL}/${"loginResource"}`, params)
       .pipe(
         tap(respData => {
           this.handleAuthentication(

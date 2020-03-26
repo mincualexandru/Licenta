@@ -46,4 +46,9 @@ public class TypeMeasurementServiceImpl implements TypeMeasurementService {
 		return typeMeasurementDao.findByType(chartOption);
 	}
 
+	@Override
+	public void deleteByDeviceIdAndTypeMeasurementId(Integer deviceId, Integer typeMeasurementId) {
+		typeMeasurementDao.deleteByDeviceIdAndTypeMeasurementId(deviceId, typeMeasurementId);
+	}
+
 }

@@ -1,5 +1,6 @@
 package com.web.model;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,6 +24,7 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -78,6 +80,10 @@ public class Account {
 	@Column(name = "gender")
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
+
+	@Column(name = "date_of_creation")
+	@CreationTimestamp
+	private Timestamp dateOfcreation;
 
 	@OneToOne(mappedBy = "account")
 	@JsonIgnore
@@ -232,6 +238,14 @@ public class Account {
 
 	public void setGender(Gender gender) {
 		this.gender = gender;
+	}
+
+	public Timestamp getDateOfcreation() {
+		return dateOfcreation;
+	}
+
+	public void setDateOfcreation(Timestamp dateOfcreation) {
+		this.dateOfcreation = dateOfcreation;
 	}
 
 	public Set<Role> getRoles() {

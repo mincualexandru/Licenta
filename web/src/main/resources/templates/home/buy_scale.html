@@ -15,7 +15,8 @@
 <ul th:each="typeMeasurement, iterStat : ${typeMeasurements}">
 		<li th:text="${typeMeasurement.type}"></li>
 		<li th:text="${typeMeasurement.purpose}"></li>
-		<li th:text="${typeMeasurement.goal}"></li>
+		<li th:text="${typeMeasurement.goalMin}"></li>
+		<li th:text="${typeMeasurement.goalMax}"></li>
 	</ul>
 <form th:action="@{/add_to_shopping_cart}" method="post">
 	<input type="hidden" name="accountId" th:value="${account.accountId}" />

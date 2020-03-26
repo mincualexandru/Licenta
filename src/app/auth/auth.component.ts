@@ -5,10 +5,13 @@ import { Router } from '@angular/router';
 import { AlertComponent } from '../shared/alert/alert.component';
 import { PlaceHolderDirective } from '../shared/placeholder.directive';
 import { AuthService, AuthResponseData } from '../services/auth.service';
+import { catchError } from 'rxjs/internal/operators/catchError';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-auth',
-    templateUrl: './auth.component.html'
+    templateUrl: './auth.component.html',
+    styleUrls: ['./auth.component.css']
 })
 export class AuthComponent implements OnDestroy{
 
@@ -35,16 +38,17 @@ export class AuthComponent implements OnDestroy{
 
         this.isLoading = true;
         if(this.isLoginMode){
-            authObs = this.authSerivce.login(userName);
+            authObs = this.authSerivce.login(userName,password);
         }
-
-        authObs.subscribe(responseData => {
+        
+        authObs
+        .subscribe(responseData => {
             this.isLoading = false;
             this.router.navigate(['/data-transfer']);
         }, 
-        errorMessage => {
-            this.error = errorMessage;
-            this.showErrorAlert(errorMessage);
+        () => {
+            this.error = "Nume utilizator sau parola gresite";
+            this.showErrorAlert(this.error);
             this.isLoading = false;
         });
 

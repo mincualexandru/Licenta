@@ -55,4 +55,9 @@ public class UserTrainingServiceImpl implements UserTrainingService {
 	public Set<UserTraining> findAllByUserAccountId(Integer accountId) {
 		return userTrainingDao.findAllByUserAccountId(accountId);
 	}
+
+	@Override
+	public void deleteByUserTrainingId(Integer userTrainingId) {
+		userTrainingDao.deleteByUserTrainingId(userTrainingId);
+	}
 }

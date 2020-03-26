@@ -36,7 +36,9 @@ import com.web.model.HelperFeedback;
 import com.web.model.Measurement;
 import com.web.model.Role;
 import com.web.model.Skill;
+import com.web.model.TrainingPlan;
 import com.web.model.UserDevice;
+import com.web.model.UserTraining;
 import com.web.service.AccountInformationService;
 import com.web.service.AccountService;
 import com.web.service.EducationService;
@@ -48,6 +50,7 @@ import com.web.service.HelperFeedbackService;
 import com.web.service.MeasurementService;
 import com.web.service.SkillService;
 import com.web.service.UserTrainingService;
+import com.web.utils.Product;
 import com.web.utils.Qualifying;
 import com.web.utils.ScaleTypeMeasurement;
 
@@ -306,11 +309,12 @@ public class CommonController {
 		Float height;
 		Float weight;
 		if (userDevice.getDevice().getName().equals("Cantar Inteligent")) {
-			Optional<Measurement> heightMeasurement = measurementService
-					.findByName(ScaleTypeMeasurement.HEIGHT.getScaleTypeMeasurement());
+			Optional<Measurement> heightMeasurement = measurementService.findByNameAndUserDeviceUserDeviceId(
+					ScaleTypeMeasurement.HEIGHT.getScaleTypeMeasurement(), userDevice.getUserDeviceId());
 			Optional<Measurement> weightMeasurement = measurementService
-					.findAllByName(ScaleTypeMeasurement.MASS.getScaleTypeMeasurement()).stream()
-					.reduce((prev, next) -> next);
+					.findAllByNameAndUserDeviceUserDeviceId(ScaleTypeMeasurement.MASS.getScaleTypeMeasurement(),
+							userDevice.getUserDeviceId())
+					.stream().reduce((prev, next) -> next);
 			if (heightMeasurement.isPresent() && weightMeasurement.isPresent()) {
 				height = heightMeasurement.get().getValue();
 				model.addAttribute("height", Math.round(height));
@@ -344,6 +348,68 @@ public class CommonController {
 		helperFeedback.setReason(reason);
 		helperFeedbackService.save(helperFeedback);
 		return "redirect:/view_learners";
+	}
+
+	@GetMapping(path = { "/transaction_history" })
+	public String transcationHistory(Model model) {
+		Account account = getAccountConnected();
+		System.out.println(account.getUsername());
+		Integer payments = account.getTransaction().getPayments();
+		Integer availableBalance = account.getTransaction().getAvailableBalance();
+		Set<Product> products = new HashSet<>();
+		for (Role role : account.getRoles()) {
+			if (role.getName().equals("ROLE_USER")) {
+				for (UserDevice userDevice : account.getUserDevices()) {
+					if (userDevice.isBought()) {
+						Product product = new Product();
+						product.setProductId(userDevice.getDevice().getDeviceId());
+						product.setCompanyName(userDevice.getDevice().getCompany());
+						product.setProductName(userDevice.getDevice().getName());
+						product.setPrice(userDevice.getDevice().getPrice());
+						product.setType("device");
+						product.setDateOfPurchased(userDevice.getDateOfPurchase());
+						products.add(product);
+					}
+				}
+
+				for (UserTraining userTrainingPlan : account.getUserTrainingPlans()) {
+					if (userTrainingPlan.isBought()) {
+						Product product = new Product();
+						product.setProductId(userTrainingPlan.getTrainingPlan().getTrainingPlanId());
+						product.setProductName(userTrainingPlan.getTrainingPlan().getName());
+						product.setPrice(userTrainingPlan.getTrainingPlan().getPrice());
+						product.setForWho(userTrainingPlan.getTrainingPlan().getForWho());
+						product.setType("trainingPlan");
+						product.setDateOfPurchased(userTrainingPlan.getDateOfPurchase());
+						products.add(product);
+					}
+				}
+
+			} else if (role.getName().equals("ROLE_TRAINER")) {
+				for (TrainingPlan trainingPlan : account.getTrainingPlans()) {
+					for (UserTraining userTrainingPlan : trainingPlan.getUserTrainingPlans()) {
+						if (userTrainingPlan.isBought()) {
+							Product product = new Product();
+							product.setProductId(userTrainingPlan.getTrainingPlan().getTrainingPlanId());
+							product.setProductName(userTrainingPlan.getTrainingPlan().getName());
+							product.setPrice(userTrainingPlan.getTrainingPlan().getPrice());
+							product.setForWho(userTrainingPlan.getTrainingPlan().getForWho());
+							product.setType("trainingPlan");
+							product.setDateOfPurchased(userTrainingPlan.getDateOfPurchase());
+							products.add(product);
+						}
+					}
+				}
+
+			} else if (role.getName().equals("ROLE_NUTRITIONIST")) {
+
+			}
+		}
+		model.addAttribute("account", account);
+		model.addAttribute("products", products);
+		model.addAttribute("payments", Math.abs(payments));
+		model.addAttribute("availableBalance", availableBalance);
+		return "common/transaction_history";
 	}
 
 }

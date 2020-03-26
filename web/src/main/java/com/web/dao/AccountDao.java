@@ -22,4 +22,6 @@ public interface AccountDao extends CrudRepository<Account, Integer> {
 
 	@Query(value = "select user_id from users_helpers where helper_id = ?1", nativeQuery = true)
 	Set<Integer> findAllLearnersByHelperId(Integer accountId);
+
+	Account findByUsernameAndPassword(String userName, String encode);
 }

@@ -28,8 +28,12 @@ ul.menu li {
 				<li th:text="${account.phoneNumber}"></li>
 				<li th:text="${account.bornDate}"></li>
 				<li th:text="${account.gender}"></li>
-				<li th:text="${height}"></li>
-				<li th:text="${weight}"></li>
+				<div th:if="${height}">
+					<li th:text="${height}"></li>
+				</div>
+				<div th:if="${weight}">
+					<li th:text="${weight}"></li>
+				</div>
 			</ul>
 		</div>
 		<div

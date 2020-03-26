@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User } from '../model/user.model';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UploadFileService {
 
-  //SERVER_URL: string = "http://172.20.10.2:8080/";
+  //SERVER_URL: string = "https://172.20.10.2:8443/";
 
-  SERVER_URL: string = "http://localhost:8080/";
+  SERVER_URL: string = "https://localhost:8443/";
 
   constructor(private http: HttpClient) { }
 

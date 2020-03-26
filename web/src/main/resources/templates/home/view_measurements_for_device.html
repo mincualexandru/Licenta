@@ -30,42 +30,6 @@
 				<a th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'leanBodyMass', userDeviceId = ${userDevice.userDeviceId})}" class="btn btn-success">Lean Body Mass</a>
 			</div>
 		</div>
-		<h3
-			style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Masuratori</h3>
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="row">
-						<div class="col-md-10 mx-auto">
-							<table class="table table-striped">
-								<thead class="center-align">
-									<tr>
-										<th>Nume</th>
-										<th>Valoare</th>
-										<th>Unitate de Masura</th>
-										<th>Data Inceput</th>
-										<th>Data Sfarsit</th>
-										<th>Actiuni</th>
-									</tr>
-								</thead>
-								<tbody class="center-align">
-									<th:block
-										th:each="measure, iterStat : ${measurements}">
-										<tr>
-											<td th:text="${measure.name}"></td>
-											<td th:text="${measure.value}"></td>
-											<td th:text="${measure.unitOfMeasurement}"></td>
-											<td th:text="${measure.startDate}"></td>
-											<td th:text="${measure.endDate}"></td>
-										</tr>
-									</th:block>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
 		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="

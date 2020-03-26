@@ -51,4 +51,9 @@ public class DeviceServiceImpl implements DeviceService {
 		return deviceDao.countByName(string);
 	}
 
+	@Override
+	public void deleteByDeviceId(Integer deviceId) {
+		deviceDao.deleteByDeviceId(deviceId);
+	}
+
 }

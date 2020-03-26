@@ -15,11 +15,12 @@ import org.xml.sax.SAXException;
 import com.web.model.UserDevice;
 
 public interface XmlParserService {
-	boolean readAllMeasurementsFromXmlFile(Set<UserDevice> userDevices) throws ParseException;
+	boolean readAllMeasurementsFromXmlFile(Set<UserDevice> userDevices, String username) throws ParseException;
 
 	void removeEmptyNodes(Document doc) throws XPathExpressionException;
 
 	NodeList getAllMeasurements(NodeList childNodes, Set<UserDevice> userDevices) throws ParseException;
 
-	Document readXML(DocumentBuilderFactory factory) throws ParserConfigurationException, SAXException, IOException;
+	Document readXML(DocumentBuilderFactory factory, String username)
+			throws ParserConfigurationException, SAXException, IOException;
 }

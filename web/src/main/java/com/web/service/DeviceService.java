@@ -19,4 +19,6 @@ public interface DeviceService {
 	Device findOneDeviceRandomByName(String string);
 
 	Integer countByName(String string);
+
+	void deleteByDeviceId(Integer deviceId);
 }

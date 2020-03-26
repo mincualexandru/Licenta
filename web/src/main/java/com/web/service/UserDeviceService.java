@@ -19,4 +19,6 @@ public interface UserDeviceService {
 	Set<UserDevice> findAllByBoughtAndUserAccountId(boolean b, Integer userId);
 
 	UserDevice findByUserAccountIdAndDeviceDeviceId(Integer userId, Integer productId);
+
+	void deleteByDeviceIdAndUserId(Integer deviceId, Integer userId);
 }

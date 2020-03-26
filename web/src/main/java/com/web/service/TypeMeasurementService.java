@@ -18,4 +18,6 @@ public interface TypeMeasurementService {
 	Set<TypeMeasurement> findAll();
 
 	TypeMeasurement findByType(String chartOption);
+
+	void deleteByDeviceIdAndTypeMeasurementId(Integer deviceId, Integer typeMeasurementId);
 }

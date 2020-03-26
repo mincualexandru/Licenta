@@ -1,11 +1,11 @@
 <nav class="navbar" style="background-color:white;">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a routerLink="/data-transfer" class="navbar-brand" style="font-size:25px; font-weight: 600;">Data Transfer</a>
+            <a routerLink="/data-transfer" class="navbar-brand" style="font-size:25px; font-weight: 600; color: #3f51b5;">Transfer Date Dispozitive</a>
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li routerLinkActive="active" *ngIf="!isAuthenticated"><a routerLink="/auth" style="font-size:18px; cursor:pointer;">Authenticate</a></li>
+                <li routerLinkActive="active" *ngIf="!isAuthenticated"><a routerLink="/auth" style="font-size:18px; cursor:pointer;">Autentificare</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li *ngIf="isAuthenticated">

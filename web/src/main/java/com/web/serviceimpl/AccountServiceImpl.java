@@ -1,5 +1,6 @@
 package com.web.serviceimpl;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.Set;
 
@@ -53,6 +54,7 @@ public class AccountServiceImpl implements AccountService {
 	public void saveUser(Account user, String chooseRoleName) {
 		user.getRoles().add(roleDao.findByName(chooseRoleName));
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+		user.setDateOfcreation(new Timestamp(System.currentTimeMillis()));
 		accountDao.save(user);
 	}
 

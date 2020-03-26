@@ -1,14 +1,15 @@
 package com.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.web.dao.AccountDao;
 import com.web.model.Account;
+import com.web.model.Role;
+import com.web.utils.AccountRest;
 
 @RestController
 public class LoginController {
@@ -16,17 +17,35 @@ public class LoginController {
 	@Autowired
 	private AccountDao userDAO;
 
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 	@PostMapping("/loginResource")
-	public Account loginResource(@RequestBody String userName) {
-		String message = "";
-		try {
-			Account userConnected = userDAO.findByUsername(userName);
-			message = "You logged in successfully  " + userName + "!";
-			ResponseEntity.status(HttpStatus.OK).body(message);
-			return userConnected;
-		} catch (Exception e) {
-			message = "FAIL " + userName + "!";
-			ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
+	public AccountRest loginResource(@RequestParam String userName, @RequestParam String password) {
+		Account userConnected = userDAO.findByUsername(userName);
+		if (userConnected != null) {
+			if (bCryptPasswordEncoder.matches(password, userConnected.getPassword())) {
+				Role selectedRole = null;
+				for (Role role : userConnected.getRoles()) {
+					selectedRole = role;
+				}
+				AccountRest accountRest = new AccountRest();
+				accountRest.setAccountId(userConnected.getAccountId());
+				accountRest.setActive(userConnected.isActive());
+				accountRest.setBornDate(userConnected.getBornDate());
+				accountRest.setEmail(userConnected.getEmail());
+				accountRest.setFirstName(userConnected.getFirstName());
+				accountRest.setGender(userConnected.getGender().getGender());
+				accountRest.setLastName(userConnected.getLastName());
+				accountRest.setPassword(userConnected.getPassword());
+				accountRest.setPhoneNumber(userConnected.getPhoneNumber());
+				accountRest.setRole(selectedRole.getName());
+				accountRest.setUsername(userConnected.getUsername());
+				return accountRest;
+			} else {
+				return null;
+			}
+		} else {
 			return null;
 		}
 	}

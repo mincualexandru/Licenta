@@ -36,4 +36,8 @@ public interface MeasurementService {
 	Set<Measurement> findLast3ByNameAndUserDeviceId(String name, Integer userDeviceId);
 
 	Measurement findByEndDate(Timestamp timestamp);
+
+	void deleteAllByUserDeviceId(Integer userDeviceId);
+
+	Optional<Measurement> findByNameAndUserDeviceUserDeviceId(String scaleTypeMeasurement, Integer userDeviceId);
 }

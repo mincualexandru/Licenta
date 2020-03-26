@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.web.model.Measurement;
 
@@ -32,4 +34,11 @@ public interface MeasurementDao extends CrudRepository<Measurement, Integer> {
 	Set<Measurement> findLast3ByNameAndUserDeviceId(String name, Integer userDeviceId);
 
 	Measurement findByEndDate(Timestamp timestamp);
+
+	@Transactional
+	@Modifying
+	@Query(value = "delete from measurements where user_device_id = ?1 and from_xml = true", nativeQuery = true)
+	void deleteAllByUserDeviceId(Integer userDeviceId);
+
+	Optional<Measurement> findByNameAndUserDeviceUserDeviceId(String scaleTypeMeasurement, Integer userDeviceId);
 }

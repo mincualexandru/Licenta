@@ -9,6 +9,8 @@ import { catchError, map } from "rxjs/operators";
 import { UploadFileService } from "../services/upload-file.service";
 import { AuthService } from "../services/auth.service";
 
+const differentFile = "Fisierul pe care il incarci trebuie sa aiba denumirea 'export.zip'";
+const errorFile = "A aparut o eroare ! Fisierul nu a fost incarcat ! ";
 @Component({
   selector: "form-upload",
   templateUrl: "./form-upload.component.html",
@@ -20,12 +22,12 @@ export class FormUploadComponent implements OnInit {
   progress: { percentage: number } = { percentage: 0 };
   selectedFile: File;
   ZIP_TYPE = ".zip";
-  RAR_TYPE = ".rar";
-  ZIP7_TYPE = ".7zip";
   OTHER_TYPE = "Fisierul este de alt tip";
   typeOfFile: string;
   alreadyTransferred: boolean;
   userName: string;
+  errorMessageFromServer: string;
+  message: string;
 
   constructor(
     private uploadService: UploadFileService,
@@ -47,48 +49,36 @@ export class FormUploadComponent implements OnInit {
   }
 
   private verifyTheTypeOfFile() {
-    if (this.selectedFile.name.includes(this.RAR_TYPE)) {
-      this.typeOfFile = "Fisierul este de tipul arhiva rar";
-    } else if (this.selectedFile.name.includes(this.ZIP_TYPE)) {
+    if (this.selectedFile.name.includes(this.ZIP_TYPE)) {
       this.typeOfFile = "Fisierul este de tipul arhiva zip";
-    } else if (this.selectedFile.name.includes(this.ZIP7_TYPE)) {
-      this.typeOfFile = "Fisierul este de tipul arhiva 7zip";
     } else {
       this.typeOfFile = this.OTHER_TYPE;
     }
   }
 
   upload() {
-    console.log("Numele utilizatorului conectat este " + this.userName);
     this.progress.percentage = 0;
-    console.log("A INTRAT AICI");
     this.currentFileUpload = this.selectedFiles.item(0);
-    console.log(this.currentFileUpload);
-    console.log(this.currentFileUpload.name);
     this.uploadService
       .pushFileToStorage(this.currentFileUpload, this.userName)
       .pipe(
         catchError((error: HttpErrorResponse) => {
-          console.log("A INTRAT AICI 2");
-          console.log(error.message);
-          console.log(error.status);
-          console.log(error);
           if (error.status === 417) {
-            this.alreadyTransferred = true;
+            this.errorMessageFromServer = error.message;
           }
-          console.log(error.type);
-          console.log(error.url);
           return of(`${this.currentFileUpload.name} upload failed.`);
         })
       )
       .subscribe((event: any) => {
-        console.log(event.type);
         if (event.type === HttpEventType.UploadProgress) {
           this.progress.percentage = Math.round(
             (100 * event.loaded) / event.total
           );
-        } else if (event instanceof HttpResponse) {
-          console.log("File is completely uploaded!");
+          this.message = "Ai incarcat cu succes fisierul !";
+        } else if (event.body === differentFile) {
+          this.message = differentFile;
+        } else if(event.body === errorFile) {
+          this.message = errorFile;
         }
       });
 

@@ -11,6 +11,10 @@
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 <body>
+	<div th:unless="${#lists.size(feedbacks)}">
+		Nu exista feedback-uri
+	</div>
+	<div th:if="${#lists.size(feedbacks)}">
 	<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Helpers</h3>
 	<div class="container-fluid">
 		<div class="row">
@@ -41,6 +45,7 @@
 				</div>
 			</div>
 		</div>
+	</div>
 	</div>
 </body>
 </html>

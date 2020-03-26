@@ -39,19 +39,23 @@ public class Measurement {
 	@Column(name = "end_date")
 	private Timestamp endDate;
 
-//	@OneToOne(mappedBy = "measurement")
-//	@JsonIgnore
-//	private MeasurementInformation measurementInformation;
+	@Column(name = "from_xml")
+	private Boolean fromXml;
 
 	public Measurement() {
 	}
 
-	public Measurement(String name, float value, String unitOfMeasurement, Timestamp startDate, Timestamp endDate) {
+	public Measurement(Integer measurementId, UserDevice userDevice, String name, float value, String unitOfMeasurement,
+			Timestamp startDate, Timestamp endDate, Boolean fromXml) {
+		super();
+		this.measurementId = measurementId;
+		this.userDevice = userDevice;
 		this.name = name;
 		this.value = value;
 		this.unitOfMeasurement = unitOfMeasurement;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.fromXml = fromXml;
 	}
 
 	public Integer getMeasurementId() {
@@ -110,18 +114,18 @@ public class Measurement {
 		this.endDate = endDate;
 	}
 
-//	public MeasurementInformation getMeasurementInformation() {
-//		return measurementInformation;
-//	}
-//
-//	public void setMeasurementInformation(MeasurementInformation measurementInformation) {
-//		this.measurementInformation = measurementInformation;
-//	}
+	public Boolean getFromXml() {
+		return fromXml;
+	}
+
+	public void setFromXml(Boolean fromXml) {
+		this.fromXml = fromXml;
+	}
 
 	@Override
 	public String toString() {
-		return "Measurement [name=" + name + ", value=" + value + ", unitOfMeasurement=" + unitOfMeasurement
-				+ ", startDate=" + startDate + ", endDate=" + endDate + "]";
+		return "Measurement [measurementId=" + measurementId + ", userDevice=" + userDevice + ", name=" + name
+				+ ", value=" + value + ", unitOfMeasurement=" + unitOfMeasurement + ", startDate=" + startDate
+				+ ", endDate=" + endDate + ", fromXml=" + fromXml + "]";
 	}
-
 }

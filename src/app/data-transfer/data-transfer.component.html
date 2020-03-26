@@ -1,7 +1,8 @@
 <div *ngIf="user.role === 'ROLE_USER'">
     <app-device-card 
     *ngFor = "let device of devices"
-    [device]="device"></app-device-card>
+    [device]="device"
+    [user]="user"></app-device-card>
     <form-upload></form-upload>
 </div>
 <div *ngIf="user.role === 'ROLE_TRAINER'">

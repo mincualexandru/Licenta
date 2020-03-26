@@ -94,50 +94,35 @@ public class UserController {
 	@GetMapping(path = { "/home" })
 	public String home(Model model) {
 		Account account = getAccountConnected();
-		Set<UserDevice> userDevices = userDeviceService.findAllByBoughtAndUserAccountId(false, account.getAccountId());
 		Set<TypeMeasurement> typeMeasurements = typeMeasurementService.findAll();
-		boolean addBandToShoppingCart = false;
-		boolean addScaleToShoppingCart = false;
 		Set<Measurement> userMeasurements = new HashSet<>();
-		for (UserDevice userDevice : userDevices) {
-			if (userDevice.getDevice().getName().equals("Bratara") && userDevice.isBought() == false) {
-				addBandToShoppingCart = true;
-			}
-			if (userDevice.getDevice().getName().equals("Cantar Inteligent") && userDevice.isBought() == false) {
-				addScaleToShoppingCart = true;
-			}
-		}
-
+		boolean bandAlreadyBought = false;
+		boolean scaleAlreadyBought = false;
 		for (UserDevice userDevice : account.getUserDevices()) {
 			if (userDevice.isBought()) {
 				for (TypeMeasurement type : typeMeasurements) {
 					userMeasurements.addAll(measurementService.findLast3ByNameAndUserDeviceId(type.getType(),
 							userDevice.getUserDeviceId()));
 				}
+				if (userDevice.getDevice().getName().equals("Bratara")) {
+					LOGGER.info("Ai deja bratara");
+					bandAlreadyBought = true;
+				}
+				if (userDevice.getDevice().getName().equals("Cantar Inteligent")) {
+					LOGGER.info("Ai deja cantar");
+					scaleAlreadyBought = true;
+				}
 			}
 		}
-
-		Integer payments = account.getTransaction().getPayments();
-		Integer availableBalance = account.getTransaction().getAvailableBalance();
-
-//		try {
-//			xmlParsersService.readAllMeasurementsFromXmlFile(
-//					userDeviceService.findAllByBoughtAndUserAccountId(true, account.getAccountId()));
-//
-//		} catch (ParseException e) {
-//			e.printStackTrace();
-//		}
 
 		List<Measurement> userMeasurementsSorted = userMeasurements.stream()
 				.sorted((e1, e2) -> e1.getName().compareTo(e2.getName())).collect(Collectors.toList());
 
-		model.addAttribute("addBandToShoppingCart", addBandToShoppingCart);
-		model.addAttribute("addScaleToShoppingCart", addScaleToShoppingCart);
+		model.addAttribute("bandAlreadyBought", bandAlreadyBought);
+		model.addAttribute("scaleAlreadyBought", scaleAlreadyBought);
 		model.addAttribute("user", account);
 		model.addAttribute("typeMeasurements", typeMeasurements);
 		model.addAttribute("userMeasurements", userMeasurementsSorted);
-		model.addAttribute("payments", Math.abs(payments));
-		model.addAttribute("availableBalance", availableBalance);
 		return "home/home";
 
 	}
@@ -267,11 +252,20 @@ public class UserController {
 			@RequestParam Integer productId, @RequestParam String productName, RedirectAttributes redirectAttributes) {
 		if (productName.equals("Bratara") || productName.equals("Cantar Inteligent")) {
 			UserDevice userDeviceToDelete = userDeviceService.findByUserAccountIdAndDeviceDeviceId(userId, productId);
-			userDeviceService.delete(userDeviceToDelete);
+			Device deviceToDelete = userDeviceToDelete.getDevice();
+			userDeviceService.deleteByDeviceIdAndUserId(deviceToDelete.getDeviceId(), userId);
+			if (deviceToDelete.getTypeMeasurements() != null) {
+				for (TypeMeasurement typeMeasurementForDevice : deviceToDelete.getTypeMeasurements()) {
+					typeMeasurementService.deleteByDeviceIdAndTypeMeasurementId(deviceToDelete.getDeviceId(),
+							typeMeasurementForDevice.getTypeMeasurementId());
+				}
+				deviceService.deleteByDeviceId(deviceToDelete.getDeviceId());
+			}
+
 		} else {
 			UserTraining userTrainingToDelete = userTrainingService
 					.findByUserAccountIdAndTrainingPlanTrainingPlanId(userId, productId);
-			userTrainingService.delete(userTrainingToDelete);
+			userTrainingService.deleteByUserTrainingId(userTrainingToDelete.getUserTrainingId());
 		}
 		return "redirect:/shopping_cart";
 	}
@@ -415,6 +409,7 @@ public class UserController {
 				measurement.setUnitOfMeasurement("kcal");
 				measurement.setValue(exerciseService.findById(exerciseId).get().getCaloriesBurned());
 				measurement.setUserDevice(userDevice);
+				measurement.setFromXml(false);
 				measurementService.save(measurement);
 			}
 		}

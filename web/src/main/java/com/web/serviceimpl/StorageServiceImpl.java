@@ -5,23 +5,33 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.Enumeration;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.web.model.UserDevice;
+import com.web.service.MeasurementService;
 
 @Service("storageService")
 public class StorageServiceImpl {
 
 	Logger log = LoggerFactory.getLogger(this.getClass().getName());
-	// private final Path rootLocation = Paths.get("upload-dir");
+
+	@Autowired
+	private MeasurementService measurementService;
 
 	public void store(MultipartFile file, Path rootLocation2) {
 		try {
@@ -78,6 +88,8 @@ public class StorageServiceImpl {
 				extractFolder(destFile.getAbsolutePath());
 			}
 		}
+
+		zip.close();
 	}
 
 	public void init(Path rootLocation2) {
@@ -85,6 +97,24 @@ public class StorageServiceImpl {
 			Files.createDirectories(rootLocation2);
 		} catch (IOException e) {
 			throw new RuntimeException("Could not initialize storage!");
+		}
+	}
+
+	public void delete(Path resolve, Path resolve2, Set<UserDevice> userDevices) {
+		try {
+			if (Files.exists(resolve2)) {
+				Files.walk(resolve2).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+			}
+			Files.deleteIfExists(resolve);
+			for (UserDevice userDevice : userDevices) {
+				measurementService.deleteAllByUserDeviceId(userDevice.getUserDeviceId());
+			}
+		} catch (NoSuchFileException e) {
+			System.out.println("No such file/directory exists");
+		} catch (DirectoryNotEmptyException e) {
+			System.out.println("Directory is not empty.");
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
 		}
 	}
 }

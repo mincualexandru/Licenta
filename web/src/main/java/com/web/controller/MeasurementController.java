@@ -269,6 +269,7 @@ public class MeasurementController {
 		}
 		model.addAttribute("chartMap", chartMap);
 		model.addAttribute("chosenMeasurements", chosenMeasurements);
+		model.addAttribute("measurementsBetweenTimestamps", measurementsBetweenTimestamps);
 		model.addAttribute("goalMeasurements", goalMeasurements);
 		model.addAttribute("chartOption", chartOption);
 		model.addAttribute("userDeviceId", userDeviceId);

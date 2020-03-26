@@ -42,10 +42,10 @@ public class XmlParserServiceImpl implements XmlParserService {
 	private EntityManager entityManager;
 
 	@Override
-	public boolean readAllMeasurementsFromXmlFile(Set<UserDevice> userDevices) throws ParseException {
+	public boolean readAllMeasurementsFromXmlFile(Set<UserDevice> userDevices, String username) throws ParseException {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		try {
-			Document doc = readXML(factory);
+			Document doc = readXML(factory, username);
 			Node parentNode = doc.getDocumentElement();
 			removeEmptyNodes(doc);
 			NodeList childNodes = parentNode.getChildNodes();
@@ -67,13 +67,13 @@ public class XmlParserServiceImpl implements XmlParserService {
 	}
 
 	@Override
-	public Document readXML(DocumentBuilderFactory factory)
+	public Document readXML(DocumentBuilderFactory factory, String username)
 			throws ParserConfigurationException, SAXException, IOException {
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Path currentPath = Paths.get(".");
 		Path absolutePath = currentPath.toAbsolutePath();
-		Document doc = builder.parse("file:///" + absolutePath
-				+ "/src/main/resources/static/uploads/mincualexandru/export/export_sănătate_apple/export.xml");
+		Document doc = builder.parse("file:///" + absolutePath + "/src/main/resources/static/uploads/" + username
+				+ "/export/export_sănătate_apple/export.xml");
 		doc.getDocumentElement().normalize();
 		return doc;
 	}
@@ -117,6 +117,7 @@ public class XmlParserServiceImpl implements XmlParserService {
 					measure.setEndDate(endTimestamp);
 					measure.setUnitOfMeasurement(unitOfMeasurement);
 					measure.setName(name);
+					measure.setFromXml(true);
 					if (name.equals("HKCategoryTypeIdentifierSleepAnalysis")) {
 						Integer difference = (int) (parsedEndDate.getTime() - parsedStartDate.getTime());
 						Integer differenceMinutes = difference / (60 * 1000);
@@ -147,10 +148,11 @@ public class XmlParserServiceImpl implements XmlParserService {
 	@Transactional
 	public void insertMeasure(Measurement measure) {
 		entityManager.createNativeQuery(
-				"INSERT INTO measurements (user_device_id, name, value, unit_of_measurement, start_date, end_date) VALUES (?,?,?,?,?,?)")
+				"INSERT INTO measurements (user_device_id, name, value, unit_of_measurement, start_date, end_date, from_xml) VALUES (?,?,?,?,?,?,?)")
 				.setParameter(1, measure.getUserDevice()).setParameter(2, measure.getName())
 				.setParameter(3, measure.getValue()).setParameter(4, measure.getUnitOfMeasurement())
-				.setParameter(5, measure.getStartDate()).setParameter(6, measure.getEndDate()).executeUpdate();
+				.setParameter(5, measure.getStartDate()).setParameter(6, measure.getEndDate())
+				.setParameter(7, measure.getFromXml()).executeUpdate();
 	}
 
 }

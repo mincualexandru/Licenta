@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Device } from '../model/device.model';
-import { User } from '../model/user.model';
+import { Device } from '../models/device.model';
+import { User } from '../models/user.model';
 import { AuthService } from '../services/auth.service';
 import { DataTransferService } from '../services/data-transfer.service';
 @Component({
@@ -32,5 +32,5 @@ export class DataTransferComponent implements OnInit{
           }, (error) => {
             console.log(error);
           });
-      }
+    }
 }

@@ -21,4 +21,6 @@ public interface UserTrainingService {
 	UserTraining findByUserAccountIdAndTrainingPlanTrainingPlanId(Integer userId, Integer productId);
 
 	Set<UserTraining> findAllByUserAccountId(Integer accountId);
+
+	void deleteByUserTrainingId(Integer userTrainingId);
 }

@@ -16,6 +16,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "devices")
 public class Device {
@@ -38,9 +40,11 @@ public class Device {
 	private Integer price;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "device", orphanRemoval = true)
+	@JsonIgnore
 	private Set<UserDevice> userDevices = new HashSet<>();
 
 	@ManyToMany(fetch = FetchType.EAGER)
+	@JsonIgnore
 	@JoinTable(name = "device_type_measurement", joinColumns = {
 			@JoinColumn(name = "device_id") }, inverseJoinColumns = { @JoinColumn(name = "type_measurement_id") })
 	private Set<TypeMeasurement> typeMeasurements = new HashSet<>();

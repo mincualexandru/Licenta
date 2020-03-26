@@ -50,4 +50,9 @@ public class UserDeviceServiceImpl implements UserDeviceService {
 	public UserDevice findByUserAccountIdAndDeviceDeviceId(Integer userId, Integer productId) {
 		return userDeviceDao.findByUserAccountIdAndDeviceDeviceId(userId, productId);
 	}
+
+	@Override
+	public void deleteByDeviceIdAndUserId(Integer deviceId, Integer userId) {
+		userDeviceDao.deleteByDeviceIdAndUserId(deviceId, userId);
+	}
 }

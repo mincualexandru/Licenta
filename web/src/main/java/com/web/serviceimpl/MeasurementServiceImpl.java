@@ -92,4 +92,15 @@ public class MeasurementServiceImpl implements MeasurementService {
 	public Measurement findByEndDate(Timestamp timestamp) {
 		return measurementDao.findByEndDate(timestamp);
 	}
+
+	@Override
+	public void deleteAllByUserDeviceId(Integer userDeviceId) {
+		measurementDao.deleteAllByUserDeviceId(userDeviceId);
+	}
+
+	@Override
+	public Optional<Measurement> findByNameAndUserDeviceUserDeviceId(String scaleTypeMeasurement,
+			Integer userDeviceId) {
+		return measurementDao.findByNameAndUserDeviceUserDeviceId(scaleTypeMeasurement, userDeviceId);
+	}
 }

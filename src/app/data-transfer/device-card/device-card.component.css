@@ -1,6 +1,6 @@
 .mat-card {
     max-width: 300px;
-    margin-bottom: 20px;
+    margin: auto;
 }
 
 .mat-card-avatar {

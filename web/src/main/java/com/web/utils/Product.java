@@ -1,5 +1,7 @@
 package com.web.utils;
 
+import java.sql.Timestamp;
+
 public class Product {
 
 	Integer productId;
@@ -14,11 +16,13 @@ public class Product {
 
 	String type;
 
+	Timestamp dateOfPurchased;
+
 	public Product() {
 	}
 
-	public Product(Integer productId, String productName, Integer price, String companyName, Gender forWho,
-			String type) {
+	public Product(Integer productId, String productName, Integer price, String companyName, Gender forWho, String type,
+			Timestamp dateOfPurchased) {
 		super();
 		this.productId = productId;
 		this.productName = productName;
@@ -26,6 +30,7 @@ public class Product {
 		this.companyName = companyName;
 		this.forWho = forWho;
 		this.type = type;
+		this.dateOfPurchased = dateOfPurchased;
 	}
 
 	public Integer getProductId() {
@@ -76,9 +81,11 @@ public class Product {
 		this.type = type;
 	}
 
-	@Override
-	public String toString() {
-		return "Product [productName=" + productName + ", price=" + price + ", companyName=" + companyName + ", forWho="
-				+ forWho + ", type=" + type + "]";
+	public Timestamp getDateOfPurchased() {
+		return dateOfPurchased;
+	}
+
+	public void setDateOfPurchased(Timestamp dateOfPurchased) {
+		this.dateOfPurchased = dateOfPurchased;
 	}
 }
