@@ -25,7 +25,6 @@ import com.web.model.Account;
 import com.web.model.Exercise;
 import com.web.model.ExerciseAdvice;
 import com.web.model.ExerciseImage;
-import com.web.model.Role;
 import com.web.model.TrainingPlan;
 import com.web.model.UserTraining;
 import com.web.service.AccountService;
@@ -114,10 +113,15 @@ public class TrainerController {
 	}
 
 	@GetMapping(path = { "/edit_training_plan/{id}" })
-	public String editTrainingPlan(Model model, @PathVariable("id") Integer trainingPlanId) {
-		if (!model.containsAttribute("trainingPlan")) {
-			TrainingPlan trainingPlan = trainingPlanService.findById(trainingPlanId).get();
-			model.addAttribute("trainingPlan", trainingPlan);
+	public String editTrainingPlan(Model model, @PathVariable("id") String trainingPlanId) {
+
+		if (checkId(trainingPlanId) && trainingPlanService.findById(Integer.parseInt(trainingPlanId)).isPresent()) {
+			if (!model.containsAttribute("trainingPlan")) {
+				TrainingPlan trainingPlan = trainingPlanService.findById(Integer.parseInt(trainingPlanId)).get();
+				model.addAttribute("trainingPlan", trainingPlan);
+			}
+		} else {
+			model.addAttribute("inexistentValue", true);
 		}
 		model.addAttribute("sex", Gender.values());
 		return "trainer/edit_training_plan";
@@ -144,10 +148,14 @@ public class TrainerController {
 	}
 
 	@GetMapping(path = { "/create_exercise_for_training_plan/{id}" })
-	public String createExerciseForTrainingPlan(Model model, @PathVariable("id") Integer trainingPlanId) {
-		if (!model.containsAttribute("exercise")) {
-			Exercise newExercise = new Exercise();
-			model.addAttribute("exercise", newExercise);
+	public String createExerciseForTrainingPlan(Model model, @PathVariable("id") String trainingPlanId) {
+		if (checkId(trainingPlanId) && trainingPlanService.findById(Integer.parseInt(trainingPlanId)).isPresent()) {
+			if (!model.containsAttribute("exercise")) {
+				Exercise newExercise = new Exercise();
+				model.addAttribute("exercise", newExercise);
+			}
+		} else {
+			model.addAttribute("inexistentValue", true);
 		}
 		model.addAttribute("muscleGroups", TrainedMuscleGroup.values());
 		model.addAttribute("trainingPlanId", trainingPlanId);
@@ -169,40 +177,23 @@ public class TrainerController {
 		}
 	}
 
-	@PostMapping(path = { "/exercises_training_plan" })
-	public String createExerciseForTrainingPlanSave(Model model, @RequestParam Integer trainingPlanId) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Account account = accountService.findByUsername(auth.getName());
-		for (Role role : account.getRoles()) {
-			if (role.getName().equals("ROLE_USER")) {
-				Set<Exercise> notPerformedExercises = exerciseService
-						.findAllNotPerfomerdExercisesForTrainingPlanId(trainingPlanId);
-				model.addAttribute("exercises", notPerformedExercises);
-			} else if (role.getName().equals("ROLE_TRAINER")) {
-				Set<Exercise> exercises = exerciseService.findAllByTrainingPlanTrainingPlanId(trainingPlanId);
-				model.addAttribute("exercises", exercises);
-			}
-		}
-		model.addAttribute("account", account);
-		return "common/exercises_training_plan";
-	}
-
 	@GetMapping(path = { "/view_exercise/{id}" })
-	public String viewExercise(Model model, @PathVariable("id") Integer exerciseId) {
-		if (!(exerciseService.findById(exerciseId).isPresent())) {
-			return "redirect:/error";
+	public String viewExercise(Model model, @PathVariable("id") String exerciseId) {
+		if (checkId(exerciseId) && exerciseService.findById(Integer.parseInt(exerciseId)).isPresent()) {
+			Exercise exercise = exerciseService.findById(Integer.parseInt(exerciseId)).get();
+			Set<ExerciseAdvice> exerciseAdvice = exercise.getExerciseAdvices();
+			List<ExerciseAdvice> exerciseAdviceSorted = exerciseAdvice.stream()
+					.sorted((e1, e2) -> e1.getAdvice().compareTo(e2.getAdvice())).collect(Collectors.toList());
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			Account account = accountService.findByUsername(auth.getName());
+			model.addAttribute("account", account);
+			model.addAttribute("exercise", exercise);
+			model.addAttribute("exerciseAdviceSorted", exerciseAdviceSorted);
+			model.addAttribute("exerciseImage", new ExerciseImage());
+			model.addAttribute("exerciseAdvice", new ExerciseAdvice());
+		} else {
+			model.addAttribute("inexistentValue", true);
 		}
-		Exercise exercise = exerciseService.findById(exerciseId).get();
-		Set<ExerciseAdvice> exerciseAdvice = exercise.getExerciseAdvices();
-		List<ExerciseAdvice> exerciseAdviceSorted = exerciseAdvice.stream()
-				.sorted((e1, e2) -> e1.getAdvice().compareTo(e2.getAdvice())).collect(Collectors.toList());
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Account account = accountService.findByUsername(auth.getName());
-		model.addAttribute("account", account);
-		model.addAttribute("exercise", exercise);
-		model.addAttribute("exerciseAdviceSorted", exerciseAdviceSorted);
-		model.addAttribute("exerciseImage", new ExerciseImage());
-		model.addAttribute("exerciseAdvice", new ExerciseAdvice());
 		return "common/view_exercise";
 	}
 
@@ -253,5 +244,14 @@ public class TrainerController {
 		exerciseAdviceService
 				.delete(exerciseAdviceService.findByExerciseAdviceIdAndExerciseExerciseId(adviceId, exerciseId));
 		return "redirect:/view_exercise/" + exerciseId;
+	}
+
+	private boolean checkId(String userDeviceId) {
+		try {
+			int num = Integer.parseInt(userDeviceId);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
 	}
 }

@@ -33,6 +33,10 @@ div.desc {
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 <body>
+<div th:if="${inexistentValue}">
+	Valoarea introdusa nu exista
+</div>
+<div th:unless="${inexistentValue}">
 <div th:each="role, iterStat : ${account.roles}">
 	<div th:if="${role.name == 'ROLE_USER'}">
 	<div class="container-fluid">
@@ -203,6 +207,7 @@ div.desc {
 		</div>
 	</div>
 	</div>
+</div>
 </div>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
 		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="

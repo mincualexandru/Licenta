@@ -11,7 +11,11 @@
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 <body>
-	<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Cursanti</h3>
+<div th:unless="${#lists.size(learners)}">
+		Nu ai niciun cursant
+	</div>
+	<div th:if="${#lists.size(learners)}">
+		<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Cursanti</h3>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
@@ -54,6 +58,7 @@
 				</div>
 			</div>
 		</div>
+	</div>
 	</div>
 </body>
 </html>

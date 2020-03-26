@@ -46,7 +46,9 @@
 	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div th:unless="${#lists.size(chosenMeasurements)}">
+<div th:if="${inexistentValue}">Ai introdus o valoare care nu exista</div>
+<div th:unless="${inexistentValue}">
+	<div th:unless="${#lists.size(chosenMeasurements)}">
 	<div th:unless="${measurementsBetweenTimestamps}">
 		Nu exista masuratori
 	</div>
@@ -499,6 +501,7 @@
 	</form>
 	</div>
 </div>
+</div>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
 		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
 		crossorigin="anonymous"></script>
@@ -566,150 +569,212 @@
 	let middle2Width = 60;
 	let maximumWidth = 100;
 	let chartOption = [[${chartOption}]];
-	console.log("Graficul selectat " + chartOption);
-	$(function() {
-		
-		$('#sleepAnalysis').highcharts({
-			chart: {
-	            zoomType: 'x'
-	        },
-	        title: {
-	        	text: [[${chartOption}]]
-	        },
-	        xAxis: {
-	        	categories: [[${chartMap.keySet()}]]
-	        },
-	        yAxis: {
-	            title: {
-	                text: 'Valori'
-	            }
-	        },
-	        tooltip: {
-	            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-	            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-	            '<td style="padding:0"><b>{point.y:.1f} Minute</b></td></tr>',
-	            footerFormat: '</table>',
-	            shared: true,
-	            useHTML: true
-	        },
-	        legend: {
-	            enabled: false
-	        },
-	        plotOptions: {
-	            area: {
-	                fillColor: {
-	                    linearGradient: {
-	                        x1: 0,
-	                        y1: 0,
-	                        x2: 0,
-	                        y2: 1
-	                    },
-	                    stops: [
-	                        [0, Highcharts.getOptions().colors[0]],
-	                        [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-	                    ]
-	                },
-	                marker: {
-	                    radius: 2
-	                },
-	                lineWidth: 1,
-	                states: {
-	                    hover: {
-	                        lineWidth: 1
-	                    }
-	                },
-	                threshold: null
-	            },
-	            series: {
-	                cursor: 'pointer',
-	                point: {
-	                    events: {
-	                        click: function () {
-	                        	let chartMap = [[${chartMap}]];
-	                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
-	                        	let hours = (valueOfMeasurement / 60);
-	                        	let rhours = Math.floor(hours);
-	                        	let minutes = (hours - rhours) * 60;
-	                        	let rminutes = Math.round(minutes);
-	                        	document.getElementById("aditional-information").style.visibility = "visible";
-	                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
-	                        	document.getElementById("valueOfMeasurement").innerHTML = rhours + " " + rminutes;
-	                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
-	                        }
-	                    }
-	                }
-	            }
-	        },
+	console.log(chartOption);
+	let inexistentValue = [[${inexistentValue}]];
+	console.log(inexistentValue);
+	console.log("MMUIE");
+	if(!inexistentValue) {
+		$(function() {
+			
+			$('#sleepAnalysis').highcharts({
+				chart: {
+		            zoomType: 'x'
+		        },
+		        title: {
+		        	text: [[${chartOption}]]
+		        },
+		        xAxis: {
+		        	categories: [[${chartMap.keySet()}]]
+		        },
+		        yAxis: {
+		            title: {
+		                text: 'Valori'
+		            }
+		        },
+		        tooltip: {
+		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+		            '<td style="padding:0"><b>{point.y:.1f} Minute</b></td></tr>',
+		            footerFormat: '</table>',
+		            shared: true,
+		            useHTML: true
+		        },
+		        legend: {
+		            enabled: false
+		        },
+		        plotOptions: {
+		            area: {
+		                fillColor: {
+		                    linearGradient: {
+		                        x1: 0,
+		                        y1: 0,
+		                        x2: 0,
+		                        y2: 1
+		                    },
+		                    stops: [
+		                        [0, Highcharts.getOptions().colors[0]],
+		                        [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+		                    ]
+		                },
+		                marker: {
+		                    radius: 2
+		                },
+		                lineWidth: 1,
+		                states: {
+		                    hover: {
+		                        lineWidth: 1
+		                    }
+		                },
+		                threshold: null
+		            },
+		            series: {
+		                cursor: 'pointer',
+		                point: {
+		                    events: {
+		                        click: function () {
+		                        	let chartMap = [[${chartMap}]];
+		                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
+		                        	let hours = (valueOfMeasurement / 60);
+		                        	let rhours = Math.floor(hours);
+		                        	let minutes = (hours - rhours) * 60;
+		                        	let rminutes = Math.round(minutes);
+		                        	document.getElementById("aditional-information").style.visibility = "visible";
+		                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
+		                        	document.getElementById("valueOfMeasurement").innerHTML = rhours + " " + rminutes;
+		                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
+		                        }
+		                    }
+		                }
+		            }
+		        },
 
-	        series: [{
-	            type: 'area',
-	            name: 'Timp',
-	            data: [[${chartMap.values()}]]
-	        }]
-	    });
-		
-		
-		$('#stepCount').highcharts({
-			chart: {
-	            zoomType: 'x'
-	        },
-	        title: {
-	        	text: [[${chartOption}]]
-	        },
-	        scrollbar: {
-	            enabled: true
-	        },
-	        xAxis: {
-	        	categories: [[${chartMap.keySet()}]],
-	        	crosshair: true,
- 	            min: 0,
-				max: 10
-	        },
-	        yAxis: {
-	            title: {
-	                text: 'Valori'
-	            }
-	        },
-	        tooltip: {
-	            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-	            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-	            '<td style="padding:0"><b>{point.y:.1f} Pasi</b></td></tr>',
-	            footerFormat: '</table>',
-	            shared: true,
-	            useHTML: true
-	        },
-	        legend: {
-	            enabled: false
-	        },
-	        plotOptions: {
-	            area: {
-	                fillColor: {
-	                    linearGradient: {
-	                        x1: 0,
-	                        y1: 0,
-	                        x2: 0,
-	                        y2: 1
-	                    },
-	                    stops: [
-	                        [0, Highcharts.getOptions().colors[0]],
-	                        [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-	                    ]
-	                },
-	                marker: {
-	                    radius: 2
-	                },
-	                lineWidth: 1,
-	                states: {
-	                    hover: {
-	                        lineWidth: 1
-	                    }
-	                },
-	                threshold: null
-	            },
-	            series: {
-	                cursor: 'pointer',
-	                point: {
-	                	events: {
+		        series: [{
+		            type: 'area',
+		            name: 'Timp',
+		            data: [[${chartMap.values()}]]
+		        }]
+		    });
+			
+			
+			$('#stepCount').highcharts({
+				chart: {
+		            zoomType: 'x'
+		        },
+		        title: {
+		        	text: [[${chartOption}]]
+		        },
+		        scrollbar: {
+		            enabled: true
+		        },
+		        xAxis: {
+		        	categories: [[${chartMap.keySet()}]],
+		        	crosshair: true,
+	 	            min: 0,
+					max: 10
+		        },
+		        yAxis: {
+		            title: {
+		                text: 'Valori'
+		            }
+		        },
+		        tooltip: {
+		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+		            '<td style="padding:0"><b>{point.y:.1f} Pasi</b></td></tr>',
+		            footerFormat: '</table>',
+		            shared: true,
+		            useHTML: true
+		        },
+		        legend: {
+		            enabled: false
+		        },
+		        plotOptions: {
+		            area: {
+		                fillColor: {
+		                    linearGradient: {
+		                        x1: 0,
+		                        y1: 0,
+		                        x2: 0,
+		                        y2: 1
+		                    },
+		                    stops: [
+		                        [0, Highcharts.getOptions().colors[0]],
+		                        [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+		                    ]
+		                },
+		                marker: {
+		                    radius: 2
+		                },
+		                lineWidth: 1,
+		                states: {
+		                    hover: {
+		                        lineWidth: 1
+		                    }
+		                },
+		                threshold: null
+		            },
+		            series: {
+		                cursor: 'pointer',
+		                point: {
+		                	events: {
+		                        click: function () {
+		                        	let chartMap = [[${chartMap}]];
+		                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
+		                        	document.getElementById("aditional-information").style.visibility = "visible";
+		                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
+		                        	document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
+		                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
+		                        }
+		                    }
+		                }
+		            }
+		        },
+
+		        series: [{
+		            type: 'area',
+		            name: 'Timp',
+		            data: [[${chartMap.values()}]]
+		        }]
+		    });
+			
+			$('#heartRate').highcharts({
+		        chart: {
+		            type: 'column'
+		        },
+		        title: {
+		            text: [[${chartOption}]]
+		        },
+		        scrollbar: {
+		            enabled: true
+		        },
+		        xAxis: {
+		            categories: [[${chartMap.keySet()}]],
+		            crosshair: true,
+		            min: 0,
+		            max: 10,
+		        },
+		        yAxis: {
+		        },
+		        tooltip: {
+		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+		            '<td style="padding:0"><b>{point.y:.1f} BPM</b></td></tr>',
+		            footerFormat: '</table>',
+		            shared: true,
+		            useHTML: true
+		        },
+		        plotOptions: {
+		            column: {
+		                pointPadding: 0.2,
+		                borderWidth: 0,
+		                cropThreshold: 1000
+		            }
+		        },
+		        series: [{
+		            name: 'Valoare',
+		            data: [[${chartMap.values()}]],
+		            point: {
+	                    events: {
 	                        click: function () {
 	                        	let chartMap = [[${chartMap}]];
 	                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
@@ -720,328 +785,271 @@
 	                        }
 	                    }
 	                }
-	            }
-	        },
 
-	        series: [{
-	            type: 'area',
-	            name: 'Timp',
-	            data: [[${chartMap.values()}]]
-	        }]
-	    });
-		
-		$('#heartRate').highcharts({
-	        chart: {
-	            type: 'column'
-	        },
-	        title: {
-	            text: [[${chartOption}]]
-	        },
-	        scrollbar: {
-	            enabled: true
-	        },
-	        xAxis: {
-	            categories: [[${chartMap.keySet()}]],
-	            crosshair: true,
-	            min: 0,
-	            max: 10,
-	        },
-	        yAxis: {
-	        },
-	        tooltip: {
-	            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-	            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-	            '<td style="padding:0"><b>{point.y:.1f} BPM</b></td></tr>',
-	            footerFormat: '</table>',
-	            shared: true,
-	            useHTML: true
-	        },
-	        plotOptions: {
-	            column: {
-	                pointPadding: 0.2,
-	                borderWidth: 0,
-	                cropThreshold: 1000
-	            }
-	        },
-	        series: [{
-	            name: 'Valoare',
-	            data: [[${chartMap.values()}]],
-	            point: {
-                    events: {
-                        click: function () {
-                        	let chartMap = [[${chartMap}]];
-                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
-                        	document.getElementById("aditional-information").style.visibility = "visible";
-                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
-                        	document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
-                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
-                        }
-                    }
-                }
+		        }]
+		    });
+			
+			$('#activeEnergyBurned').highcharts({
+		        chart: {
+		            type: 'column'
+		        },
+		        title: {
+		            text: [[${chartOption}]]
+		        },
+		        scrollbar: {
+		            enabled: true
+		        },
+		        xAxis: {
+		            categories: [[${chartMap.keySet()}]],
+		            crosshair: true,
+		            min: 0,
+		            max: 10,
+		        },
+		        yAxis: {
+		        },
+		        tooltip: {
+		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+		            '<td style="padding:0"><b>{point.y:.1f} Kcal</b></td></tr>',
+		            footerFormat: '</table>',
+		            shared: true,
+		            useHTML: true
+		        },
+		        plotOptions: {
+		            column: {
+		                pointPadding: 0.2,
+		                borderWidth: 0,
+		                cropThreshold: 1000
+		            }
+		        },
+		        series: [{
+		            name: 'Valoare',
+		            data: [[${chartMap.values()}]],
+		            point: {
+	                    events: {
+	                        click: function () {
+	                        	let chartMap = [[${chartMap}]];
+	                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
+	                        	document.getElementById("aditional-information").style.visibility = "visible";
+	                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
+	                        	document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
+	                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
+	                        }
+	                    }
+	                }
 
-	        }]
-	    });
-		
-		$('#activeEnergyBurned').highcharts({
-	        chart: {
-	            type: 'column'
-	        },
-	        title: {
-	            text: [[${chartOption}]]
-	        },
-	        scrollbar: {
-	            enabled: true
-	        },
-	        xAxis: {
-	            categories: [[${chartMap.keySet()}]],
-	            crosshair: true,
-	            min: 0,
-	            max: 10,
-	        },
-	        yAxis: {
-	        },
-	        tooltip: {
-	            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-	            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-	            '<td style="padding:0"><b>{point.y:.1f} Kcal</b></td></tr>',
-	            footerFormat: '</table>',
-	            shared: true,
-	            useHTML: true
-	        },
-	        plotOptions: {
-	            column: {
-	                pointPadding: 0.2,
-	                borderWidth: 0,
-	                cropThreshold: 1000
-	            }
-	        },
-	        series: [{
-	            name: 'Valoare',
-	            data: [[${chartMap.values()}]],
-	            point: {
-                    events: {
-                        click: function () {
-                        	let chartMap = [[${chartMap}]];
-                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
-                        	document.getElementById("aditional-information").style.visibility = "visible";
-                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
-                        	document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
-                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
-                        }
-                    }
-                }
+		        }]
+		    });
+			
+			$('#bodyFatPercentage').highcharts({
+		        chart: {
+		            type: 'column'
+		        },
+		        title: {
+		            text: [[${chartOption}]]
+		        },
+		        scrollbar: {
+		            enabled: true
+		        },
+		        xAxis: {
+		            categories: [[${chartMap.keySet()}]],
+		            crosshair: true,
+		            min: 0,
+		            max: 10,
+		        },
+		        yAxis: {
+		        },
+		        tooltip: {
+		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+		            '<td style="padding:0"><b>{point.y:.1f} BPM</b></td></tr>',
+		            footerFormat: '</table>',
+		            shared: true,
+		            useHTML: true
+		        },
+		        plotOptions: {
+		            column: {
+		                pointPadding: 0.2,
+		                borderWidth: 0,
+		                cropThreshold: 1000
+		            }
+		        },
+		        series: [{
+		            name: 'Valoare',
+		            data: [[${chartMap.values()}]],
+		            point: {
+	                    events: {
+	                        click: function () {
+	                        	let chartMap = [[${chartMap}]];
+	                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
+	                        	document.getElementById("aditional-information").style.visibility = "visible";
+	                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
+	                        	document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
+	                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
+	                        }
+	                    }
+	                }
 
-	        }]
-	    });
-		
-		$('#bodyFatPercentage').highcharts({
-	        chart: {
-	            type: 'column'
-	        },
-	        title: {
-	            text: [[${chartOption}]]
-	        },
-	        scrollbar: {
-	            enabled: true
-	        },
-	        xAxis: {
-	            categories: [[${chartMap.keySet()}]],
-	            crosshair: true,
-	            min: 0,
-	            max: 10,
-	        },
-	        yAxis: {
-	        },
-	        tooltip: {
-	            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-	            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-	            '<td style="padding:0"><b>{point.y:.1f} BPM</b></td></tr>',
-	            footerFormat: '</table>',
-	            shared: true,
-	            useHTML: true
-	        },
-	        plotOptions: {
-	            column: {
-	                pointPadding: 0.2,
-	                borderWidth: 0,
-	                cropThreshold: 1000
-	            }
-	        },
-	        series: [{
-	            name: 'Valoare',
-	            data: [[${chartMap.values()}]],
-	            point: {
-                    events: {
-                        click: function () {
-                        	let chartMap = [[${chartMap}]];
-                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
-                        	document.getElementById("aditional-information").style.visibility = "visible";
-                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
-                        	document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
-                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
-                        }
-                    }
-                }
+		        }]
+		    });
+			
+			$('#bodyMassIndex').highcharts({
+		        chart: {
+		            type: 'column'
+		        },
+		        title: {
+		            text: [[${chartOption}]]
+		        },
+		        scrollbar: {
+		            enabled: true
+		        },
+		        xAxis: {
+		            categories: [[${chartMap.keySet()}]],
+		            crosshair: true,
+		            min: 0,
+		            max: 10,
+		        },
+		        yAxis: {
+		        },
+		        tooltip: {
+		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+		            '<td style="padding:0"><b>{point.y:.1f} BPM</b></td></tr>',
+		            footerFormat: '</table>',
+		            shared: true,
+		            useHTML: true
+		        },
+		        plotOptions: {
+		            column: {
+		                pointPadding: 0.2,
+		                borderWidth: 0,
+		                cropThreshold: 1000
+		            }
+		        },
+		        series: [{
+		            name: 'Valoare',
+		            data: [[${chartMap.values()}]],
+		            point: {
+	                    events: {
+	                        click: function () {
+	                        	let chartMap = [[${chartMap}]];
+	                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
+	                        	document.getElementById("aditional-information").style.visibility = "visible";
+	                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
+	                        	document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
+	                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
+	                        }
+	                    }
+	                }
 
-	        }]
-	    });
-		
-		$('#bodyMassIndex').highcharts({
-	        chart: {
-	            type: 'column'
-	        },
-	        title: {
-	            text: [[${chartOption}]]
-	        },
-	        scrollbar: {
-	            enabled: true
-	        },
-	        xAxis: {
-	            categories: [[${chartMap.keySet()}]],
-	            crosshair: true,
-	            min: 0,
-	            max: 10,
-	        },
-	        yAxis: {
-	        },
-	        tooltip: {
-	            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-	            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-	            '<td style="padding:0"><b>{point.y:.1f} BPM</b></td></tr>',
-	            footerFormat: '</table>',
-	            shared: true,
-	            useHTML: true
-	        },
-	        plotOptions: {
-	            column: {
-	                pointPadding: 0.2,
-	                borderWidth: 0,
-	                cropThreshold: 1000
-	            }
-	        },
-	        series: [{
-	            name: 'Valoare',
-	            data: [[${chartMap.values()}]],
-	            point: {
-                    events: {
-                        click: function () {
-                        	let chartMap = [[${chartMap}]];
-                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
-                        	document.getElementById("aditional-information").style.visibility = "visible";
-                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
-                        	document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
-                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
-                        }
-                    }
-                }
+		        }]
+		    });
+			
+			$('#bodyMass').highcharts({
+		        chart: {
+		            type: 'column'
+		        },
+		        title: {
+		            text: [[${chartOption}]]
+		        },
+		        scrollbar: {
+		            enabled: true
+		        },
+		        xAxis: {
+		            categories: [[${chartMap.keySet()}]],
+		            crosshair: true,
+		            min: 0,
+		            max: 10,
+		        },
+		        yAxis: {
+		        },
+		        tooltip: {
+		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+		            '<td style="padding:0"><b>{point.y:.1f} BPM</b></td></tr>',
+		            footerFormat: '</table>',
+		            shared: true,
+		            useHTML: true
+		        },
+		        plotOptions: {
+		            column: {
+		                pointPadding: 0.2,
+		                borderWidth: 0,
+		                cropThreshold: 1000
+		            }
+		        },
+		        series: [{
+		            name: 'Valoare',
+		            data: [[${chartMap.values()}]],
+		            point: {
+	                    events: {
+	                        click: function () {
+	                        	let chartMap = [[${chartMap}]];
+	                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
+	                        	document.getElementById("aditional-information").style.visibility = "visible";
+	                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
+	                        	document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
+	                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
+	                        }
+	                    }
+	                }
 
-	        }]
-	    });
-		
-		$('#bodyMass').highcharts({
-	        chart: {
-	            type: 'column'
-	        },
-	        title: {
-	            text: [[${chartOption}]]
-	        },
-	        scrollbar: {
-	            enabled: true
-	        },
-	        xAxis: {
-	            categories: [[${chartMap.keySet()}]],
-	            crosshair: true,
-	            min: 0,
-	            max: 10,
-	        },
-	        yAxis: {
-	        },
-	        tooltip: {
-	            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-	            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-	            '<td style="padding:0"><b>{point.y:.1f} BPM</b></td></tr>',
-	            footerFormat: '</table>',
-	            shared: true,
-	            useHTML: true
-	        },
-	        plotOptions: {
-	            column: {
-	                pointPadding: 0.2,
-	                borderWidth: 0,
-	                cropThreshold: 1000
-	            }
-	        },
-	        series: [{
-	            name: 'Valoare',
-	            data: [[${chartMap.values()}]],
-	            point: {
-                    events: {
-                        click: function () {
-                        	let chartMap = [[${chartMap}]];
-                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
-                        	document.getElementById("aditional-information").style.visibility = "visible";
-                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
-                        	document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
-                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
-                        }
-                    }
-                }
+		        }]
+		    });
+			
+			$('#leanBodyMass').highcharts({
+		        chart: {
+		            type: 'column'
+		        },
+		        title: {
+		            text: [[${chartOption}]]
+		        },
+		        scrollbar: {
+		            enabled: true
+		        },
+		        xAxis: {
+		            categories: [[${chartMap.keySet()}]],
+		            crosshair: true,
+		            min: 0,
+		            max: 10,
+		        },
+		        yAxis: {
+		        },
+		        tooltip: {
+		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+		            '<td style="padding:0"><b>{point.y:.1f} BPM</b></td></tr>',
+		            footerFormat: '</table>',
+		            shared: true,
+		            useHTML: true
+		        },
+		        plotOptions: {
+		            column: {
+		                pointPadding: 0.2,
+		                borderWidth: 0,
+		                cropThreshold: 1000
+		            }
+		        },
+		        series: [{
+		            name: 'Valoare',
+		            data: [[${chartMap.values()}]],
+		            point: {
+	                    events: {
+	                        click: function () {
+	                        	let chartMap = [[${chartMap}]];
+	                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
+	                        	document.getElementById("aditional-information").style.visibility = "visible";
+	                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
+	                        	document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
+	                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
+	                        }
+	                    }
+	                }
 
-	        }]
-	    });
-		
-		$('#leanBodyMass').highcharts({
-	        chart: {
-	            type: 'column'
-	        },
-	        title: {
-	            text: [[${chartOption}]]
-	        },
-	        scrollbar: {
-	            enabled: true
-	        },
-	        xAxis: {
-	            categories: [[${chartMap.keySet()}]],
-	            crosshair: true,
-	            min: 0,
-	            max: 10,
-	        },
-	        yAxis: {
-	        },
-	        tooltip: {
-	            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-	            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-	            '<td style="padding:0"><b>{point.y:.1f} BPM</b></td></tr>',
-	            footerFormat: '</table>',
-	            shared: true,
-	            useHTML: true
-	        },
-	        plotOptions: {
-	            column: {
-	                pointPadding: 0.2,
-	                borderWidth: 0,
-	                cropThreshold: 1000
-	            }
-	        },
-	        series: [{
-	            name: 'Valoare',
-	            data: [[${chartMap.values()}]],
-	            point: {
-                    events: {
-                        click: function () {
-                        	let chartMap = [[${chartMap}]];
-                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
-                        	document.getElementById("aditional-information").style.visibility = "visible";
-                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
-                        	document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
-                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
-                        }
-                    }
-                }
-
-	        }]
-	    });
-	});
+		        }]
+		    });
+		});	
+	}
 	
 	function progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement) {
 		let ok = false;

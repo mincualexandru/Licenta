@@ -11,7 +11,7 @@
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 <body>
-<div th:unles="${#lists.size(products)}">
+<div th:unless="${#lists.size(products)}">
 	Nu ai selectat niciun produs momentan
 </div>
 <div th:if="${#lists.size(products)}">

@@ -58,223 +58,249 @@ public class MeasurementController {
 
 	@GetMapping(path = { "/view_charts_for_device/{chartOption}/{userDeviceId}" })
 	public String viewChartsForDevice(@ModelAttribute("betweenTimestamp") String betweenTimestamp, Model model,
-			@PathVariable Integer userDeviceId, @PathVariable String chartOption) {
+			@PathVariable String userDeviceId, @PathVariable String chartOption) {
 		@SuppressWarnings("unchecked")
 		Set<Measurement> measurementsBetweenTimestamps = (Set<Measurement>) model.asMap()
 				.get("measurementsBetweenTimestamps");
-		UserDevice userDevice = userDeviceService.findById(userDeviceId).get();
-		TypeMeasurement typeMeasurement = new TypeMeasurement();
-		Set<Measurement> chosenMeasurements = new HashSet<>();
-		Set<MeasurementObiective> goalMeasurements = new HashSet<>();
-		Map<String, Float> chartMap = new TreeMap<>();
-		Float sum = 0f;
-		String previousValue = null;
-		Float maximValue = 0f;
-		Float minimValue = 0f;
-		switch (chartOption) {
-		case "activeEnergyBurned":
-			LOGGER.info("Optiunea aleasa este " + chartOption);
-			String activeEnergyBurned = BandTypeMeasurement.ENERGYBURNED.getBandTypeMeasurement();
-			typeMeasurement = typeMeasurementService.findByType(activeEnergyBurned);
-			if (betweenTimestamp.equals("notSelectedTimestamp")) {
-				chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(activeEnergyBurned,
-						userDevice.getUserDeviceId());
-				for (Measurement measurement : measurementsBetweenTimestamps) {
-					LocalDateTime startDate = measurement.getStartDate().toLocalDateTime();
-					LocalDate localDate = startDate.toLocalDate();
-					Integer hour = startDate.getHour();
-					Integer nextHour = hour + 1;
-					String value = hour + "-" + nextHour + " " + localDate;
-					if (!value.equals(previousValue)) {
-						sum = 0f;
-						previousValue = value;
+		if (checkUserDeviceIdIsInteger(userDeviceId)
+				&& userDeviceService.findById(Integer.parseInt(userDeviceId)).isPresent()
+				&& checkChartOption(chartOption)) {
+			TypeMeasurement typeMeasurement = new TypeMeasurement();
+			Set<Measurement> chosenMeasurements = new HashSet<>();
+			Set<MeasurementObiective> goalMeasurements = new HashSet<>();
+			Map<String, Float> chartMap = new TreeMap<>();
+			Float sum = 0f;
+			String previousValue = null;
+			Float maximValue = 0f;
+			Float minimValue = 0f;
+			UserDevice userDevice = userDeviceService.findById(Integer.parseInt(userDeviceId)).get();
+			switch (chartOption) {
+			case "activeEnergyBurned":
+				LOGGER.info("Optiunea aleasa este " + chartOption);
+				String activeEnergyBurned = BandTypeMeasurement.ENERGYBURNED.getBandTypeMeasurement();
+				typeMeasurement = typeMeasurementService.findByType(activeEnergyBurned);
+				if (betweenTimestamp.equals("notSelectedTimestamp")) {
+					chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(activeEnergyBurned,
+							userDevice.getUserDeviceId());
+					for (Measurement measurement : measurementsBetweenTimestamps) {
+						LocalDateTime startDate = measurement.getStartDate().toLocalDateTime();
+						LocalDate localDate = startDate.toLocalDate();
+						Integer hour = startDate.getHour();
+						Integer nextHour = hour + 1;
+						String value = hour + "-" + nextHour + " " + localDate;
+						if (!value.equals(previousValue)) {
+							sum = 0f;
+							previousValue = value;
+						}
+						sum += measurement.getValue();
+						chartMap.put(localDate + " " + String.format("%02d", hour), sum);
 					}
-					sum += measurement.getValue();
-					chartMap.put(localDate + " " + String.format("%02d", hour), sum);
-				}
-			} else {
-				chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(activeEnergyBurned,
-						userDevice.getUserDeviceId());
-				for (Measurement measurement : chosenMeasurements) {
-					LocalDateTime startDate = measurement.getStartDate().toLocalDateTime();
-					LocalDate localDate = startDate.toLocalDate();
-					Integer hour = startDate.getHour();
-					Integer nextHour = hour + 1;
-					String value = hour + "-" + nextHour + " " + localDate;
-					LOGGER.info(value);
-					if (!value.equals(previousValue)) {
-						sum = 0f;
-						previousValue = value;
+				} else {
+					chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(activeEnergyBurned,
+							userDevice.getUserDeviceId());
+					for (Measurement measurement : chosenMeasurements) {
+						LocalDateTime startDate = measurement.getStartDate().toLocalDateTime();
+						LocalDate localDate = startDate.toLocalDate();
+						Integer hour = startDate.getHour();
+						Integer nextHour = hour + 1;
+						String value = hour + "-" + nextHour + " " + localDate;
+						LOGGER.info(value);
+						if (!value.equals(previousValue)) {
+							sum = 0f;
+							previousValue = value;
+						}
+						sum += measurement.getValue();
+						chartMap.put(localDate + " " + String.format("%02d", hour), sum);
 					}
-					sum += measurement.getValue();
-					chartMap.put(localDate + " " + String.format("%02d", hour), sum);
 				}
-			}
-			break;
-		case "sleepAnalysis":
-			LOGGER.info("Optiunea aleasa este " + chartOption);
-			String sleepAnalysis = BandTypeMeasurement.SLEEPANALYSIS.getBandTypeMeasurement();
-			typeMeasurement = typeMeasurementService.findByType(sleepAnalysis);
-			if (betweenTimestamp.equals("notSelectedTimestamp")) {
-				for (Measurement measurement : measurementsBetweenTimestamps) {
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-					LocalDateTime startDateTime = measurement.getStartDate().toLocalDateTime();
-					LocalDate startDate = startDateTime.toLocalDate();
-					String formatDate = startDate.format(formatter);
-					if (!formatDate.equals(previousValue)) {
-						sum = 0f;
-						previousValue = formatDate;
+				break;
+			case "sleepAnalysis":
+				LOGGER.info("Optiunea aleasa este " + chartOption);
+				String sleepAnalysis = BandTypeMeasurement.SLEEPANALYSIS.getBandTypeMeasurement();
+				typeMeasurement = typeMeasurementService.findByType(sleepAnalysis);
+				if (betweenTimestamp.equals("notSelectedTimestamp")) {
+					for (Measurement measurement : measurementsBetweenTimestamps) {
+						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+						LocalDateTime startDateTime = measurement.getStartDate().toLocalDateTime();
+						LocalDate startDate = startDateTime.toLocalDate();
+						String formatDate = startDate.format(formatter);
+						if (!formatDate.equals(previousValue)) {
+							sum = 0f;
+							previousValue = formatDate;
+						}
+						sum += measurement.getValue();
+						chartMap.put(formatDate, sum);
 					}
-					sum += measurement.getValue();
-					chartMap.put(formatDate, sum);
-				}
-			} else {
-				chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(sleepAnalysis,
-						userDevice.getUserDeviceId());
-				for (Measurement measurement : chosenMeasurements) {
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-					LocalDateTime startDateTime = measurement.getStartDate().toLocalDateTime();
-					LocalDate startDate = startDateTime.toLocalDate();
-					String formatDate = startDate.format(formatter);
-					if (!formatDate.equals(previousValue)) {
-						sum = 0f;
-						previousValue = formatDate;
+				} else {
+					chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(sleepAnalysis,
+							userDevice.getUserDeviceId());
+					for (Measurement measurement : chosenMeasurements) {
+						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+						LocalDateTime startDateTime = measurement.getStartDate().toLocalDateTime();
+						LocalDate startDate = startDateTime.toLocalDate();
+						String formatDate = startDate.format(formatter);
+						if (!formatDate.equals(previousValue)) {
+							sum = 0f;
+							previousValue = formatDate;
+						}
+						sum += measurement.getValue();
+						chartMap.put(formatDate, sum);
 					}
-					sum += measurement.getValue();
-					chartMap.put(formatDate, sum);
 				}
-			}
-			break;
-		case "heartRate":
-			LOGGER.info("Optiunea aleasa este " + chartOption);
-			String heartRate = BandTypeMeasurement.HEARTRATE.getBandTypeMeasurement();
-			typeMeasurement = typeMeasurementService.findByType(heartRate);
-			if (betweenTimestamp.equals("notSelectedTimestamp")) {
-				measurementService.buildMap(chartMap, measurementsBetweenTimestamps);
-			} else {
-				chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(heartRate,
-						userDevice.getUserDeviceId());
-				measurementService.buildMap(chartMap, chosenMeasurements);
-			}
-			break;
-		case "stepCount":
-			LOGGER.info("Optiunea aleasa este " + chartOption);
-			String stepCount = BandTypeMeasurement.STEPCOUNT.getBandTypeMeasurement();
-			typeMeasurement = typeMeasurementService.findByType(stepCount);
-			if (betweenTimestamp.equals("notSelectedTimestamp")) {
-				chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(stepCount,
-						userDevice.getUserDeviceId());
-				for (Measurement measurement : measurementsBetweenTimestamps) {
-					LocalDateTime startDate = measurement.getStartDate().toLocalDateTime();
-					LocalDate localDate = startDate.toLocalDate();
-					Integer hour = startDate.getHour();
-					Integer nextHour = hour + 1;
-					String value = hour + "-" + nextHour + " " + localDate;
-					if (!value.equals(previousValue)) {
-						sum = 0f;
-						previousValue = value;
+				break;
+			case "heartRate":
+				LOGGER.info("Optiunea aleasa este " + chartOption);
+				String heartRate = BandTypeMeasurement.HEARTRATE.getBandTypeMeasurement();
+				typeMeasurement = typeMeasurementService.findByType(heartRate);
+				if (betweenTimestamp.equals("notSelectedTimestamp")) {
+					measurementService.buildMap(chartMap, measurementsBetweenTimestamps);
+				} else {
+					chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(heartRate,
+							userDevice.getUserDeviceId());
+					measurementService.buildMap(chartMap, chosenMeasurements);
+				}
+				break;
+			case "stepCount":
+				LOGGER.info("Optiunea aleasa este " + chartOption);
+				String stepCount = BandTypeMeasurement.STEPCOUNT.getBandTypeMeasurement();
+				typeMeasurement = typeMeasurementService.findByType(stepCount);
+				if (betweenTimestamp.equals("notSelectedTimestamp")) {
+					chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(stepCount,
+							userDevice.getUserDeviceId());
+					for (Measurement measurement : measurementsBetweenTimestamps) {
+						LocalDateTime startDate = measurement.getStartDate().toLocalDateTime();
+						LocalDate localDate = startDate.toLocalDate();
+						Integer hour = startDate.getHour();
+						Integer nextHour = hour + 1;
+						String value = hour + "-" + nextHour + " " + localDate;
+						if (!value.equals(previousValue)) {
+							sum = 0f;
+							previousValue = value;
+						}
+						sum += measurement.getValue();
+						chartMap.put(localDate + " " + String.format("%02d", hour), sum);
 					}
-					sum += measurement.getValue();
-					chartMap.put(localDate + " " + String.format("%02d", hour), sum);
-				}
-			} else {
-				chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(stepCount,
-						userDevice.getUserDeviceId());
-				for (Measurement measurement : chosenMeasurements) {
-					LocalDateTime startDate = measurement.getStartDate().toLocalDateTime();
-					LocalDate localDate = startDate.toLocalDate();
-					Integer hour = startDate.getHour();
-					Integer nextHour = hour + 1;
-					String value = hour + "-" + nextHour + " " + localDate;
-					if (!value.equals(previousValue)) {
-						sum = 0f;
-						previousValue = value;
+				} else {
+					chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(stepCount,
+							userDevice.getUserDeviceId());
+					for (Measurement measurement : chosenMeasurements) {
+						LocalDateTime startDate = measurement.getStartDate().toLocalDateTime();
+						LocalDate localDate = startDate.toLocalDate();
+						Integer hour = startDate.getHour();
+						Integer nextHour = hour + 1;
+						String value = hour + "-" + nextHour + " " + localDate;
+						if (!value.equals(previousValue)) {
+							sum = 0f;
+							previousValue = value;
+						}
+						sum += measurement.getValue();
+						chartMap.put(localDate + " " + String.format("%02d", hour), sum);
 					}
-					sum += measurement.getValue();
-					chartMap.put(localDate + " " + String.format("%02d", hour), sum);
 				}
+				break;
+			case "bodyFatPercentage":
+				LOGGER.info("Optiunea aleasa este " + chartOption);
+				String bodyFatPercentage = ScaleTypeMeasurement.FATPERCENTAGE.getScaleTypeMeasurement();
+				typeMeasurement = typeMeasurementService.findByType(bodyFatPercentage);
+				if (betweenTimestamp.equals("notSelectedTimestamp")) {
+					measurementService.buildMap(chartMap, measurementsBetweenTimestamps);
+				} else {
+					chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(bodyFatPercentage,
+							userDevice.getUserDeviceId());
+					measurementService.buildMap(chartMap, chosenMeasurements);
+				}
+				break;
+			case "bodyMassIndex":
+				LOGGER.info("Optiunea aleasa este " + chartOption);
+				String bodyMassIndex = ScaleTypeMeasurement.MASSINDEX.getScaleTypeMeasurement();
+				typeMeasurement = typeMeasurementService.findByType(bodyMassIndex);
+				if (betweenTimestamp.equals("notSelectedTimestamp")) {
+					measurementService.buildMap(chartMap, measurementsBetweenTimestamps);
+				} else {
+					chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(bodyMassIndex,
+							userDevice.getUserDeviceId());
+					measurementService.buildMap(chartMap, chosenMeasurements);
+				}
+				break;
+			case "bodyMass":
+				LOGGER.info("Optiunea aleasa este " + chartOption);
+				String bodyMass = ScaleTypeMeasurement.MASS.getScaleTypeMeasurement();
+				typeMeasurement = typeMeasurementService.findByType(bodyMass);
+				if (betweenTimestamp.equals("notSelectedTimestamp")) {
+					measurementService.buildMap(chartMap, measurementsBetweenTimestamps);
+				} else {
+					chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(bodyMass,
+							userDevice.getUserDeviceId());
+					measurementService.buildMap(chartMap, chosenMeasurements);
+				}
+				break;
+			case "leanBodyMass":
+				LOGGER.info("Optiunea aleasa este " + chartOption);
+				String leanBodyMass = ScaleTypeMeasurement.LEANMASS.getScaleTypeMeasurement();
+				typeMeasurement = typeMeasurementService.findByType(leanBodyMass);
+				if (betweenTimestamp.equals("notSelectedTimestamp")) {
+					measurementService.buildMap(chartMap, measurementsBetweenTimestamps);
+				} else {
+					chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(leanBodyMass,
+							userDevice.getUserDeviceId());
+					measurementService.buildMap(chartMap, chosenMeasurements);
+				}
+				break;
+			default:
+				break;
 			}
-			break;
-		case "bodyFatPercentage":
-			LOGGER.info("Optiunea aleasa este " + chartOption);
-			String bodyFatPercentage = ScaleTypeMeasurement.FATPERCENTAGE.getScaleTypeMeasurement();
-			typeMeasurement = typeMeasurementService.findByType(bodyFatPercentage);
-			if (betweenTimestamp.equals("notSelectedTimestamp")) {
-				measurementService.buildMap(chartMap, measurementsBetweenTimestamps);
-			} else {
-				chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(bodyFatPercentage,
-						userDevice.getUserDeviceId());
-				measurementService.buildMap(chartMap, chosenMeasurements);
+			for (Map.Entry<String, Float> entry : chartMap.entrySet()) {
+				String key = entry.getKey();
+				Float value = entry.getValue();
+				if (typeMeasurement.getGoalMin() < value && typeMeasurement.getGoalMax() > value
+						&& goalMeasurements.size() < 3) {
+					goalMeasurements.add(new MeasurementObiective(typeMeasurement.getType(), key, value));
+				}
+				String maximumDate = chartMap.keySet().stream().max(String::compareTo).get();
+				String minimumDate = chartMap.keySet().stream().min(String::compareTo).get();
+				boolean datesAreEquals = false;
+				if (minimumDate.equals(maximumDate)) {
+					datesAreEquals = true;
+				}
+				minimValue = Collections.min(chartMap.values());
+				maximValue = Collections.max(chartMap.values());
+				model.addAttribute("minimumDate", minimumDate);
+				model.addAttribute("maximumDate", maximumDate);
+				model.addAttribute("datesAreEquals", datesAreEquals);
+				model.addAttribute("minimValue", minimValue);
+				model.addAttribute("maximValue", maximValue);
 			}
-			break;
-		case "bodyMassIndex":
-			LOGGER.info("Optiunea aleasa este " + chartOption);
-			String bodyMassIndex = ScaleTypeMeasurement.MASSINDEX.getScaleTypeMeasurement();
-			typeMeasurement = typeMeasurementService.findByType(bodyMassIndex);
-			if (betweenTimestamp.equals("notSelectedTimestamp")) {
-				measurementService.buildMap(chartMap, measurementsBetweenTimestamps);
-			} else {
-				chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(bodyMassIndex,
-						userDevice.getUserDeviceId());
-				measurementService.buildMap(chartMap, chosenMeasurements);
-			}
-			break;
-		case "bodyMass":
-			LOGGER.info("Optiunea aleasa este " + chartOption);
-			String bodyMass = ScaleTypeMeasurement.MASS.getScaleTypeMeasurement();
-			typeMeasurement = typeMeasurementService.findByType(bodyMass);
-			if (betweenTimestamp.equals("notSelectedTimestamp")) {
-				measurementService.buildMap(chartMap, measurementsBetweenTimestamps);
-			} else {
-				chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(bodyMass,
-						userDevice.getUserDeviceId());
-				measurementService.buildMap(chartMap, chosenMeasurements);
-			}
-			break;
-		case "leanBodyMass":
-			LOGGER.info("Optiunea aleasa este " + chartOption);
-			String leanBodyMass = ScaleTypeMeasurement.LEANMASS.getScaleTypeMeasurement();
-			typeMeasurement = typeMeasurementService.findByType(leanBodyMass);
-			if (betweenTimestamp.equals("notSelectedTimestamp")) {
-				measurementService.buildMap(chartMap, measurementsBetweenTimestamps);
-			} else {
-				chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(leanBodyMass,
-						userDevice.getUserDeviceId());
-				measurementService.buildMap(chartMap, chosenMeasurements);
-			}
-			break;
-		default:
-			break;
+			model.addAttribute("chartMap", chartMap);
+			model.addAttribute("chosenMeasurements", chosenMeasurements);
+			model.addAttribute("measurementsBetweenTimestamps", measurementsBetweenTimestamps);
+			model.addAttribute("goalMeasurements", goalMeasurements);
+			model.addAttribute("chartOption", chartOption);
+			model.addAttribute("userDeviceId", userDeviceId);
+
+		} else {
+			model.addAttribute("inexistentValue", true);
 		}
-		for (Map.Entry<String, Float> entry : chartMap.entrySet()) {
-			String key = entry.getKey();
-			Float value = entry.getValue();
-			if (typeMeasurement.getGoalMin() < value && typeMeasurement.getGoalMax() > value
-					&& goalMeasurements.size() < 3) {
-				goalMeasurements.add(new MeasurementObiective(typeMeasurement.getType(), key, value));
-			}
-			String maximumDate = chartMap.keySet().stream().max(String::compareTo).get();
-			String minimumDate = chartMap.keySet().stream().min(String::compareTo).get();
-			boolean datesAreEquals = false;
-			if (minimumDate.equals(maximumDate)) {
-				datesAreEquals = true;
-			}
-			minimValue = Collections.min(chartMap.values());
-			maximValue = Collections.max(chartMap.values());
-			model.addAttribute("minimumDate", minimumDate);
-			model.addAttribute("maximumDate", maximumDate);
-			model.addAttribute("datesAreEquals", datesAreEquals);
-			model.addAttribute("minimValue", minimValue);
-			model.addAttribute("maximValue", maximValue);
-		}
-		model.addAttribute("chartMap", chartMap);
-		model.addAttribute("chosenMeasurements", chosenMeasurements);
-		model.addAttribute("measurementsBetweenTimestamps", measurementsBetweenTimestamps);
-		model.addAttribute("goalMeasurements", goalMeasurements);
-		model.addAttribute("chartOption", chartOption);
-		model.addAttribute("userDeviceId", userDeviceId);
 
 		return "home/view_charts_for_device";
+	}
+
+	private boolean checkUserDeviceIdIsInteger(String userDeviceId) {
+		try {
+			int num = Integer.parseInt(userDeviceId);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+
+	private boolean checkChartOption(String chartOption) {
+		if (chartOption.equals("heartRate") || chartOption.equals("stepCount") || chartOption.equals("sleepAnalysis")
+				|| chartOption.equals("activeEnergyBurned") || chartOption.equals("bodyFatPercentage")
+				|| chartOption.equals("bodyMassIndex") || chartOption.equals("bodyMass")
+				|| chartOption.equals("leanBodyMass")) {
+			return true;
+		}
+		return false;
 	}
 
 	@PostMapping(path = { "/view_charts_between_dates" })

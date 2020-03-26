@@ -412,4 +412,21 @@ public class CommonController {
 		return "common/transaction_history";
 	}
 
+	@PostMapping(path = { "/exercises_training_plan" })
+	public String createExerciseForTrainingPlanSave(Model model, @RequestParam Integer trainingPlanId) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Account account = accountService.findByUsername(auth.getName());
+		for (Role role : account.getRoles()) {
+			if (role.getName().equals("ROLE_USER")) {
+				Set<Exercise> notPerformedExercises = exerciseService
+						.findAllNotPerfomerdExercisesForTrainingPlanId(trainingPlanId);
+				model.addAttribute("notPerformedExercises", notPerformedExercises);
+			} else if (role.getName().equals("ROLE_TRAINER")) {
+				Set<Exercise> exercises = exerciseService.findAllByTrainingPlanTrainingPlanId(trainingPlanId);
+				model.addAttribute("exercises", exercises);
+			}
+		}
+		model.addAttribute("account", account);
+		return "common/exercises_training_plan";
+	}
 }

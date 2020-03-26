@@ -13,17 +13,59 @@
 <body>
 	<div th:each="role, iterStat : ${account.roles}">
 		<div th:if="${role.name == 'ROLE_USER'}">
-			<div th:unless="${#lists.size(exercises)}">Ai facut toate
+			<div th:unless="${#lists.size(notPerformedExercises)}">Ai facut toate
 				exercitiile</div>
+				<div th:if="${#lists.size(notPerformedExercises)}">
+		<h3
+			style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Exercitii Nefacute</h3>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-10 mx-auto">
+							<table class="table table-striped">
+								<thead class="center-align">
+									<tr>
+										<th>Nume</th>
+										<th>Calorii Arse</th>
+										<th>Numar Serii Efectuate</th>
+										<th>Numar Repetari Efectuate</th>
+										<th>Grupa Muschi Afectata</th>
+										<th>Actiuni</th>
+									</tr>
+								</thead>
+								<tbody class="center-align">
+									<th:block th:each="exercise, iterStat : ${notPerformedExercises}">
+										<tr>
+											<td th:text="${exercise.name}"></td>
+											<td th:text="${exercise.caloriesBurned}"></td>
+											<td th:text="${exercise.numberOfSeries}"></td>
+											<td th:text="${exercise.numberOfReps}"></td>
+											<td th:text="${exercise.trainedMuscleGroup}"></td>
+											<td>
+												<div th:each="role, iterStat : ${account.roles}">
+													<div th:if="${role.name == 'ROLE_TRAINER'}">
+													</div>
+												</div> 
+												<a th:href="@{/view_exercise/{id}(id = ${exercise.exerciseId})}" class="btn btn-success">Vezi Detalii</a>
+											</td>
+										</tr>
+									</th:block>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 		</div>
 		<div th:if="${role.name == 'ROLE_TRAINER'}">
 			<div th:unless="${#lists.size(exercises)}">Nu exista exercitii
 				pentru acest antrenament</div>
-		</div>
-	</div>
-	<div th:if="${#lists.size(exercises)}">
+					<div th:if="${#lists.size(exercises)}">
 		<h3
-			style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Exercitii</h3>
+			style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Exercitii Antrenament</h3>
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12">
@@ -63,6 +105,8 @@
 					</div>
 				</div>
 			</div>
+		</div>
+	</div>
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"

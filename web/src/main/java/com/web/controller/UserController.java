@@ -44,7 +44,6 @@ import com.web.service.TransactionService;
 import com.web.service.TypeMeasurementService;
 import com.web.service.UserDeviceService;
 import com.web.service.UserTrainingService;
-import com.web.service.XmlParserService;
 import com.web.utils.Product;
 
 @Controller
@@ -80,9 +79,6 @@ public class UserController {
 	private MeasurementService measurementService;
 
 	@Autowired
-	private XmlParserService xmlParsersService;
-
-	@Autowired
 	private TypeMeasurementService typeMeasurementService;
 
 	@Autowired
@@ -105,11 +101,9 @@ public class UserController {
 							userDevice.getUserDeviceId()));
 				}
 				if (userDevice.getDevice().getName().equals("Bratara")) {
-					LOGGER.info("Ai deja bratara");
 					bandAlreadyBought = true;
 				}
 				if (userDevice.getDevice().getName().equals("Cantar Inteligent")) {
-					LOGGER.info("Ai deja cantar");
 					scaleAlreadyBought = true;
 				}
 			}
@@ -426,7 +420,6 @@ public class UserController {
 
 	@GetMapping(path = { "/offers_feedback" })
 	public String reviewForExercise(@ModelAttribute("exerciseId") Integer exerciseId, Model model) {
-		LOGGER.info("Id exercitiu " + exerciseId);
 		model.addAttribute("exerciseId", exerciseId);
 		return "common/offers_feedback";
 	}

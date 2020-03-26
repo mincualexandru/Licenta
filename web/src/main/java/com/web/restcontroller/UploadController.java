@@ -1,4 +1,4 @@
-package com.web.controller;
+package com.web.restcontroller;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
