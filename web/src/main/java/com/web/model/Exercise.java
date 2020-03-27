@@ -35,7 +35,7 @@ public class Exercise {
 
 	@ManyToOne
 	@JoinColumn(name = "training_plan_id")
-	private TrainingPlan trainingPlan;
+	private HelperPlan trainingPlan;
 
 	@Column(name = "name")
 	@NotEmpty(message = "Campul este obligatoriu !")
@@ -149,14 +149,6 @@ public class Exercise {
 		this.trainedMuscleGroup = trainedMuscleGroup;
 	}
 
-	public TrainingPlan getTrainingPlan() {
-		return trainingPlan;
-	}
-
-	public void setTrainingPlan(TrainingPlan trainingPlan) {
-		this.trainingPlan = trainingPlan;
-	}
-
 	public Set<ExerciseImage> getExerciseImages() {
 		return exerciseImages;
 	}
@@ -179,6 +171,14 @@ public class Exercise {
 
 	public void setExecution(String execution) {
 		this.execution = execution;
+	}
+
+	public HelperPlan getTrainingPlan() {
+		return trainingPlan;
+	}
+
+	public void setTrainingPlan(HelperPlan trainingPlan) {
+		this.trainingPlan = trainingPlan;
 	}
 
 	public Set<ExerciseDone> getExerciseDone() {

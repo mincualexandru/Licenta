@@ -35,10 +35,10 @@
 											<td th:text="${trainingPlan.name}"></td>
 											<td>
 												<button data-toggle="modal" data-target="#modal-edit-advice"
-													th:attr="data-target='#modal-edit-advice'+${trainingPlan.trainingPlanId}">Vezi
+													th:attr="data-target='#modal-edit-advice'+${trainingPlan.helperPlanId}">Vezi
 													Exercitii</button>
 													<div class="modal modal-edit-advice fade in"
-														th:id="modal-edit-advice+${trainingPlan.trainingPlanId}">
+														th:id="modal-edit-advice+${trainingPlan.helperPlanId}">
 														<div class="modal-dialog">
 															<div class="modal-content">
 																<div class="modal-header">
@@ -69,7 +69,7 @@
 												<form th:action="@{/add_to_shopping_cart}" method="post"
 													id="myForm">
 													<input type="hidden" name="trainingId"
-														th:value="${trainingPlan.trainingPlanId}" /> <input
+														th:value="${trainingPlan.helperPlanId}" /> <input
 														type="hidden" name="accountId"
 														th:value="${user.accountId}" />
 													<button type="submit" class="btn btn-success">Adauga
@@ -94,7 +94,7 @@
 	<script>
 		let selectedTrainingId = 0;
 		let selectedUserId = 0;
-		
+
 		function selectTrainingIdAndUserId(trainingId, userId) {
 			selectedTrainingId = trainingId;
 			selectedUserId = userId;

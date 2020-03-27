@@ -32,12 +32,12 @@
 											<td th:text="${trainingPlan.name}"></td>
 											<td>
 												<form th:action="@{/exercises_training_plan}" method="post">
-													<input type="hidden" name="trainingPlanId" th:value="${trainingPlan.trainingPlanId}"/>
+													<input type="hidden" name="trainingPlanId" th:value="${trainingPlan.helperPlanId}"/>
 													<button type="submit" class="btn btn-success">Vezi
 														Exercitii</button>
 												</form>
-												<a th:href="@{/edit_training_plan/{id}(id=${trainingPlan.trainingPlanId})}" class="btn btn-success">Editeaza Antrenamentul</a>
-												<a th:href="@{/create_exercise_for_training_plan/{id}(id = ${trainingPlan.trainingPlanId})}" class="btn btn-success">Creeaza exercitiu</a>
+												<a th:href="@{/edit_training_plan/{id}(id=${trainingPlan.helperPlanId})}" class="btn btn-success">Editeaza Antrenamentul</a>
+												<a th:href="@{/create_exercise_for_training_plan/{id}(id = ${trainingPlan.helperPlanId})}" class="btn btn-success">Creeaza exercitiu</a>
 											</td>
 										</tr>
 									</th:block>

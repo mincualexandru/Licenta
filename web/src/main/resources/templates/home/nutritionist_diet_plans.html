@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Admin</title>
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+	<div th:unless="${#lists.size(dietPlans)}">Nu exista niciun
+		plan de diete disponibil momentan</div>
+	<div th:if="${#lists.size(dietPlans)}">
+		<h3
+			style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Antrenori
+			sau Nutritionisti</h3>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-10 mx-auto">
+							<table class="table table-striped">
+								<thead class="center-align">
+									<tr>
+										<th>Nume</th>
+										<th>Actiuni</th>
+									</tr>
+								</thead>
+								<tbody class="center-align">
+									<th:block th:each="dietPlan, iterStat : ${dietPlans}">
+										<tr>
+											<td th:text="${dietPlan.name}"></td>
+											<td>
+												<button data-toggle="modal" data-target="#modal-edit-advice"
+													th:attr="data-target='#modal-edit-advice'+${dietPlan.helperPlanId}">Vezi
+													Alimente</button>
+													<div class="modal modal-edit-advice fade in"
+														th:id="modal-edit-advice+${dietPlan.helperPlanId}">
+														<div class="modal-dialog">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<button type="button" class="close"
+																		data-dismiss="modal" aria-label="Close">
+																		<span aria-hidden="true">×</span>
+																	</button>
+																	<h5 class="modal-title">Alimentele Planului de Dieta</h5>
+																</div>
+																<div class="modal-body">
+																	<ul th:each="food, iterStat : ${dietPlan.foods}">
+																		<li th:text="${food.name}"></li>
+																		<li th:text="${food.calories}"></li>
+																		<li th:text="${food.protein}"></li>
+																		<li th:text="${food.lipids}"></li>
+																		<li th:text="${food.carbohydrates}"></li>
+																		<li th:text="${food.fiber}"></li>
+																		<li th:text="${food.weight}"></li>
+																		<li th:text="${food.recommendedTimeRange}"></li>
+																	</ul>
+																</div>
+																<div class="modal-footer">
+																	<button type="button" class="btn btn-outline pull-left"
+																		data-dismiss="modal">Close</button>
+																	<button type="submit">Save</button>
+																</div>
+															</div>
+														</div>
+													</div>
+												<form th:action="@{/add_to_shopping_cart}" method="post"
+													id="myForm">
+													<input type="hidden" name="dietId"
+														th:value="${dietPlan.helperPlanId}" /> <input
+														type="hidden" name="accountId"
+														th:value="${user.accountId}" />
+													<button type="submit" class="btn btn-success">Adauga
+														in Cos</button>
+												</form>
+											</td>
+										</tr>
+									</th:block>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<script>
+		let selectedTrainingId = 0;
+		let selectedUserId = 0;
+
+		function selectTrainingIdAndUserId(trainingId, userId) {
+			selectedTrainingId = trainingId;
+			selectedUserId = userId;
+		}
+	</script>
+</body>
+</html>

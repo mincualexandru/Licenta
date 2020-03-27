@@ -22,7 +22,7 @@
 		<div class="container">
 		<form class="form-horizontal" role="form" method="post"
 			th:action="@{/edit_training_plan_save}" th:object="${trainingPlan}">
-			<input type="hidden" name="trainingPlanId" th:value="${trainingPlan.trainingPlanId}"/>
+			<input type="hidden" name="trainingPlanId" th:value="${trainingPlan.helperPlanId}"/>
 			<div style="position: relative; top: 110px; left: 250px;">
 				<h3>Edit Training Plan</h3>
 				<div class="row">
@@ -40,25 +40,12 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="form-group">
-							<label>Intensitate</label>
-							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-								<input type="text" th:field="*{intensity}"
-									class="form-control validation" id="intensity" placeholder="Intensitate"
-									autofocus>
-							</div>
-							<div th:if="${#fields.hasErrors('intensity')}" th:errors="*{intensity}"></div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
 						<div class="form-group has-danger">
 							<label>Pentru cine?</label>
 							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 								<select th:field="*{forWho}">
-									<option 
-									th:each="s : ${sex}" 
+									<option
+									th:each="s : ${sex}"
 									th:text="${s.gender}"
 									th:value="${s}"></option>
 								</select>

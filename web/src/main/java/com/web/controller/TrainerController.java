@@ -25,14 +25,14 @@ import com.web.model.Account;
 import com.web.model.Exercise;
 import com.web.model.ExerciseAdvice;
 import com.web.model.ExerciseImage;
-import com.web.model.TrainingPlan;
-import com.web.model.UserTraining;
+import com.web.model.HelperPlan;
+import com.web.model.UserPlan;
 import com.web.service.AccountService;
 import com.web.service.ExerciseAdviceService;
 import com.web.service.ExerciseImageService;
 import com.web.service.ExerciseService;
-import com.web.service.TrainingPlanService;
-import com.web.service.UserTrainingService;
+import com.web.service.HelperPlanService;
+import com.web.service.UserPlanService;
 import com.web.utils.Gender;
 import com.web.utils.TrainedMuscleGroup;
 
@@ -45,7 +45,7 @@ public class TrainerController {
 	private AccountService accountService;
 
 	@Autowired
-	private TrainingPlanService trainingPlanService;
+	private HelperPlanService helperPlanService;
 
 	@Autowired
 	private ExerciseService exerciseService;
@@ -57,7 +57,7 @@ public class TrainerController {
 	private ExerciseAdviceService exerciseAdviceService;
 
 	@Autowired
-	private UserTrainingService userTrainingService;
+	private UserPlanService userPlanService;
 
 	@GetMapping(path = { "/trainer" })
 	public String trainer(Model model, RedirectAttributes redirectAttributes) {
@@ -72,7 +72,7 @@ public class TrainerController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Account account = accountService.findByUsername(auth.getName());
 		model.addAttribute("trainingPlans",
-				trainingPlanService.findAllByTrainingPlanNotAssociated(account.getAccountId()));
+				helperPlanService.findAllTrainingPlansByHelperPlanNotAssociated(account.getAccountId()));
 		return "trainer/training_plans";
 	}
 
@@ -80,9 +80,9 @@ public class TrainerController {
 	public String purchasedTrainingPlans(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Account account = accountService.findByUsername(auth.getName());
-		Set<UserTraining> userTrainings = userTrainingService.findAll();
+		Set<UserPlan> userTrainings = userPlanService.findAllByHelperPlanTypeOfPlan("Antrenament");
 		userTrainings.removeIf(
-				element -> !element.getTrainingPlan().getTrainer().getAccountId().equals(account.getAccountId()));
+				element -> !element.getHelperPlan().getHelper().getAccountId().equals(account.getAccountId()));
 		model.addAttribute("trainingPlans", userTrainings);
 		return "trainer/purchased_training_plans";
 	}
@@ -90,14 +90,14 @@ public class TrainerController {
 	@GetMapping(path = { "/create_training_plan" })
 	public String createTrainingPlan(Model model) {
 		if (!model.containsAttribute("trainingPlan")) {
-			model.addAttribute("trainingPlan", new TrainingPlan());
+			model.addAttribute("trainingPlan", new HelperPlan());
 		}
 		model.addAttribute("sex", Gender.values());
 		return "trainer/create_training_plan";
 	}
 
 	@PostMapping(path = { "/create_training_plan_save" })
-	public String createTrainingPlanSave(Model model, @Valid @ModelAttribute("trainingPlan") TrainingPlan trainingPlan,
+	public String createTrainingPlanSave(Model model, @Valid @ModelAttribute("trainingPlan") HelperPlan trainingPlan,
 			BindingResult bindingResult, RedirectAttributes attr) {
 		if (bindingResult.hasErrors()) {
 			attr.addFlashAttribute("org.springframework.validation.BindingResult.trainingPlan", bindingResult);
@@ -106,8 +106,9 @@ public class TrainerController {
 		} else {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			Account trainer = accountService.findByUsername(auth.getName());
-			trainingPlan.setTrainer(trainer);
-			trainingPlanService.save(trainingPlan);
+			trainingPlan.setHelper(trainer);
+			trainingPlan.setTypeOfPlan("Antrenament");
+			helperPlanService.save(trainingPlan);
 			return "redirect:/training_plans";
 		}
 	}
@@ -115,9 +116,11 @@ public class TrainerController {
 	@GetMapping(path = { "/edit_training_plan/{id}" })
 	public String editTrainingPlan(Model model, @PathVariable("id") String trainingPlanId) {
 
-		if (checkId(trainingPlanId) && trainingPlanService.findById(Integer.parseInt(trainingPlanId)).isPresent()) {
+		if (checkId(trainingPlanId) && helperPlanService
+				.findByHelperPlanIdAndTypeOfPlan(Integer.parseInt(trainingPlanId), "Antrenament").isPresent()) {
 			if (!model.containsAttribute("trainingPlan")) {
-				TrainingPlan trainingPlan = trainingPlanService.findById(Integer.parseInt(trainingPlanId)).get();
+				HelperPlan trainingPlan = helperPlanService
+						.findByHelperPlanIdAndTypeOfPlan(Integer.parseInt(trainingPlanId), "Antrenament").get();
 				model.addAttribute("trainingPlan", trainingPlan);
 			}
 		} else {
@@ -128,28 +131,28 @@ public class TrainerController {
 	}
 
 	@PostMapping(path = { "/edit_training_plan_save" })
-	public String editTrainingPlanSave(@Valid @ModelAttribute("trainingPlan") TrainingPlan trainingPlan,
+	public String editTrainingPlanSave(@Valid @ModelAttribute("trainingPlan") HelperPlan trainingPlan,
 			BindingResult bindingResult, RedirectAttributes attr, Model model, @RequestParam Integer trainingPlanId) {
 		if (bindingResult.hasErrors()) {
 			attr.addFlashAttribute("org.springframework.validation.BindingResult.trainingPlan", bindingResult);
 			attr.addFlashAttribute("trainingPlan", trainingPlan);
 			return "redirect:/edit_training_plan/" + trainingPlanId;
 		} else {
-			TrainingPlan oldTrainingPlan = trainingPlanService.findById(trainingPlanId).get();
+			HelperPlan oldTrainingPlan = helperPlanService.findById(trainingPlanId).get();
 			oldTrainingPlan.setForWho(trainingPlan.getForWho());
-			oldTrainingPlan.setIntensity(trainingPlan.getIntensity());
 			oldTrainingPlan.setName(trainingPlan.getName());
 			oldTrainingPlan.setPrice(trainingPlan.getPrice());
 			oldTrainingPlan.setDateOfCreation(oldTrainingPlan.getDateOfCreation());
-			oldTrainingPlan.setTrainer(oldTrainingPlan.getTrainer());
-			trainingPlanService.save(oldTrainingPlan);
+			oldTrainingPlan.setHelper(oldTrainingPlan.getHelper());
+			helperPlanService.save(oldTrainingPlan);
 			return "redirect:/training_plans";
 		}
 	}
 
 	@GetMapping(path = { "/create_exercise_for_training_plan/{id}" })
 	public String createExerciseForTrainingPlan(Model model, @PathVariable("id") String trainingPlanId) {
-		if (checkId(trainingPlanId) && trainingPlanService.findById(Integer.parseInt(trainingPlanId)).isPresent()) {
+		if (checkId(trainingPlanId) && helperPlanService
+				.findByHelperPlanIdAndTypeOfPlan(Integer.parseInt(trainingPlanId), "Antrenament").isPresent()) {
 			if (!model.containsAttribute("exercise")) {
 				Exercise newExercise = new Exercise();
 				model.addAttribute("exercise", newExercise);
@@ -171,7 +174,7 @@ public class TrainerController {
 			attr.addFlashAttribute("exercise", exercise);
 			return "redirect:/create_exercise_for_training_plan/" + trainingPlanId;
 		} else {
-			exercise.setTrainingPlan(trainingPlanService.findById(trainingPlanId).get());
+			exercise.setTrainingPlan(helperPlanService.findById(trainingPlanId).get());
 			exerciseService.save(exercise);
 			return "redirect:/training_plans";
 		}

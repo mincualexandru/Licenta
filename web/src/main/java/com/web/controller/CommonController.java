@@ -32,13 +32,16 @@ import com.web.model.Exercise;
 import com.web.model.ExerciseDone;
 import com.web.model.ExerciseFeedback;
 import com.web.model.Experience;
+import com.web.model.Food;
+import com.web.model.FoodEaten;
+import com.web.model.FoodFeedback;
 import com.web.model.HelperFeedback;
+import com.web.model.HelperPlan;
 import com.web.model.Measurement;
 import com.web.model.Role;
 import com.web.model.Skill;
-import com.web.model.TrainingPlan;
 import com.web.model.UserDevice;
-import com.web.model.UserTraining;
+import com.web.model.UserPlan;
 import com.web.service.AccountInformationService;
 import com.web.service.AccountService;
 import com.web.service.EducationService;
@@ -46,10 +49,12 @@ import com.web.service.ExerciseDoneService;
 import com.web.service.ExerciseFeedbackService;
 import com.web.service.ExerciseService;
 import com.web.service.ExperienceService;
+import com.web.service.FoodEatenService;
+import com.web.service.FoodFeedbackService;
+import com.web.service.FoodService;
 import com.web.service.HelperFeedbackService;
 import com.web.service.MeasurementService;
 import com.web.service.SkillService;
-import com.web.service.UserTrainingService;
 import com.web.utils.Product;
 import com.web.utils.Qualifying;
 import com.web.utils.ScaleTypeMeasurement;
@@ -87,7 +92,13 @@ public class CommonController {
 	private ExerciseFeedbackService exerciseFeedbackService;
 
 	@Autowired
-	private UserTrainingService userTrainingService;
+	private FoodEatenService foodEatenService;
+
+	@Autowired
+	private FoodService foodService;
+
+	@Autowired
+	private FoodFeedbackService foodFeedbackService;
 
 	@Autowired
 	private HelperFeedbackService helperFeedbackService;
@@ -229,7 +240,7 @@ public class CommonController {
 			Account learner = accountService.findById(integer).get();
 			learners.add(learner);
 		}
-		model.addAttribute("account", account);
+		model.addAttribute("helper", account);
 		model.addAttribute("learners", learners);
 		return "common/view_learners";
 	}
@@ -240,10 +251,21 @@ public class CommonController {
 		Account account = accountService.findByUsername(auth.getName());
 		Set<Integer> learnersIds = accountService.findAllLearnersByHelperId(account.getAccountId());
 		Set<ExerciseFeedback> exerciseFeedbacks = new HashSet<>();
-		for (Integer integer : learnersIds) {
-			exerciseFeedbacks.addAll(exerciseFeedbackService.findAllByUserAccountId(integer));
+		Set<FoodFeedback> foodFeedbacks = new HashSet<>();
+		for (Role role : account.getRoles()) {
+			for (Integer integer : learnersIds) {
+				if (role.getName().equals("ROLE_TRAINER")) {
+					exerciseFeedbacks.addAll(exerciseFeedbackService.findAllByUserAccountId(integer));
+					model.addAttribute("exerciseFeedbacks", exerciseFeedbacks);
+				} else if (role.getName().equals("ROLE_NUTRITIONIST")) {
+					foodFeedbacks.addAll(foodFeedbackService.findAllByUserAccountId(integer));
+					model.addAttribute("foodFeedbacks", foodFeedbacks);
+				}
+			}
 		}
-		model.addAttribute("exerciseFeedbacks", exerciseFeedbacks);
+		LOGGER.info("Dimensiune food " + foodFeedbacks.size());
+		LOGGER.info("Dimensiune ex " + exerciseFeedbacks.size());
+		model.addAttribute("account", account);
 		return "common/view_feedbacks";
 	}
 
@@ -254,45 +276,31 @@ public class CommonController {
 		Account helper = accountService.findByUsername(auth.getName());
 		Map<String, Integer> chartExercisesDone = new TreeMap<>();
 		Map<String, Integer> chartBurnedCalories = new TreeMap<>();
-		for (Role role : helper.getRoles()) {
-			if (role.getName().equals("ROLE_TRAINER")) {
-				Integer numberOfExercisesUnDone = 0;
-				Set<Exercise> totalExercises = exerciseService.findAllNotPerfomerdExercises();
-				numberOfExercisesUnDone = totalExercises.size();
-				Integer numberOfExercisesDone = 0;
-				Set<ExerciseDone> exercisesDoneForLearner = exerciseDoneService
-						.findAllByUserAccountId(learner.getAccountId());
-				String previousValue = null;
-				Integer numberOfExercisesDoneByDay = 0;
-				Integer numberOfCaloriesPerExerciseDay = 0;
-				for (ExerciseDone exerciseDone : exercisesDoneForLearner) {
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-					LocalDateTime startDateTime = exerciseDone.getDateOfExecution().toLocalDateTime();
-					LocalDate startDate = startDateTime.toLocalDate();
-					String formatDate = startDate.format(formatter);
-					String value = formatDate;
-					if (!value.equals(previousValue)) {
-						numberOfExercisesDoneByDay = 0;
-						numberOfCaloriesPerExerciseDay = 0;
-						previousValue = value;
-					}
-					numberOfExercisesDoneByDay++;
-					numberOfCaloriesPerExerciseDay += exerciseDone.getExercise().getCaloriesBurned();
-					chartExercisesDone.put(value, numberOfExercisesDoneByDay);
-					chartBurnedCalories.put(value, numberOfCaloriesPerExerciseDay);
-				}
-				numberOfExercisesDone = exercisesDoneForLearner.size();
-
-				model.addAttribute("numberOfExercisesUnDone", numberOfExercisesUnDone);
-				model.addAttribute("numberOfExercisesDone", numberOfExercisesDone);
-				model.addAttribute("chartBurnedCalories", chartBurnedCalories);
-				model.addAttribute("chartExercisesDone", chartExercisesDone);
-				model.addAttribute("exercisesDoneForLearner", exercisesDoneForLearner);
-				model.addAttribute("totalExercises", totalExercises);
-			} else if (role.getName().equals("ROLE_NUTRITIONIST")) {
-
+		Integer numberOfExercisesUnDone = 0;
+		Set<Exercise> totalExercises = exerciseService.findAllNotPerfomerdExercises();
+		numberOfExercisesUnDone = totalExercises.size();
+		Integer numberOfExercisesDone = 0;
+		Set<ExerciseDone> exercisesDoneForLearner = exerciseDoneService.findAllByUserAccountId(learner.getAccountId());
+		String previousValue = null;
+		Integer numberOfExercisesDoneByDay = 0;
+		Integer numberOfCaloriesPerExerciseDay = 0;
+		for (ExerciseDone exerciseDone : exercisesDoneForLearner) {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			LocalDateTime startDateTime = exerciseDone.getDateOfExecution().toLocalDateTime();
+			LocalDate startDate = startDateTime.toLocalDate();
+			String formatDate = startDate.format(formatter);
+			String value = formatDate;
+			if (!value.equals(previousValue)) {
+				numberOfExercisesDoneByDay = 0;
+				numberOfCaloriesPerExerciseDay = 0;
+				previousValue = value;
 			}
+			numberOfExercisesDoneByDay++;
+			numberOfCaloriesPerExerciseDay += exerciseDone.getExercise().getCaloriesBurned();
+			chartExercisesDone.put(value, numberOfExercisesDoneByDay);
+			chartBurnedCalories.put(value, numberOfCaloriesPerExerciseDay);
 		}
+		numberOfExercisesDone = exercisesDoneForLearner.size();
 		boolean noFeedbackWasProvided = true;
 		if (helperFeedbackService.findByLearnerAccountId(learner.getAccountId()).isPresent()) {
 			noFeedbackWasProvided = false;
@@ -300,9 +308,67 @@ public class CommonController {
 		for (UserDevice userDevice : learner.getUserDevices()) {
 			getHeightAndWeight(model, userDevice);
 		}
+		model.addAttribute("account", helper);
 		model.addAttribute("learner", learner);
 		model.addAttribute("noFeedbackWasProvided", noFeedbackWasProvided);
-		return "common/view_progress";
+		model.addAttribute("numberOfExercisesUnDone", numberOfExercisesUnDone);
+		model.addAttribute("numberOfExercisesDone", numberOfExercisesDone);
+		model.addAttribute("chartBurnedCalories", chartBurnedCalories);
+		model.addAttribute("chartExercisesDone", chartExercisesDone);
+		model.addAttribute("exercisesDoneForLearner", exercisesDoneForLearner);
+		model.addAttribute("totalExercises", totalExercises);
+		return "trainer/view_progress";
+	}
+
+	@PostMapping(path = { "/view_progress_nutritionist" })
+	public String viewProgressNutritionist(Model model, @RequestParam Integer learnerId) {
+		Account learner = accountService.findById(learnerId).get();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Account helper = accountService.findByUsername(auth.getName());
+		Map<String, Integer> chartFoodEaten = new TreeMap<>();
+		Map<String, Integer> chartAccumulatedCalories = new TreeMap<>();
+		Integer numberOfFoodNotEaten = 0;
+		Set<Food> allFoods = foodService.findAllNotEatenFoods();
+		numberOfFoodNotEaten = allFoods.size();
+		Integer numberOfFoodEaten = 0;
+		Set<FoodEaten> foodEatenForLearner = foodEatenService.findAllByUserAccountId(learner.getAccountId());
+		String previousValue = null;
+		Integer numberOfFoodEatenByDay = 0;
+		Integer numberOfCaloriesPerFoodDay = 0;
+		for (FoodEaten foodEaten : foodEatenForLearner) {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			LocalDateTime startDateTime = foodEaten.getDateOfExecution().toLocalDateTime();
+			LocalDate startDate = startDateTime.toLocalDate();
+			String formatDate = startDate.format(formatter);
+			String value = formatDate;
+			if (!value.equals(previousValue)) {
+				numberOfFoodEatenByDay = 0;
+				numberOfCaloriesPerFoodDay = 0;
+				previousValue = value;
+			}
+			numberOfFoodEatenByDay++;
+			numberOfCaloriesPerFoodDay += Math.round(foodEaten.getFood().getCalories());
+			chartFoodEaten.put(value, numberOfFoodEatenByDay);
+			chartAccumulatedCalories.put(value, numberOfCaloriesPerFoodDay);
+		}
+		numberOfFoodEaten = foodEatenForLearner.size();
+		boolean noFeedbackWasProvided = true;
+		if (helperFeedbackService.findByLearnerAccountId(learner.getAccountId()).isPresent()) {
+			noFeedbackWasProvided = false;
+		}
+		for (UserDevice userDevice : learner.getUserDevices()) {
+			getHeightAndWeight(model, userDevice);
+		}
+		model.addAttribute("account", helper);
+		model.addAttribute("learner", learner);
+		model.addAttribute("noFeedbackWasProvided", noFeedbackWasProvided);
+		model.addAttribute("numberOfFoodNotEaten", numberOfFoodNotEaten);
+		model.addAttribute("numberOfFoodEaten", numberOfFoodEaten);
+		model.addAttribute("chartAccumulatedCalories", chartAccumulatedCalories);
+		model.addAttribute("chartFoodEaten", chartFoodEaten);
+		model.addAttribute("foodEatenForLearner", foodEatenForLearner);
+		model.addAttribute("allFoods", allFoods);
+		return "nutritionist/view_progress_nutritionist";
 	}
 
 	private void getHeightAndWeight(Model model, UserDevice userDevice) {
@@ -372,28 +438,29 @@ public class CommonController {
 					}
 				}
 
-				for (UserTraining userTrainingPlan : account.getUserTrainingPlans()) {
-					if (userTrainingPlan.isBought()) {
+				for (UserPlan userPlan : account.getUserPlans()) {
+					if (userPlan.isBought()) {
 						Product product = new Product();
-						product.setProductId(userTrainingPlan.getTrainingPlan().getTrainingPlanId());
-						product.setProductName(userTrainingPlan.getTrainingPlan().getName());
-						product.setPrice(userTrainingPlan.getTrainingPlan().getPrice());
-						product.setForWho(userTrainingPlan.getTrainingPlan().getForWho());
+						product.setProductId(userPlan.getHelperPlan().getHelperPlanId());
+						product.setProductName(userPlan.getHelperPlan().getName());
+						product.setPrice(userPlan.getHelperPlan().getPrice());
+						product.setForWho(userPlan.getHelperPlan().getForWho());
 						product.setType("trainingPlan");
-						product.setDateOfPurchased(userTrainingPlan.getDateOfPurchase());
+						product.setDateOfPurchased(userPlan.getDateOfPurchase());
 						products.add(product);
 					}
 				}
 
 			} else if (role.getName().equals("ROLE_TRAINER")) {
-				for (TrainingPlan trainingPlan : account.getTrainingPlans()) {
-					for (UserTraining userTrainingPlan : trainingPlan.getUserTrainingPlans()) {
-						if (userTrainingPlan.isBought()) {
+				for (HelperPlan trainingPlan : account.getPlans()) {
+					for (UserPlan userTrainingPlan : trainingPlan.getUserPlans()) {
+						if (userTrainingPlan.getHelperPlan().getTypeOfPlan().equals("Antrenament")
+								&& userTrainingPlan.isBought()) {
 							Product product = new Product();
-							product.setProductId(userTrainingPlan.getTrainingPlan().getTrainingPlanId());
-							product.setProductName(userTrainingPlan.getTrainingPlan().getName());
-							product.setPrice(userTrainingPlan.getTrainingPlan().getPrice());
-							product.setForWho(userTrainingPlan.getTrainingPlan().getForWho());
+							product.setProductId(userTrainingPlan.getHelperPlan().getHelperPlanId());
+							product.setProductName(userTrainingPlan.getHelperPlan().getName());
+							product.setPrice(userTrainingPlan.getHelperPlan().getPrice());
+							product.setForWho(userTrainingPlan.getHelperPlan().getForWho());
 							product.setType("trainingPlan");
 							product.setDateOfPurchased(userTrainingPlan.getDateOfPurchase());
 							products.add(product);
@@ -402,7 +469,20 @@ public class CommonController {
 				}
 
 			} else if (role.getName().equals("ROLE_NUTRITIONIST")) {
-
+				for (HelperPlan trainingPlan : account.getPlans()) {
+					for (UserPlan userDietPlan : trainingPlan.getUserPlans()) {
+						if (userDietPlan.getHelperPlan().getTypeOfPlan().equals("Dieta") && userDietPlan.isBought()) {
+							Product product = new Product();
+							product.setProductId(userDietPlan.getHelperPlan().getHelperPlanId());
+							product.setProductName(userDietPlan.getHelperPlan().getName());
+							product.setPrice(userDietPlan.getHelperPlan().getPrice());
+							product.setForWho(userDietPlan.getHelperPlan().getForWho());
+							product.setType("trainingPlan");
+							product.setDateOfPurchased(userDietPlan.getDateOfPurchase());
+							products.add(product);
+						}
+					}
+				}
 			}
 		}
 		model.addAttribute("account", account);
@@ -422,11 +502,29 @@ public class CommonController {
 						.findAllNotPerfomerdExercisesForTrainingPlanId(trainingPlanId);
 				model.addAttribute("notPerformedExercises", notPerformedExercises);
 			} else if (role.getName().equals("ROLE_TRAINER")) {
-				Set<Exercise> exercises = exerciseService.findAllByTrainingPlanTrainingPlanId(trainingPlanId);
+				Set<Exercise> exercises = exerciseService
+						.findAllByTrainingPlanHelperPlanIdAndTrainingPlanTypeOfPlan(trainingPlanId, "Antrenament");
 				model.addAttribute("exercises", exercises);
 			}
 		}
 		model.addAttribute("account", account);
 		return "common/exercises_training_plan";
+	}
+
+	@PostMapping(path = { "/foods_diet_plan" })
+	public String foodsDietPlan(Model model, @RequestParam Integer dietPlanId) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Account account = accountService.findByUsername(auth.getName());
+		for (Role role : account.getRoles()) {
+			if (role.getName().equals("ROLE_USER")) {
+				Set<Food> notEatenFoods = foodService.findAllNotEatenFoodsForDietPlanId(dietPlanId);
+				model.addAttribute("notEatenFoods", notEatenFoods);
+			} else if (role.getName().equals("ROLE_NUTRITIONIST")) {
+				Set<Food> foods = foodService.findAllByDietPlanHelperPlanIdAndDietPlanTypeOfPlan(dietPlanId, "Dieta");
+				model.addAttribute("foods", foods);
+			}
+		}
+		model.addAttribute("account", account);
+		return "common/foods_diet_plan";
 	}
 }

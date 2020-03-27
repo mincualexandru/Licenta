@@ -35,25 +35,12 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="form-group">
-							<label>Intensitate</label>
-							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-								<input type="text" th:field="*{intensity}"
-									class="form-control validation" id="intensity" placeholder="Intensitate"
-									autofocus>
-							</div>
-							<div th:if="${#fields.hasErrors('intensity')}" th:errors="*{intensity}"></div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
 						<div class="form-group has-danger">
 							<label>Pentru cine?</label>
 							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 								<select th:field="*{forWho}">
-									<option 
-									th:each="s : ${sex}" 
+									<option
+									th:each="s : ${sex}"
 									th:text="${s.gender}"
 									th:value="${s}"></option>
 								</select>

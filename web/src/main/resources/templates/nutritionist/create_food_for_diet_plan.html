@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Sign up</title>
+<base href="/">
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" th:href="@{css/style.css}"/>
+</head>
+<body>
+<div th:if="${inexistentValue}">
+	Valoarea introdusa nu exista
+</div>
+<div th:unless="${inexistentValue}">
+		<div class="container">
+		<form class="form-horizontal" role="form" method="post"
+			th:action="@{/create_food_for_diet_plan_save}" th:object="${food}">
+			<input type="hidden" name="dietPlanId" th:value="${dietPlanId}"/>
+			<div style="position: relative; top: 110px; left: 250px;">
+				<h3>Creaza Aliment</h3>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Nume</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+								<input type="text" th:field="*{name}"
+									class="form-control validation" id="firstName" placeholder="Nume"
+									autofocus>
+							</div>
+							<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Numar Calorii</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+								<input type="number" step="0.01" th:field="*{calories}"
+									class="form-control validation" id="firstName" placeholder="Calorii"
+									autofocus>
+							</div>
+							<div th:if="${#fields.hasErrors('calories')}" th:errors="*{calories}"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Numar Proteine</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+								<input type="number" step="0.01" th:field="*{protein}"
+									class="form-control validation" id="firstName" placeholder="Proteine"
+									autofocus>
+							</div>
+							<div th:if="${#fields.hasErrors('protein')}" th:errors="*{protein}"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Numar Lipide</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+								<input type="number" step="0.01" th:field="*{lipids}"
+									class="form-control validation" id="firstName" placeholder="Lipide"
+									autofocus>
+							</div>
+							<div th:if="${#fields.hasErrors('lipids')}" th:errors="*{lipids}"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Numar Carbohidrati</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+								<input type="number" step="0.01" th:field="*{carbohydrates}"
+									class="form-control validation" id="firstName" placeholder="Carbohidrati"
+									autofocus>
+							</div>
+							<div th:if="${#fields.hasErrors('carbohydrates')}" th:errors="*{carbohydrates}"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Numar Fibre</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+								<input type="number" step="0.01" th:field="*{fiber}"
+									class="form-control validation" id="firstName" placeholder="Fibre"
+									autofocus>
+							</div>
+							<div th:if="${#fields.hasErrors('fiber')}" th:errors="*{fiber}"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Gramaj</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+								<input type="number" step="0.01" th:field="*{weight}"
+									class="form-control validation" id="firstName" placeholder="Gramaj"
+									autofocus>
+							</div>
+							<div th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Timp Recomandat</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+								<input type="text" th:field="*{recommendedTimeRange}"
+									class="form-control validation" id="firstName" placeholder="Timp Recomandat"
+									autofocus>
+							</div>
+							<div th:if="${#fields.hasErrors('recommendedTimeRange')}" th:errors="*{recommendedTimeRange}"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3"></div>
+					<div class="col-md-6">
+						<button type="submit" class="btn btn-success">
+							<i class="fa fa-user-plus"></i> Register
+						</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+	<script type="text/javascript" th:src="@{/js/signup.js}"></script>
+</body>
+</html>

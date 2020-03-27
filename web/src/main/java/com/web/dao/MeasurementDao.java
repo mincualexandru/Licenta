@@ -41,4 +41,7 @@ public interface MeasurementDao extends CrudRepository<Measurement, Integer> {
 	void deleteAllByUserDeviceId(Integer userDeviceId);
 
 	Optional<Measurement> findByNameAndUserDeviceUserDeviceId(String scaleTypeMeasurement, Integer userDeviceId);
+
+	@Query(value = "select * from measurements where user_device_id is NULL and from_xml = 0;", nativeQuery = true)
+	Set<Measurement> findAllByUserDeviceUserDeviceIdAndFromXmlAndEndDate(Integer userDeviceId, boolean fromXml);
 }

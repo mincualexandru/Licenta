@@ -43,11 +43,6 @@ public class ExerciseServiceImpl implements ExerciseService {
 	}
 
 	@Override
-	public Set<Exercise> findAllByTrainingPlanTrainingPlanId(Integer trainingPlanId) {
-		return exerciseDao.findAllByTrainingPlanTrainingPlanId(trainingPlanId);
-	}
-
-	@Override
 	public Set<Exercise> findAllNotPerfomerdExercisesForTrainingPlanId(Integer trainingPlanId) {
 		return exerciseDao.findAllNotPerfomerdExercisesForTrainingPlanId(trainingPlanId);
 	}
@@ -57,4 +52,14 @@ public class ExerciseServiceImpl implements ExerciseService {
 		return exerciseDao.findAllNotPerfomerdExercises();
 	}
 
+	@Override
+	public Set<Exercise> findAllByTrainingPlanHelperPlanId(Integer helperPlanId) {
+		return exerciseDao.findAllByTrainingPlanHelperPlanId(helperPlanId);
+	}
+
+	@Override
+	public Set<Exercise> findAllByTrainingPlanHelperPlanIdAndTrainingPlanTypeOfPlan(Integer trainingPlanId,
+			String string) {
+		return exerciseDao.findAllByTrainingPlanHelperPlanIdAndTrainingPlanTypeOfPlan(trainingPlanId, string);
+	}
 }

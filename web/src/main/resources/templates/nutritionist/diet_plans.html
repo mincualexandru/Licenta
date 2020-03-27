@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Admin</title>
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+	<div th:unless="${#lists.size(dietPlans)}">Nu ai creat niciun plan de dieta momentan</div>
+	<div th:if="${#lists.size(dietPlans)}">
+		<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Diete Necumparate</h3>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-10 mx-auto">
+							<table class="table table-striped">
+								<thead class="center-align">
+									<tr>
+										<th>Nume</th>
+										<th>Actiuni</th>
+									</tr>
+								</thead>
+								<tbody class="center-align">
+									<th:block th:each="dietPlan, iterStat : ${dietPlans}">
+										<tr>
+											<td th:text="${dietPlan.name}"></td>
+											<td>
+												<form th:action="@{/foods_diet_plan}" method="post">
+													<input type="hidden" name="dietPlanId" th:value="${dietPlan.helperPlanId}"/>
+													<button type="submit" class="btn btn-success">Vezi
+														Alimente</button>
+												</form>
+												<a th:href="@{/edit_diet_plan/{id}(id=${dietPlan.helperPlanId})}" class="btn btn-success">Editeaza Dieta</a>
+												<a th:href="@{/create_food_for_diet_plan/{id}(id = ${dietPlan.helperPlanId})}" class="btn btn-success">Creeaza Aliment</a>
+											</td>
+										</tr>
+									</th:block>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</body>
+</html>

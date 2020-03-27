@@ -99,11 +99,11 @@ public class Account {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
 	@JsonIgnore
-	private Set<UserTraining> userTrainingPlans = new HashSet<>();
+	private Set<UserPlan> userPlans = new HashSet<>();
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "trainer", orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "helper", orphanRemoval = true)
 	@JsonIgnore
-	private Set<TrainingPlan> trainingPlans = new HashSet<>();
+	private Set<HelperPlan> plans = new HashSet<>();
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
 	@JsonIgnore
@@ -280,12 +280,12 @@ public class Account {
 		this.transaction = transaction;
 	}
 
-	public Set<TrainingPlan> getTrainingPlans() {
-		return trainingPlans;
+	public Set<HelperPlan> getPlans() {
+		return plans;
 	}
 
-	public void setTrainingPlans(Set<TrainingPlan> trainingPlans) {
-		this.trainingPlans = trainingPlans;
+	public void setPlans(Set<HelperPlan> plans) {
+		this.plans = plans;
 	}
 
 	public Set<Account> getHelpers() {
@@ -296,12 +296,12 @@ public class Account {
 		this.helpers = helpers;
 	}
 
-	public Set<UserTraining> getUserTrainingPlans() {
-		return userTrainingPlans;
+	public Set<UserPlan> getUserPlans() {
+		return userPlans;
 	}
 
-	public void setUserTrainingPlans(Set<UserTraining> userTrainingPlans) {
-		this.userTrainingPlans = userTrainingPlans;
+	public void setUserPlans(Set<UserPlan> userPlans) {
+		this.userPlans = userPlans;
 	}
 
 	public Set<ExerciseDone> getExerciseDone() {

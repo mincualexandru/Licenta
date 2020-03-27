@@ -25,29 +25,28 @@ import org.hibernate.validator.constraints.Range;
 import com.web.utils.Gender;
 
 @Entity
-@Table(name = "trainings_plans")
-public class TrainingPlan {
+@Table(name = "helpers_plans")
+public class HelperPlan {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "training_plan_id")
-	private int trainingPlanId;
+	@Column(name = "helper_plan_id")
+	private int helperPlanId;
 
 	@ManyToOne
-	@JoinColumn(name = "trainer_id")
-	private Account trainer;
+	@JoinColumn(name = "helper_id")
+	private Account helper;
 
 	@Column(name = "name")
 	@NotEmpty(message = "Campul este obligatoriu !")
 	private String name;
 
-	@Column(name = "intensity")
-	@NotEmpty(message = "Campul este obligatoriu !")
-	private String intensity;
-
 	@Column(name = "for_who")
 	@Enumerated(EnumType.STRING)
 	private Gender forWho;
+
+	@Column(name = "type_of_plan")
+	private String typeOfPlan;
 
 	@Column(name = "price")
 	@Range(min = 0, message = "Valorile negative nu sunt permise")
@@ -58,34 +57,49 @@ public class TrainingPlan {
 	@CreationTimestamp
 	private Timestamp dateOfCreation;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "trainingPlan", orphanRemoval = true)
-	private Set<UserTraining> userTrainingPlans = new HashSet<>();
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "helperPlan", orphanRemoval = true)
+	private Set<UserPlan> userPlans = new HashSet<>();
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "trainingPlan", orphanRemoval = true)
 	private Set<Exercise> exercises = new HashSet<>();
 
-	public TrainingPlan() {
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "dietPlan", orphanRemoval = true)
+	private Set<Food> foods = new HashSet<>();
 
+	public HelperPlan() {
 	}
 
-	public TrainingPlan(int trainingPlanId, Account trainer, String name, String intensity, Gender forWho,
-			Integer price, Timestamp dateOfCreation, Set<UserTraining> userTrainingPlans) {
-		this.trainingPlanId = trainingPlanId;
-		this.trainer = trainer;
+	public HelperPlan(int helperPlanId, Account helper, @NotEmpty(message = "Campul este obligatoriu !") String name,
+			Gender forWho, String typeOfPlan,
+			@Range(min = 0, message = "Valorile negative nu sunt permise") @NotNull(message = "Campul este obligatoriu !") Integer price,
+			Timestamp dateOfCreation, Set<UserPlan> userPlans, Set<Exercise> exercises, Set<Food> foods) {
+		super();
+		this.helperPlanId = helperPlanId;
+		this.helper = helper;
 		this.name = name;
-		this.intensity = intensity;
 		this.forWho = forWho;
+		this.typeOfPlan = typeOfPlan;
 		this.price = price;
 		this.dateOfCreation = dateOfCreation;
-		this.userTrainingPlans = userTrainingPlans;
+		this.userPlans = userPlans;
+		this.exercises = exercises;
+		this.foods = foods;
 	}
 
-	public int getTrainingPlanId() {
-		return trainingPlanId;
+	public int getHelperPlanId() {
+		return helperPlanId;
 	}
 
-	public void setTrainingPlanId(int trainingPlanId) {
-		this.trainingPlanId = trainingPlanId;
+	public void setHelperPlanId(int helperPlanId) {
+		this.helperPlanId = helperPlanId;
+	}
+
+	public Account getHelper() {
+		return helper;
+	}
+
+	public void setHelper(Account helper) {
+		this.helper = helper;
 	}
 
 	public String getName() {
@@ -96,14 +110,6 @@ public class TrainingPlan {
 		this.name = name;
 	}
 
-	public String getIntensity() {
-		return intensity;
-	}
-
-	public void setIntensity(String intensity) {
-		this.intensity = intensity;
-	}
-
 	public Gender getForWho() {
 		return forWho;
 	}
@@ -112,12 +118,12 @@ public class TrainingPlan {
 		this.forWho = forWho;
 	}
 
-	public Account getTrainer() {
-		return trainer;
+	public String getTypeOfPlan() {
+		return typeOfPlan;
 	}
 
-	public void setTrainer(Account trainer) {
-		this.trainer = trainer;
+	public void setTypeOfPlan(String typeOfPlan) {
+		this.typeOfPlan = typeOfPlan;
 	}
 
 	public Integer getPrice() {
@@ -136,12 +142,12 @@ public class TrainingPlan {
 		this.dateOfCreation = dateOfCreation;
 	}
 
-	public Set<UserTraining> getUserTrainingPlans() {
-		return userTrainingPlans;
+	public Set<UserPlan> getUserPlans() {
+		return userPlans;
 	}
 
-	public void setUserTrainingPlans(Set<UserTraining> userTrainingPlans) {
-		this.userTrainingPlans = userTrainingPlans;
+	public void setUserPlans(Set<UserPlan> userPlans) {
+		this.userPlans = userPlans;
 	}
 
 	public Set<Exercise> getExercises() {
@@ -152,10 +158,11 @@ public class TrainingPlan {
 		this.exercises = exercises;
 	}
 
-	@Override
-	public String toString() {
-		return "TrainingPlan [trainingPlanId=" + trainingPlanId + ", trainer=" + trainer + ", name=" + name
-				+ ", intensity=" + intensity + ", forWho=" + forWho + ", price=" + price + ", dateOfCreation="
-				+ dateOfCreation + ", userTrainingPlans=" + userTrainingPlans + ", exercises=" + exercises + "]";
+	public Set<Food> getFoods() {
+		return foods;
+	}
+
+	public void setFoods(Set<Food> foods) {
+		this.foods = foods;
 	}
 }

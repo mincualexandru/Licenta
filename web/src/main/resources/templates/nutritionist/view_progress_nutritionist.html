@@ -61,7 +61,7 @@ input[type="number"] {
 		style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">
 		Progres pentru <span th:text="${learner.username}"></span>
 	</h3>
-	<div class="container-fluid">
+							<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-10 mx-auto">
 				<div class="row">
@@ -76,9 +76,9 @@ input[type="number"] {
 								<h3>Informatii</h3>
 								<p th:text="${learner.gender}"></p>
 								<p>
-									Exercitii Efectuate:
+									Alimente Consumate:
 									<button type="button" class="btn btn-primary"
-										data-toggle="modal" th:text="${numberOfExercisesDone}"
+										data-toggle="modal" th:text="${numberOfFoodEaten}"
 										data-target="#exampleModal"></button>
 								<div class="modal fade" id="exampleModal" tabindex="-1"
 									role="dialog" aria-labelledby="exampleModalLabel"
@@ -86,8 +86,8 @@ input[type="number"] {
 									<div class="modal-dialog" role="document">
 										<div class="modal-content">
 											<div class="modal-header">
-												<h5 class="modal-title" id="exampleModalLabel">Exercitiile
-													Efectuate</h5>
+												<h5 class="modal-title" id="exampleModalLabel">Alimentele
+													Consumate</h5>
 												<button type="button" class="close" data-dismiss="modal"
 													aria-label="Close">
 													<span aria-hidden="true">&times;</span>
@@ -95,13 +95,15 @@ input[type="number"] {
 											</div>
 											<div class="modal-body">
 												<ul
-													th:each="exercise, iterStat : ${exercisesDoneForLearner}">
-													<li th:text="${exercise.exercise.name}"></li>
-													<li th:text="${exercise.exercise.caloriesBurned}"></li>
-													<li th:text="${exercise.exercise.numberOfSeries}"></li>
-													<li th:text="${exercise.exercise.numberOfReps}"></li>
-													<li th:text="${exercise.exercise.execution}"></li>
-													<li th:text="${exercise.exercise.trainedMuscleGroup}"></li>
+													th:each="fd, iterStat : ${foodEatenForLearner}">
+													<li th:text="${fd.food.name}"></li>
+													<li th:text="${fd.food.calories}"></li>
+													<li th:text="${fd.food.protein}"></li>
+													<li th:text="${fd.food.lipids}"></li>
+													<li th:text="${fd.food.carbohydrates}"></li>
+													<li th:text="${fd.food.fiber}"></li>
+													<li th:text="${fd.food.weight}"></li>
+													<li th:text="${fd.food.recommendedTimeRange}"></li>
 												</ul>
 											</div>
 											<div class="modal-footer">
@@ -115,9 +117,9 @@ input[type="number"] {
 								</div>
 								</p>
 								<p>
-									Exercitii Efectuate:
+									Alimente Neconsumate:
 									<button type="button" class="btn btn-primary"
-										data-toggle="modal" th:text="${numberOfExercisesUnDone}"
+										data-toggle="modal" th:text="${numberOfFoodNotEaten}"
 										data-target="#exampleModal2"></button>
 								<div class="modal fade" id="exampleModal2" tabindex="-1"
 									role="dialog" aria-labelledby="exampleModal2Label"
@@ -125,8 +127,7 @@ input[type="number"] {
 									<div class="modal-dialog" role="document">
 										<div class="modal-content">
 											<div class="modal-header">
-												<h5 class="modal-title" id="exampleModal2Label">Exercitiile
-													Neefectuate</h5>
+												<h5 class="modal-title" id="exampleModal2Label">Alimente Neconsumate</h5>
 												<button type="button" class="close" data-dismiss="modal"
 													aria-label="Close">
 													<span aria-hidden="true">&times;</span>
@@ -134,13 +135,15 @@ input[type="number"] {
 											</div>
 											<div class="modal-body">
 												<ul
-													th:each="exercise, iterStat : ${totalExercises}">
-													<li th:text="${exercise.name}"></li>
-													<li th:text="${exercise.caloriesBurned}"></li>
-													<li th:text="${exercise.numberOfSeries}"></li>
-													<li th:text="${exercise.numberOfReps}"></li>
-													<li th:text="${exercise.execution}"></li>
-													<li th:text="${exercise.trainedMuscleGroup}"></li>
+													th:each="food, iterStat : ${allFoods}">
+													<li th:text="${food.name}"></li>
+													<li th:text="${food.calories}"></li>
+													<li th:text="${food.protein}"></li>
+													<li th:text="${food.lipids}"></li>
+													<li th:text="${food.carbohydrates}"></li>
+													<li th:text="${food.fiber}"></li>
+													<li th:text="${food.weight}"></li>
+													<li th:text="${food.recommendedTimeRange}"></li>
 												</ul>
 											</div>
 											<div class="modal-footer">
@@ -194,12 +197,12 @@ input[type="number"] {
 				</div>
 				<div class="row">
 					<div class="col-md-12">
-						<div id="chartBurnedCalories" style="height: 300px;"></div>
+						<div id="chartAccumulatedCalories" style="height: 300px;"></div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-12">
-						<div id="chartExercisesDone" style="height: 300px;"></div>
+						<div id="chartFoodEaten" style="height: 300px;"></div>
 					</div>
 				</div>
 				<div>
@@ -224,6 +227,7 @@ input[type="number"] {
 	<script src="https://code.highcharts.com/modules/export-data.js"></script>
 	<script src="https://code.highcharts.com/modules/accessibility.js"></script>
 	<script th:inline="javascript">
+		
 		Highcharts.chart('container', {
 			chart : {
 				type : 'pie',
@@ -234,7 +238,7 @@ input[type="number"] {
 				}
 			},
 			title : {
-				text : 'Exercitii Efectuate VS Exercitii Neefectuate'
+				text : 'Alimente Consumate VS Alimente Neconsumate'
 			},
 			tooltip : {
 				pointFormat : '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -253,23 +257,22 @@ input[type="number"] {
 			series : [ {
 				type : 'pie',
 				name : 'Procent Exercitii',
-				data : [ [ 'Neefectuat', [[${numberOfExercisesUnDone}]] ], [ 'Efectuat', [[${numberOfExercisesDone}]] ]  ]
+				data : [ [ 'Neconsumat', [[${numberOfFoodNotEaten}]] ], [ 'Consumat', [[${numberOfFoodEaten}]] ]  ]
 			} ]
 		});
 		
-		
-		$('#chartBurnedCalories').highcharts({
+		$('#chartAccumulatedCalories').highcharts({
 	        chart: {
 	            type: 'column'
 	        },
 	        title: {
-	        	text: 'Suma Caloriilor Arse'
+	        	text: 'Suma Caloriilor Acumulate'
 	        },
 	        scrollbar: {
 	            enabled: true
 	        },
 	        xAxis: {
-	            categories: [[${chartBurnedCalories.keySet()}]],
+	            categories: [[${chartAccumulatedCalories.keySet()}]],
 	            crosshair: true,
 	            min: 0,
 	            max: 10,
@@ -293,23 +296,23 @@ input[type="number"] {
 	        },
 	        series: [{
 	            name: 'Valoare',
-	            data: [[${chartBurnedCalories.values()}]]
+	            data: [[${chartAccumulatedCalories.values()}]]
 
 	        }]
 	    });
 		
-		$('#chartExercisesDone').highcharts({
+		$('#chartFoodEaten').highcharts({
 	        chart: {
 	            type: 'column'
 	        },
 	        title: {
-	            text: 'Numar Exercitii Efectuate'
+	            text: 'Numar Alimente Consumate'
 	        },
 	        scrollbar: {
 	            enabled: true
 	        },
 	        xAxis: {
-	            categories: [[${chartExercisesDone.keySet()}]],
+	            categories: [[${chartFoodEaten.keySet()}]],
 	            crosshair: true,
 	            min: 0,
 	            max: 10,
@@ -333,11 +336,10 @@ input[type="number"] {
 	        },
 	        series: [{
 	            name: 'Valoare',
-	            data: [[${chartExercisesDone.values()}]]
+	            data: [[${chartFoodEaten.values()}]]
 
 	        }]
 	    });
-		
 	</script>
 </body>
 </html>

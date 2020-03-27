@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Admin</title>
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+	<div th:each="role, iterStat : ${account.roles}">
+		<div th:if="${role.name == 'ROLE_USER'}">
+			<div th:unless="${#lists.size(notEatenFoods)}">Ai consumat toate
+				alimentele</div>
+				<div th:if="${#lists.size(notEatenFoods)}">
+		<h3
+			style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Alimente Neconsumate</h3>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-10 mx-auto">
+							<table class="table table-striped">
+								<thead class="center-align">
+									<tr>
+										<th>Nume</th>
+										<th>Calorii</th>
+										<th>Proteine</th>
+										<th>Lipide</th>
+										<th>Carbohidrati</th>
+										<th>Fibre</th>
+										<th>Gramaj</th>
+										<th>Timpul Recomandat</th>
+										<th>Actiuni</th>
+									</tr>
+								</thead>
+								<tbody class="center-align">
+									<th:block th:each="food, iterStat : ${notEatenFoods}">
+										<tr>
+											<td th:text="${food.name}"></td>
+											<td th:text="${food.calories}"></td>
+											<td th:text="${food.protein}"></td>
+											<td th:text="${food.lipids}"></td>
+											<td th:text="${food.carbohydrates}"></td>
+											<td th:text="${food.fiber}"></td>
+											<td th:text="${food.weight}"></td>
+											<td th:text="${food.recommendedTimeRange}"></td>
+											<td>
+												<a th:href="@{/view_food/{id}(id = ${food.foodId})}" class="btn btn-success">Vezi Detalii</a>
+											</td>
+										</tr>
+									</th:block>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		</div>
+		<div th:if="${role.name == 'ROLE_NUTRITIONIST'}">
+			<div th:unless="${#lists.size(foods)}">Nu exista alimente
+				pentru aceasta dieta</div>
+					<div th:if="${#lists.size(foods)}">
+		<h3
+			style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Alimente Dieta</h3>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-10 mx-auto">
+							<table class="table table-striped">
+								<thead class="center-align">
+									<tr>
+										<th>Nume</th>
+										<th>Calorii</th>
+										<th>Proteine</th>
+										<th>Lipide</th>
+										<th>Carbohidrati</th>
+										<th>Fibre</th>
+										<th>Gramaj</th>
+										<th>Timpul Recomandat</th>
+										<th>Actiuni</th>
+									</tr>
+								</thead>
+								<tbody class="center-align">
+									<th:block th:each="food, iterStat : ${foods}">
+										<tr>
+											<td th:text="${food.name}"></td>
+											<td th:text="${food.calories}"></td>
+											<td th:text="${food.protein}"></td>
+											<td th:text="${food.lipids}"></td>
+											<td th:text="${food.carbohydrates}"></td>
+											<td th:text="${food.fiber}"></td>
+											<td th:text="${food.weight}"></td>
+											<td th:text="${food.recommendedTimeRange}"></td>
+											<td>
+												<a th:href="@{/view_food/{id}(id = ${food.foodId})}" class="btn btn-success">Vezi Detalii</a>
+											</td>
+										</tr>
+									</th:block>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -13,7 +13,8 @@
 <body>
 	<div th:each="role: ${account.roles}">
 		<div th:if="${role.name eq 'ROLE_USER'}">
-						<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Istoric Tranzactii</h3>
+			<div th:if="${#lists.size(products)}">
+				<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Istoric Tranzactii</h3>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
@@ -32,9 +33,28 @@
 			</div>
 		</div>
 	</div>
-		</div>
+			</div>
+			<div th:unless="${#lists.size(products)}">
+				<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Istoric Tranzactii</h3>
+				<div th:if="${availableBalance > 0 and payments > 0}">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-md-10 mx-auto">
+								<figure class="highcharts-figure">
+    								<div id="container"></div>
+								</figure>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div th:unless="${availableBalance > 0 and payments > 0}">
+					<h5 style="text-align: center;">Nu ai cumparat niciun produs disponibil</h5>
+				</div>
+			</div>
+			</div>
 		<div th:if="${role.name eq 'ROLE_TRAINER' or role.name eq 'ROLE_NUTRITIONIST'}">
-								<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Istoric Tranzactii</h3>
+			<div th:if="${#lists.size(products)}">
+				<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Istoric Tranzactii</h3>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
@@ -53,6 +73,12 @@
 			</div>
 		</div>
 	</div>
+			</div>
+			<div th:unless="${#lists.size(products)}">
+				<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Istoric Tranzactii</h3>
+				<h5 style="text-align: center;">Niciunul dintre produsele tale nu a fost vandut</h5>
+			</div>
+								
 		</div>
 		</div>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"

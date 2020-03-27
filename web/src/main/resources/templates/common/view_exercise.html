@@ -61,8 +61,8 @@ div.desc {
 				<form th:action="@{/perfom_this_exercise}" method="post">
 					<input type="hidden" name="exerciseId" th:value="${exercise.exerciseId}"/>
 					<input type="hidden" name="accountId" th:value="${account.accountId}"/>
-					<input type="hidden" name="trainerId" th:value="${exercise.trainingPlan.trainer.accountId}"/>
-					<input type="hidden" name="trainingPlanId" th:value="${exercise.trainingPlan.trainingPlanId}"/>
+					<input type="hidden" name="trainerId" th:value="${exercise.trainingPlan.helper.accountId}"/>
+					<input type="hidden" name="trainingPlanId" th:value="${exercise.trainingPlan.helperPlanId}"/>
 					<button type="submit" class="btn btn-success">Executa Exercitiul</button>
 				</form>
 			</div>

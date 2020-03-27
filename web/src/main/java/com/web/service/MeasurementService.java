@@ -40,4 +40,6 @@ public interface MeasurementService {
 	void deleteAllByUserDeviceId(Integer userDeviceId);
 
 	Optional<Measurement> findByNameAndUserDeviceUserDeviceId(String scaleTypeMeasurement, Integer userDeviceId);
+
+	Set<Measurement> findAllByUserDeviceUserDeviceIdAndFromXml(Integer userDeviceId, boolean b);
 }

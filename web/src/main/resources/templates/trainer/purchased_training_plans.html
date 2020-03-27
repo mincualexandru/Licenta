@@ -30,17 +30,14 @@
 								<tbody class="center-align">
 									<th:block th:each="tp, iterStat : ${trainingPlans}">
 										<tr>
-											<td th:text="${tp.trainingPlan.name}"></td>
+											<td th:text="${tp.helperPlan.name}"></td>
 											<td>
 												<form th:action="@{/exercises_training_plan}" method="post">
-													<input type="hidden" name="trainingPlanId" th:value="${tp.trainingPlan.trainingPlanId}"/>
+													<input type="hidden" name="trainingPlanId" th:value="${tp.helperPlan.helperPlanId}"/>
 													<button type="submit" class="btn btn-success">Vezi
 														Exercitii</button>
 												</form>
-												<form th:action="@{/edit_training_plan}" method="post">
-													<input type="hidden" name="trainingPlanId" th:value="${tp.trainingPlan.trainingPlanId}"/>
-													<button type="submit" class="btn btn-success">Editeaza Antrenamentul</button>
-												</form>
+												<a th:href="@{/edit_training_plan/{id}(id=${tp.helperPlan.helperPlanId})}" class="btn btn-success">Editeaza Antrenamentul</a>
 											</td>
 										</tr>
 									</th:block>

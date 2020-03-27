@@ -103,4 +103,9 @@ public class MeasurementServiceImpl implements MeasurementService {
 			Integer userDeviceId) {
 		return measurementDao.findByNameAndUserDeviceUserDeviceId(scaleTypeMeasurement, userDeviceId);
 	}
+
+	@Override
+	public Set<Measurement> findAllByUserDeviceUserDeviceIdAndFromXml(Integer userDeviceId, boolean fromXml) {
+		return measurementDao.findAllByUserDeviceUserDeviceIdAndFromXmlAndEndDate(userDeviceId, fromXml);
+	}
 }
