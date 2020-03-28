@@ -9,15 +9,17 @@
 <link rel="stylesheet" type="text/css" th:href="@{css/style.css}" />
 </head>
 <body>
-	<form th:action="@{/modify_current_balance}" method="post">
-		<input type="hidden" name="transactionId" th:value="${transaction.transactionId}"/>
-		<input type="number" name="availableBalance" th:value="${transaction.availableBalance}"/>
-		<input type="number" name="availableBalance" th:value="${transaction.payments}" readonly/>
-		<button type="submit">Modifica Sold</button>
-		<a th:href="@{/home}">Inapoi</a>
+	<form th:action="@{/set_height_and_weight_save}" method="post">
+		<div th:if="${heightIsNotCalculated}">
+			<label>Inaltime</label>
+			<input type="number" step="0.01" name="height"/>
+		</div>
+		<div th:if="${weightIsNotCalculated}">
+			<label>Greutate</label>
+			<input type="number" step="0.01" name="weight"/>
+		</div>
+		<button type="submit">Salveaza</button>
 	</form>
-	<p th:text="${negativeValue}"></p>
-	<p th:text="${insufficientBalance}"></p>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
 		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
 		crossorigin="anonymous"></script>

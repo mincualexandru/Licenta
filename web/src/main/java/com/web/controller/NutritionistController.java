@@ -1,7 +1,12 @@
 package com.web.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -23,15 +28,20 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.web.model.Account;
 import com.web.model.Food;
+import com.web.model.FoodEaten;
 import com.web.model.FoodImage;
 import com.web.model.FoodRecommendation;
 import com.web.model.HelperPlan;
+import com.web.model.UserDevice;
 import com.web.model.UserPlan;
 import com.web.service.AccountService;
+import com.web.service.FoodEatenService;
 import com.web.service.FoodImageService;
 import com.web.service.FoodRecommendationService;
 import com.web.service.FoodService;
+import com.web.service.HelperFeedbackService;
 import com.web.service.HelperPlanService;
+import com.web.service.UserDeviceService;
 import com.web.service.UserPlanService;
 import com.web.utils.Gender;
 
@@ -57,6 +67,15 @@ public class NutritionistController {
 
 	@Autowired
 	private UserPlanService userPlanService;
+
+	@Autowired
+	private HelperFeedbackService helperFeedbackService;
+
+	@Autowired
+	private FoodEatenService foodEatenService;
+
+	@Autowired
+	private UserDeviceService userDeviceService;
 
 	@GetMapping(path = { "/nutritionist" })
 	public String nutritionist(Model model) {
@@ -245,6 +264,57 @@ public class NutritionistController {
 		foodRecommendationService
 				.delete(foodRecommendationService.findByFoodRecommendationIdAndFoodFoodId(recommendationId, foodId));
 		return "redirect:/view_food/" + foodId;
+	}
+
+	@PostMapping(path = { "/view_progress_nutritionist" })
+	public String viewProgressNutritionist(Model model, @RequestParam Integer learnerId) {
+		Account learner = accountService.findById(learnerId).get();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Account helper = accountService.findByUsername(auth.getName());
+		Map<String, Integer> chartFoodEaten = new TreeMap<>();
+		Map<String, Integer> chartAccumulatedCalories = new TreeMap<>();
+		Integer numberOfFoodNotEaten = 0;
+		Set<Food> allFoods = foodService.findAllNotEatenFoods();
+		numberOfFoodNotEaten = allFoods.size();
+		Integer numberOfFoodEaten = 0;
+		Set<FoodEaten> foodEatenForLearner = foodEatenService.findAllByUserAccountId(learner.getAccountId());
+		String previousValue = null;
+		Integer numberOfFoodEatenByDay = 0;
+		Integer numberOfCaloriesPerFoodDay = 0;
+		for (FoodEaten foodEaten : foodEatenForLearner) {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			LocalDateTime startDateTime = foodEaten.getDateOfExecution().toLocalDateTime();
+			LocalDate startDate = startDateTime.toLocalDate();
+			String formatDate = startDate.format(formatter);
+			String value = formatDate;
+			if (!value.equals(previousValue)) {
+				numberOfFoodEatenByDay = 0;
+				numberOfCaloriesPerFoodDay = 0;
+				previousValue = value;
+			}
+			numberOfFoodEatenByDay++;
+			numberOfCaloriesPerFoodDay += Math.round(foodEaten.getFood().getCalories());
+			chartFoodEaten.put(value, numberOfFoodEatenByDay);
+			chartAccumulatedCalories.put(value, numberOfCaloriesPerFoodDay);
+		}
+		numberOfFoodEaten = foodEatenForLearner.size();
+		boolean noFeedbackWasProvided = true;
+		if (helperFeedbackService.findByLearnerAccountId(learner.getAccountId()).isPresent()) {
+			noFeedbackWasProvided = false;
+		}
+		for (UserDevice userDevice : learner.getUserDevices()) {
+			userDeviceService.getHeightAndWeight(model, userDevice);
+		}
+		model.addAttribute("account", helper);
+		model.addAttribute("learner", learner);
+		model.addAttribute("noFeedbackWasProvided", noFeedbackWasProvided);
+		model.addAttribute("numberOfFoodNotEaten", numberOfFoodNotEaten);
+		model.addAttribute("numberOfFoodEaten", numberOfFoodEaten);
+		model.addAttribute("chartAccumulatedCalories", chartAccumulatedCalories);
+		model.addAttribute("chartFoodEaten", chartFoodEaten);
+		model.addAttribute("foodEatenForLearner", foodEatenForLearner);
+		model.addAttribute("allFoods", allFoods);
+		return "nutritionist/view_progress_nutritionist";
 	}
 
 	private boolean checkId(String userDeviceId) {

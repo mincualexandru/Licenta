@@ -3,6 +3,8 @@ package com.web.service;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.ui.Model;
+
 import com.web.model.UserDevice;
 
 public interface UserDeviceService {
@@ -21,4 +23,8 @@ public interface UserDeviceService {
 	UserDevice findByUserAccountIdAndDeviceDeviceId(Integer userId, Integer productId);
 
 	void deleteByDeviceIdAndUserId(Integer deviceId, Integer userId);
+
+	void getHeightAndWeight(Model model, UserDevice userDevice);
+
+	Optional<UserDevice> findByDeviceNameAndUserAccountId(String string, Integer accountId);
 }

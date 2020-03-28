@@ -14,20 +14,6 @@
 	<a th:href="@{/view_profile}">Vezi profil</a>
 	<a th:href="@{/view_feedbacks_from_helper}">Vezi feedback-uri</a>
 	<a th:href="@{/transaction_history}">Istoric Tranzactii</a>
-	<div>
-		<div th:unless="${bandAlreadyBought}">
-			<form th:action="@{/buy_band}" method="post">
-				<button>Alege Bratara</button>
-			</form>
-		</div>
-		<div th:text="${soldOutForScales}"></div>
-		<div th:text="${soldOutForBands}"></div>
-		<div th:unless="${scaleAlreadyBought}">
-			<form th:action="@{/buy_scale}" method="post">
-				<button>Alege Cantar</button>
-			</form>
-		</div>
-	</div>
 		<div th:if="${#lists.size(userMeasurements)}">
 			<div class="container-fluid">
 		<div class="row">

@@ -38,13 +38,13 @@
 											<td>
 												<div th:each="role : ${trainerOrNutritionist.roles}">
 													<div th:if="${role.name == 'ROLE_TRAINER'}">
-														<form th:action="@{/trainer_training_plans}" method="post">
+														<form th:action="@{/proposals_from_helpers}" method="post">
 															<input type="hidden" name="trainerId" th:value="${trainerOrNutritionist.accountId}"/>
 															<button type="submit" class="btn btn-success">Vezi Antrenamente</button>
 														</form>
 													</div>
 													<div th:if="${role.name == 'ROLE_NUTRITIONIST'}">
-														<form th:action="@{/nutritionist_diet_plans}" method="post">
+														<form th:action="@{/proposals_from_helpers}" method="post">
 															<input type="hidden" name="nutritionistId" th:value="${trainerOrNutritionist.accountId}"/>
 															<button type="submit" class="btn btn-success">Vezi Diete</button>
 														</form>

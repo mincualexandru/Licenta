@@ -33,7 +33,7 @@
                 <tr>
                   <td th:text="${userDiet.helperPlan.name}"></td>
                   <td>
-                    <form th:action="@{/foods_diet_plan}" method="post">
+                    <form th:action="@{/plan_content}" method="post">
                       <input type="hidden" name="dietPlanId" th:value="${userDiet.helperPlan.helperPlanId}"/>
                       <button type="submit" class="btn btn-success">Vezi
                         Alimentele Neconsumate

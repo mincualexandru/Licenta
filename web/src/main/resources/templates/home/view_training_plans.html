@@ -35,7 +35,7 @@
                 <tr>
                   <td th:text="${userTraining.helperPlan.name}"></td>
                   <td>
-                    <form th:action="@{/exercises_training_plan}" method="post">
+                    <form th:action="@{/plan_content}" method="post">
                       <input type="hidden" name="trainingPlanId" th:value="${userTraining.helperPlan.helperPlanId}"/>
                       <button type="submit" class="btn btn-success">Vezi
                         Exercitiile Nefacute

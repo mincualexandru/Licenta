@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Sign up</title>
+<base href="/">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+<script src="https://kit.fontawesome.com/8f58d13ed0.js"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" th:href="@{css/style.css}" />
+</head>
+<body>
+	<h5>In momentul in care contul tau a fost creat ti s-a adaugat implicit un dispozitiv</h5>
+	<h5>Doresti si alte dispozitive? Poti alege alte 2</h5>
+	<form th:action="@{/add_device_to_shopping_cart}" method="post">
+		<input type="hidden" name="deviceName" value="Bratara"/>
+		<button type="submit">Alege Bratara</button>
+	</form>
+	<form th:action="@{/add_device_to_shopping_cart}" method="post">
+		<input type="hidden" name="deviceName" value="Cantar Inteligent"/>
+		<button type="submit">Alege Cantar</button>
+	</form>
+</body>
+</html>

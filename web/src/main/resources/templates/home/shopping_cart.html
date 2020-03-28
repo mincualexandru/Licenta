@@ -36,7 +36,11 @@
 											<td th:text="${product.productName + ' ' + product.companyName}"></td>
 											<td th:text="${product.price}"></td>
 										</div>
-										<div th:if="${product.type == 'trainingPlan'}">
+										<div th:if="${product.type == 'Dieta'}">
+											<td th:text="${product.productName + ' ' + product.forWho}"></td>
+											<td th:text="${product.price}"></td>
+										</div>
+										<div th:if="${product.type == 'Antrenament'}">
 											<td th:text="${product.productName + ' ' + product.forWho}"></td>
 											<td th:text="${product.price}"></td>
 										</div>

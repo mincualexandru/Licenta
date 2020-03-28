@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -104,36 +103,136 @@ public class UserController {
 
 	@GetMapping(path = { "/home" })
 	public String home(Model model) {
-		Account account = getAccountConnected();
+		Account account = accountService.getAccountConnected();
+
+		if (account.getTransaction().getAvailableBalance() == 0) {
+			return "redirect:/load_funds_account";
+		}
+
+		if ((userDeviceService.findByDeviceNameAndUserAccountId("Fit Buddy", account.getAccountId()).isPresent()
+				|| userDeviceService.findByDeviceNameAndUserAccountId("Bratara", account.getAccountId()).isPresent())
+				&& !(userDeviceService.findByDeviceNameAndUserAccountId("Cantar Inteligent", account.getAccountId())
+						.isPresent())
+				&& (!(measurementService.findByName("HKQuantityTypeIdentifierHeight").isPresent())
+						|| !(measurementService.findByName("HKQuantityTypeIdentifierBodyMass").isPresent()))) {
+			return "redirect:/set_height_and_weight";
+		}
+
 		Set<TypeMeasurement> typeMeasurements = typeMeasurementService.findAll();
 		Set<Measurement> userMeasurements = new HashSet<>();
-		boolean bandAlreadyBought = false;
-		boolean scaleAlreadyBought = false;
 		for (UserDevice userDevice : account.getUserDevices()) {
 			if (userDevice.isBought()) {
 				for (TypeMeasurement type : typeMeasurements) {
 					userMeasurements.addAll(measurementService.findLast3ByNameAndUserDeviceId(type.getType(),
 							userDevice.getUserDeviceId()));
 				}
-				if (userDevice.getDevice().getName().equals("Bratara")) {
-					bandAlreadyBought = true;
-				}
-				if (userDevice.getDevice().getName().equals("Cantar Inteligent")) {
-					scaleAlreadyBought = true;
-				}
 			}
 		}
 
 		List<Measurement> userMeasurementsSorted = userMeasurements.stream()
 				.sorted((e1, e2) -> e1.getName().compareTo(e2.getName())).collect(Collectors.toList());
-
-		model.addAttribute("bandAlreadyBought", bandAlreadyBought);
-		model.addAttribute("scaleAlreadyBought", scaleAlreadyBought);
 		model.addAttribute("user", account);
 		model.addAttribute("typeMeasurements", typeMeasurements);
 		model.addAttribute("userMeasurements", userMeasurementsSorted);
 		return "home/home";
 
+	}
+
+	@GetMapping(path = { "/set_height_and_weight" })
+	public String setHeightAndWeight(Model model) {
+		boolean heightIsNotCalculated = true;
+		boolean weightIsNotCalculated = true;
+		if ((measurementService.findByName("HKQuantityTypeIdentifierHeight").isPresent())) {
+			heightIsNotCalculated = false;
+		} else if ((measurementService.findByName("HKQuantityTypeIdentifierBodyMass").isPresent())) {
+			weightIsNotCalculated = false;
+		}
+		model.addAttribute("heightIsNotCalculated", heightIsNotCalculated);
+		model.addAttribute("weightIsNotCalculated", weightIsNotCalculated);
+		return "home/set_height_and_weight";
+	}
+
+	@PostMapping(path = { "/set_height_and_weight_save" })
+	public String setHeightAndWeightSave(Model model, @RequestParam(required = false) Float weight,
+			@RequestParam(required = false) Float height) {
+		Account account = accountService.getAccountConnected();
+		UserDevice userDevice = userDeviceService.findByDeviceNameAndUserAccountId("Fit Buddy", account.getAccountId())
+				.get();
+		if (!(weight == null)) {
+			Measurement measurementForWeight = new Measurement();
+			measurementForWeight.setStartDate(new Timestamp(System.currentTimeMillis()));
+			measurementForWeight.setEndDate(null);
+			measurementForWeight.setFromXml(false);
+			measurementForWeight.setName("HKQuantityTypeIdentifierBodyMass");
+			measurementForWeight.setUnitOfMeasurement("kg");
+			measurementForWeight.setValue(weight);
+			measurementForWeight.setUserDevice(userDevice);
+			measurementService.save(measurementForWeight);
+		}
+		if (!(height == null)) {
+			Measurement measurementForHeight = new Measurement();
+			measurementForHeight.setStartDate(new Timestamp(System.currentTimeMillis()));
+			measurementForHeight.setEndDate(null);
+			measurementForHeight.setFromXml(false);
+			measurementForHeight.setName("HKQuantityTypeIdentifierHeight");
+			measurementForHeight.setUnitOfMeasurement("cm");
+			measurementForHeight.setValue(height);
+			measurementForHeight.setUserDevice(userDevice);
+			measurementService.save(measurementForHeight);
+		}
+		return "redirect:/home";
+	}
+
+	@GetMapping(path = { "/current_balance" })
+	public String availableBalance(Model model) {
+		Account user = accountService.getAccountConnected();
+		model.addAttribute("transaction", user.getTransaction());
+		return "home/current_balance";
+	}
+
+	@GetMapping(path = { "/load_funds_account" })
+	public String loadFundsAccount(Model model) {
+		Account user = accountService.getAccountConnected();
+		model.addAttribute("transaction", user.getTransaction());
+		return "home/load_funds_account";
+	}
+
+	@PostMapping(path = { "/add_device_to_shopping_cart" })
+	public String buyScale(Model model, RedirectAttributes redirectAttributes, @RequestParam String deviceName) {
+		Account account = accountService.getAccountConnected();
+		Set<TypeMeasurement> typeMeasurements = typeMeasurementService.findAll();
+		Device newDevice = new Device();
+		UserDevice userDevice = new UserDevice();
+		if (deviceName.equals("Fit Buddy")) {
+			typeMeasurements.removeAll(typeMeasurements);
+			typeMeasurements = typeMeasurementService.findTypeMeasurementsForFitBuddy();
+			deviceService.createDevice(newDevice, typeMeasurements, "Fit Buddy", 0);
+			deviceService.save(newDevice);
+			userDevice.setDevice(newDevice);
+			userDevice.setUser(account);
+			userDevice.setBought(true);
+			userDeviceService.save(userDevice);
+			return "redirect:/home";
+		} else {
+			if (deviceName.equals("Bratara")) {
+				typeMeasurements.removeIf(element -> element.getType().contains("Body"));
+				deviceService.createDevice(newDevice, typeMeasurements, "Bratara", 100);
+			} else if (deviceName.equals("Cantar Inteligent")) {
+				typeMeasurements.removeIf(element -> !(element.getType().contains("Body")));
+				deviceService.createDevice(newDevice, typeMeasurements, "Cantar Inteligent", 150);
+			}
+			if (newDevice.getPrice() > account.getTransaction().getAvailableBalance()) {
+				redirectAttributes.addFlashAttribute("insufficientBalance",
+						"Nu ai fonduri suficiente pentru achizitionarea acestui dispozitiv");
+				return "redirect:/load_funds_account";
+			}
+			deviceService.save(newDevice);
+			userDevice.setDevice(newDevice);
+			userDevice.setUser(account);
+			userDevice.setBought(false);
+			userDeviceService.save(userDevice);
+			return "redirect:/shopping_cart";
+		}
 	}
 
 	@GetMapping(path = { "/view_feedbacks_from_helper" })
@@ -146,55 +245,11 @@ public class UserController {
 		return "home/view_feedbacks_from_helper";
 	}
 
-	@PostMapping(path = { "/buy_scale" })
-	public String buyScale(Model model, RedirectAttributes redirectAttributes) {
-		Account account = getAccountConnected();
-		Device device = deviceService.findOneDeviceRandomByName("Cantar Inteligent");
-		if (device == null) {
-			redirectAttributes.addFlashAttribute("soldOutForScales", "Stocul este epuizat pentru cantare");
-			Device newDevice = new Device();
-			newDevice.setCompany("Xiaomi");
-			newDevice.setName("Cantar Inteligent");
-			newDevice.setSerialNumber(generateRandomSerialNumber());
-			newDevice.setPrice(20);
-			Set<TypeMeasurement> typeMeasurements = typeMeasurementService.findAll();
-			typeMeasurements.removeIf(element -> !(element.getType().contains("Body")));
-			newDevice.setTypeMeasurements(typeMeasurements);
-			deviceService.save(newDevice);
-			return "redirect:/home";
-		} else {
-			LOGGER.info("Nume " + device.getName() + " serial number " + device.getSerialNumber());
-			model.addAttribute("device", device);
-			model.addAttribute("account", account);
-			model.addAttribute("typeMeasurements", device.getTypeMeasurements());
-			return "home/buy_scale";
-		}
-	}
-
-	@PostMapping(path = { "/buy_band" })
-	public String buyBand(Model model, RedirectAttributes redirectAttributes) {
-
-		Account account = getAccountConnected();
-		Device device = deviceService.findOneDeviceRandomByName("Bratara");
-		if (device == null) {
-			redirectAttributes.addFlashAttribute("soldOutForBands", "Stocul este epuizat pentru bratari");
-			Device newDevice = new Device();
-			newDevice.setCompany("Xiaomi");
-			newDevice.setName("Bratara");
-			newDevice.setSerialNumber(generateRandomSerialNumber());
-			newDevice.setPrice(20);
-			Set<TypeMeasurement> typeMeasurements = typeMeasurementService.findAll();
-			typeMeasurements.removeIf(element -> element.getType().contains("Body"));
-			newDevice.setTypeMeasurements(typeMeasurements);
-			deviceService.save(newDevice);
-			return "redirect:/home";
-		} else {
-			LOGGER.info("Nume " + device.getName() + " serial number " + device.getSerialNumber());
-			model.addAttribute("device", device);
-			model.addAttribute("account", account);
-			model.addAttribute("typeMeasurements", device.getTypeMeasurements());
-			return "home/buy_band";
-		}
+	@GetMapping(path = { "/default_device" })
+	public String defaultDevice(Model model) {
+		Account account = accountService.getAccountConnected();
+		model.addAttribute("account", account);
+		return "home/default_device";
 	}
 
 	@PostMapping(path = { "/add_to_shopping_cart" })
@@ -230,18 +285,16 @@ public class UserController {
 		return "redirect:/shopping_cart";
 	}
 
-	// DE MODIFICAT SI PENTRU DIETE
-
 	@GetMapping(path = { "/shopping_cart" })
 	public String shoppingCart(Model model) {
-		Account user = getAccountConnected();
+		Account user = accountService.getAccountConnected();
 		Set<Product> products = new HashSet<>();
 		Set<UserDevice> userDevices = userDeviceService.findAllByBoughtAndUserAccountId(false, user.getAccountId());
 		Set<UserPlan> userPlans = userPlanService.findAllByBoughtAndUserAccountId(false, user.getAccountId());
 		Integer totalCostOfDevices = 0;
 		for (UserDevice userDevice : userDevices) {
-			totalCostOfDevices += userDevice.getDevice().getPrice();
 			Product product = new Product();
+			totalCostOfDevices += userDevice.getDevice().getPrice();
 			product.setProductId(userDevice.getDevice().getDeviceId());
 			product.setCompanyName(userDevice.getDevice().getCompany());
 			product.setProductName(userDevice.getDevice().getName());
@@ -249,19 +302,18 @@ public class UserController {
 			product.setType("device");
 			products.add(product);
 		}
-		Integer totalCostOfDietPlans = 0;
+		Integer totalCostOfPlans = 0;
 		for (UserPlan userPlan : userPlans) {
-			totalCostOfDietPlans += userPlan.getHelperPlan().getPrice();
 			Product product = new Product();
-			product.setProductId(userPlan.getHelperPlan().getHelperPlanId());
+			totalCostOfPlans += userPlan.getHelperPlan().getPrice();
 			product.setProductName(userPlan.getHelperPlan().getName());
 			product.setPrice(userPlan.getHelperPlan().getPrice());
 			product.setForWho(userPlan.getHelperPlan().getForWho());
-			product.setType("trainingPlan");
+			product.setType(userPlan.getHelperPlan().getTypeOfPlan());
 			products.add(product);
 		}
 		model.addAttribute("products", products);
-		model.addAttribute("totalSum", totalCostOfDevices + totalCostOfDietPlans);
+		model.addAttribute("totalSum", totalCostOfDevices + totalCostOfPlans);
 		model.addAttribute("user", user);
 		return "home/shopping_cart";
 	}
@@ -288,14 +340,12 @@ public class UserController {
 		return "redirect:/shopping_cart";
 	}
 
-	// DE MODIFICAT SI PENTRU DIETE
-
 	@PostMapping(path = { "/buy_shopping_cart" })
 	public String addToShoppingCart(Model model, @RequestParam Integer userId,
 			@RequestParam(required = false) Integer totalSum, RedirectAttributes redirectAttributes) {
 		Account user = accountService.findById(userId).get();
 		Set<UserDevice> userDevices = userDeviceService.findAllByBoughtAndUserAccountId(false, user.getAccountId());
-		Set<UserPlan> userTrainingPlans = userPlanService.findAllByBoughtAndUserAccountId(false, user.getAccountId());
+		Set<UserPlan> userPlans = userPlanService.findAllByBoughtAndUserAccountId(false, user.getAccountId());
 		if (user.getTransaction().getAvailableBalance() >= totalSum) {
 			boolean ok = false;
 			if (!userDevices.isEmpty()) {
@@ -317,19 +367,19 @@ public class UserController {
 					userDeviceService.save(userDevice);
 				}
 			}
-			if (!userTrainingPlans.isEmpty()) {
-				for (UserPlan userTraining : userTrainingPlans) {
-					Integer trainingPlanPrice = userTraining.getHelperPlan().getPrice();
+			if (!userPlans.isEmpty()) {
+				for (UserPlan userPlan : userPlans) {
+					Integer userPlanPrice = userPlan.getHelperPlan().getPrice();
 					user.getTransaction()
-							.setAvailableBalance(user.getTransaction().getAvailableBalance() - trainingPlanPrice);
+							.setAvailableBalance(user.getTransaction().getAvailableBalance() - userPlanPrice);
 					if (!ok) {
 						user.getTransaction().setPayments(user.getTransaction().getPayments() - totalSum);
-						Account trainer = userTraining.getHelperPlan().getHelper();
+						Account trainer = userPlan.getHelperPlan().getHelper();
 						trainer.getTransaction()
 								.setAvailableBalance(trainer.getTransaction().getAvailableBalance() + totalSum);
 					}
-					userTraining.setBought(true);
-					userPlanService.save(userTraining);
+					userPlan.setBought(true);
+					userPlanService.save(userPlan);
 				}
 			}
 		} else {
@@ -339,30 +389,45 @@ public class UserController {
 		return "redirect:/home";
 	}
 
-	@GetMapping(path = { "/current_balance" })
-	public String availableBalance(Model model) {
-		Account user = getAccountConnected();
-		model.addAttribute("transaction", user.getTransaction());
-		return "home/current_balance";
-	}
-
 	@PostMapping(path = { "/modify_current_balance" })
 	public String modifyCurrentBalance(Model model, @RequestParam Integer transactionId,
 			@RequestParam Integer availableBalance, RedirectAttributes redirectAttributes) {
+		Account account = accountService.getAccountConnected();
 		Transaction transaction = transactionService.findById(transactionId).get();
 		if (availableBalance > 0) {
 			transaction.setAvailableBalance(availableBalance);
 			transactionService.save(transaction);
-			return "redirect:/current_balance";
+			if ((userDeviceService.findByDeviceNameAndUserAccountId("Fit Buddy", account.getAccountId()).isPresent()
+					|| userDeviceService.findByDeviceNameAndUserAccountId("Bratara", account.getAccountId())
+							.isPresent())
+					&& !(userDeviceService.findByDeviceNameAndUserAccountId("Cantar Inteligent", account.getAccountId())
+							.isPresent())
+					&& (!(measurementService.findByName("HKQuantityTypeIdentifierHeight").isPresent())
+							|| !(measurementService.findByName("HKQuantityTypeIdentifierBodyMass").isPresent()))) {
+				return "redirect:/set_height_and_weight";
+			} else {
+				return "redirect:/current_balance";
+			}
 		} else {
-			redirectAttributes.addFlashAttribute("negativeValue", "Valorile negative nu sunt valide");
-			return "redirect:/current_balance";
+			if ((userDeviceService.findByDeviceNameAndUserAccountId("Fit Buddy", account.getAccountId()).isPresent()
+					|| userDeviceService.findByDeviceNameAndUserAccountId("Bratara", account.getAccountId())
+							.isPresent())
+					&& !(userDeviceService.findByDeviceNameAndUserAccountId("Cantar Inteligent", account.getAccountId())
+							.isPresent())
+					&& (!(measurementService.findByName("HKQuantityTypeIdentifierHeight").isPresent())
+							|| !(measurementService.findByName("HKQuantityTypeIdentifierBodyMass").isPresent()))) {
+				redirectAttributes.addFlashAttribute("negativeValue", "Valorile negative nu sunt valide");
+				return "redirect:/load_funds_account";
+			} else {
+				redirectAttributes.addFlashAttribute("negativeValue", "Valorile negative nu sunt valide");
+				return "redirect:/current_balance";
+			}
 		}
 	}
 
 	@GetMapping(path = { "/choose_helper" })
 	public String chooseHelper(Model model) {
-		Account user = getAccountConnected();
+		Account user = accountService.getAccountConnected();
 		Set<Account> allTrainersOrNutritionists = accountService.findAllByRolesNameOrRolesName("ROLE_TRAINER",
 				"ROLE_NUTRITIONIST");
 		allTrainersOrNutritionists.removeIf(element -> !(element.isActive()));
@@ -373,7 +438,7 @@ public class UserController {
 
 	@PostMapping(path = { "/choose_helper_save" })
 	public String chooseHelperSave(Model model, @RequestParam Integer helperId) {
-		Account user = getAccountConnected();
+		Account user = accountService.getAccountConnected();
 		user.getHelpers().add(accountService.findById(helperId).get());
 		accountService.save(user);
 		return "redirect:/choose_helper";
@@ -381,46 +446,43 @@ public class UserController {
 
 	@GetMapping(path = { "/view_helpers" })
 	public String viewHelpers(Model model) {
-		Account user = getAccountConnected();
+		Account user = accountService.getAccountConnected();
 		model.addAttribute("trainersOrNutrituserionists", user.getHelpers());
 		return "home/view_helpers";
 	}
 
-	@PostMapping(path = { "/trainer_training_plans" })
-	public String viewTrainingsOrDiets(Model model, @RequestParam Integer trainerId) {
-		Account user = getAccountConnected();
-		Set<HelperPlan> trainingPlans = helperPlanService.findAllTrainingPlansByHelperPlanNotAssociated(trainerId,
-				user.getAccountId());
-		if (user.getGender().getGender().equals("Barbat")) {
-			trainingPlans.removeIf(element -> element.getForWho().getGender().equals("Femeie"));
-		} else if (user.getGender().getGender().equals("Femeie")) {
-			trainingPlans.removeIf(element -> element.getForWho().getGender().equals("Barbat"));
+	@PostMapping(path = { "/proposals_from_helpers" })
+	public String viewTrainingsOrDiets(Model model, @RequestParam(required = false) Integer trainerId,
+			@RequestParam(required = false) Integer nutritionistId) {
+		Account user = accountService.getAccountConnected();
+		Set<HelperPlan> plans = new HashSet<>();
+		if (trainerId != null) {
+			plans = helperPlanService.findAllTrainingPlansByHelperPlanNotAssociated(trainerId, user.getAccountId());
+			if (user.getGender().getGender().equals("Barbat")) {
+				plans.removeIf(element -> element.getForWho().getGender().equals("Femeie"));
+			} else if (user.getGender().getGender().equals("Femeie")) {
+				plans.removeIf(element -> element.getForWho().getGender().equals("Barbat"));
+			}
+			plans.removeIf(element -> element.getExercises().size() == 0);
+		} else if (nutritionistId != null) {
+			plans = helperPlanService.findAllDietPlansByHelperPlanNotAssociated(nutritionistId, user.getAccountId());
+			if (user.getGender().getGender().equals("Barbat")) {
+				plans.removeIf(element -> element.getForWho().getGender().equals("Femeie"));
+			} else if (user.getGender().getGender().equals("Femeie")) {
+				plans.removeIf(element -> element.getForWho().getGender().equals("Barbat"));
+			}
+			plans.removeIf(element -> element.getFoods().size() == 0);
 		}
-		trainingPlans.removeIf(element -> element.getExercises().size() == 0);
-		model.addAttribute("trainingPlans", trainingPlans);
+		model.addAttribute("trainerId", trainerId);
+		model.addAttribute("nutritionistId", nutritionistId);
+		model.addAttribute("plans", plans);
 		model.addAttribute("user", user);
-		return "home/trainer_training_plans";
-	}
-
-	@PostMapping(path = { "/nutritionist_diet_plans" })
-	public String nutritionistDietPlans(Model model, @RequestParam Integer nutritionistId) {
-		Account user = getAccountConnected();
-		Set<HelperPlan> dietPlans = helperPlanService.findAllDietPlansByHelperPlanNotAssociated(nutritionistId,
-				user.getAccountId());
-		if (user.getGender().getGender().equals("Barbat")) {
-			dietPlans.removeIf(element -> element.getForWho().getGender().equals("Femeie"));
-		} else if (user.getGender().getGender().equals("Femeie")) {
-			dietPlans.removeIf(element -> element.getForWho().getGender().equals("Barbat"));
-		}
-		dietPlans.removeIf(element -> element.getExercises().size() == 0);
-		model.addAttribute("dietPlans", dietPlans);
-		model.addAttribute("user", user);
-		return "home/nutritionist_diet_plans";
+		return "home/proposals_from_helpers";
 	}
 
 	@GetMapping(path = { "/view_training_plans" })
 	public String viewTrainingPlans(Model model) {
-		Account user = getAccountConnected();
+		Account user = accountService.getAccountConnected();
 		Set<UserPlan> userTrainings = userPlanService.findAllByBoughtAndUserAccountIdAndHelperPlanTypeOfPlan(true,
 				user.getAccountId(), "Antrenament");
 		model.addAttribute("userTrainings", userTrainings);
@@ -430,7 +492,7 @@ public class UserController {
 
 	@GetMapping(path = { "/view_diet_plans" })
 	public String viewDietPlans(Model model) {
-		Account user = getAccountConnected();
+		Account user = accountService.getAccountConnected();
 		Set<UserPlan> userDiets = userPlanService.findAllByBoughtAndUserAccountIdAndHelperPlanTypeOfPlan(true,
 				user.getAccountId(), "Dieta");
 		model.addAttribute("userDiets", userDiets);
@@ -440,7 +502,7 @@ public class UserController {
 
 	@GetMapping(path = { "/exercises_done" })
 	public String exercisesDone(Model model) {
-		Account user = getAccountConnected();
+		Account user = accountService.getAccountConnected();
 		Set<ExerciseDone> exercisesDone = exerciseDoneService.findAllByUserAccountId(user.getAccountId());
 		model.addAttribute("exercisesDone", exercisesDone);
 		return "home/exercises_done";
@@ -454,32 +516,20 @@ public class UserController {
 		exerciseDone.setExercise(exerciseService.findById(exerciseId).get());
 		exerciseDone.setUser(accountService.findById(accountId).get());
 		exerciseDoneService.save(exerciseDone);
-		if (account.getUserDevices().size() == 0) {
+		UserDevice userDevice;
+		if (userDeviceService.findByDeviceNameAndUserAccountId("Bratara", account.getAccountId()).isPresent()) {
 			Measurement measurement = new Measurement();
-			Timestamp timestampStartDate = new Timestamp(System.currentTimeMillis());
-			measurement.setStartDate(timestampStartDate);
-			measurement
-					.setName(typeMeasurementService.findByType("HKQuantityTypeIdentifierActiveEnergyBurned").getType());
-			measurement.setUnitOfMeasurement("kcal");
-			measurement.setValue(exerciseService.findById(exerciseId).get().getCaloriesBurned());
-			measurement.setUserDevice(null);
-			measurement.setFromXml(false);
+			userDevice = userDeviceService.findByDeviceNameAndUserAccountId("Bratara", account.getAccountId()).get();
+			createMeasurement(exerciseId, measurement, userDevice, "HKQuantityTypeIdentifierActiveEnergyBurned",
+					"kcal");
 			measurementService.save(measurement);
-		} else {
-			for (UserDevice userDevice : account.getUserDevices()) {
-				if (userDevice.getDevice().getName().equals("Bratara")) {
-					Measurement measurement = new Measurement();
-					Timestamp timestampStartDate = new Timestamp(System.currentTimeMillis());
-					measurement.setStartDate(timestampStartDate);
-					measurement.setName(
-							typeMeasurementService.findByType("HKQuantityTypeIdentifierActiveEnergyBurned").getType());
-					measurement.setUnitOfMeasurement("kcal");
-					measurement.setValue(exerciseService.findById(exerciseId).get().getCaloriesBurned());
-					measurement.setUserDevice(userDevice);
-					measurement.setFromXml(false);
-					measurementService.save(measurement);
-				}
-			}
+		} else if (userDeviceService.findByDeviceNameAndUserAccountId("Fit Buddy", account.getAccountId())
+				.isPresent()) {
+			Measurement measurement = new Measurement();
+			userDevice = userDeviceService.findByDeviceNameAndUserAccountId("Fit Buddy", account.getAccountId()).get();
+			createMeasurement(exerciseId, measurement, userDevice, "HKQuantityTypeIdentifierActiveEnergyBurned",
+					"kcal");
+			measurementService.save(measurement);
 		}
 		redirectAttributes.addFlashAttribute("exerciseId", exerciseId);
 		return "redirect:/offers_feedback";
@@ -487,7 +537,7 @@ public class UserController {
 
 	@GetMapping(path = { "/view_devices" })
 	public String viewDevices(Model model) {
-		Account user = getAccountConnected();
+		Account user = accountService.getAccountConnected();
 		model.addAttribute("userDevices", user.getUserDevices());
 		return "home/view_devices";
 	}
@@ -496,11 +546,26 @@ public class UserController {
 	public String eatThisFood(Model model, @RequestParam Integer accountId, @RequestParam Integer foodId,
 			RedirectAttributes redirectAttributes) {
 		Account account = accountService.findById(accountId).get();
+		Food food = foodService.findById(foodId).get();
 		FoodEaten foodEaten = new FoodEaten();
-		foodEaten.setFood(foodService.findById(foodId).get());
-		foodEaten.setUser(accountService.findById(accountId).get());
+		foodEaten.setFood(food);
+		foodEaten.setUser(account);
 		foodEatenService.save(foodEaten);
-		redirectAttributes.addFlashAttribute("foodId", foodId);
+		if (userDeviceService.findByDeviceNameAndUserAccountId("Fit Buddy", account.getAccountId()).isPresent()) {
+			UserDevice userDefaultDevice = userDeviceService
+					.findByDeviceNameAndUserAccountId("Fit Buddy", account.getAccountId()).get();
+			Measurement measurement = new Measurement();
+			Timestamp timestampStartDate = new Timestamp(System.currentTimeMillis());
+			measurement.setStartDate(timestampStartDate);
+			measurement.setName("HKQuantityTypeIdentifierActiveEnergyAccumulated");
+			measurement.setUnitOfMeasurement("kcal");
+			measurement.setValue(food.getCalories());
+			measurement.setUserDevice(userDefaultDevice);
+			measurement.setEndDate(null);
+			measurement.setFromXml(false);
+			measurementService.save(measurement);
+			redirectAttributes.addFlashAttribute("foodId", foodId);
+		}
 		return "redirect:/offers_feedback_food";
 	}
 
@@ -520,7 +585,8 @@ public class UserController {
 	public String reviewForExerciseSave(Model model, @RequestParam(required = false) Integer foodId,
 			@RequestParam(required = false) Integer exerciseId, @RequestParam(required = false) Integer numberOfMinutes,
 			@RequestParam(required = false) String messageReview, @RequestParam(required = false) Integer number) {
-		Account user = getAccountConnected();
+		Account user = accountService.getAccountConnected();
+		UserDevice userDevice = null;
 		if (exerciseId != null) {
 			Exercise exercise = exerciseService.findById(exerciseId).get();
 			ExerciseFeedback exerciseFeedback = new ExerciseFeedback();
@@ -528,18 +594,20 @@ public class UserController {
 			exerciseFeedback.setUser(user);
 			exerciseFeedback.setMessage(messageReview);
 			exerciseFeedback.setRating(number);
-			Measurement measurement = measurementService.findByEndDate(null);
-			Timestamp startDate = measurement.getStartDate();
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTimeInMillis(startDate.getTime());
-			calendar.add(Calendar.MINUTE, numberOfMinutes);
-			Timestamp endDate = new Timestamp(calendar.getTime().getTime());
-			measurement.setEndDate(endDate);
-			measurementService.save(measurement);
 			exerciseFeedbackService.save(exerciseFeedback);
+			if (userDeviceService.findByDeviceNameAndUserAccountId("Bratara", user.getAccountId()).isPresent()) {
+				userDevice = userDeviceService.findByDeviceNameAndUserAccountId("Bratara", user.getAccountId()).get();
+				LOGGER.info("Se face feedback pentru Bratara");
+			} else if (userDeviceService.findByDeviceNameAndUserAccountId("Fit Buddy", user.getAccountId())
+					.isPresent()) {
+				userDevice = userDeviceService.findByDeviceNameAndUserAccountId("Fit Buddy", user.getAccountId()).get();
+				LOGGER.info("Se face feedback pentru buddy");
+			}
+			Measurement measurement = measurementService.findByUserDeviceIdAndNameAndEndDate(
+					userDevice.getUserDeviceId(), "HKQuantityTypeIdentifierActiveEnergyBurned");
+			editMeasurement(numberOfMinutes, measurement);
 			return "redirect:/exercises_done";
 		} else {
-			LOGGER.info("Id este " + foodId);
 			Food food = foodService.findById(foodId).get();
 			FoodFeedback foodFeedback = new FoodFeedback();
 			foodFeedback.setFood(food);
@@ -553,28 +621,31 @@ public class UserController {
 
 	@GetMapping(path = { "/foods_eaten" })
 	public String foodsEaten(Model model) {
-		Account user = getAccountConnected();
+		Account user = accountService.getAccountConnected();
 		Set<FoodEaten> foodEaten = foodEatenService.findAllByUserAccountId(user.getAccountId());
 		model.addAttribute("foodEaten", foodEaten);
 		return "home/foods_eaten";
 	}
 
-	private String generateRandomSerialNumber() {
-		int leftLimit = 48;
-		int rightLimit = 122;
-		int targetStringLength = 10;
-		Random random = new Random();
-
-		String generatedString = random.ints(leftLimit, rightLimit + 1)
-				.filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97)).limit(targetStringLength)
-				.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
-
-		return generatedString;
+	private void createMeasurement(Integer exerciseId, Measurement measurement, UserDevice userDevice,
+			String nameOfMeasurement, String unitOfMeasurement) {
+		Timestamp timestampStartDate = new Timestamp(System.currentTimeMillis());
+		measurement.setStartDate(timestampStartDate);
+		measurement.setEndDate(null);
+		measurement.setName(nameOfMeasurement);
+		measurement.setUnitOfMeasurement(unitOfMeasurement);
+		measurement.setValue(exerciseService.findById(exerciseId).get().getCaloriesBurned());
+		measurement.setUserDevice(userDevice);
+		measurement.setFromXml(false);
 	}
 
-	private Account getAccountConnected() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Account user = accountService.findByUsername(auth.getName());
-		return user;
+	private void editMeasurement(Integer numberOfMinutes, Measurement measurement) {
+		Timestamp startDate = measurement.getStartDate();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(startDate.getTime());
+		calendar.add(Calendar.MINUTE, numberOfMinutes);
+		Timestamp endDate = new Timestamp(calendar.getTime().getTime());
+		measurement.setEndDate(endDate);
+		measurementService.save(measurement);
 	}
 }

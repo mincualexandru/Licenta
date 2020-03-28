@@ -42,4 +42,6 @@ public interface MeasurementService {
 	Optional<Measurement> findByNameAndUserDeviceUserDeviceId(String scaleTypeMeasurement, Integer userDeviceId);
 
 	Set<Measurement> findAllByUserDeviceUserDeviceIdAndFromXml(Integer userDeviceId, boolean b);
+
+	Measurement findByUserDeviceIdAndNameAndEndDate(Integer userDeviceId, String string);
 }

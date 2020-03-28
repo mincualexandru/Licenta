@@ -22,4 +22,7 @@ public interface TypeMeasurementDao extends CrudRepository<TypeMeasurement, Inte
 	@Modifying
 	@Query(value = "delete from device_type_measurement where device_id = ?1 and type_measurement_id = ?2", nativeQuery = true)
 	void deleteByDeviceIdAndTypeMeasurementId(Integer deviceId, Integer typeMeasurementId);
+
+	@Query(value = "select * from types_measurements where type = 'HKQuantityTypeIdentifierActiveEnergyBurned' or type = 'HKQuantityTypeIdentifierActiveEnergyAccumulated' or type = 'HKQuantityTypeIdentifierBodyMass' or type = 'HKQuantityTypeIdentifierHeight';", nativeQuery = true)
+	Set<TypeMeasurement> findTypeMeasurementsForFitBuddy();
 }

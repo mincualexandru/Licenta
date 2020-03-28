@@ -17,11 +17,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.web.model.Account;
+import com.web.model.Device;
 import com.web.model.Role;
 import com.web.model.Transaction;
+import com.web.model.TypeMeasurement;
+import com.web.model.UserDevice;
 import com.web.service.AccountService;
+import com.web.service.DeviceService;
 import com.web.service.RoleService;
 import com.web.service.TransactionService;
+import com.web.service.TypeMeasurementService;
+import com.web.service.UserDeviceService;
 import com.web.utils.Gender;
 
 @Controller
@@ -35,6 +41,15 @@ public class AuthenticationController {
 
 	@Autowired
 	private TransactionService transactionService;
+
+	@Autowired
+	private DeviceService deviceService;
+
+	@Autowired
+	private UserDeviceService userDeviceService;
+
+	@Autowired
+	private TypeMeasurementService typeMeasurementService;
 
 	private Logger logger = Logger.getLogger(AuthenticationController.class);
 
@@ -97,6 +112,17 @@ public class AuthenticationController {
 				transactionService.save(transaction);
 				user.setTransaction(transaction);
 				accountService.save(user);
+				Set<TypeMeasurement> typeMeasurements = typeMeasurementService.findAll();
+				Device newDevice = new Device();
+				UserDevice userDevice = new UserDevice();
+				typeMeasurements.removeAll(typeMeasurements);
+				typeMeasurements = typeMeasurementService.findTypeMeasurementsForFitBuddy();
+				deviceService.createDevice(newDevice, typeMeasurements, "Fit Buddy", 0);
+				deviceService.save(newDevice);
+				userDevice.setDevice(newDevice);
+				userDevice.setUser(user);
+				userDevice.setBought(true);
+				userDeviceService.save(userDevice);
 			} else if (chooseRoleName.equals("ROLE_TRAINER") || chooseRoleName.equals("ROLE_NUTRITIONIST")) {
 				user.setActive(false);
 				accountService.saveUser(user, chooseRoleName);

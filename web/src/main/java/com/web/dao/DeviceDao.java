@@ -1,5 +1,6 @@
 package com.web.dao;
 
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -24,4 +25,6 @@ public interface DeviceDao extends CrudRepository<Device, Integer> {
 	@Modifying
 	@Query(value = "delete from devices where device_id = ?1", nativeQuery = true)
 	void deleteByDeviceId(Integer deviceId);
+
+	Optional<Device> findByName(String string);
 }

@@ -44,4 +44,7 @@ public interface MeasurementDao extends CrudRepository<Measurement, Integer> {
 
 	@Query(value = "select * from measurements where user_device_id is NULL and from_xml = 0;", nativeQuery = true)
 	Set<Measurement> findAllByUserDeviceUserDeviceIdAndFromXmlAndEndDate(Integer userDeviceId, boolean fromXml);
+
+	@Query(value = "select * from measurements where user_device_id = ?1 and name = ?2 and end_date is null;", nativeQuery = true)
+	Measurement findByUserDeviceIdAndNameAndEndDate(Integer userDeviceId, String string);
 }

@@ -1,7 +1,12 @@
 package com.web.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -24,14 +29,19 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.web.model.Account;
 import com.web.model.Exercise;
 import com.web.model.ExerciseAdvice;
+import com.web.model.ExerciseDone;
 import com.web.model.ExerciseImage;
 import com.web.model.HelperPlan;
+import com.web.model.UserDevice;
 import com.web.model.UserPlan;
 import com.web.service.AccountService;
 import com.web.service.ExerciseAdviceService;
+import com.web.service.ExerciseDoneService;
 import com.web.service.ExerciseImageService;
 import com.web.service.ExerciseService;
+import com.web.service.HelperFeedbackService;
 import com.web.service.HelperPlanService;
+import com.web.service.UserDeviceService;
 import com.web.service.UserPlanService;
 import com.web.utils.Gender;
 import com.web.utils.TrainedMuscleGroup;
@@ -59,12 +69,72 @@ public class TrainerController {
 	@Autowired
 	private UserPlanService userPlanService;
 
+	@Autowired
+	private HelperFeedbackService helperFeedbackService;
+
+	@Autowired
+	private ExerciseDoneService exerciseDoneService;
+
+	@Autowired
+	private UserDeviceService userDeviceService;
+
 	@GetMapping(path = { "/trainer" })
 	public String trainer(Model model, RedirectAttributes redirectAttributes) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Account account = accountService.findByUsername(auth.getName());
 		model.addAttribute("account", account);
 		return "trainer/trainer";
+	}
+
+	@PostMapping(path = { "/view_progress" })
+	public String viewProgress(Model model, @RequestParam Integer learnerId) {
+		Account learner = accountService.findById(learnerId).get();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Account helper = accountService.findByUsername(auth.getName());
+		Map<String, Integer> chartExercisesDone = new TreeMap<>();
+		Map<String, Integer> chartBurnedCalories = new TreeMap<>();
+		Integer numberOfExercisesUnDone = 0;
+		Set<Exercise> totalExercises = exerciseService.findAllNotPerfomerdExercises();
+		numberOfExercisesUnDone = totalExercises.size();
+		Integer numberOfExercisesDone = 0;
+		Set<ExerciseDone> exercisesDoneForLearner = exerciseDoneService.findAllByUserAccountId(learner.getAccountId());
+		String previousValue = null;
+		Integer numberOfExercisesDoneByDay = 0;
+		Integer numberOfCaloriesPerExerciseDay = 0;
+		for (ExerciseDone exerciseDone : exercisesDoneForLearner) {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			LocalDateTime startDateTime = exerciseDone.getDateOfExecution().toLocalDateTime();
+			LocalDate startDate = startDateTime.toLocalDate();
+			String formatDate = startDate.format(formatter);
+			String value = formatDate;
+			if (!value.equals(previousValue)) {
+				numberOfExercisesDoneByDay = 0;
+				numberOfCaloriesPerExerciseDay = 0;
+				previousValue = value;
+			}
+			numberOfExercisesDoneByDay++;
+			numberOfCaloriesPerExerciseDay += exerciseDone.getExercise().getCaloriesBurned();
+			chartExercisesDone.put(value, numberOfExercisesDoneByDay);
+			chartBurnedCalories.put(value, numberOfCaloriesPerExerciseDay);
+		}
+		numberOfExercisesDone = exercisesDoneForLearner.size();
+		boolean noFeedbackWasProvided = true;
+		if (helperFeedbackService.findByLearnerAccountId(learner.getAccountId()).isPresent()) {
+			noFeedbackWasProvided = false;
+		}
+		for (UserDevice userDevice : learner.getUserDevices()) {
+			userDeviceService.getHeightAndWeight(model, userDevice);
+		}
+		model.addAttribute("account", helper);
+		model.addAttribute("learner", learner);
+		model.addAttribute("noFeedbackWasProvided", noFeedbackWasProvided);
+		model.addAttribute("numberOfExercisesUnDone", numberOfExercisesUnDone);
+		model.addAttribute("numberOfExercisesDone", numberOfExercisesDone);
+		model.addAttribute("chartBurnedCalories", chartBurnedCalories);
+		model.addAttribute("chartExercisesDone", chartExercisesDone);
+		model.addAttribute("exercisesDoneForLearner", exercisesDoneForLearner);
+		model.addAttribute("totalExercises", totalExercises);
+		return "trainer/view_progress";
 	}
 
 	@GetMapping(path = { "/training_plans" })

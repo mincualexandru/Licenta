@@ -138,7 +138,9 @@ public class XmlParserServiceImpl implements XmlParserService {
 							measure.setUserDevice(userDevice);
 						}
 					}
-					insertMeasure(measure);
+					if (!(measure.getUserDevice() == null)) {
+						insertMeasure(measure);
+					}
 				}
 			}
 		}

@@ -51,4 +51,9 @@ public class TypeMeasurementServiceImpl implements TypeMeasurementService {
 		typeMeasurementDao.deleteByDeviceIdAndTypeMeasurementId(deviceId, typeMeasurementId);
 	}
 
+	@Override
+	public Set<TypeMeasurement> findTypeMeasurementsForFitBuddy() {
+		return typeMeasurementDao.findTypeMeasurementsForFitBuddy();
+	}
+
 }

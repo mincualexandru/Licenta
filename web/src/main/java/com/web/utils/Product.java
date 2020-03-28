@@ -88,4 +88,11 @@ public class Product {
 	public void setDateOfPurchased(Timestamp dateOfPurchased) {
 		this.dateOfPurchased = dateOfPurchased;
 	}
+
+	@Override
+	public String toString() {
+		return "Product [productId=" + productId + ", productName=" + productName + ", price=" + price
+				+ ", companyName=" + companyName + ", forWho=" + forWho + ", type=" + type + ", dateOfPurchased="
+				+ dateOfPurchased + "]";
+	}
 }
