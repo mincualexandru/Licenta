@@ -2,10 +2,14 @@ package com.web.utils;
 
 public enum BandTypeMeasurement {
 
-	ENERGYBURNED("HKQuantityTypeIdentifierActiveEnergyBurned"), HEARTRATE("HKQuantityTypeIdentifierHeartRate"),
-	STEPCOUNT("HKQuantityTypeIdentifierStepCount"), SLEEPANALYSIS("HKCategoryTypeIdentifierSleepAnalysis"),
+	ENERGYBURNED("HKQuantityTypeIdentifierActiveEnergyBurned"), 
+	HEARTRATE("HKQuantityTypeIdentifierHeartRate"),
+	STEPCOUNT("HKQuantityTypeIdentifierStepCount"),
 	DISTANCEWALKINGRUNNING("HKQuantityTypeIdentifierDistanceWalkingRunning"),
-	FLIGHTSCLIMBED("HKQuantityTypeIdentifierFlightsClimbed");
+	FLIGHTSCLIMBED("HKQuantityTypeIdentifierFlightsClimbed"), 
+	SLEEPANALYSISAWAKE("HKCategoryValueSleepAnalysisInBed"),
+	SLEEPANALYSISINBED("HKCategoryValueSleepAnalysisAwake"), 
+	SLEEPANALYSISASSLEEP("HKCategoryValueSleepAnalysisAsleep");
 
 	private final String bandTypeMeasurement;
 

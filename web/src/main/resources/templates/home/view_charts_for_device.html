@@ -46,6 +46,9 @@
 	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 </head>
 <body>
+<p style="text-align:center; font-weight:bold; font-style:italic;">
+<a href="javascript:SwapDivsWithClick('swapper-first','swapper-other', 'principal')" id="principal">Tabel</a>
+</p>
 <div th:if="${inexistentValue}">Ai introdus o valoare care nu exista</div>
 <div th:unless="${inexistentValue}">
 	<div th:unless="${#lists.size(chosenMeasurements)}">
@@ -53,6 +56,77 @@
 		Nu exista masuratori
 	</div>
 </div>
+<div id="swapper-first" style="display:block;">
+	<div th:if="${#lists.size(chosenMeasurements)}">
+		<div th:unless="${measurementsBetweenTimestamps}">
+							<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="row">
+					<div class="col-md-10 mx-auto">
+						<table class="table table-striped">
+							<thead class="center-align">
+								<tr>
+									<th>Nume</th>
+									<th>Data Inceput</th>
+									<th>Data Sfarsit</th>
+									<th>Valoare</th>
+									<th>Unitate de Masura</th>
+								</tr>
+							</thead>
+							<tbody class="center-align">
+								<th:block th:each="measure, iterStat : ${chosenMeasurements}">
+									<tr>
+										<td th:text="${measure.name}"></td>
+										<td th:text="${measure.startDate}"></td>
+										<td th:text="${measure.endDate}"></td>
+										<td th:text="${measure.value}"></td>
+										<td th:text="${measure.unitOfMeasurement}"></td>
+									</tr>
+								</th:block>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		</div>
+	</div>
+		<div th:if="${measurementsBetweenTimestamps}">
+							<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="row">
+					<div class="col-md-10 mx-auto">
+						<table class="table table-striped">
+							<thead class="center-align">
+								<tr>
+									<th>Nume</th>
+									<th>Data</th>
+									<th>Valoare</th>
+									<th>Unitate de Masura</th>
+								</tr>
+							</thead>
+							<tbody class="center-align">
+								<th:block th:each="measure, iterStat : ${measurementsBetweenTimestamps}">
+									<tr>
+										<td th:text="${measure.name}"></td>
+										<td th:text="${measure.startDate}"></td>
+										<td th:text="${measure.value}"></td>
+										<td th:text="${measure.unitOfMeasurement}"></td>
+									</tr>
+								</th:block>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		</div>
+</div>
+<div id="swapper-other" style="display:none;">
 <div th:if="${#lists.size(chosenMeasurements)} or ${measurementsBetweenTimestamps}">
 	<div th:unless="${#lists.size(chartMap.values())}">Nu exista masuratori intre datele pe care le-ai selectat
 	<h6>Incearca din nou</h6>
@@ -105,17 +179,16 @@
 				</div>
 			</div>
 		</div>
-			<form id="chart" style="display: inline;"
+		<form id="chart" style="display: inline;"
 		th:action="@{/view_charts_between_dates}" method="post">
 		<input type="hidden" name="chartOption" th:value="${chartOption}" />
 		<input type="hidden" name="userDeviceId" th:value="${userDeviceId}" />
 		<label>Start</label> <input type="date" id="startDateInput" name="startDateInput">
 		<label>End</label> <input type="date" id="endDateInput" name="endDateInput">
 		<button>Search</button>
-		<div th:if="${chartOption eq 'sleepAnalysis'}" class="container-fluid">
 			<div class="row">
 				<div class="col-md-10 mx-auto">
-					<div id="sleepAnalysis"></div>
+					<div th:id="${chartOption}"></div>
 					<div id="aditional-information">
 						<h1>Informatii Aditionale</h1>
 						<h3 th:text="${chartOption + ' ' }"></h3>
@@ -159,346 +232,8 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div th:if="${chartOption eq 'activeEnergyBurned'}"
-			class="container-fluid">
-			<div class="row">
-				<div class="col-md-10 mx-auto">
-					<div id="activeEnergyBurned"></div>
-					<div id="aditional-information">
-						<h1>Informatii Aditionale</h1>
-						<h3 th:text="${chartOption + ' ' }"></h3>
-						<h3>Data Masuratorii</h3>
-						<h6 id="dateOfMeasurement"></h6>
-						<h3>Valoarea Masuratorii</h3>
-						<h6 id="valueOfMeasurement"></h6>
-						<h3>Rezultatul Masuratorii</h3>
-						<h6 id="resultOfMeasurement"></h6>
-						<div class="container">
-							<div class="row">
-								<br>
-								<div class="col-xs-12">
-									<div class="progress">
-										<div class="bar-step" style="left: 10%">
-											<div class="label-txt">Minimum</div>
-											<input type="hidden" id="minimum" value="24"></input>
-											<div class="label-line"></div>
-										</div>
-										<div class="bar-step" style="left: 35%">
-											<div class="label-txt">Middle</div>
-											<input type="hidden" id="middle" value="74"></input>
-											<div class="label-line"></div>
-										</div>
-										<div class="bar-step" style="left: 55%">
-											<div class="label-txt">Middle2</div>
-											<input type="hidden" id="middle2" value="150"></input>
-											<div class="label-line"></div>
-										</div>
-										<div class="bar-step" style="left: 75%">
-											<div class="label-txt">Maximum</div>
-											<input type="hidden" id="maximum" value="300"></input>
-											<div class="label-line"></div>
-										</div>
-										<div id="success" class="progress-bar progress-bar-success"
-											style="width: 1%;">46%</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div th:if="${chartOption eq 'stepCount'}" class="container-fluid">
-			<div class="row">
-				<div class="col-md-10 mx-auto">
-					<div id="stepCount"></div>
-					<div id="aditional-information">
-						<h1>Informatii Aditionale</h1>
-						<h3 th:text="${chartOption + ' ' }"></h3>
-						<h3>Data Masuratorii</h3>
-						<h6 id="dateOfMeasurement"></h6>
-						<h3>Valoarea Masuratorii</h3>
-						<h6 id="valueOfMeasurement"></h6>
-						<h3>Rezultatul Masuratorii</h3>
-						<h6 id="resultOfMeasurement"></h6>
-						<div class="container">
-							<div class="row">
-								<br>
-								<div class="col-xs-12">
-									<div class="progress">
-										<div class="bar-step" style="left: 10%">
-											<div class="label-txt">Minimum</div>
-											<input type="hidden" id="minimum" value="500"></input>
-											<div class="label-line"></div>
-										</div>
-										<div class="bar-step" style="left: 35%">
-											<div class="label-txt">Middle</div>
-											<input type="hidden" id="middle" value="1500"></input>
-											<div class="label-line"></div>
-										</div>
-										<div class="bar-step" style="left: 55%">
-											<div class="label-txt">Middle2</div>
-											<input type="hidden" id="middle2" value="3000"></input>
-											<div class="label-line"></div>
-										</div>
-										<div class="bar-step" style="left: 75%">
-											<div class="label-txt">Maximum</div>
-											<input type="hidden" id="maximum" value="4500"></input>
-											<div class="label-line"></div>
-										</div>
-										<div id="success" class="progress-bar progress-bar-success"
-											style="width: 1%;">46%</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div th:if="${chartOption eq 'heartRate'}" class="container-fluid">
-			<div class="row">
-				<div class="col-md-10 mx-auto">
-					<div id="heartRate"></div>
-					<div id="aditional-information">
-						<h1>Informatii Aditionale</h1>
-						<h3 th:text="${chartOption + ' ' }"></h3>
-						<h3>Data Masuratorii</h3>
-						<h6 id="dateOfMeasurement"></h6>
-						<h3>Valoarea Masuratorii</h3>
-						<h6 id="valueOfMeasurement"></h6>
-						<h3>Rezultatul Masuratorii</h3>
-						<h6 id="resultOfMeasurement"></h6>
-						<div class="container">
-							<div class="row">
-								<br>
-								<div class="col-xs-12">
-									<div class="progress">
-										<div class="bar-step" style="left: 10%">
-											<div class="label-txt">Minimum</div>
-											<input type="hidden" id="minimum" value="50"></input>
-											<div class="label-line"></div>
-										</div>
-										<div class="bar-step" style="left: 35%">
-											<div class="label-txt">Middle</div>
-											<input type="hidden" id="middle" value="64"></input>
-											<div class="label-line"></div>
-										</div>
-										<div class="bar-step" style="left: 55%">
-											<div class="label-txt">Middle2</div>
-											<input type="hidden" id="middle2" value="84"></input>
-											<div class="label-line"></div>
-										</div>
-										<div class="bar-step" style="left: 75%">
-											<div class="label-txt">Maximum</div>
-											<input type="hidden" id="maximum" value="100"></input>
-											<div class="label-line"></div>
-										</div>
-										<div id="success" class="progress-bar progress-bar-success"
-											style="width: 1%;">46%</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div th:if="${chartOption eq 'bodyFatPercentage'}"
-			class="container-fluid">
-			<div class="row">
-				<div class="col-md-10 mx-auto">
-					<div id="bodyFatPercentage"></div>
-					<div id="aditional-information">
-						<h1>Informatii Aditionale</h1>
-						<h3 th:text="${chartOption + ' ' }"></h3>
-						<h3>Data Masuratorii</h3>
-						<h6 id="dateOfMeasurement"></h6>
-						<h3>Valoarea Masuratorii</h3>
-						<h6 id="valueOfMeasurement"></h6>
-						<h3>Rezultatul Masuratorii</h3>
-						<h6 id="resultOfMeasurement"></h6>
-						<div class="container">
-							<div class="row">
-								<br>
-								<div class="col-xs-12">
-									<div class="progress">
-										<div class="bar-step" style="left: 10%">
-											<div class="label-txt">Minimum</div>
-											<input type="hidden" id="minimum" value="8"></input>
-											<div class="label-line"></div>
-										</div>
-										<div class="bar-step" style="left: 35%">
-											<div class="label-txt">Middle</div>
-											<input type="hidden" id="middle" value="12"></input>
-											<div class="label-line"></div>
-										</div>
-										<div class="bar-step" style="left: 55%">
-											<div class="label-txt">Middle2</div>
-											<input type="hidden" id="middle2" value="20"></input>
-											<div class="label-line"></div>
-										</div>
-										<div class="bar-step" style="left: 75%">
-											<div class="label-txt">Maximum</div>
-											<input type="hidden" id="maximum" value="28"></input>
-											<div class="label-line"></div>
-										</div>
-										<div id="success" class="progress-bar progress-bar-success"
-											style="width: 1%;">46%</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div th:if="${chartOption eq 'bodyMassIndex'}" class="container-fluid">
-			<div class="row">
-				<div class="col-md-10 mx-auto">
-					<div id="bodyMassIndex"></div>
-					<div id="aditional-information">
-						<h1>Informatii Aditionale</h1>
-						<h3 th:text="${chartOption + ' ' }"></h3>
-						<h3>Data Masuratorii</h3>
-						<h6 id="dateOfMeasurement"></h6>
-						<h3>Valoarea Masuratorii</h3>
-						<h6 id="valueOfMeasurement"></h6>
-						<h3>Rezultatul Masuratorii</h3>
-						<h6 id="resultOfMeasurement"></h6>
-						<div class="container">
-							<div class="row">
-								<br>
-								<div class="col-xs-12">
-									<div class="progress">
-										<div class="bar-step" style="left: 10%">
-											<div class="label-txt">Minimum</div>
-											<input type="hidden" id="minimum" value="10"></input>
-											<div class="label-line"></div>
-										</div>
-										<div class="bar-step" style="left: 35%">
-											<div class="label-txt">Middle</div>
-											<input type="hidden" id="middle" value="18"></input>
-											<div class="label-line"></div>
-										</div>
-										<div class="bar-step" style="left: 55%">
-											<div class="label-txt">Middle2</div>
-											<input type="hidden" id="middle2" value="24"></input>
-											<div class="label-line"></div>
-										</div>
-										<div class="bar-step" style="left: 75%">
-											<div class="label-txt">Maximum</div>
-											<input type="hidden" id="maximum" value="32"></input>
-											<div class="label-line"></div>
-										</div>
-										<div id="success" class="progress-bar progress-bar-success"
-											style="width: 1%;">46%</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div th:if="${chartOption eq 'bodyMass'}" class="container-fluid">
-			<div class="row">
-				<div class="col-md-10 mx-auto">
-					<div id="bodyMass"></div>
-					<div id="aditional-information">
-						<h1>Informatii Aditionale</h1>
-						<h3 th:text="${chartOption + ' ' }"></h3>
-						<h3>Data Masuratorii</h3>
-						<h6 id="dateOfMeasurement"></h6>
-						<h3>Valoarea Masuratorii</h3>
-						<h6 id="valueOfMeasurement"></h6>
-						<h3>Rezultatul Masuratorii</h3>
-						<h6 id="resultOfMeasurement"></h6>
-						<div class="container">
-							<div class="row">
-								<br>
-								<div class="col-xs-12">
-									<div class="progress">
-										<div class="bar-step" style="left: 10%">
-											<div class="label-txt">Minimum</div>
-											<input type="hidden" id="minimum" value="50"></input>
-											<div class="label-line"></div>
-										</div>
-										<div class="bar-step" style="left: 35%">
-											<div class="label-txt">Middle</div>
-											<input type="hidden" id="middle" value="64"></input>
-											<div class="label-line"></div>
-										</div>
-										<div class="bar-step" style="left: 55%">
-											<div class="label-txt">Middle2</div>
-											<input type="hidden" id="middle2" value="86"></input>
-											<div class="label-line"></div>
-										</div>
-										<div class="bar-step" style="left: 75%">
-											<div class="label-txt">Maximum</div>
-											<input type="hidden" id="maximum" value="100"></input>
-											<div class="label-line"></div>
-										</div>
-										<div id="success" class="progress-bar progress-bar-success"
-											style="width: 1%;">46%</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div th:if="${chartOption eq 'leanBodyMass'}" class="container-fluid">
-			<div class="row">
-				<div class="col-md-10 mx-auto">
-					<div id="leanBodyMass"></div>
-					<div id="aditional-information">
-						<h1>Informatii Aditionale</h1>
-						<h3 th:text="${chartOption + ' ' }"></h3>
-						<h3>Data Masuratorii</h3>
-						<h6 id="dateOfMeasurement"></h6>
-						<h3>Valoarea Masuratorii</h3>
-						<h6 id="valueOfMeasurement"></h6>
-						<h3>Rezultatul Masuratorii</h3>
-						<h6 id="resultOfMeasurement"></h6>
-						<div class="container">
-							<div class="row">
-								<br>
-								<div class="col-xs-12">
-									<div class="progress">
-										<div class="bar-step" style="left: 10%">
-											<div class="label-txt">Minimum</div>
-											<input type="hidden" id="minimum" value="36"></input>
-											<div class="label-line"></div>
-										</div>
-										<div class="bar-step" style="left: 35%">
-											<div class="label-txt">Middle</div>
-											<input type="hidden" id="middle" value="50"></input>
-											<div class="label-line"></div>
-										</div>
-										<div class="bar-step" style="left: 55%">
-											<div class="label-txt">Middle2</div>
-											<input type="hidden" id="middle2" value="66"></input>
-											<div class="label-line"></div>
-										</div>
-										<div class="bar-step" style="left: 75%">
-											<div class="label-txt">Maximum</div>
-											<input type="hidden" id="maximum" value="80"></input>
-											<div class="label-line"></div>
-										</div>
-										<div id="success" class="progress-bar progress-bar-success"
-											style="width: 1%;">46%</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
 	</form>
+		</div>
 	</div>
 </div>
 </div>
@@ -512,7 +247,26 @@
 	<script src="https://code.highcharts.com/modules/export-data.js"></script>
 	<script src="https://code.highcharts.com/modules/accessibility.js"></script>
 	<script th:inline="javascript">
-	
+
+	function SwapDivsWithClick(div1,div2,div3)
+	{
+	   d1 = document.getElementById(div1);
+	   d2 = document.getElementById(div2);
+	   d3 = document.getElementById(div3);
+	   if( d2.style.display == "none" )
+	   {
+	      d1.style.display = "none";
+	      d2.style.display = "block";
+	      d3.innerHTML = "Grafic";
+	   }
+	   else
+	   {
+	      d1.style.display = "block";
+	      d2.style.display = "none";
+	      d3.innerHTML = "Tabel";
+	   }
+	}
+
 	let results = [
 		{
 			result: "Scazut",
@@ -520,6 +274,7 @@
 			stepCountRecommendation: "Valoarea numarului de pasi este Scazut",
 			sleepAnalysisRecommendation: "Valoarea duratei somnului este Scazut",
 			activeEnergyBurnedRecommendation: "Valoarea caloriilor arse este Scazut",
+			activeEnergyAccumulatedRecommendation: "Valoarea caloriilor acumulate este Scazut",
 			bodyFatPercentageRecommendation: "Valoarea procentului de grasime este Scazut",
 			bodyMassIndexRecommendation: "Un risc ridicat de sănătate dacă nu alegi o dietă sănătoasă, bogată în nutrienţi. Poţi consulta un nutriţionist pentru sfaturi legate de mâncare, fără să fie nevoie să te îngraşi.",
 			bodyMassRecommendation: "Valoarea greutatii corporale este Scazut",
@@ -527,6 +282,7 @@
 		},
 		{
 			result: "Normal",
+			activeEnergyAccumulatedRecommendation: "Valoarea caloriilor acumulate este Normal",
 			heartRateRecommendation: "Valoarea pulsului este Normal",
 			stepCountRecommendation: "Valoarea numarului de pasi este Normal",
 			sleepAnalysisRecommendation: "Valoarea duratei somnului este Normal",
@@ -538,6 +294,7 @@
 		},
 		{
 			result: "Normal-Crescut",
+			activeEnergyAccumulatedRecommendation: "Valoarea caloriilor acumulate arse este Normal-Crescut",
 			heartRateRecommendation: "Valoarea pulsului este Normal-Crescut",
 			stepCountRecommendation: "Valoarea numarului de pasi este Normal-Crescut",
 			sleepAnalysisRecommendation: "Valoarea duratei somnului este Normal-Crescut",
@@ -549,6 +306,7 @@
 		},
 		{
 			result: "Crescut",
+			activeEnergyAccumulatedRecommendation: "Valoarea caloriilor acumulate arse este Crescut",
 			heartRateRecommendation: "Valoarea pulsului este Crescut",
 			stepCountRecommendation: "Valoarea numarului de pasi este Crescut",
 			sleepAnalysisRecommendation: "Valoarea duratei somnului este Crescut",
@@ -569,11 +327,7 @@
 	let middle2Width = 60;
 	let maximumWidth = 100;
 	let chartOption = [[${chartOption}]];
-	console.log(chartOption);
 	let inexistentValue = [[${inexistentValue}]];
-	console.log(inexistentValue);
-	console.log("MMUIE");
-	if(!inexistentValue) {
 		$(function() {
 			
 			$('#sleepAnalysis').highcharts({
@@ -759,6 +513,110 @@
 		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
 		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
 		            '<td style="padding:0"><b>{point.y:.1f} BPM</b></td></tr>',
+		            footerFormat: '</table>',
+		            shared: true,
+		            useHTML: true
+		        },
+		        plotOptions: {
+		            column: {
+		                pointPadding: 0.2,
+		                borderWidth: 0,
+		                cropThreshold: 1000
+		            }
+		        },
+		        series: [{
+		            name: 'Valoare',
+		            data: [[${chartMap.values()}]],
+		            point: {
+	                    events: {
+	                        click: function () {
+	                        	let chartMap = [[${chartMap}]];
+	                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
+	                        	document.getElementById("aditional-information").style.visibility = "visible";
+	                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
+	                        	document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
+	                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
+	                        }
+	                    }
+	                }
+
+		        }]
+		    });
+			
+			$('#activeEnergyBurnedBuddy').highcharts({
+		        chart: {
+		            type: 'column'
+		        },
+		        title: {
+		            text: [[${chartOption}]]
+		        },
+		        scrollbar: {
+		            enabled: true
+		        },
+		        xAxis: {
+		            categories: [[${chartMap.keySet()}]],
+		            crosshair: true,
+		            min: 0,
+		            max: 10,
+		        },
+		        yAxis: {
+		        },
+		        tooltip: {
+		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+		            '<td style="padding:0"><b>{point.y:.1f} Kcal</b></td></tr>',
+		            footerFormat: '</table>',
+		            shared: true,
+		            useHTML: true
+		        },
+		        plotOptions: {
+		            column: {
+		                pointPadding: 0.2,
+		                borderWidth: 0,
+		                cropThreshold: 1000
+		            }
+		        },
+		        series: [{
+		            name: 'Valoare',
+		            data: [[${chartMap.values()}]],
+		            point: {
+	                    events: {
+	                        click: function () {
+	                        	let chartMap = [[${chartMap}]];
+	                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
+	                        	document.getElementById("aditional-information").style.visibility = "visible";
+	                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
+	                        	document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
+	                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
+	                        }
+	                    }
+	                }
+
+		        }]
+		    });
+			
+			$('#activeEnergyAccumulated').highcharts({
+		        chart: {
+		            type: 'column'
+		        },
+		        title: {
+		            text: [[${chartOption}]]
+		        },
+		        scrollbar: {
+		            enabled: true
+		        },
+		        xAxis: {
+		            categories: [[${chartMap.keySet()}]],
+		            crosshair: true,
+		            min: 0,
+		            max: 10,
+		        },
+		        yAxis: {
+		        },
+		        tooltip: {
+		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+		            '<td style="padding:0"><b>{point.y:.1f} Kcal</b></td></tr>',
 		            footerFormat: '</table>',
 		            shared: true,
 		            useHTML: true
@@ -1049,7 +907,6 @@
 		        }]
 		    });
 		});	
-	}
 	
 	function progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement) {
 		let ok = false;
@@ -1134,6 +991,8 @@
 			} else if(chartOption === 'bodyMass') {
 				selectRecommendationByResult(result,chartOption,lowObj);
 			} else if(chartOption === 'leanBodyMass') {
+				selectRecommendationByResult(result,chartOption,lowObj);
+			} else if(chartOption === 'activeEnergyAccumulated') {
 				selectRecommendationByResult(result,chartOption,lowObj);
 			} 
 		}

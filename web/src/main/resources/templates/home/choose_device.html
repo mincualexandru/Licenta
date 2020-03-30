@@ -15,14 +15,18 @@
 </head>
 <body>
 	<h5>In momentul in care contul tau a fost creat ti s-a adaugat implicit un dispozitiv</h5>
-	<h5>Doresti si alte dispozitive? Poti alege alte 2</h5>
-	<form th:action="@{/add_device_to_shopping_cart}" method="post">
+	<h5>Doresti si alte dispozitive?</h5>
+	<div th:unless="${bandAlreadyBought}">
+		<form th:action="@{/add_device_to_shopping_cart}" method="post">
 		<input type="hidden" name="deviceName" value="Bratara"/>
 		<button type="submit">Alege Bratara</button>
 	</form>
-	<form th:action="@{/add_device_to_shopping_cart}" method="post">
+	</div>
+	<div th:unless="${scaleAlreadyBought}">
+		<form th:action="@{/add_device_to_shopping_cart}" method="post">
 		<input type="hidden" name="deviceName" value="Cantar Inteligent"/>
 		<button type="submit">Alege Cantar</button>
 	</form>
+	</div>
 </body>
 </html>

@@ -113,4 +113,25 @@ public class MeasurementServiceImpl implements MeasurementService {
 	public Measurement findByUserDeviceIdAndNameAndEndDate(Integer userDeviceId, String string) {
 		return measurementDao.findByUserDeviceIdAndNameAndEndDate(userDeviceId, string);
 	}
+
+	@Override
+	public Set<Timestamp> findStartDateForMeasurementsBy() {
+		return measurementDao.findStartDateForMeasurementsBy();
+	}
+
+	@Override
+	public Optional<Measurement> findByStartDateAndUserDeviceUserDeviceIdAndName(Timestamp localDate,
+			Integer userDeviceId, String string) {
+		return measurementDao.findByStartDateAndUserDeviceUserDeviceIdAndName(localDate, userDeviceId, string);
+	}
+
+	@Override
+	public Set<Measurement> findByStartDateBetween(Timestamp start, Timestamp end) {
+		return measurementDao.findByStartDateBetween(start, end);
+	}
+
+	@Override
+	public boolean checkIfMeasurementIsPresent(Integer userDeviceId, String string) {
+		return measurementDao.findByNameAndUserDeviceUserDeviceId(string, userDeviceId).isPresent();
+	}
 }

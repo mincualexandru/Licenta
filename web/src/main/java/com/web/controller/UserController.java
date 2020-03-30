@@ -1,10 +1,16 @@
 package com.web.controller;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
@@ -49,7 +55,9 @@ import com.web.service.TransactionService;
 import com.web.service.TypeMeasurementService;
 import com.web.service.UserDeviceService;
 import com.web.service.UserPlanService;
+import com.web.utils.BandTypeMeasurement;
 import com.web.utils.Product;
+import com.web.utils.ScaleTypeMeasurement;
 
 @Controller
 public class UserController {
@@ -104,19 +112,80 @@ public class UserController {
 	@GetMapping(path = { "/home" })
 	public String home(Model model) {
 		Account account = accountService.getAccountConnected();
+		Set<Measurement> allTypes = measurementService.findAll();
+		Set<Measurement> sleepTypeMeasurements = new HashSet<>();
+		Float sumOfMeasurementValues = 0f;
+		String previousValueForDate = null;
+		Set<Measurement> commonMeasurements = new HashSet<>();
+		Map<String, Float> caloriesBurnedValues = new TreeMap<>();
+		Map<String, Float> caloriesAccumulatedValues = new TreeMap<>();
+		Map<String, Float> sleepAnalysisInBed = new TreeMap<>();
+		Map<String, Float> sleepAnalysisAsSleep = new TreeMap<>();
+		Map<String, Float> sleepAnalysisAwake = new TreeMap<>();
+		List<String> caloriesDates = new ArrayList<>();
+		Set<String> caloriesCommonDates = new HashSet<>();
+		List<String> sleepDates = new ArrayList<>();
+		Set<String> sleepCommonDates = new HashSet<>();
+		String activeEnergyBurned = BandTypeMeasurement.ENERGYBURNED.getBandTypeMeasurement();
+		String activeEnergyAccumulated = "HKQuantityTypeIdentifierActiveEnergyAccumulated";
+		String bodyMass = ScaleTypeMeasurement.MASS.getScaleTypeMeasurement();
+		String height = ScaleTypeMeasurement.HEIGHT.getScaleTypeMeasurement();
 
 		if (account.getTransaction().getAvailableBalance() == 0) {
 			return "redirect:/load_funds_account";
 		}
 
-		if ((userDeviceService.findByDeviceNameAndUserAccountId("Fit Buddy", account.getAccountId()).isPresent()
-				|| userDeviceService.findByDeviceNameAndUserAccountId("Bratara", account.getAccountId()).isPresent())
-				&& !(userDeviceService.findByDeviceNameAndUserAccountId("Cantar Inteligent", account.getAccountId())
-						.isPresent())
-				&& (!(measurementService.findByName("HKQuantityTypeIdentifierHeight").isPresent())
-						|| !(measurementService.findByName("HKQuantityTypeIdentifierBodyMass").isPresent()))) {
-			return "redirect:/set_height_and_weight";
+		if (userDeviceService.checkIfDeviceIsPresent(account, "Fit Buddy")
+				&& !userDeviceService.checkIfDeviceIsPresent(account, "Cantar Inteligent")) {
+			UserDevice fitBuddyDevice = userDeviceService
+					.findByDeviceNameAndUserAccountId("Fit Buddy", account.getAccountId()).get();
+			if (!measurementService.checkIfMeasurementIsPresent(fitBuddyDevice.getUserDeviceId(),
+					"HKQuantityTypeIdentifierHeight")
+					|| !measurementService.checkIfMeasurementIsPresent(fitBuddyDevice.getUserDeviceId(),
+							"HKQuantityTypeIdentifierBodyMass")) {
+				return "redirect:/set_height_and_weight";
+			}
 		}
+		sleepTypeMeasurements.addAll(measurementService.findAllByName("HKCategoryValueSleepAnalysisAsleep"));
+		sleepTypeMeasurements.addAll(measurementService.findAllByName("HKCategoryValueSleepAnalysisAwake"));
+		sleepTypeMeasurements.addAll(measurementService.findAllByName("HKCategoryValueSleepAnalysisInBed"));
+		sleepTypeMeasurements.addAll(measurementService.findAllByName(activeEnergyBurned));
+		allTypes.removeAll(sleepTypeMeasurements);
+		if (userDeviceService.checkIfDeviceIsPresent(account, "Fit Buddy")) {
+			UserDevice fitBuddyDevice = userDeviceService
+					.findByDeviceNameAndUserAccountId("Fit Buddy", account.getAccountId()).get();
+			fitBuddyDevice.getMeasurements().removeIf(element -> element.getName().equals(bodyMass));
+			fitBuddyDevice.getMeasurements().removeIf(element -> element.getName().equals(height));
+			commonMeasurements.addAll(fitBuddyDevice.getMeasurements());
+		}
+		if (userDeviceService.checkIfDeviceIsPresent(account, "Bratara")) {
+			UserDevice bandDevice = userDeviceService
+					.findByDeviceNameAndUserAccountId("Bratara", account.getAccountId()).get();
+			bandDevice.getMeasurements().removeAll(allTypes);
+			commonMeasurements.addAll(bandDevice.getMeasurements());
+		}
+		for (Measurement measurement : commonMeasurements) {
+			String formatDate = formatDate(measurement);
+			if (!formatDate.equals(previousValueForDate)) {
+				sumOfMeasurementValues = 0f;
+				previousValueForDate = formatDate;
+			}
+			sumOfMeasurementValues += measurement.getValue();
+			if (measurement.getName().equals(activeEnergyBurned)) {
+				caloriesBurnedValues.put(formatDate, sumOfMeasurementValues);
+			} else if (measurement.getName().equals(activeEnergyAccumulated)) {
+				caloriesAccumulatedValues.put(formatDate, sumOfMeasurementValues);
+			} else if (measurement.getName().equals("HKCategoryValueSleepAnalysisInBed")) {
+				sleepAnalysisInBed.put(formatDate, sumOfMeasurementValues);
+			} else if (measurement.getName().equals("HKCategoryValueSleepAnalysisAwake")) {
+				sleepAnalysisAwake.put(formatDate, sumOfMeasurementValues);
+			} else if (measurement.getName().equals("HKCategoryValueSleepAnalysisAsleep")) {
+				sleepAnalysisAsSleep.put(formatDate, sumOfMeasurementValues);
+			}
+		}
+		sleepCommonDates = justSleepCommonDates(sleepAnalysisInBed, sleepAnalysisAsSleep, sleepAnalysisAwake,
+				sleepDates);
+		caloriesCommonDates = justCaloriesCommonDates(caloriesBurnedValues, caloriesAccumulatedValues, caloriesDates);
 
 		Set<TypeMeasurement> typeMeasurements = typeMeasurementService.findAll();
 		Set<Measurement> userMeasurements = new HashSet<>();
@@ -128,14 +197,58 @@ public class UserController {
 				}
 			}
 		}
-
 		List<Measurement> userMeasurementsSorted = userMeasurements.stream()
 				.sorted((e1, e2) -> e1.getName().compareTo(e2.getName())).collect(Collectors.toList());
+
 		model.addAttribute("user", account);
 		model.addAttribute("typeMeasurements", typeMeasurements);
 		model.addAttribute("userMeasurements", userMeasurementsSorted);
+		model.addAttribute("sleepDates", sleepCommonDates);
+		model.addAttribute("dates", caloriesCommonDates);
+		model.addAttribute("caloriesBurned", caloriesBurnedValues);
+		model.addAttribute("caloriesAccumulated", caloriesAccumulatedValues);
+		model.addAttribute("sleepAnalysisAsSleep", sleepAnalysisAsSleep);
+		model.addAttribute("sleepAnalysisAwake", sleepAnalysisAwake);
+		model.addAttribute("sleepAnalysisInBed", sleepAnalysisInBed);
 		return "home/home";
+	}
 
+	private Set<String> justCaloriesCommonDates(Map<String, Float> caloriesBurnedValues,
+			Map<String, Float> caloriesAccumulatedValues, List<String> caloriesDates) {
+		Set<String> caloriesCommonDates;
+		caloriesDates.addAll(caloriesAccumulatedValues.keySet());
+		caloriesDates.addAll(caloriesBurnedValues.keySet());
+		caloriesCommonDates = caloriesDates.stream()
+				.filter(integer -> caloriesDates.indexOf(integer) != caloriesDates.lastIndexOf(integer))
+				.collect(Collectors.toSet());
+		caloriesDates.removeAll(caloriesCommonDates);
+		caloriesAccumulatedValues.keySet().removeAll(caloriesDates);
+		caloriesBurnedValues.keySet().removeAll(caloriesDates);
+		return caloriesCommonDates;
+	}
+
+	private Set<String> justSleepCommonDates(Map<String, Float> sleepAnalysisInBed,
+			Map<String, Float> sleepAnalysisAsSleep, Map<String, Float> sleepAnalysisAwake, List<String> sleepDates) {
+		Set<String> sleepCommonDates;
+		sleepDates.addAll(sleepAnalysisInBed.keySet());
+		sleepDates.addAll(sleepAnalysisAwake.keySet());
+		sleepDates.addAll(sleepAnalysisAsSleep.keySet());
+		sleepCommonDates = sleepDates.stream()
+				.filter(integer -> sleepDates.indexOf(integer) != sleepDates.lastIndexOf(integer))
+				.collect(Collectors.toSet());
+		sleepDates.removeAll(sleepCommonDates);
+		sleepAnalysisInBed.keySet().removeAll(sleepDates);
+		sleepAnalysisAwake.keySet().removeAll(sleepDates);
+		sleepAnalysisAsSleep.keySet().removeAll(sleepDates);
+		return sleepCommonDates;
+	}
+
+	private String formatDate(Measurement measurement) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDateTime startDateTime = measurement.getStartDate().toLocalDateTime();
+		LocalDate startDate = startDateTime.toLocalDate();
+		String formatDate = startDate.format(formatter);
+		return formatDate;
 	}
 
 	@GetMapping(path = { "/set_height_and_weight" })
@@ -203,36 +316,24 @@ public class UserController {
 		Set<TypeMeasurement> typeMeasurements = typeMeasurementService.findAll();
 		Device newDevice = new Device();
 		UserDevice userDevice = new UserDevice();
-		if (deviceName.equals("Fit Buddy")) {
-			typeMeasurements.removeAll(typeMeasurements);
-			typeMeasurements = typeMeasurementService.findTypeMeasurementsForFitBuddy();
-			deviceService.createDevice(newDevice, typeMeasurements, "Fit Buddy", 0);
-			deviceService.save(newDevice);
-			userDevice.setDevice(newDevice);
-			userDevice.setUser(account);
-			userDevice.setBought(true);
-			userDeviceService.save(userDevice);
-			return "redirect:/home";
-		} else {
-			if (deviceName.equals("Bratara")) {
-				typeMeasurements.removeIf(element -> element.getType().contains("Body"));
-				deviceService.createDevice(newDevice, typeMeasurements, "Bratara", 100);
-			} else if (deviceName.equals("Cantar Inteligent")) {
-				typeMeasurements.removeIf(element -> !(element.getType().contains("Body")));
-				deviceService.createDevice(newDevice, typeMeasurements, "Cantar Inteligent", 150);
-			}
-			if (newDevice.getPrice() > account.getTransaction().getAvailableBalance()) {
-				redirectAttributes.addFlashAttribute("insufficientBalance",
-						"Nu ai fonduri suficiente pentru achizitionarea acestui dispozitiv");
-				return "redirect:/load_funds_account";
-			}
-			deviceService.save(newDevice);
-			userDevice.setDevice(newDevice);
-			userDevice.setUser(account);
-			userDevice.setBought(false);
-			userDeviceService.save(userDevice);
-			return "redirect:/shopping_cart";
+		if (deviceName.equals("Bratara")) {
+			typeMeasurements.removeIf(element -> element.getType().contains("Body"));
+			deviceService.createDevice(newDevice, typeMeasurements, "Bratara", 100);
+		} else if (deviceName.equals("Cantar Inteligent")) {
+			typeMeasurements.removeIf(element -> !(element.getType().contains("Body")));
+			deviceService.createDevice(newDevice, typeMeasurements, "Cantar Inteligent", 150);
 		}
+		if (newDevice.getPrice() > account.getTransaction().getAvailableBalance()) {
+			redirectAttributes.addFlashAttribute("insufficientBalance",
+					"Nu ai fonduri suficiente pentru achizitionarea acestui dispozitiv");
+			return "redirect:/load_funds_account";
+		}
+		deviceService.save(newDevice);
+		userDevice.setDevice(newDevice);
+		userDevice.setUser(account);
+		userDevice.setBought(false);
+		userDeviceService.save(userDevice);
+		return "redirect:/shopping_cart";
 	}
 
 	@GetMapping(path = { "/view_feedbacks_from_helper" })
@@ -245,11 +346,23 @@ public class UserController {
 		return "home/view_feedbacks_from_helper";
 	}
 
-	@GetMapping(path = { "/default_device" })
+	@GetMapping(path = { "/choose_device" })
 	public String defaultDevice(Model model) {
 		Account account = accountService.getAccountConnected();
+		boolean bandAlreadyBought = false;
+		boolean scaleAlreadyBought = false;
+		for (UserDevice userDevice : account.getUserDevices()) {
+			if (userDevice.getDevice().getName().equals("Bratara") && userDevice.isBought()) {
+				bandAlreadyBought = true;
+
+			} else if (userDevice.getDevice().getName().equals("Cantar Inteligent") && userDevice.isBought()) {
+				scaleAlreadyBought = true;
+			}
+		}
+		model.addAttribute("bandAlreadyBought", bandAlreadyBought);
+		model.addAttribute("scaleAlreadyBought", scaleAlreadyBought);
 		model.addAttribute("account", account);
-		return "home/default_device";
+		return "home/choose_device";
 	}
 
 	@PostMapping(path = { "/add_to_shopping_cart" })
@@ -394,34 +507,24 @@ public class UserController {
 			@RequestParam Integer availableBalance, RedirectAttributes redirectAttributes) {
 		Account account = accountService.getAccountConnected();
 		Transaction transaction = transactionService.findById(transactionId).get();
+		UserDevice fitBuddyDevice = userDeviceService
+				.findByDeviceNameAndUserAccountId("Fit Buddy", account.getAccountId()).get();
 		if (availableBalance > 0) {
 			transaction.setAvailableBalance(availableBalance);
 			transactionService.save(transaction);
-			if ((userDeviceService.findByDeviceNameAndUserAccountId("Fit Buddy", account.getAccountId()).isPresent()
-					|| userDeviceService.findByDeviceNameAndUserAccountId("Bratara", account.getAccountId())
-							.isPresent())
-					&& !(userDeviceService.findByDeviceNameAndUserAccountId("Cantar Inteligent", account.getAccountId())
-							.isPresent())
-					&& (!(measurementService.findByName("HKQuantityTypeIdentifierHeight").isPresent())
-							|| !(measurementService.findByName("HKQuantityTypeIdentifierBodyMass").isPresent()))) {
+			if (userDeviceService.checkIfDeviceIsPresent(account, "Fit Buddy ")
+					&& !userDeviceService.checkIfDeviceIsPresent(account, "Cantar Inteligent")
+					&& !measurementService.checkIfMeasurementIsPresent(fitBuddyDevice.getUserDeviceId(),
+							"HKQuantityTypeIdentifierHeight")
+					|| !measurementService.checkIfMeasurementIsPresent(fitBuddyDevice.getUserDeviceId(),
+							"HKQuantityTypeIdentifierBodyMass")) {
 				return "redirect:/set_height_and_weight";
 			} else {
-				return "redirect:/current_balance";
+				return "redirect:/home";
 			}
 		} else {
-			if ((userDeviceService.findByDeviceNameAndUserAccountId("Fit Buddy", account.getAccountId()).isPresent()
-					|| userDeviceService.findByDeviceNameAndUserAccountId("Bratara", account.getAccountId())
-							.isPresent())
-					&& !(userDeviceService.findByDeviceNameAndUserAccountId("Cantar Inteligent", account.getAccountId())
-							.isPresent())
-					&& (!(measurementService.findByName("HKQuantityTypeIdentifierHeight").isPresent())
-							|| !(measurementService.findByName("HKQuantityTypeIdentifierBodyMass").isPresent()))) {
-				redirectAttributes.addFlashAttribute("negativeValue", "Valorile negative nu sunt valide");
-				return "redirect:/load_funds_account";
-			} else {
-				redirectAttributes.addFlashAttribute("negativeValue", "Valorile negative nu sunt valide");
-				return "redirect:/current_balance";
-			}
+			redirectAttributes.addFlashAttribute("negativeValue", "Valorile negative nu sunt valide");
+			return "redirect:/load_funds_account";
 		}
 	}
 
@@ -517,16 +620,14 @@ public class UserController {
 		exerciseDone.setUser(accountService.findById(accountId).get());
 		exerciseDoneService.save(exerciseDone);
 		UserDevice userDevice;
-		if (userDeviceService.findByDeviceNameAndUserAccountId("Bratara", account.getAccountId()).isPresent()) {
-			Measurement measurement = new Measurement();
-			userDevice = userDeviceService.findByDeviceNameAndUserAccountId("Bratara", account.getAccountId()).get();
+		Measurement measurement = new Measurement();
+		if (userDeviceService.checkIfDeviceIsPresent(account, "Fit Buddy")) {
+			userDevice = userDeviceService.findByDeviceNameAndUserAccountId("Fit Buddy", account.getAccountId()).get();
 			createMeasurement(exerciseId, measurement, userDevice, "HKQuantityTypeIdentifierActiveEnergyBurned",
 					"kcal");
 			measurementService.save(measurement);
-		} else if (userDeviceService.findByDeviceNameAndUserAccountId("Fit Buddy", account.getAccountId())
-				.isPresent()) {
-			Measurement measurement = new Measurement();
-			userDevice = userDeviceService.findByDeviceNameAndUserAccountId("Fit Buddy", account.getAccountId()).get();
+		} else if (userDeviceService.checkIfDeviceIsPresent(account, "Bratara")) {
+			userDevice = userDeviceService.findByDeviceNameAndUserAccountId("Bratara", account.getAccountId()).get();
 			createMeasurement(exerciseId, measurement, userDevice, "HKQuantityTypeIdentifierActiveEnergyBurned",
 					"kcal");
 			measurementService.save(measurement);
@@ -551,7 +652,7 @@ public class UserController {
 		foodEaten.setFood(food);
 		foodEaten.setUser(account);
 		foodEatenService.save(foodEaten);
-		if (userDeviceService.findByDeviceNameAndUserAccountId("Fit Buddy", account.getAccountId()).isPresent()) {
+		if (userDeviceService.checkIfDeviceIsPresent(account, "Fit Buddy")) {
 			UserDevice userDefaultDevice = userDeviceService
 					.findByDeviceNameAndUserAccountId("Fit Buddy", account.getAccountId()).get();
 			Measurement measurement = new Measurement();
@@ -595,11 +696,7 @@ public class UserController {
 			exerciseFeedback.setMessage(messageReview);
 			exerciseFeedback.setRating(number);
 			exerciseFeedbackService.save(exerciseFeedback);
-			if (userDeviceService.findByDeviceNameAndUserAccountId("Bratara", user.getAccountId()).isPresent()) {
-				userDevice = userDeviceService.findByDeviceNameAndUserAccountId("Bratara", user.getAccountId()).get();
-				LOGGER.info("Se face feedback pentru Bratara");
-			} else if (userDeviceService.findByDeviceNameAndUserAccountId("Fit Buddy", user.getAccountId())
-					.isPresent()) {
+			if (userDeviceService.checkIfDeviceIsPresent(user, "Fit Buddy")) {
 				userDevice = userDeviceService.findByDeviceNameAndUserAccountId("Fit Buddy", user.getAccountId()).get();
 				LOGGER.info("Se face feedback pentru buddy");
 			}

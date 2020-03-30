@@ -106,45 +106,45 @@ public class XmlParserServiceImpl implements XmlParserService {
 				Timestamp startTimestamp = new java.sql.Timestamp(parsedStartDate.getTime());
 				Date parsedEndDate = dateFormat.parse(endDate);
 				Timestamp endTimestamp = new java.sql.Timestamp(parsedEndDate.getTime());
-				boolean goodValue = true;
-				if (value.equals("HKCategoryValueSleepAnalysisAwake")
+				Measurement measure = new Measurement();
+				measure.setStartDate(startTimestamp);
+				measure.setEndDate(endTimestamp);
+				measure.setUnitOfMeasurement(unitOfMeasurement);
+				if (value.equals("HKCategoryValueSleepAnalysisAsleep")
+						|| value.equals("HKCategoryValueSleepAnalysisAwake")
 						|| value.equals("HKCategoryValueSleepAnalysisInBed")) {
-					goodValue = false;
-				}
-				if (goodValue) {
-					Measurement measure = new Measurement();
-					measure.setStartDate(startTimestamp);
-					measure.setEndDate(endTimestamp);
-					measure.setUnitOfMeasurement(unitOfMeasurement);
-					measure.setName(name);
-					measure.setFromXml(true);
-					if (name.equals("HKCategoryTypeIdentifierSleepAnalysis")) {
-						Integer difference = (int) (parsedEndDate.getTime() - parsedStartDate.getTime());
-						Integer differenceMinutes = difference / (60 * 1000);
-						measure.setValue(differenceMinutes);
-						if (differenceMinutes > 1) {
-							measure.setUnitOfMeasurement("minutes");
-						} else {
-							measure.setUnitOfMeasurement("minute");
-						}
+					System.out.println("Intra in if");
+					measure.setName(value);
+					Integer difference = (int) (parsedEndDate.getTime() - parsedStartDate.getTime());
+					Integer differenceMinutes = difference / (60 * 1000);
+					measure.setValue(differenceMinutes);
+					if (differenceMinutes > 1) {
+						measure.setUnitOfMeasurement("minutes");
 					} else {
-						measure.setValue(Float.parseFloat(valueOfMeasurement));
+						measure.setUnitOfMeasurement("minute");
 					}
-					for (UserDevice userDevice : userDevices) {
-						if (userDevice.getDevice().getName().equals("Bratara") && BandTypeMeasurement.contains(name)) {
-							measure.setUserDevice(userDevice);
-						} else if (userDevice.getDevice().getName().equals("Cantar Inteligent")
-								&& ScaleTypeMeasurement.contains(name)) {
-							measure.setUserDevice(userDevice);
-						}
+				} else {
+					System.out.println("Nu intra in if");
+					measure.setValue(Float.parseFloat(valueOfMeasurement));
+					measure.setName(name);
+				}
+				measure.setFromXml(true);
+				for (UserDevice userDevice : userDevices) {
+					if (userDevice.getDevice().getName().equals("Bratara")
+							&& (BandTypeMeasurement.contains(name) || BandTypeMeasurement.contains(value))) {
+						measure.setUserDevice(userDevice);
+					} else if (userDevice.getDevice().getName().equals("Cantar Inteligent")
+							&& ScaleTypeMeasurement.contains(name)) {
+						measure.setUserDevice(userDevice);
 					}
-					if (!(measure.getUserDevice() == null)) {
-						insertMeasure(measure);
-					}
+				}
+				if (!(measure.getUserDevice() == null)) {
+					insertMeasure(measure);
 				}
 			}
 		}
 		return childNodes;
+
 	}
 
 	@Transactional

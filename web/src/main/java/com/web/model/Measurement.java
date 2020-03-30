@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "measurements")
 public class Measurement {
@@ -21,6 +23,7 @@ public class Measurement {
 	private Integer measurementId;
 
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "user_device_id")
 	private UserDevice userDevice;
 

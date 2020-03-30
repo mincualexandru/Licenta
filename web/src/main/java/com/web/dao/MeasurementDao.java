@@ -47,4 +47,12 @@ public interface MeasurementDao extends CrudRepository<Measurement, Integer> {
 
 	@Query(value = "select * from measurements where user_device_id = ?1 and name = ?2 and end_date is null;", nativeQuery = true)
 	Measurement findByUserDeviceIdAndNameAndEndDate(Integer userDeviceId, String string);
+
+	@Query(value = "select start_date,user_device_id from measurements where user_device_id = 14 or user_device_id = 18 and name ='HKQuantityTypeIdentifierActiveEnergyAccumulated' or name = 'HKQuantityTypeIdentifierActiveEnergyBurned';", nativeQuery = true)
+	Set<Timestamp> findStartDateForMeasurementsBy();
+
+	Optional<Measurement> findByStartDateAndUserDeviceUserDeviceIdAndName(Timestamp localDate, Integer userDeviceId,
+			String string);
+
+	Set<Measurement> findByStartDateBetween(Timestamp start, Timestamp end);
 }

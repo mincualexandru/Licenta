@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.springframework.ui.Model;
 
+import com.web.model.Account;
 import com.web.model.UserDevice;
 
 public interface UserDeviceService {
@@ -27,4 +28,6 @@ public interface UserDeviceService {
 	void getHeightAndWeight(Model model, UserDevice userDevice);
 
 	Optional<UserDevice> findByDeviceNameAndUserAccountId(String string, Integer accountId);
+
+	boolean checkIfDeviceIsPresent(Account account, String nameOfDevice);
 }

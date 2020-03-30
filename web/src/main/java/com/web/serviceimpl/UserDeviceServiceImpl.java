@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 
 import com.web.dao.MeasurementDao;
 import com.web.dao.UserDeviceDao;
+import com.web.model.Account;
 import com.web.model.Measurement;
 import com.web.model.UserDevice;
 import com.web.service.UserDeviceService;
@@ -87,5 +88,10 @@ public class UserDeviceServiceImpl implements UserDeviceService {
 	@Override
 	public Optional<UserDevice> findByDeviceNameAndUserAccountId(String string, Integer accountId) {
 		return userDeviceDao.findByDeviceNameAndUserAccountId(string, accountId);
+	}
+
+	@Override
+	public boolean checkIfDeviceIsPresent(Account account, String nameOfDevice) {
+		return userDeviceDao.findByDeviceNameAndUserAccountId(nameOfDevice, account.getAccountId()).isPresent();
 	}
 }

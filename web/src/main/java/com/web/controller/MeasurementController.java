@@ -75,6 +75,79 @@ public class MeasurementController {
 			Float minimValue = 0f;
 			UserDevice userDevice = userDeviceService.findById(Integer.parseInt(userDeviceId)).get();
 			switch (chartOption) {
+			case "activeEnergyBurnedBuddy":
+				LOGGER.info("Optiunea aleasa este " + chartOption);
+				String activeEnergyBurnedBuddy = BandTypeMeasurement.ENERGYBURNED.getBandTypeMeasurement();
+				typeMeasurement = typeMeasurementService.findByType(activeEnergyBurnedBuddy);
+				if (betweenTimestamp.equals("notSelectedTimestamp")) {
+					chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(
+							activeEnergyBurnedBuddy, userDevice.getUserDeviceId());
+					for (Measurement measurement : measurementsBetweenTimestamps) {
+						LocalDateTime startDate = measurement.getStartDate().toLocalDateTime();
+						LocalDate localDate = startDate.toLocalDate();
+						Integer hour = startDate.getHour();
+						Integer nextHour = hour + 1;
+						String value = hour + "-" + nextHour + " " + localDate;
+						if (!value.equals(previousValue)) {
+							sum = 0f;
+							previousValue = value;
+						}
+						sum += measurement.getValue();
+						chartMap.put(localDate + " " + String.format("%02d", hour), sum);
+					}
+				} else {
+					chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(
+							activeEnergyBurnedBuddy, userDevice.getUserDeviceId());
+					for (Measurement measurement : chosenMeasurements) {
+						LocalDateTime startDate = measurement.getStartDate().toLocalDateTime();
+						LocalDate localDate = startDate.toLocalDate();
+						Integer hour = startDate.getHour();
+						Integer nextHour = hour + 1;
+						String value = hour + "-" + nextHour + " " + localDate;
+						LOGGER.info(value);
+						if (!value.equals(previousValue)) {
+							sum = 0f;
+							previousValue = value;
+						}
+						sum += measurement.getValue();
+						chartMap.put(localDate + " " + String.format("%02d", hour), sum);
+					}
+				}
+				break;
+			case "activeEnergyAccumulated":
+				LOGGER.info("Optiunea aleasa este " + chartOption);
+				String activeEnergyAccumulated = "HKQuantityTypeIdentifierActiveEnergyAccumulated";
+				typeMeasurement = typeMeasurementService.findByType(activeEnergyAccumulated);
+				if (betweenTimestamp.equals("notSelectedTimestamp")) {
+					for (Measurement measurement : measurementsBetweenTimestamps) {
+						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+						LocalDateTime startDateTime = measurement.getStartDate().toLocalDateTime();
+						LocalDate startDate = startDateTime.toLocalDate();
+						String formatDate = startDate.format(formatter);
+						if (!formatDate.equals(previousValue)) {
+							sum = 0f;
+							previousValue = formatDate;
+						}
+						sum += measurement.getValue();
+						chartMap.put(formatDate, sum);
+					}
+				} else {
+					chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(
+							activeEnergyAccumulated, userDevice.getUserDeviceId());
+					for (Measurement measurement : chosenMeasurements) {
+						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+						LocalDateTime startDateTime = measurement.getStartDate().toLocalDateTime();
+						LocalDate startDate = startDateTime.toLocalDate();
+						String formatDate = startDate.format(formatter);
+						if (!formatDate.equals(previousValue)) {
+							sum = 0f;
+							previousValue = formatDate;
+						}
+						sum += measurement.getValue();
+						chartMap.put(formatDate, sum);
+					}
+				}
+				break;
 			case "activeEnergyBurned":
 				LOGGER.info("Optiunea aleasa este " + chartOption);
 				String activeEnergyBurned = BandTypeMeasurement.ENERGYBURNED.getBandTypeMeasurement();
@@ -116,7 +189,7 @@ public class MeasurementController {
 				break;
 			case "sleepAnalysis":
 				LOGGER.info("Optiunea aleasa este " + chartOption);
-				String sleepAnalysis = BandTypeMeasurement.SLEEPANALYSIS.getBandTypeMeasurement();
+				String sleepAnalysis = BandTypeMeasurement.SLEEPANALYSISASSLEEP.getBandTypeMeasurement();
 				typeMeasurement = typeMeasurementService.findByType(sleepAnalysis);
 				if (betweenTimestamp.equals("notSelectedTimestamp")) {
 					for (Measurement measurement : measurementsBetweenTimestamps) {
@@ -294,10 +367,11 @@ public class MeasurementController {
 	}
 
 	private boolean checkChartOption(String chartOption) {
-		if (chartOption.equals("heartRate") || chartOption.equals("stepCount") || chartOption.equals("sleepAnalysis")
-				|| chartOption.equals("activeEnergyBurned") || chartOption.equals("bodyFatPercentage")
-				|| chartOption.equals("bodyMassIndex") || chartOption.equals("bodyMass")
-				|| chartOption.equals("leanBodyMass")) {
+		if (chartOption.equals("activeEnergyBurnedBuddy") || chartOption.equals("activeEnergyAccumulated")
+				|| chartOption.equals("heartRate") || chartOption.equals("stepCount")
+				|| chartOption.equals("sleepAnalysis") || chartOption.equals("activeEnergyBurned")
+				|| chartOption.equals("bodyFatPercentage") || chartOption.equals("bodyMassIndex")
+				|| chartOption.equals("bodyMass") || chartOption.equals("leanBodyMass")) {
 			return true;
 		}
 		return false;
@@ -321,7 +395,7 @@ public class MeasurementController {
 								timestampStartDate, timestampEndDate);
 				break;
 			case "sleepAnalysis":
-				String sleepAnalysis = BandTypeMeasurement.SLEEPANALYSIS.getBandTypeMeasurement();
+				String sleepAnalysis = BandTypeMeasurement.SLEEPANALYSISASSLEEP.getBandTypeMeasurement();
 				measurementsBetweenTimestamps = measurementService
 						.findAllByNameAndUserDeviceUserDeviceIdAndStartDateBetween(sleepAnalysis, userDeviceId,
 								timestampStartDate, timestampEndDate);

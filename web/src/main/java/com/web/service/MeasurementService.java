@@ -44,4 +44,13 @@ public interface MeasurementService {
 	Set<Measurement> findAllByUserDeviceUserDeviceIdAndFromXml(Integer userDeviceId, boolean b);
 
 	Measurement findByUserDeviceIdAndNameAndEndDate(Integer userDeviceId, String string);
+
+	Set<Timestamp> findStartDateForMeasurementsBy();
+
+	Optional<Measurement> findByStartDateAndUserDeviceUserDeviceIdAndName(Timestamp localDate, Integer userDeviceId,
+			String string);
+
+	Set<Measurement> findByStartDateBetween(Timestamp start, Timestamp end);
+
+	boolean checkIfMeasurementIsPresent(Integer userDeviceId, String string);
 }

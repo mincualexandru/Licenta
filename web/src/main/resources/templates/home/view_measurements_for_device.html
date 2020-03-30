@@ -29,6 +29,10 @@
 				<a th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'bodyMass', userDeviceId = ${userDevice.userDeviceId})}" class="btn btn-success">Masa Corporala</a>
 				<a th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'leanBodyMass', userDeviceId = ${userDevice.userDeviceId})}" class="btn btn-success">Lean Body Mass</a>
 			</div>
+			<div th:if="${userDevice.device.name eq 'Fit Buddy'}">
+				<a th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'activeEnergyBurnedBuddy', userDeviceId = ${userDevice.userDeviceId})}" class="btn btn-success">Energie Activa Arsa</a>
+				<a th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'activeEnergyAccumulated', userDeviceId = ${userDevice.userDeviceId})}" class="btn btn-success">Energie Activa Acumulata</a>
+		</div>
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"

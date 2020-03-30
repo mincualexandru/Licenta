@@ -164,6 +164,42 @@
 					<div class="panel-heading">
 						<div class="row">
 							<div class="col-xs-6">
+								<h2>Alege Dispozitiv</h2>
+							</div>
+						</div>
+					</div>
+					<a th:href="@{/choose_device}">
+						<div class="panel-footer">
+							<span class="pull-left">Detalii</span> 
+							<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+							<div class="clearfix"></div>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class="col-lg-6 col-md-6">
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-xs-6">
+								<h2>Dispozitivele</h2>
+							</div>
+						</div>
+					</div>
+					<a th:href="@{/view_devices}">
+						<div class="panel-footer">
+							<span class="pull-left">Detalii</span> 
+							<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+							<div class="clearfix"></div>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class="col-lg-6 col-md-6">
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-xs-6">
 								<h2>Alege expert</h2>
 							</div>
 						</div>
@@ -200,7 +236,7 @@
 					<div class="panel-heading">
 						<div class="row">
 							<div class="col-xs-6">
-								<h2>Anternamentele tale</h2>
+								<h2>Anternamente</h2>
 							</div>
 						</div>
 					</div>
@@ -218,7 +254,7 @@
 					<div class="panel-heading">
 						<div class="row">
 							<div class="col-xs-6">
-								<h2>Dietele tale</h2>
+								<h2>Diete</h2>
 							</div>
 						</div>
 					</div>
@@ -231,69 +267,133 @@
 					</a>
 				</div>
 			</div>
-			<div class="col-lg-6 col-md-6">
-				<div class="panel panel-info">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-xs-6">
-								<h2>Dispozitivele tale</h2>
-							</div>
-						</div>
-					</div>
-					<a th:href="@{/view_devices}">
-						<div class="panel-footer">
-							<span class="pull-left">Detalii</span> 
-							<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-					</a>
-				</div>
-			</div>
 		</div>
 	</div>
+	<div id="container"></div>
+	<div id="container2"></div>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
 		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
 		crossorigin="anonymous"></script>
 	<script
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 	<script type="text/javascript" th:src="@{/js/validationcv.js}"></script>
-	<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
-<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+	<script src="https://code.highcharts.com/modules/data.js"></script>
+	<script src="https://code.highcharts.com/stock/highstock.js"></script>
+	<script src="https://code.highcharts.com/modules/drilldown.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script src="https://code.highcharts.com/modules/export-data.js"></script>
+	<script src="https://code.highcharts.com/modules/accessibility.js"></script>
 	<script th:inline="javascript">
-		Highcharts.chart('container', {
-			chart : {
-				type : 'pie',
-				options3d : {
-					enabled : true,
-					alpha : 50,
-					beta : 0
-				}
-			},
-			title : {
-				text : 'Sold Cont'
-			},
-			tooltip : {
-				pointFormat : '{series.name}: <b>{point.percentage:.0f}%</b>'
-			},
-			plotOptions : {
-				pie : {
-					allowPointSelect : true,
-					cursor : 'pointer',
-					depth : 35,
-					dataLabels : {
-						enabled : true,
-						format : '{point.name}'
-					}
-				}
-			},
-			series : [ {
-				type : 'pie',
-				name : 'Procent',
-				data : [ [ 'Cheltuieli', [[${payments}]] ], [ 'Sold Disponibil', [[${availableBalance}]] ]  ]
-			} ]
-		});
+	
+	Highcharts.chart('container', {
+	    chart: {
+	        type: 'areaspline'
+	    },
+	    title: {
+	        text: 'Calorii Arse Vs Calorii Acumulate'
+	    },
+	    scrollbar: {
+            enabled: true
+        },
+	    legend: {
+	        layout: 'vertical',
+	        align: 'left',
+	        verticalAlign: 'top',
+	        x: 150,
+	        y: 100,
+	        floating: true,
+	        borderWidth: 1,
+	        backgroundColor:
+	            Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF'
+	    },
+	    xAxis: {
+	    	 categories: [[${dates}]],
+	    	 crosshair: true,
+	         min: 0,
+		     max: 10
+	    },
+	    yAxis: {
+	        title: {
+	            text: 'Valori'
+	        }
+	    },
+	    tooltip: {
+	        shared: true,
+	        valueSuffix: ' Kcal'
+	    },
+	    credits: {
+	        enabled: false
+	    },
+	    plotOptions: {
+	        areaspline: {
+	            fillOpacity: 0.5
+	        }
+	    },
+	    series: [{
+	        name: 'Calorii Arse',
+	        data: [[${caloriesBurned.values()}]]
+	    }, {
+	        name: 'Calorii Acumulate',
+	        data: [[${caloriesAccumulated.values()}]]
+	    }]
+	});
+	
+	Highcharts.chart('container2', {
+	    chart: {
+	        type: 'areaspline'
+	    },
+	    title: {
+	        text: 'Treaz Vs In pat Vs Adormit'
+	    },
+	    scrollbar: {
+            enabled: true
+        },
+	    legend: {
+	        layout: 'vertical',
+	        align: 'left',
+	        verticalAlign: 'top',
+	        x: 150,
+	        y: 100,
+	        floating: true,
+	        borderWidth: 1,
+	        backgroundColor:
+	            Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF'
+	    },
+	    xAxis: {
+	    	 categories: [[${sleepDates}]],
+	    	 crosshair: true,
+	         min: 0,
+		     max: 10
+	    },
+	    yAxis: {
+	        title: {
+	            text: 'Valori'
+	        }
+	    },
+	    tooltip: {
+	        shared: true,
+	        valueSuffix: ' minute'
+	    },
+	    credits: {
+	        enabled: false
+	    },
+	    plotOptions: {
+	        areaspline: {
+	            fillOpacity: 0.5
+	        }
+	    },
+	    series: [{
+	        name: 'Adormit',
+	        data: [[${sleepAnalysisAsSleep.values()}]]
+	    }, {
+	        name: 'Treaz',
+	        data: [[${sleepAnalysisAwake.values()}]]
+	    }, {
+	        name: 'In pat',
+	        data: [[${sleepAnalysisInBed.values()}]]
+	    }]
+	});
+	
 		</script>
 </body>
 </html>
