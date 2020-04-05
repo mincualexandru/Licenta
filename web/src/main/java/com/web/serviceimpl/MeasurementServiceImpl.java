@@ -134,4 +134,14 @@ public class MeasurementServiceImpl implements MeasurementService {
 	public boolean checkIfMeasurementIsPresent(Integer userDeviceId, String string) {
 		return measurementDao.findByNameAndUserDeviceUserDeviceId(string, userDeviceId).isPresent();
 	}
+
+	@Override
+	public Optional<Measurement> findTopByOrderByStartDateDesc() {
+		return measurementDao.findTopByOrderByStartDateDesc();
+	}
+
+	@Override
+	public void deleteByUserDeviceUserDeviceIdAndMeasurementId(Integer userDeviceId, Integer measurementId) {
+		measurementDao.deleteByUserDeviceUserDeviceIdAndMeasurementId(userDeviceId, measurementId);
+	}
 }

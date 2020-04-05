@@ -30,4 +30,6 @@ public interface UserDeviceService {
 	Optional<UserDevice> findByDeviceNameAndUserAccountId(String string, Integer accountId);
 
 	boolean checkIfDeviceIsPresent(Account account, String nameOfDevice);
+
+	Optional<UserDevice> findTopByOrderByDateOfPurchaseDesc();
 }

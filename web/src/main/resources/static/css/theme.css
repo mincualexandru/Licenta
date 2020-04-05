@@ -274,7 +274,7 @@ section {
 }
 
 .main-content {
-    padding-top: 116px;
+    padding-top: 50px;
     min-height: 100vh;
 }
 
@@ -14606,4 +14606,143 @@ section {
 
 .vue-lists ul, .vue-lists ol {
     padding-left: 30px;
+}
+
+.rating .stars {
+	margin-right: 15px !important;
+}
+
+.rating .stars .star {
+	float: left !important;
+	padding: 5px 2px !important;
+	cursor: pointer !important;
+}
+
+.rating .stars .star:before {
+	font-family: 'FontAwesome' !important;
+	content: '\f005' !important;
+	color: #d0e8f0 !important;
+	font-size: 3em !important;
+}
+
+.rating .stars .star:hover:before, .rating .stars .star.to_rate:before,
+	.rating .stars .star.rated:before {
+	color: #80c1d5 !important;
+}
+
+.rating .stars .star.no_to_rate:before {
+	color: #d0e8f0 !important;
+}
+
+.rating {
+	float: left !important;
+}
+
+/* :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
+   follow these rules. Every browser that supports :checked also supports :not(), so
+   it doesn’t make the test unnecessarily selective */
+.rating:not (:checked ) >input {
+	position: absolute !important;
+	top: -9999px !important;
+	clip: rect(0, 0, 0, 0) !important;
+}
+
+.rating:not (:checked ) >label {
+	float: right !important;
+	width: 1em !important;
+	padding: 0 .1em !important;
+	overflow: hidden !important;
+	white-space: nowrap !important;
+	cursor: pointer !important;
+	font-size: 200% !important;
+	line-height: 1.2 !important;
+	color: #ddd !important;
+	text-shadow: 1px 1px #bbb, 2px 2px #666, .1em .1em .2em
+		rgba(0, 0, 0, .5) !important;
+}
+
+.rating>input:checked ~ label {
+	color: #f70 !important;
+	text-shadow: 1px 1px #c60, 2px 2px #940, .1em .1em .2em
+		rgba(0, 0, 0, .5) !important;
+}
+
+.rating:not (:checked ) >label:hover, .rating:not (:checked ) >label:hover 
+	~ label {
+	color: gold !important;
+	text-shadow: 1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em
+		rgba(0, 0, 0, .5) !important;
+}
+
+.rating>input:checked+label:hover, .rating>input:checked+label:hover ~
+	label, .rating>input:checked ~ label:hover, .rating>input:checked ~
+	label:hover ~ label, .rating>label:hover ~ input:checked ~ label {
+	color: #ea0 !important;
+	text-shadow: 1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em
+		rgba(0, 0, 0, .5) !important;
+}
+
+.rating>label:active {
+	position: relative !important;
+	top: 2px !important;
+	left: 2px !important;
+}
+
+/* end of Lea's code */
+
+/*
+ * Clearfix from html5 boilerplate
+ */
+.clearfix:before, .clearfix:after {
+	content: " " !important; /* 1 */
+	display: table !important; /* 2 */
+}
+
+.clearfix:after {
+	clear: both !important;
+}
+
+/*
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+.clearfix {
+	*zoom: 1 !important;
+}
+
+/* my stuff */
+#status, button {
+	margin: 20px 0 !important;
+}
+
+.rating:not (:checked ) >label:before {
+	content: '★ ' !important;
+}
+
+.stars-outer {
+	position: relative !important;
+	display: inline-block !important;
+}
+
+.stars-inner {
+	position: absolute !important;
+	top: 0 !important;
+	left: 0 !important;
+	white-space: nowrap !important;
+	overflow: hidden !important;
+	width: 0 !important;
+}
+
+.stars-outer::before {
+	content: '★ ★★★★' !important;
+	font-family: "Font Awesome 5 Free" !important;
+	font-weight: 900 !important;
+	color: #ccc !important;
+}
+
+.stars-inner::before {
+	content: '★★★★★ ' !important;
+	font-family: "Font Awesome 5 Free" !important;
+	font-weight: 900 !important;
+	color: #f8ce0b !important;
 }

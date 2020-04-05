@@ -22,6 +22,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Range;
 
+import com.web.utils.ExerciseCategory;
 import com.web.utils.TrainedMuscleGroup;
 
 @Entity
@@ -36,6 +37,11 @@ public class Exercise {
 	@ManyToOne
 	@JoinColumn(name = "training_plan_id")
 	private HelperPlan trainingPlan;
+
+	@Column(name = "category")
+	@Enumerated(EnumType.STRING)
+	@NotEmpty(message = "Campul este obligatoriu !")
+	private ExerciseCategory exerciseCategory;
 
 	@Column(name = "name")
 	@NotEmpty(message = "Campul este obligatoriu !")
@@ -195,6 +201,14 @@ public class Exercise {
 
 	public void setExercisesFeedback(Set<ExerciseFeedback> exercisesFeedback) {
 		this.exercisesFeedback = exercisesFeedback;
+	}
+
+	public ExerciseCategory getExerciseCategory() {
+		return exerciseCategory;
+	}
+
+	public void setExerciseCategory(ExerciseCategory category) {
+		this.exerciseCategory = category;
 	}
 
 	@Override

@@ -143,22 +143,57 @@
   color: #f8ce0b;
 }
 </style>
-<title>Admin</title>
+<link th:href="@{css/font-face.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-4.7/css/font-awesome.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-5/css/fontawesome-all.min.css}"
+	rel="stylesheet" media="all">
 <link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-	rel="stylesheet" id="bootstrap-css">
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-</head>
+	th:href="@{vendor/mdi-font/css/material-design-iconic-font.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/animsition/animsition.min.css}" rel="stylesheet"
+	media="all">
+<link
+	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/wow/animate.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/css-hamburgers/hamburgers.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/slick/slick.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/select2/select2.min.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{css/theme.css}" rel="stylesheet" media="all">
 <body>
+
+	<div th:if="${error}">
+		A aparut o eroare neasteptata
+	</div>
+	<div th:unless="${error}">
+	
+			<div th:if="${success}">
+		<div
+			class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+			<span class="badge badge-pill badge-danger">Success</span> You
+			successfully read this important alert.
+			<button type="button" class="close" data-dismiss="alert"
+				aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+	</div>
+
 	<form id="ratingForm" th:action="@{/offers_feedback_save}" method="post">
 		<input type="hidden" name="exerciseId" th:value="${exerciseId}"/>
 		<h3>Ofera FEEDBACK</h3>
 		<label>Mesaj</label> 
-		<input type="text" name="messageReview" /> 
-		<label>Cat a durat exercitiul?</label> 
-		<input type="number" name="numberOfMinutes" />
+		<input type="text" name="messageReview" />
 		<input type="hidden" id="number" name="number" value="">
 		<div id="status"></div> 
 		<fieldset class="rating">
@@ -176,11 +211,27 @@
 		</fieldset>
 		<button type="submit">Trimite</button>
 	</form>
-	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
-		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-		crossorigin="anonymous"></script>
+	</div>
+		<script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
+	<script th:src="@{/vendor/slick/slick.min.js}">
+    </script>
+	<script th:src="@{/vendor/wow/wow.min.js}"></script>
+	<script th:src="@{/vendor/animsition/animsition.min.js}"></script>
 	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+		th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
+    </script>
+	<script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
+	<script th:src="@{/vendor/counter-up/jquery.counterup.min.js}">
+    </script>
+	<script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
+	<script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
+	<script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
+	<script th:src="@{/vendor/select2/select2.min.js}">
+    </script>
+
+	<script th:src="@{/js/main.js}"></script>
 	<script type="text/javascript" th:src="@{/js/validationcv.js}"></script>
 	<script>
 	$(document).ready(function() {

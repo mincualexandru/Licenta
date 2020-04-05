@@ -47,16 +47,14 @@
 										<td>
 											<div th:each="role : ${helper.roles}">
 												<div th:if="${role.name == 'ROLE_TRAINER'}">
-													<form th:action="@{/view_progress}" method="post">
-														<input type="hidden" name="learnerId" th:value="${account.accountId}"/>
-														<button>Vezi Progres</button>
-													</form>
+													<div th:if="${#lists.size(account.exerciseDone)}">
+														<a th:href="@{/view_progress/{id}(id=${account.accountId})}" class="btn btn-success">Vezi Progres</a>
+													</div>
 												</div>
 												<div th:if="${role.name == 'ROLE_NUTRITIONIST'}">
-													<form th:action="@{/view_progress_nutritionist}" method="post">
-														<input type="hidden" name="learnerId" th:value="${account.accountId}"/>
-														<button>Vezi Progres</button>
-													</form>
+													<div th:if="${#lists.size(account.foodEaten)}">
+														<a th:href="@{/view_progress_nutritionist/{id}(id=${account.accountId})}" class="btn btn-success">Vezi Progres</a>
+													</div>
 												</div>
 											</div>
 										</td>

@@ -1,5 +1,7 @@
 package com.web.dao;
 
+import java.sql.Timestamp;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.data.repository.CrudRepository;
@@ -15,4 +17,8 @@ public interface FoodEatenDao extends CrudRepository<FoodEaten, Integer> {
 
 	Set<FoodEaten> findAllByUserAccountId(Integer accountId);
 
+	Set<FoodEaten> findAllByUserAccountIdAndDateOfExecutionBetween(Integer accountId, Timestamp timestampStartDate,
+			Timestamp timestampEndDate);
+
+	Optional<FoodEaten> findTopByUserAccountIdOrderByDateOfExecutionDesc(Integer accountId);
 }

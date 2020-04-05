@@ -1,5 +1,6 @@
 package com.web.dao;
 
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.Query;
@@ -23,4 +24,6 @@ public interface ExerciseDao extends CrudRepository<Exercise, Integer> {
 	Set<Exercise> findAllNotPerfomerdExercises();
 
 	Set<Exercise> findAllByTrainingPlanHelperPlanIdAndTrainingPlanTypeOfPlan(Integer trainingPlanId, String string);
+
+	Optional<Exercise> findTopByTrainingPlanHelperAccountIdOrderByCreateDateTimeDesc(Integer accountId);
 }

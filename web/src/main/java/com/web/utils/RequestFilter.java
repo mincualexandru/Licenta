@@ -1,8 +1,11 @@
 package com.web.utils;
 
+import java.io.IOException;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -16,37 +19,30 @@ import org.springframework.stereotype.Component;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class RequestFilter implements Filter {
 
-	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) {
+	@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
+	}
 
-		HttpServletResponse response = (HttpServletResponse) res;
-		HttpServletRequest request = (HttpServletRequest) req;
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
+			throws IOException, ServletException {
+		HttpServletResponse res = (HttpServletResponse) response;
+		HttpServletRequest req = (HttpServletRequest) request;
 
-		response.setHeader("Access-Control-Allow-Origin", "*");
-		response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
-		response.setHeader("Access-Control-Allow-Headers", "*");
-		response.setHeader("Access-Control-Max-Age", "3600");
-		response.setHeader("Access-Control-Allow-Credentials", "true");
+		res.setHeader("Access-Control-Allow-Origin", "*");
+		res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS");
+		res.setHeader("Access-Control-Allow-Headers",
+				"Origin, X-Requested-With, Content-Type, Accept, Accept-Encoding, Accept-Language, Host, Referer, Connection, User-Agent, authorization, sw-useragent, sw-version");
 
-		if (!(request.getMethod().equalsIgnoreCase("OPTIONS"))) {
-			try {
-				chain.doFilter(req, res);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else {
-			System.out.println("Pre-flight");
-			response.setHeader("Access-Control-Allow-Methods", "POST,GET,DELETE");
-			response.setHeader("Access-Control-Max-Age", "3600");
-			response.setHeader("Access-Control-Allow-Headers", "authorization, content-type,"
-					+ "access-control-request-headers,access-control-request-method,accept,origin,authorization,x-requested-with");
-			response.setStatus(HttpServletResponse.SC_OK);
+		// Just REPLY OK if request method is OPTIONS for CORS (pre-flight)
+		if (req.getMethod().equals("OPTIONS")) {
+			res.setStatus(HttpServletResponse.SC_OK);
+			return;
 		}
-
+		filterChain.doFilter(request, response);
 	}
 
-	public void init(FilterConfig filterConfig) {
-	}
-
+	@Override
 	public void destroy() {
 	}
 

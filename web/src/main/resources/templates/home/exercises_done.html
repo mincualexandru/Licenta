@@ -456,6 +456,7 @@
 										<th>Nume Exercitiu</th>
 										<th>Nume Antrenament</th>
 										<th>Nume Antrenor</th>
+										<th>Data</th>
 									</tr>
 								</thead>
 								<tbody class="center-align">
@@ -464,7 +465,9 @@
 										<tr>
 											<td th:text="${ex.exercise.name}"></td>
 											<td th:text="${ex.exercise.trainingPlan.name}"></td>
-											<td th:text="${ex.exercise.trainingPlan.helper.username}"></td>										</tr>
+											<td th:text="${ex.exercise.trainingPlan.helper.username}"></td>					
+											<td th:text="${ex.dateOfExecution}"></td>										
+										</tr>
 									</th:block>
 								</tbody>
 							</table>

@@ -83,7 +83,7 @@ public class Account {
 
 	@Column(name = "date_of_creation")
 	@CreationTimestamp
-	private Timestamp dateOfcreation;
+	private Timestamp dateOfCreation;
 
 	@OneToOne(mappedBy = "account")
 	@JsonIgnore
@@ -112,6 +112,14 @@ public class Account {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
 	@JsonIgnore
 	private Set<ExerciseFeedback> exercisesFeedback = new HashSet<>();
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
+	@JsonIgnore
+	private Set<FoodEaten> foodEaten = new HashSet<>();
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
+	@JsonIgnore
+	private Set<FoodFeedback> foodsFeedback = new HashSet<>();
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "helper", orphanRemoval = true)
 	@JsonIgnore
@@ -240,12 +248,12 @@ public class Account {
 		this.gender = gender;
 	}
 
-	public Timestamp getDateOfcreation() {
-		return dateOfcreation;
+	public Timestamp getDateOfCreation() {
+		return dateOfCreation;
 	}
 
-	public void setDateOfcreation(Timestamp dateOfcreation) {
-		this.dateOfcreation = dateOfcreation;
+	public void setDateOfCreation(Timestamp dateOfCreation) {
+		this.dateOfCreation = dateOfCreation;
 	}
 
 	public Set<Role> getRoles() {
@@ -334,6 +342,22 @@ public class Account {
 
 	public void setUserFeedback(Set<HelperFeedback> userFeedback) {
 		this.userFeedback = userFeedback;
+	}
+
+	public Set<FoodEaten> getFoodEaten() {
+		return foodEaten;
+	}
+
+	public void setFoodEaten(Set<FoodEaten> foodEaten) {
+		this.foodEaten = foodEaten;
+	}
+
+	public Set<FoodFeedback> getFoodsFeedback() {
+		return foodsFeedback;
+	}
+
+	public void setFoodsFeedback(Set<FoodFeedback> foodsFeedback) {
+		this.foodsFeedback = foodsFeedback;
 	}
 
 	@Override

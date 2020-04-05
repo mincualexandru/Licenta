@@ -39,6 +39,7 @@ div.desc {
 <div th:unless="${inexistentValue}">
 <div th:each="role, iterStat : ${account.roles}">
 	<div th:if="${role.name == 'ROLE_USER'}">
+	<div th:if="${attentionToCalories}"><h4 th:text="${'Atentie ! Deja ai mancat ' + sumOfAccumulatedCaloriesToday + ' calorii pana acum'}"></h4></div>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-8 mx-auto">

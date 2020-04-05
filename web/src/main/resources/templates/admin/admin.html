@@ -1,19 +1,576 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<title>Admin</title>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="au theme template">
+<meta name="author" content="Hau Nguyen">
+<meta name="keywords" content="au theme template">
+
+<title>Dashboard</title>
+
+<link th:href="@{css/font-face.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-4.7/css/font-awesome.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-5/css/fontawesome-all.min.css}"
+	rel="stylesheet" media="all">
 <link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-	rel="stylesheet" id="bootstrap-css">
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	th:href="@{vendor/mdi-font/css/material-design-iconic-font.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/animsition/animsition.min.css}" rel="stylesheet"
+	media="all">
+<link
+	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/wow/animate.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/css-hamburgers/hamburgers.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/slick/slick.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/select2/select2.min.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{css/theme.css}" rel="stylesheet" media="all">
+
 </head>
+
 <body>
-<h1>Salut admin</h1>
-<div th:if="${inactiveAccountsSize}">
-	<a th:href="@{/validations-accounts}" class="btn btn-success">Vezi conturi inactive</a>
-</div>
+	<div class="page-wrapper">
+		<header class="header-mobile d-block d-lg-none">
+			<div class="header-mobile__bar">
+				<div class="container-fluid">
+					<div class="header-mobile-inner">
+						<a class="logo" href="index.html"> <img
+							src="images/icon/logo.png" alt="CoolAdmin" />
+						</a>
+						<button class="hamburger hamburger--slider" type="button">
+							<span class="hamburger-box"> <span class="hamburger-inner"></span>
+							</span>
+						</button>
+					</div>
+				</div>
+			</div>
+			<nav class="navbar-mobile">
+				<div class="container-fluid">
+					<ul class="navbar-mobile__list list-unstyled">
+						<li><a th:href="@{/admin}">Admin</a></li>
+						<li><a th:href="@{/accounts}">Conturi</a></li>
+						<li><a th:href="@{/view_devices}">Dispozitive</a></li>
+						<li><a th:href="@{/view_measurements}">Masuratori</a></li>
+						<li><a th:href="@{/view_plans}">Planuri</a></li>
+						<li><a th:href="@{/view_exercises}">Exercitii</a></li>
+						<li><a th:href="@{/view_foods}">Alimente</a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<aside class="menu-sidebar d-none d-lg-block">
+			<div class="logo">
+				<a href="#"> <img src="images/icon/logo.png" alt="Cool Admin" />
+				</a>
+			</div>
+			<div class="menu-sidebar__content js-scrollbar1">
+				<nav class="navbar-sidebar">
+					<ul class="list-unstyled navbar__list">
+						<li><a th:href="@{/admin}">Admin</a></li>
+						<li><a th:href="@{/accounts}">Conturi</a></li>
+						<li><a th:href="@{/view_devices}">Dispozitive</a></li>
+						<li><a th:href="@{/view_measurements}">Masuratori</a></li>
+						<li><a th:href="@{/view_plans}">Planuri</a></li>
+						<li><a th:href="@{/view_exercises}">Exercitii</a></li>
+						<li><a th:href="@{/view_foods}">Alimente</a></li>
+					</ul>
+				</nav>
+			</div>
+		</aside>
+		<div class="page-container">
+			<div class="main-content">
+				<div class="section__content section__content--p30">
+					<div class="row m-t-25">
+						<div class="col-sm-6 col-lg-4">
+							<div class="overview-item overview-item--c1">
+								<div class="overview__inner">
+									<div class="overview-box clearfix">
+										<div class="icon">
+											<i class="zmdi zmdi-account-o"></i>
+										</div>
+										<div class="text">
+											<h2 th:text="${accounts.size()}"></h2>
+											<span>conturi</span>
+										</div>
+									</div>
+									<div class="overview-chart">
+										<canvas id="users"></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6 col-lg-4">
+							<div class="overview-item overview-item--c1">
+								<div class="overview__inner">
+									<div class="overview-box clearfix">
+										<div class="icon">
+											<i class="zmdi zmdi-calendar-note"></i>
+										</div>
+										<div class="text">
+											<h2 th:text="${measurements.size()}"></h2>
+											<span>masuratori</span>
+										</div>
+									</div>
+									<div class="overview-chart">
+										<canvas id="measurements"></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6 col-lg-4">
+							<div class="overview-item overview-item--c1">
+								<div class="overview__inner">
+									<div class="overview-box clearfix">
+										<div class="icon">
+											<i class="zmdi zmdi-shopping-cart"></i>
+										</div>
+										<div class="text">
+											<h2 th:text="${userPlans.size()}"></h2>
+											<span>planuri cumparate</span>
+										</div>
+									</div>
+									<div class="overview-chart">
+										<canvas id="userPlans"></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-6" style="min-height: 100%;">
+							<h2 class="title-1 m-b-25">Top Planuri</h2>
+							<div
+								class="au-card au-card--bg-blue au-card-top-countries m-b-40">
+								<div class="au-card-inner">
+									<div class="table-responsive">
+										<table class="table table-top-countries">
+											<thead>
+												<tr>
+													<th>Nume</th>
+													<th>Antrenor / Nutritionist</th>
+													<td>Pret</td>
+													<th>Vandut de</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="plan: ${theMostBoughtPlans.entrySet()}">
+													<td th:text="${plan.getKey().name}"></td>
+													<td th:text="${plan.getKey().helper.username}">
+													<td th:text="${plan.getKey().price}"></td>
+													<td class="text-right" th:text="${plan.getValue()}"></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="au-card chart-percent-card" style="padding: 20px;">
+								<div class="au-card-inner">
+									<h3 class="title-2 tm-b-5">Profit</h3>
+									<div class="row no-gutters">
+										<div class="col-xl-4">
+											<div class="chart-note-wrap">
+												<div class="chart-note mr-0 d-block">
+													<span class="dot dot--blue"></span> <span>venituri</span>
+												</div>
+												<div class="chart-note mr-0 d-block">
+													<span class="dot dot--red"></span> <span>cheltuieli</span>
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-8">
+											<div class="percent-chart">
+												<canvas id="profit"
+													style="width: 323px; height: 250px; margin: 0px auto;"></canvas>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+                            <div class="col-lg-6">
+                                <div class="au-card au-card--no-shadow au-card--no-pad m-b-40">
+                                    <div class="au-card-title" style="background-image:url('images/bg-title-02.jpg');">
+                                        <div class="bg-overlay bg-overlay--blue"></div>
+                                        <h3>
+                                            <i class="zmdi zmdi-comment-text"></i>Feedback-uri Alimente</h3>
+                                    </div>
+                                    <div class="au-inbox-wrap js-inbox-wrap">
+                                        <div class="au-message js-list-load">
+                                            <div class="au-message-list" style="height: 550px;">
+                                                <div class="au-message__item unread" th:each="feedback: ${foodFeedbacks}">
+                                                    <div class="au-message__item-inner">
+                                                        <div class="au-message__item-text">
+                                                            <div class="avatar-wrap">
+                                                                <div class="avatar">
+                                                                    <img src="images/icon/avatar-02.jpg" alt="John Smith">
+                                                                </div>
+                                                            </div>
+                                                            <div class="text">
+                                                                <h5 class="name" th:text="${feedback.user.username}"></h5>
+                                                                <p th:text="${feedback.food.dietPlan.helper.username}"></p>
+                                                                <p th:text="${feedback.message}"></p>
+                                                                <p th:text="${feedback.rating}"></p>
+                                                                <p th:text="${feedback.food.name}"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="au-message__item-time">
+                                                            <span th:text="${feedback.dateOfFeedbackProvied}"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="au-card au-card--no-shadow au-card--no-pad m-b-40">
+                                    <div class="au-card-title" style="background-image:url('images/bg-title-02.jpg');">
+                                        <div class="bg-overlay bg-overlay--blue"></div>
+                                        <h3>
+                                            <i class="zmdi zmdi-comment-text"></i>Feedback-uri Exercitii</h3>
+                                    </div>
+                                    <div class="au-inbox-wrap js-inbox-wrap">
+                                        <div class="au-message js-list-load">
+                                            <div class="au-message-list" style="height: 550px;">
+                                                <div class="au-message__item unread" th:each="feedback: ${exerciseFeedbacks}">
+                                                    <div class="au-message__item-inner">
+                                                        <div class="au-message__item-text">
+                                                            <div class="avatar-wrap">
+                                                                <div class="avatar">
+                                                                    <img src="images/icon/avatar-02.jpg" alt="John Smith">
+                                                                </div>
+                                                            </div>
+                                                            <div class="text">
+                                                                <h5 class="name" th:text="${feedback.user.username}"></h5>
+                                                                <p th:text="${feedback.exercise.trainingPlan.helper.username}"></p>
+                                                                <p th:text="${feedback.message}"></p>
+                                                                <p th:text="${feedback.rating}"></p>
+                                                                <p th:text="${feedback.exercise.name}"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="au-message__item-time">
+                                                            <span th:text="${feedback.dateOfFeedbackProvied}"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
+	<script th:src="@{/vendor/slick/slick.min.js}">
+    </script>
+	<script th:src="@{/vendor/wow/wow.min.js}"></script>
+	<script th:src="@{/vendor/animsition/animsition.min.js}"></script>
+	<script
+		th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
+    </script>
+	<script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
+	<script th:src="@{/vendor/counter-up/jquery.counterup.min.js}">
+    </script>
+	<script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
+	<script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
+	<script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
+	<script th:src="@{/vendor/select2/select2.min.js}">
+    </script>
+
+	<script th:src="@{/js/main.js}"></script>
+	<script th:inline="javascript">
+    var ctx = document.getElementById("users");
+    if (ctx) {
+      ctx.height = 130;
+      var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: [[${chartNumberOfAccountsByDay.keySet()}]],
+          type: 'line',
+          datasets: [{
+            data: [[${chartNumberOfAccountsByDay.values()}]],
+            label: 'Dataset',
+            backgroundColor: 'transparent',
+            borderColor: 'rgba(255,255,255,.55)',
+          },]
+        },
+        options: {
+
+          maintainAspectRatio: false,
+          legend: {
+            display: false
+          },
+          responsive: true,
+          tooltips: {
+            mode: 'index',
+            titleFontSize: 12,
+            titleFontColor: '#000',
+            bodyFontColor: '#000',
+            backgroundColor: '#fff',
+            titleFontFamily: 'Montserrat',
+            bodyFontFamily: 'Montserrat',
+            cornerRadius: 3,
+            intersect: false,
+          },
+          scales: {
+            xAxes: [{
+              gridLines: {
+                color: 'transparent',
+                zeroLineColor: 'transparent'
+              },
+              ticks: {
+                fontSize: 2,
+                fontColor: 'transparent'
+              }
+            }],
+            yAxes: [{
+              display: false,
+              ticks: {
+                display: false,
+                max: 3
+              }
+            }]
+          },
+          title: {
+            display: false,
+          },
+          elements: {
+            line: {
+              tension: 0.00001,
+              borderWidth: 1
+            },
+            point: {
+              radius: 4,
+              hitRadius: 10,
+              hoverRadius: 4
+            }
+          }
+        }
+      });
+    }
+    
+    var ctx = document.getElementById("measurements");
+    if (ctx) {
+      ctx.height = 130;
+      var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: [[${chartNumberOfMeasurementsByDay.keySet()}]],
+          type: 'line',
+          datasets: [{
+            data: [[${chartNumberOfMeasurementsByDay.values()}]],
+            label: 'Dataset',
+            backgroundColor: 'transparent',
+            borderColor: 'rgba(255,255,255,.55)',
+          },]
+        },
+        options: {
+
+          maintainAspectRatio: false,
+          legend: {
+            display: false
+          },
+          responsive: true,
+          tooltips: {
+            mode: 'index',
+            titleFontSize: 12,
+            titleFontColor: '#000',
+            bodyFontColor: '#000',
+            backgroundColor: '#fff',
+            titleFontFamily: 'Montserrat',
+            bodyFontFamily: 'Montserrat',
+            cornerRadius: 3,
+            intersect: false,
+          },
+          scales: {
+            xAxes: [{
+              gridLines: {
+                color: 'transparent',
+                zeroLineColor: 'transparent'
+              },
+              ticks: {
+                fontSize: 2,
+                fontColor: 'transparent'
+              }
+            }],
+            yAxes: [{
+              display: false,
+              ticks: {
+                display: false,
+                max: 7
+              }
+            }]
+          },
+          title: {
+            display: false,
+          },
+          elements: {
+            line: {
+              tension: 0.00001,
+              borderWidth: 1
+            },
+            point: {
+              radius: 4,
+              hitRadius: 10,
+              hoverRadius: 4
+            }
+          }
+        }
+      });
+    }
+    
+    
+    var ctx = document.getElementById("userPlans");
+    if (ctx) {
+      ctx.height = 130;
+      var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: [[${chartNumberOfUserPlansByDay.keySet()}]],
+          type: 'line',
+          datasets: [{
+            data: [[${chartNumberOfUserPlansByDay.values()}]],
+            label: 'Dataset',
+            backgroundColor: 'transparent',
+            borderColor: 'rgba(255,255,255,.55)',
+          },]
+        },
+        options: {
+
+          maintainAspectRatio: false,
+          legend: {
+            display: false
+          },
+          responsive: true,
+          tooltips: {
+            mode: 'index',
+            titleFontSize: 12,
+            titleFontColor: '#000',
+            bodyFontColor: '#000',
+            backgroundColor: '#fff',
+            titleFontFamily: 'Montserrat',
+            bodyFontFamily: 'Montserrat',
+            cornerRadius: 3,
+            intersect: false,
+          },
+          scales: {
+            xAxes: [{
+              gridLines: {
+                color: 'transparent',
+                zeroLineColor: 'transparent'
+              },
+              ticks: {
+                fontSize: 2,
+                fontColor: 'transparent'
+              }
+            }],
+            yAxes: [{
+              display: false,
+              ticks: {
+                display: false,
+                max: 4
+              }
+            }]
+          },
+          title: {
+            display: false,
+          },
+          elements: {
+            line: {
+              tension: 0.00001,
+              borderWidth: 1
+            },
+            point: {
+              radius: 4,
+              hitRadius: 10,
+              hoverRadius: 4
+            }
+          }
+        }
+      });
+    }
+    let profit = [[${totalProfit}]];
+    let payments = [[${totalPayments}]];
+    var ctx = document.getElementById("profit");
+    if (ctx) {
+      ctx.height = 280;
+      var myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          datasets: [
+            {
+              label: "My First dataset",
+              data: [profit,payments],
+              backgroundColor: [
+                '#00b5e9',
+                '#fa4251'
+              ],
+              hoverBackgroundColor: [
+                '#00b5e9',
+                '#fa4251'
+              ],
+              borderWidth: [
+                0, 0
+              ],
+              hoverBorderColor: [
+                'transparent',
+                'transparent'
+              ]
+            }
+          ],
+          labels: [
+            'Venituri',
+            'Cheltuieli'
+          ]
+        },
+        options: {
+          maintainAspectRatio: false,
+          responsive: true,
+          cutoutPercentage: 55,
+          animation: {
+            animateScale: true,
+            animateRotate: true
+          },
+          legend: {
+            display: false
+          },
+          tooltips: {
+            titleFontFamily: "Poppins",
+            xPadding: 15,
+            yPadding: 10,
+            caretPadding: 0,
+            bodyFontSize: 16
+          }
+        }
+      });
+    }
+	</script>
 </body>
+
 </html>

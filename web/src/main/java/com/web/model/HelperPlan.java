@@ -26,7 +26,7 @@ import com.web.utils.Gender;
 
 @Entity
 @Table(name = "helpers_plans")
-public class HelperPlan {
+public class HelperPlan implements Comparable<HelperPlan> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -164,5 +164,10 @@ public class HelperPlan {
 
 	public void setFoods(Set<Food> foods) {
 		this.foods = foods;
+	}
+
+	@Override
+	public int compareTo(HelperPlan o) {
+		return (int) (this.helperPlanId - o.getHelperPlanId());
 	}
 }

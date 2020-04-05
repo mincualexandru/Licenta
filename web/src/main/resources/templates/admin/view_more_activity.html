@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="au theme template">
+<meta name="author" content="Hau Nguyen">
+<meta name="keywords" content="au theme template">
+
+<title>Dashboard</title>
+
+<link th:href="@{css/font-face.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-4.7/css/font-awesome.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-5/css/fontawesome-all.min.css}"
+	rel="stylesheet" media="all">
+<link
+	th:href="@{vendor/mdi-font/css/material-design-iconic-font.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/animsition/animsition.min.css}" rel="stylesheet"
+	media="all">
+<link
+	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/wow/animate.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/css-hamburgers/hamburgers.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/slick/slick.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/select2/select2.min.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{css/theme.css}" rel="stylesheet" media="all">
+
+</head>
+<body>
+	<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-10 mx-auto">
+							<div th:if="${#lists.size(measurements)}">
+							<table class="table table-striped">
+								<thead class="center-align">
+									<tr>
+										<th>Nume</th>
+											<th>Data</th>
+											<th>Valoare</th>
+											<th>Unitate de Masura</th>
+									</tr>
+								</thead>
+								<tbody class="center-align">
+									<th:block th:each="measure, iterStat : ${measurements}">
+											<tr>
+												<td th:text="${measure.name}"></td>
+												<td th:text="${measure.startDate}"></td>
+												<td th:text="${measure.value}"></td>
+												<td th:text="${measure.unitOfMeasurement}"></td>
+											</tr>
+										</th:block>
+								</tbody>
+							</table>
+							</div>
+							<div th:if="${#lists.size(foodsEaten)}">
+							<table class="table table-striped">
+								<thead class="center-align">
+									<tr>
+											<th>Nume Aliment</th>
+											<th>Nume Dieta</th>
+											<th>Nume Nutritionist</th>
+									</tr>
+								</thead>
+								<tbody class="center-align">
+									<th:block th:each="fd, iterStat : ${foodsEaten}">
+											<tr>
+												<td th:text="${fd.food.name}"></td>
+												<td th:text="${fd.food.dietPlan.name}"></td>
+												<td th:text="${fd.food.dietPlan.helper.username}"></td>										
+											</tr>
+									</th:block>
+								</tbody>
+							</table>
+							</div>
+							<div th:if="${#lists.size(exercisesDone)}">
+							<table class="table table-striped">
+								<thead class="center-align">
+									<tr>
+											<th>Nume Exercitiu</th>
+											<th>Nume Antrenament</th>
+											<th>Nume Antrenor</th>
+									</tr>
+								</thead>
+								<tbody class="center-align">
+										<th:block th:each="ex, iterStat : ${exercisesDone}">
+											<tr>
+												<td th:text="${ex.exercise.name}"></td>
+												<td th:text="${ex.exercise.trainingPlan.name}"></td>
+												<td th:text="${ex.exercise.trainingPlan.helper.username}"></td>	
+											</tr>
+										</th:block>
+								</tbody>
+							</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
+	<script th:src="@{/vendor/slick/slick.min.js}"></script>
+	<script th:src="@{/vendor/wow/wow.min.js}"></script>
+	<script th:src="@{/vendor/animsition/animsition.min.js}"></script>
+	<script
+		th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}"></script>
+	<script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
+	<script th:src="@{/vendor/counter-up/jquery.counterup.min.js}"></script>
+	<script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
+	<script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
+	<script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
+	<script th:src="@{/vendor/select2/select2.min.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

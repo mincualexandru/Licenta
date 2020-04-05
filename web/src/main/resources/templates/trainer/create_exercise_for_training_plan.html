@@ -69,6 +69,22 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
+						<div class="form-group has-danger">
+							<label>Categorie</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+								<select th:field="*{trainedMuscleGroup}">
+									<option 
+									th:each="s : ${exerciseCategories}" 
+									th:text="${s.exerciseCategory}"
+									th:value="${s}"></option>
+								</select>
+							</div>
+							<div th:if="${#fields.hasErrors('exerciseCategory')}" th:errors="*{exerciseCategory}"></div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
 						<div class="form-group">
 							<label>Numar Serii Efectuate</label>
 							<div class="input-group mb-2 mr-sm-2 mb-sm-0">

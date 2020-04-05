@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="au theme template">
+<meta name="author" content="Hau Nguyen">
+<meta name="keywords" content="au theme template">
+
+<title>Dashboard</title>
+
+<link th:href="@{css/font-face.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-4.7/css/font-awesome.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-5/css/fontawesome-all.min.css}"
+	rel="stylesheet" media="all">
+<link
+	th:href="@{vendor/mdi-font/css/material-design-iconic-font.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/animsition/animsition.min.css}" rel="stylesheet"
+	media="all">
+<link
+	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/wow/animate.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/css-hamburgers/hamburgers.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/slick/slick.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/select2/select2.min.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{css/theme.css}" rel="stylesheet" media="all">
+
+</head>
+
+<body>
+	<div th:unless="${#lists.size(userDevices)}">Se pare ca nu ai
+		niciun dispozitiv cumparat</div>
+	<div th:if="${#lists.size(userDevices)}">
+		<h3
+			style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Dispozitive</h3>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-10 mx-auto">
+							<table class="table table-striped">
+								<thead class="center-align">
+									<tr>
+										<th>Nume</th>
+										<th>Actiuni</th>
+									</tr>
+								</thead>
+								<tbody class="center-align">
+									<th:block th:each="userDevice, iterStat : ${userDevices}">
+										<tr>
+											<td th:text="${userDevice.device.name}"></td>
+											<td>
+												<form th:action="@{/view_measurements_for_device}"
+													method="post">
+													<input type="hidden" name="userDeviceId"
+														th:value="${userDevice.userDeviceId}" />
+													<button type="submit" class="btn btn-success">Vezi
+														Masuratori</button>
+												</form>
+												<div th:unless="${userDevice.device.name eq 'Fit Buddy'}">
+													<button data-toggle="modal" data-target="#modal-devices"
+														th:attr="data-target='#modal-devices'+${userDevice.userDeviceId}">Sterge
+														Dispozitiv</button>
+													<div class="modal modal-devices fade in"
+														th:id="modal-devices+${userDevice.userDeviceId}"
+														data-backdrop="false"
+														style="background: rgba(0, 0, 0, 0.5);">
+														<div class="modal-dialog">
+															<div class="modal-content">
+																<div class="modal-body">Esti sigur ca vrei sa
+																	stergi acest dispozitiv?</div>
+																<div class="modal-footer">
+																	<form th:action="@{/delete_device}" method="post">
+																		<input type="hidden" name="deviceId"
+																			th:value="${userDevice.device.deviceId}" />
+																		<button type="submit" class="btn btn-danger">Da</button>
+																	</form>
+																	<button type="button" class="btn btn-outline pull-left"
+																		data-dismiss="modal">Nu</button>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</td>
+										</tr>
+									</th:block>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
+	<script th:src="@{/vendor/slick/slick.min.js}">
+    </script>
+	<script th:src="@{/vendor/wow/wow.min.js}"></script>
+	<script th:src="@{/vendor/animsition/animsition.min.js}"></script>
+	<script
+		th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
+    </script>
+	<script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
+	<script th:src="@{/vendor/counter-up/jquery.counterup.min.js}">
+    </script>
+	<script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
+	<script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
+	<script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
+	<script th:src="@{/vendor/select2/select2.min.js}">
+    </script>
+
+	<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

@@ -71,4 +71,9 @@ public class UserPlanServiceImpl implements UserPlanService {
 	public Set<UserPlan> findAllByBoughtAndUserAccountId(boolean b, Integer accountId) {
 		return userPlanDao.findAllByBoughtAndUserAccountId(b, accountId);
 	}
+
+	@Override
+	public Optional<UserPlan> findTopByOrderByDateOfPurchaseDesc() {
+		return userPlanDao.findTopByOrderByDateOfPurchaseDesc();
+	}
 }

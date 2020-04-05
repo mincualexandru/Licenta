@@ -1,5 +1,6 @@
 package com.web.dao;
 
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.Query;
@@ -23,4 +24,6 @@ public interface FoodDao extends CrudRepository<Food, Integer> {
 	Set<Food> findAllNotEatenFoods();
 
 	Set<Food> findAllByDietPlanHelperPlanIdAndDietPlanTypeOfPlan(Integer dietPlanId, String string);
+
+	Optional<Food> findTopByDietPlanHelperAccountIdOrderByCreateDateTimeDesc(Integer accountId);
 }

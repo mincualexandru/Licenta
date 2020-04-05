@@ -331,61 +331,6 @@
       });
     }
 
-    // Percent Chart
-    var ctx = document.getElementById("percent-chart");
-    if (ctx) {
-      ctx.height = 280;
-      var myChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          datasets: [
-            {
-              label: "My First dataset",
-              data: [60, 40],
-              backgroundColor: [
-                '#00b5e9',
-                '#fa4251'
-              ],
-              hoverBackgroundColor: [
-                '#00b5e9',
-                '#fa4251'
-              ],
-              borderWidth: [
-                0, 0
-              ],
-              hoverBorderColor: [
-                'transparent',
-                'transparent'
-              ]
-            }
-          ],
-          labels: [
-            'Products',
-            'Services'
-          ]
-        },
-        options: {
-          maintainAspectRatio: false,
-          responsive: true,
-          cutoutPercentage: 55,
-          animation: {
-            animateScale: true,
-            animateRotate: true
-          },
-          legend: {
-            display: false
-          },
-          tooltips: {
-            titleFontFamily: "Poppins",
-            xPadding: 15,
-            yPadding: 10,
-            caretPadding: 0,
-            bodyFontSize: 16
-          }
-        }
-      });
-    }
-
   } catch (error) {
     console.log(error);
   }
@@ -783,95 +728,7 @@
     console.log(error);
   }
 
-  try {
-
-    //Team chart
-    var ctx = document.getElementById("team-chart");
-    if (ctx) {
-      ctx.height = 150;
-      var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ["2010", "2011", "2012", "2013", "2014", "2015", "2016"],
-          type: 'line',
-          defaultFontFamily: 'Poppins',
-          datasets: [{
-            data: [0, 7, 3, 5, 2, 10, 7],
-            label: "Expense",
-            backgroundColor: 'rgba(0,103,255,.15)',
-            borderColor: 'rgba(0,103,255,0.5)',
-            borderWidth: 3.5,
-            pointStyle: 'circle',
-            pointRadius: 5,
-            pointBorderColor: 'transparent',
-            pointBackgroundColor: 'rgba(0,103,255,0.5)',
-          },]
-        },
-        options: {
-          responsive: true,
-          tooltips: {
-            mode: 'index',
-            titleFontSize: 12,
-            titleFontColor: '#000',
-            bodyFontColor: '#000',
-            backgroundColor: '#fff',
-            titleFontFamily: 'Poppins',
-            bodyFontFamily: 'Poppins',
-            cornerRadius: 3,
-            intersect: false,
-          },
-          legend: {
-            display: false,
-            position: 'top',
-            labels: {
-              usePointStyle: true,
-              fontFamily: 'Poppins',
-            },
-
-
-          },
-          scales: {
-            xAxes: [{
-              display: true,
-              gridLines: {
-                display: false,
-                drawBorder: false
-              },
-              scaleLabel: {
-                display: false,
-                labelString: 'Month'
-              },
-              ticks: {
-                fontFamily: "Poppins"
-              }
-            }],
-            yAxes: [{
-              display: true,
-              gridLines: {
-                display: false,
-                drawBorder: false
-              },
-              scaleLabel: {
-                display: true,
-                labelString: 'Value',
-                fontFamily: "Poppins"
-              },
-              ticks: {
-                fontFamily: "Poppins"
-              }
-            }]
-          },
-          title: {
-            display: false,
-          }
-        }
-      });
-    }
-
-
-  } catch (error) {
-    console.log(error);
-  }
+  
 
   try {
     //bar chart
@@ -1197,58 +1054,6 @@
   } catch (error) {
     console.log(error);
   }
-
-  try {
-
-    // single bar chart
-    var ctx = document.getElementById("singelBarChart");
-    if (ctx) {
-      ctx.height = 150;
-      var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ["Sun", "Mon", "Tu", "Wed", "Th", "Fri", "Sat"],
-          datasets: [
-            {
-              label: "My First dataset",
-              data: [40, 55, 75, 81, 56, 55, 40],
-              borderColor: "rgba(0, 123, 255, 0.9)",
-              borderWidth: "0",
-              backgroundColor: "rgba(0, 123, 255, 0.5)"
-            }
-          ]
-        },
-        options: {
-          legend: {
-            position: 'top',
-            labels: {
-              fontFamily: 'Poppins'
-            }
-
-          },
-          scales: {
-            xAxes: [{
-              ticks: {
-                fontFamily: "Poppins"
-
-              }
-            }],
-            yAxes: [{
-              ticks: {
-                beginAtZero: true,
-                fontFamily: "Poppins"
-              }
-            }]
-          }
-        }
-      });
-    }
-
-  } catch (error) {
-    console.log(error);
-  }
-
-})(jQuery);
 
 
 

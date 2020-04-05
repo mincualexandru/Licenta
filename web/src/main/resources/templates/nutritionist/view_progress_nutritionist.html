@@ -57,6 +57,10 @@ input[type="number"] {
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 <body>
+	<div th:if="${inexistentValue}">
+		Ai introdus o valoare inexistenta
+	</div>
+	<div th:unless="${inexistentValue}">
 	<h3
 		style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">
 		Progres pentru <span th:text="${learner.username}"></span>
@@ -156,8 +160,12 @@ input[type="number"] {
 									</div>
 								</div>
 								</p>
-								<p th:text="${height + ' CM'}"></p>
-								<p th:text="${weight + ' KG'}"></p>
+								<div th:if="${height}">
+									<p th:text="${height + ' CM'}"></p>
+								</div>
+								<div th:if="${weight}">
+									<p th:text="${weight + ' KG'}"></p>
+								</div>
 							</div>
 							<div class="col-md-7">
 								<div
@@ -206,18 +214,17 @@ input[type="number"] {
 					</div>
 				</div>
 				<div>
-					<div th:if="${noFeedbackWasProvided}">
-						<form th:action="@{/helper_offers_feedback}" method="post">
+				<div th:if="${feedbackWasProvided}">Azi ai oferit deja un feedback acestui utilizator</div>
+						<form id="feedback" th:action="@{/helper_offers_feedback}" method="post">
 							<input type="hidden" name="learnerId"
 								th:value="${learner.accountId}" />
 							<button type="submit">Ofera Feedback</button>
 						</form>
-					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js"
 		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
 		crossorigin="anonymous"></script>
 	<script
@@ -296,8 +303,16 @@ input[type="number"] {
 	        },
 	        series: [{
 	            name: 'Valoare',
-	            data: [[${chartAccumulatedCalories.values()}]]
-
+	            data: [[${chartAccumulatedCalories.values()}]],
+	            zones: [{
+                    value: 50,
+                    color: 'blue'
+                },{
+                    value: 100,
+                    color: 'orange'
+                },{
+                    color: 'red'
+                }]
 	        }]
 	    });
 		
@@ -341,5 +356,6 @@ input[type="number"] {
 	        }]
 	    });
 	</script>
+	</div>
 </body>
 </html>

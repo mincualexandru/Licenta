@@ -55,4 +55,11 @@ public interface MeasurementDao extends CrudRepository<Measurement, Integer> {
 			String string);
 
 	Set<Measurement> findByStartDateBetween(Timestamp start, Timestamp end);
+
+	Optional<Measurement> findTopByOrderByStartDateDesc();
+
+	@Transactional
+	@Modifying
+	@Query(value = "delete from measurements where user_device_id = ?1 and measurement_id = ?2", nativeQuery = true)
+	void deleteByUserDeviceUserDeviceIdAndMeasurementId(Integer userDeviceId, Integer measurementId);
 }

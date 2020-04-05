@@ -1,18 +1,20 @@
 package com.web.controller;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.web.model.Account;
 import com.web.model.Education;
@@ -29,6 +31,7 @@ import com.web.service.AccountService;
 import com.web.service.ExerciseService;
 import com.web.service.FoodService;
 import com.web.service.HelperFeedbackService;
+import com.web.service.RoleService;
 import com.web.service.UserDeviceService;
 import com.web.utils.Product;
 import com.web.utils.Qualifying;
@@ -36,7 +39,7 @@ import com.web.utils.Qualifying;
 @Controller
 public class CommonController {
 
-	private Logger LOGGER = Logger.getLogger(AuthenticationController.class);
+	private Logger LOGGER = Logger.getLogger(CommonController.class);
 
 	@Autowired
 	private AccountService accountService;
@@ -53,10 +56,18 @@ public class CommonController {
 	@Autowired
 	private HelperFeedbackService helperFeedbackService;
 
+	@Autowired
+	private RoleService roleService;
+
+	@GetMapping(path = { "/success" })
+	public String success(Model model, @ModelAttribute("message") String message) {
+		model.addAttribute("message", message);
+		return "common/success";
+	}
+
 	@GetMapping(path = { "/view_profile" })
 	public String viewProfile(Model model) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Account account = accountService.findByUsername(auth.getName());
+		Account account = accountService.getAccountConnected();
 		if (!model.containsAttribute("skill")) {
 			model.addAttribute("skill", new Skill());
 		}
@@ -74,99 +85,156 @@ public class CommonController {
 	}
 
 	@PostMapping(path = { "/helper_offers_feedback" })
-	public String trainerOffersFeedback(Model model, @RequestParam Integer learnerId) {
-		model.addAttribute("learnerId", learnerId);
-		model.addAttribute("qualifyings", Qualifying.values());
-		return "common/helper_offers_feedback";
+	public String trainerOffersFeedback(Model model, @RequestParam Integer learnerId,
+			RedirectAttributes redirectAttributes) {
+		Account helper = accountService.getAccountConnected();
+		boolean roleNutritionist = false;
+		if (helper.getRoles().contains(roleService.findByName("ROLE_NUTRITIONIST").get())) {
+			roleNutritionist = true;
+		}
+		if (!helper.isActive()) {
+			LocalDate date = LocalDate.now();
+			LocalDateTime startDateTime = date.atStartOfDay();
+			LocalDateTime endDateTime = date.atStartOfDay().plusDays(1).minusSeconds(1);
+			Timestamp timestampStartDate = Timestamp.valueOf(startDateTime);
+			Timestamp timestampEndDate = Timestamp.valueOf(endDateTime);
+			if (helperFeedbackService.findFirstByHelperAccountIdAndDateOfFeedbackProviedBetween(helper.getAccountId(),
+					timestampStartDate, timestampEndDate).isPresent()) {
+				redirectAttributes.addFlashAttribute("feedbackWasProvided", true);
+				if (helper.getRoles().contains(roleService.findByName("ROLE_TRAINER").get())) {
+					return "redirect:/view_progress/" + helper.getAccountId();
+				} else if (helper.getRoles().contains(roleService.findByName("ROLE_NUTRITIONIST").get())) {
+					return "redirect:/view_progress_nutritionist/" + helper.getAccountId();
+				}
+
+			}
+			model.addAttribute("learnerId", learnerId);
+			model.addAttribute("qualifyings", Qualifying.values());
+			return "common/helper_offers_feedback";
+		} else if (roleNutritionist) {
+			return "redirect:/nutritionist";
+		} else {
+			return "redirect:/trainer";
+		}
 	}
 
 	@PostMapping(path = { "/helper_offers_feedback_save" })
 	public String trainerOffersFeedbackSave(Model model, @RequestParam Integer learnerId, @RequestParam String reason,
 			@RequestParam Qualifying qualifying) {
-		HelperFeedback helperFeedback = new HelperFeedback();
-		helperFeedback.setDateOfFeedbackProvied(new Timestamp(System.currentTimeMillis()));
-		helperFeedback.setHelper(accountService.getAccountConnected());
-		helperFeedback.setLearner(accountService.findById(learnerId).get());
-		helperFeedback.setQualifying(qualifying);
-		helperFeedback.setReason(reason);
-		helperFeedbackService.save(helperFeedback);
-		return "redirect:/view_learners";
+		Account helper = accountService.getAccountConnected();
+		boolean roleNutritionist = false;
+		if (helper.getRoles().contains(roleService.findByName("ROLE_NUTRITIONIST").get())) {
+			roleNutritionist = true;
+		}
+		if (helper.isActive()) {
+			HelperFeedback helperFeedback = new HelperFeedback();
+			helperFeedback.setDateOfFeedbackProvied(new Timestamp(System.currentTimeMillis()));
+			helperFeedback.setHelper(accountService.getAccountConnected());
+			helperFeedback.setLearner(accountService.findById(learnerId).get());
+			helperFeedback.setQualifying(qualifying);
+			helperFeedback.setReason(reason);
+			helperFeedbackService.save(helperFeedback);
+			return "redirect:/view_learners";
+		} else if (roleNutritionist) {
+			return "redirect:/nutritionist";
+		} else {
+			return "redirect:/trainer";
+		}
 	}
 
 	@GetMapping(path = { "/transaction_history" })
 	public String transcationHistory(Model model) {
 		Account account = accountService.getAccountConnected();
-		LOGGER.info(account.getUsername());
-		Integer payments = account.getTransaction().getPayments();
-		Integer availableBalance = account.getTransaction().getAvailableBalance();
-		Set<Product> products = new HashSet<>();
-		for (Role role : account.getRoles()) {
-			if (role.getName().equals("ROLE_USER")) {
-				for (UserDevice userDevice : account.getUserDevices()) {
-					if (userDevice.isBought() && !(userDevice.getDevice().getName().equals("Fit Buddy"))) {
-						Product product = new Product();
-						product.setProductId(userDevice.getDevice().getDeviceId());
-						product.setCompanyName(userDevice.getDevice().getCompany());
-						product.setProductName(userDevice.getDevice().getName());
-						product.setPrice(userDevice.getDevice().getPrice());
-						product.setType("device");
-						product.setDateOfPurchased(userDevice.getDateOfPurchase());
-						products.add(product);
-					}
-				}
-
-				for (UserPlan userPlan : account.getUserPlans()) {
-					if (userPlan.isBought()) {
-						Product product = new Product();
-						product.setProductId(userPlan.getHelperPlan().getHelperPlanId());
-						product.setProductName(userPlan.getHelperPlan().getName());
-						product.setPrice(userPlan.getHelperPlan().getPrice());
-						product.setForWho(userPlan.getHelperPlan().getForWho());
-						product.setType(userPlan.getHelperPlan().getTypeOfPlan());
-						product.setDateOfPurchased(userPlan.getDateOfPurchase());
-						products.add(product);
-					}
-				}
-
-			} else if (role.getName().equals("ROLE_TRAINER")) {
-				for (HelperPlan trainingPlan : account.getPlans()) {
-					for (UserPlan userTrainingPlan : trainingPlan.getUserPlans()) {
-						if (userTrainingPlan.getHelperPlan().getTypeOfPlan().equals("Antrenament")
-								&& userTrainingPlan.isBought()) {
+		boolean roleNutritionist = false;
+		boolean roleTrainer = false;
+		boolean roleUser = false;
+		if (account.getRoles().contains(roleService.findByName("ROLE_NUTRITIONIST").get())) {
+			roleNutritionist = true;
+		} else if (account.getRoles().contains(roleService.findByName("ROLE_TRAINER").get())) {
+			roleTrainer = true;
+		} else if (account.getRoles().contains(roleService.findByName("ROLE_USER").get())) {
+			roleUser = true;
+		}
+		if (account.isActive()) {
+			Integer payments = account.getTransaction().getPayments();
+			Integer availableBalance = account.getTransaction().getAvailableBalance();
+			Set<Product> products = new HashSet<>();
+			for (Role role : account.getRoles()) {
+				if (role.getName().equals("ROLE_USER")) {
+					for (UserDevice userDevice : account.getUserDevices()) {
+						if (userDevice.isBought() && !(userDevice.getDevice().getName().equals("Fit Buddy"))) {
 							Product product = new Product();
-							product.setProductId(userTrainingPlan.getHelperPlan().getHelperPlanId());
-							product.setProductName(userTrainingPlan.getHelperPlan().getName());
-							product.setPrice(userTrainingPlan.getHelperPlan().getPrice());
-							product.setForWho(userTrainingPlan.getHelperPlan().getForWho());
-							product.setType("trainingPlan");
-							product.setDateOfPurchased(userTrainingPlan.getDateOfPurchase());
+							product.setProductId(userDevice.getDevice().getDeviceId());
+							product.setCompanyName(userDevice.getDevice().getCompany());
+							product.setProductName(userDevice.getDevice().getName());
+							product.setPrice(userDevice.getDevice().getPrice());
+							product.setType("Dispozitiv");
+							product.setDateOfPurchased(userDevice.getDateOfPurchase());
 							products.add(product);
 						}
 					}
-				}
 
-			} else if (role.getName().equals("ROLE_NUTRITIONIST")) {
-				for (HelperPlan trainingPlan : account.getPlans()) {
-					for (UserPlan userDietPlan : trainingPlan.getUserPlans()) {
-						if (userDietPlan.getHelperPlan().getTypeOfPlan().equals("Dieta") && userDietPlan.isBought()) {
+					for (UserPlan userPlan : account.getUserPlans()) {
+						if (userPlan.isBought()) {
 							Product product = new Product();
-							product.setProductId(userDietPlan.getHelperPlan().getHelperPlanId());
-							product.setProductName(userDietPlan.getHelperPlan().getName());
-							product.setPrice(userDietPlan.getHelperPlan().getPrice());
-							product.setForWho(userDietPlan.getHelperPlan().getForWho());
-							product.setType("dietPlan");
-							product.setDateOfPurchased(userDietPlan.getDateOfPurchase());
+							product.setProductId(userPlan.getHelperPlan().getHelperPlanId());
+							product.setProductName(userPlan.getHelperPlan().getName());
+							product.setPrice(userPlan.getHelperPlan().getPrice());
+							product.setForWho(userPlan.getHelperPlan().getForWho());
+							product.setType(userPlan.getHelperPlan().getTypeOfPlan());
+							product.setDateOfPurchased(userPlan.getDateOfPurchase());
 							products.add(product);
+						}
+					}
+
+				} else if (role.getName().equals("ROLE_TRAINER")) {
+					for (HelperPlan trainingPlan : account.getPlans()) {
+						for (UserPlan userTrainingPlan : trainingPlan.getUserPlans()) {
+							if (userTrainingPlan.getHelperPlan().getTypeOfPlan().equals("Antrenament")
+									&& userTrainingPlan.isBought()) {
+								Product product = new Product();
+								product.setProductId(userTrainingPlan.getHelperPlan().getHelperPlanId());
+								product.setProductName(userTrainingPlan.getHelperPlan().getName());
+								product.setPrice(userTrainingPlan.getHelperPlan().getPrice());
+								product.setForWho(userTrainingPlan.getHelperPlan().getForWho());
+								product.setType("trainingPlan");
+								product.setDateOfPurchased(userTrainingPlan.getDateOfPurchase());
+								products.add(product);
+							}
+						}
+					}
+
+				} else if (role.getName().equals("ROLE_NUTRITIONIST")) {
+					for (HelperPlan trainingPlan : account.getPlans()) {
+						for (UserPlan userDietPlan : trainingPlan.getUserPlans()) {
+							if (userDietPlan.getHelperPlan().getTypeOfPlan().equals("Dieta")
+									&& userDietPlan.isBought()) {
+								Product product = new Product();
+								product.setProductId(userDietPlan.getHelperPlan().getHelperPlanId());
+								product.setProductName(userDietPlan.getHelperPlan().getName());
+								product.setPrice(userDietPlan.getHelperPlan().getPrice());
+								product.setForWho(userDietPlan.getHelperPlan().getForWho());
+								product.setType("dietPlan");
+								product.setDateOfPurchased(userDietPlan.getDateOfPurchase());
+								products.add(product);
+							}
 						}
 					}
 				}
 			}
+			model.addAttribute("account", account);
+			model.addAttribute("products", products);
+			model.addAttribute("payments", Math.abs(payments));
+			model.addAttribute("availableBalance", availableBalance);
+			return "common/transaction_history";
+		} else if (roleNutritionist) {
+			return "redirect:/nutritionist";
+		} else if (roleTrainer) {
+			return "redirect:/trainer";
+		} else {
+			return "redirect:/home";
 		}
-		model.addAttribute("account", account);
-		model.addAttribute("products", products);
-		model.addAttribute("payments", Math.abs(payments));
-		model.addAttribute("availableBalance", availableBalance);
-		return "common/transaction_history";
+
 	}
 
 	@PostMapping(path = { "/plan_content" })
@@ -178,28 +246,38 @@ public class CommonController {
 			selectedRole = role;
 			break;
 		}
-		if (trainingPlanId != null) {
-			if (selectedRole.getName().equals("ROLE_USER")) {
-				Set<Exercise> notPerformedExercises = exerciseService
-						.findAllNotPerfomerdExercisesForTrainingPlanId(trainingPlanId);
-				model.addAttribute("notPerformedExercises", notPerformedExercises);
-			} else if (selectedRole.getName().equals("ROLE_TRAINER")) {
-				Set<Exercise> exercises = exerciseService
-						.findAllByTrainingPlanHelperPlanIdAndTrainingPlanTypeOfPlan(trainingPlanId, "Antrenament");
-				model.addAttribute("exercises", exercises);
+		if (account.isActive()) {
+			if (trainingPlanId != null) {
+				if (selectedRole.getName().equals("ROLE_USER")) {
+					Set<Exercise> notPerformedExercises = exerciseService
+							.findAllByTrainingPlanHelperPlanId(trainingPlanId);
+					model.addAttribute("notPerformedExercises", notPerformedExercises);
+				} else if (selectedRole.getName().equals("ROLE_TRAINER")) {
+					Set<Exercise> exercises = exerciseService
+							.findAllByTrainingPlanHelperPlanIdAndTrainingPlanTypeOfPlan(trainingPlanId, "Antrenament");
+					model.addAttribute("exercises", exercises);
+				}
+			} else if (dietPlanId != null) {
+				if (selectedRole.getName().equals("ROLE_USER")) {
+					Set<Food> notEatenFoods = foodService.findAllByDietPlanHelperPlanId(dietPlanId);
+					model.addAttribute("notEatenFoods", notEatenFoods);
+				} else if (selectedRole.getName().equals("ROLE_NUTRITIONIST")) {
+					Set<Food> foods = foodService.findAllByDietPlanHelperPlanIdAndDietPlanTypeOfPlan(dietPlanId,
+							"Dieta");
+					model.addAttribute("foods", foods);
+				}
 			}
-		} else if (dietPlanId != null) {
-			if (selectedRole.getName().equals("ROLE_USER")) {
-				Set<Food> notEatenFoods = foodService.findAllNotEatenFoodsForDietPlanId(dietPlanId);
-				model.addAttribute("notEatenFoods", notEatenFoods);
-			} else if (selectedRole.getName().equals("ROLE_NUTRITIONIST")) {
-				Set<Food> foods = foodService.findAllByDietPlanHelperPlanIdAndDietPlanTypeOfPlan(dietPlanId, "Dieta");
-				model.addAttribute("foods", foods);
-			}
+			model.addAttribute("account", account);
+			model.addAttribute("trainingPlanId", trainingPlanId);
+			model.addAttribute("dietPlanId", dietPlanId);
+			return "common/plan_content";
+		} else if (selectedRole.getName().equals("ROLE_TRAINER")) {
+			return "redirect:/trainer";
+		} else if (selectedRole.getName().equals("ROLE_NUTRITIONIST")) {
+			return "redirect:/nutritionist";
+		} else {
+			return "redirect:/home";
 		}
-		model.addAttribute("account", account);
-		model.addAttribute("trainingPlanId", trainingPlanId);
-		model.addAttribute("dietPlanId", dietPlanId);
-		return "common/plan_content";
+
 	}
 }

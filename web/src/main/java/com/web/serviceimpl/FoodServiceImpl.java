@@ -62,4 +62,9 @@ public class FoodServiceImpl implements FoodService {
 		return foodDao.findAllByDietPlanHelperPlanIdAndDietPlanTypeOfPlan(dietPlanId, string);
 	}
 
+	@Override
+	public Optional<Food> findTopByDietPlanHelperAccountIdOrderByCreateDateTimeDesc(Integer accountId) {
+		return foodDao.findTopByDietPlanHelperAccountIdOrderByCreateDateTimeDesc(accountId);
+	}
+
 }

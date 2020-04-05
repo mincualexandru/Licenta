@@ -113,7 +113,6 @@ public class XmlParserServiceImpl implements XmlParserService {
 				if (value.equals("HKCategoryValueSleepAnalysisAsleep")
 						|| value.equals("HKCategoryValueSleepAnalysisAwake")
 						|| value.equals("HKCategoryValueSleepAnalysisInBed")) {
-					System.out.println("Intra in if");
 					measure.setName(value);
 					Integer difference = (int) (parsedEndDate.getTime() - parsedStartDate.getTime());
 					Integer differenceMinutes = difference / (60 * 1000);
@@ -124,7 +123,6 @@ public class XmlParserServiceImpl implements XmlParserService {
 						measure.setUnitOfMeasurement("minute");
 					}
 				} else {
-					System.out.println("Nu intra in if");
 					measure.setValue(Float.parseFloat(valueOfMeasurement));
 					measure.setName(name);
 				}

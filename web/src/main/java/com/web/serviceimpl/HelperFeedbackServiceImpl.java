@@ -1,5 +1,6 @@
 package com.web.serviceimpl;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.Set;
 
@@ -49,5 +50,12 @@ public class HelperFeedbackServiceImpl implements HelperFeedbackService {
 	@Override
 	public Set<HelperFeedback> findAllByLearnerAccountId(Integer accountId) {
 		return helperFeedbackDao.findAllByLearnerAccountId(accountId);
+	}
+
+	@Override
+	public Optional<HelperFeedback> findFirstByHelperAccountIdAndDateOfFeedbackProviedBetween(Integer helperId,
+			Timestamp startDate, Timestamp endDate) {
+		return helperFeedbackDao.findFirstByHelperAccountIdAndDateOfFeedbackProviedBetween(helperId, startDate,
+				endDate);
 	}
 }

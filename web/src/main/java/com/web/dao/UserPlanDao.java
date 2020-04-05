@@ -1,5 +1,6 @@
 package com.web.dao;
 
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -30,4 +31,6 @@ public interface UserPlanDao extends CrudRepository<UserPlan, Integer> {
 	Set<UserPlan> findAllByHelperPlanTypeOfPlan(String string);
 
 	Set<UserPlan> findAllByBoughtAndUserAccountId(boolean b, Integer accountId);
+
+	Optional<UserPlan> findTopByOrderByDateOfPurchaseDesc();
 }

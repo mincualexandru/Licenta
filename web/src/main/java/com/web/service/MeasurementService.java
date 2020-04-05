@@ -53,4 +53,8 @@ public interface MeasurementService {
 	Set<Measurement> findByStartDateBetween(Timestamp start, Timestamp end);
 
 	boolean checkIfMeasurementIsPresent(Integer userDeviceId, String string);
+
+	Optional<Measurement> findTopByOrderByStartDateDesc();
+
+	void deleteByUserDeviceUserDeviceIdAndMeasurementId(Integer userDeviceId, Integer measurementId);
 }

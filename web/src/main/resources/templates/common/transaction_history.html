@@ -3,127 +3,350 @@
 	xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Admin</title>
+<link th:href="@{css/font-face.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-4.7/css/font-awesome.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-5/css/fontawesome-all.min.css}"
+	rel="stylesheet" media="all">
 <link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-	rel="stylesheet" id="bootstrap-css">
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	th:href="@{vendor/mdi-font/css/material-design-iconic-font.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/animsition/animsition.min.css}" rel="stylesheet"
+	media="all">
+<link
+	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/wow/animate.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/css-hamburgers/hamburgers.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/slick/slick.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/select2/select2.min.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{css/theme.css}" rel="stylesheet" media="all">
 </head>
 <body>
-	<div th:each="role: ${account.roles}">
-		<div th:if="${role.name eq 'ROLE_USER'}">
-			<div th:if="${#lists.size(products)}">
-				<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Istoric Tranzactii</h3>
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="row">
-					<div class="col-md-6">
-						<figure class="highcharts-figure">
-    						<div id="container"></div>
-						</figure>
-					</div>
-					<div class="col-md-6">
-						<ul style="list-style-type: none; text-align: center;" th:each="product : ${products}">
-							<li th:text="'Ai cumparat ' + ${product.productName} + ' in valoare de ' + ${product.price} + ' lei' + ' in data de ' + ${product.dateOfPurchased}"></li>
-						</ul>
+	<div class="page-wrapper">
+		<header class="header-mobile d-block d-lg-none">
+			<div class="header-mobile__bar">
+				<div class="container-fluid">
+					<div class="header-mobile-inner">
+						<a class="logo" href="index.html"> <img
+							src="images/icon/logo.png" alt="CoolAdmin" />
+						</a>
+						<button class="hamburger hamburger--slider" type="button">
+							<span class="hamburger-box"> <span class="hamburger-inner"></span>
+							</span>
+						</button>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
+			<nav class="navbar-mobile">
+				<div class="container-fluid">
+					<ul class="navbar-mobile__list list-unstyled">
+						<li><a th:href="@{/admin}">Admin</a></li>
+						<li><a th:href="@{/accounts}">Conturi</a></li>
+						<li><a th:href="@{/view_devices}">Dispozitive</a></li>
+						<li><a th:href="@{/view_measurements}">Masuratori</a></li>
+						<li><a th:href="@{/view_plans}">Planuri</a></li>
+						<li><a th:href="@{/view_exercises}">Exercitii</a></li>
+						<li><a th:href="@{/view_foods}">Alimente</a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<aside class="menu-sidebar d-none d-lg-block">
+			<div class="logo">
+				<a href="#"> <img src="images/icon/logo.png" alt="Cool Admin" />
+				</a>
 			</div>
-			<div th:unless="${#lists.size(products)}">
-				<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Istoric Tranzactii</h3>
-				<div th:if="${availableBalance > 0 and payments > 0}">
-					<div class="container-fluid">
-						<div class="row">
-							<div class="col-md-10 mx-auto">
-								<figure class="highcharts-figure">
-    								<div id="container"></div>
-								</figure>
+			<div class="menu-sidebar__content js-scrollbar1">
+				<nav class="navbar-sidebar">
+					<ul class="list-unstyled navbar__list">
+						<li><a th:href="@{/admin}">Admin</a></li>
+						<li><a th:href="@{/accounts}">Conturi</a></li>
+						<li><a th:href="@{/view_devices}">Dispozitive</a></li>
+						<li><a th:href="@{/view_measurements}">Masuratori</a></li>
+						<li><a th:href="@{/view_plans}">Planuri</a></li>
+						<li><a th:href="@{/view_exercises}">Exercitii</a></li>
+						<li><a th:href="@{/view_foods}">Alimente</a></li>
+					</ul>
+				</nav>
+			</div>
+		</aside>
+		<div class="page-container">
+			<div class="main-content">
+				<div class="section__content section__content--p30">
+					<div th:each="role: ${account.roles}">
+						<div th:if="${role.name eq 'ROLE_USER'}">
+							<div th:if="${#lists.size(products)}">
+								<h3
+									style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Istoric
+									Tranzactii</h3>
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="row" style="margin-bottom: 40px;">
+												<div class="col-lg-6">
+													<div class="au-card m-b-30" style="min-height: 100%;">
+														<div class="au-card-inner">
+															<canvas id="singelBarChart" style="height: 110px;"></canvas>
+														</div>
+													</div>
+												</div>
+												<div class="col-lg-6">
+													<div class="au-card m-b-30" style="min-height: 100%;">
+														<div class="au-card-inner">
+															<canvas id="container"></canvas>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-12">
+													<h3 class="title-5 m-b-35">Produse Cumparate</h3>
+													<div class="table-responsive table-responsive-data2">
+														<table class="table table-data2">
+															<thead>
+																<tr>
+																	<th>Nume</th>
+																	<th>Pret</th>
+																	<th>Tip</th>
+																	<th>Date Cumparare</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr class="tr-shadow" th:each="product: ${products}">
+																	<td><span class="block-email"
+																		th:text="${product.productName}"></span></td>
+																		<td th:text="${product.price}"></td>
+																	<td th:text="${product.type}"><span
+																		class="status--process"></span></td>
+																	<td th:text="${product.dateOfPurchased}"></td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
+							<div th:unless="${#lists.size(products)}">
+								<h3
+									style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Istoric
+									Tranzactii</h3>
+								<div th:if="${availableBalance > 0 and payments > 0}">
+									<div class="container-fluid">
+										<div class="row">
+											<div class="col-md-10 mx-auto">
+												<canvas id="container"></canvas>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div th:unless="${availableBalance > 0 and payments > 0}">
+									<h5 style="text-align: center;">Nu ai cumparat niciun
+										produs disponibil</h5>
+								</div>
+							</div>
+						</div>
+						<div
+							th:if="${role.name eq 'ROLE_TRAINER' or role.name eq 'ROLE_NUTRITIONIST'}">
+							<div th:if="${#lists.size(products)}">
+								<h3
+									style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Istoric
+									Tranzactii</h3>
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="row" style="margin-bottom: 40px;">
+												<div class="col-lg-6">
+													<div class="au-card m-b-30" style="min-height: 100%;">
+														<div class="au-card-inner">
+															<canvas id="singelBarChart" style="height: 110px;"></canvas>
+														</div>
+													</div>
+												</div>
+												<div class="col-lg-6">
+													<div class="au-card m-b-30" style="min-height: 100%;">
+														<div class="au-card-inner">
+															<canvas id="container"></canvas>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-12">
+													<h3 class="title-5 m-b-35">Produse Cumparate</h3>
+													<div class="table-responsive table-responsive-data2">
+														<table class="table table-data2">
+															<thead>
+																<tr>
+																	<th>Nume</th>
+																	<th>Pret</th>
+																	<th>Tip</th>
+																	<th>Date Cumparare</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr class="tr-shadow" th:each="product: ${products}">
+																	<td><span class="block-email"
+																		th:text="${product.productName}"></span></td>
+																		<td th:text="${product.price}"></td>
+																	<td th:text="${product.type}"><span
+																		class="status--process"></span></td>
+																	<td th:text="${product.dateOfPurchased}"></td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div th:unless="${#lists.size(products)}">
+								<h3
+									style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Istoric
+									Tranzactii</h3>
+								<h5 style="text-align: center;">Niciunul dintre produsele
+									tale nu a fost vandut</h5>
+							</div>
+
 						</div>
 					</div>
 				</div>
-				<div th:unless="${availableBalance > 0 and payments > 0}">
-					<h5 style="text-align: center;">Nu ai cumparat niciun produs disponibil</h5>
-				</div>
-			</div>
-			</div>
-		<div th:if="${role.name eq 'ROLE_TRAINER' or role.name eq 'ROLE_NUTRITIONIST'}">
-			<div th:if="${#lists.size(products)}">
-				<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Istoric Tranzactii</h3>
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="row">
-					<div class="col-md-6">
-						<figure class="highcharts-figure">
-    						<div id="container"></div>
-						</figure>
-					</div>
-					<div class="col-md-6">
-						<ul style="list-style-type: none; text-align: center;" th:each="product : ${products}">
-							<li th:text="${product.productName} + ' in valoare de ' + ${product.price} + ' lei' + ' a fost cumparat in data de ' + ${product.dateOfPurchased}"></li>
-						</ul>
-					</div>
-				</div>
 			</div>
 		</div>
 	</div>
-			</div>
-			<div th:unless="${#lists.size(products)}">
-				<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Istoric Tranzactii</h3>
-				<h5 style="text-align: center;">Niciunul dintre produsele tale nu a fost vandut</h5>
-			</div>
-								
-		</div>
-		</div>
-	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
-		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-		crossorigin="anonymous"></script>
+	<script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
+	<script th:src="@{/vendor/slick/slick.min.js}">
+    </script>
+	<script th:src="@{/vendor/wow/wow.min.js}"></script>
+	<script th:src="@{/vendor/animsition/animsition.min.js}"></script>
 	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+		th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
+    </script>
+	<script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
+	<script th:src="@{/vendor/counter-up/jquery.counterup.min.js}">
+    </script>
+	<script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
+	<script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
+	<script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
+	<script th:src="@{/vendor/select2/select2.min.js}">
+    </script>
+
+	<script th:src="@{/js/main.js}"></script>
 	<script type="text/javascript" th:src="@{/js/validationcv.js}"></script>
 	<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
-<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script src="https://code.highcharts.com/modules/export-data.js"></script>
+	<script src="https://code.highcharts.com/modules/accessibility.js"></script>
 	<script th:inline="javascript">
-		Highcharts.chart('container', {
-			chart : {
-				type : 'pie',
-				options3d : {
-					enabled : true,
-					alpha : 50,
-					beta : 0
-				}
-			},
-			title : {
-				text : 'Sold Cont'
-			},
-			tooltip : {
-				pointFormat : '{series.name}: <b>{point.percentage:.0f}%</b>'
-			},
-			plotOptions : {
-				pie : {
-					allowPointSelect : true,
-					cursor : 'pointer',
-					depth : 35,
-					dataLabels : {
-						enabled : true,
-						format : '{point.name}'
-					}
-				}
-			},
-			series : [ {
-				type : 'pie',
-				name : 'Procent',
-				data : [ [ 'Cheltuieli', [[${payments}]] ], [ 'Sold Disponibil', [[${availableBalance}]] ]  ]
-			} ]
-		});
+		
+	let availableBalance = [[${availableBalance}]];
+	let payments = [[${payments}]];
+	console.log(availableBalance + ' ' + payments);
+	var ctx = document.getElementById("container");
+    if (ctx) {
+      ctx.height = 200;
+      var myChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          datasets: [{
+            data: [availableBalance, payments],
+            backgroundColor: [
+              "rgba(0, 123, 255,0.9)",
+              "rgba(0, 123, 255,0.7)",
+              "rgba(0, 123, 255,0.5)",
+              "rgba(0,0,0,0.07)"
+            ],
+            hoverBackgroundColor: [
+              "rgba(0, 123, 255,0.9)",
+              "rgba(0, 123, 255,0.7)",
+              "rgba(0, 123, 255,0.5)",
+              "rgba(0,0,0,0.07)"
+            ]
+
+          }],
+          labels: [
+            "Sold Disponibil",
+            "Cheltuieli"
+          ]
+        },
+        options: {
+          legend: {
+            position: 'top',
+            labels: {
+              fontFamily: 'Poppins'
+            }
+
+          },
+          responsive: true
+        }
+      });
+    }
+	
+		 let products = [[${products}]];
+		 let priceOfProducts = new Array();
+		 let nameOfProducts = new Array();
+		 for(const product of products) {
+			 nameOfProducts.push(product.productName);
+			 priceOfProducts.push(product.price);
+		 }
+		 var ctx = document.getElementById("singelBarChart");
+		    if (ctx) {
+		      ctx.height = 150;
+		      var myChart = new Chart(ctx, {
+		        type: 'horizontalBar',
+		        data: {
+		          labels: nameOfProducts,
+		          datasets: [
+		            {
+		              label: "Pret",
+		              data: priceOfProducts,
+		              borderColor: "rgba(0, 123, 255, 0.9)",
+		              borderWidth: "0",
+		              backgroundColor: "rgba(0, 123, 255, 0.5)"
+		            }
+		          ]
+		        },
+		        options: {
+		          legend: {
+		            position: 'top',
+		            labels: {
+		              fontFamily: 'Poppins'
+		            }
+
+		          },
+		          scales: {
+		            xAxes: [{
+		              ticks: {
+		                fontFamily: "Poppins"
+
+		              }
+		            }],
+		            yAxes: [{
+		              ticks: {
+		                beginAtZero: true,
+		                fontFamily: "Poppins"
+		              }
+		            }]
+		          }
+		        }
+		      });
+		    }
 		</script>
 </body>
 </html>

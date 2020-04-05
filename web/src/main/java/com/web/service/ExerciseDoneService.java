@@ -18,4 +18,6 @@ public interface ExerciseDoneService {
 	Set<ExerciseDone> findAll();
 
 	Set<ExerciseDone> findAllByUserAccountId(Integer accountId);
+
+	Optional<ExerciseDone> findTopByUserAccountIdOrderByDateOfExecutionDesc(Integer accountId);
 }

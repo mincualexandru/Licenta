@@ -57,6 +57,10 @@ input[type="number"] {
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 <body>
+	<div th:if="${inexistentValue}">
+		Ai introdus o valoare inexistenta
+	</div>
+	<div th:unless="${inexistentValue}">
 	<h3
 		style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">
 		Progres pentru <span th:text="${learner.username}"></span>
@@ -114,47 +118,12 @@ input[type="number"] {
 									</div>
 								</div>
 								</p>
-								<p>
-									Exercitii Neefectuate:
-									<button type="button" class="btn btn-primary"
-										data-toggle="modal" th:text="${numberOfExercisesUnDone}"
-										data-target="#exampleModal2"></button>
-								<div class="modal fade" id="exampleModal2" tabindex="-1"
-									role="dialog" aria-labelledby="exampleModal2Label"
-									aria-hidden="true">
-									<div class="modal-dialog" role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h5 class="modal-title" id="exampleModal2Label">Exercitiile
-													Neefectuate</h5>
-												<button type="button" class="close" data-dismiss="modal"
-													aria-label="Close">
-													<span aria-hidden="true">&times;</span>
-												</button>
-											</div>
-											<div class="modal-body">
-												<ul
-													th:each="exercise, iterStat : ${totalExercises}">
-													<li th:text="${exercise.name}"></li>
-													<li th:text="${exercise.caloriesBurned}"></li>
-													<li th:text="${exercise.numberOfSeries}"></li>
-													<li th:text="${exercise.numberOfReps}"></li>
-													<li th:text="${exercise.execution}"></li>
-													<li th:text="${exercise.trainedMuscleGroup}"></li>
-												</ul>
-											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-secondary"
-													data-dismiss="modal">Close</button>
-												<button type="button" class="btn btn-primary">Save
-													changes</button>
-											</div>
-										</div>
-									</div>
+								<div th:if="${height}">
+									<p th:text="${height + ' CM'}"></p>
 								</div>
-								</p>
-								<p th:text="${height + ' CM'}"></p>
-								<p th:text="${weight + ' KG'}"></p>
+								<div th:if="${weight}">
+									<p th:text="${weight + ' KG'}"></p>
+								</div>
 							</div>
 							<div class="col-md-7">
 								<div
@@ -203,14 +172,13 @@ input[type="number"] {
 					</div>
 				</div>
 				<div>
-					<div th:if="${noFeedbackWasProvided}">
+				<div th:if="${feedbackWasProvided}">Azi ai oferit deja un feedback acestui utilizator</div>
 						<form th:action="@{/helper_offers_feedback}" method="post">
 							<input type="hidden" name="learnerId"
 								th:value="${learner.accountId}" />
 							<button type="submit">Ofera Feedback</button>
 						</form>
 					</div>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -292,8 +260,16 @@ input[type="number"] {
 	        },
 	        series: [{
 	            name: 'Valoare',
-	            data: [[${chartBurnedCalories.values()}]]
-
+	            data: [[${chartBurnedCalories.values()}]],
+	            zones: [{
+                    value: 50,
+                    color: 'blue'
+                },{
+                    value: 100,
+                    color: 'orange'
+                },{
+                    color: 'red'
+                }]
 	        }]
 	    });
 		
@@ -338,5 +314,7 @@ input[type="number"] {
 	    });
 		
 	</script>
+	</div>
+	
 </body>
 </html>

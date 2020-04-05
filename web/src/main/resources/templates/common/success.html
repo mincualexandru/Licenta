@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Sign up</title>
+<base href="/">
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" th:href="@{css/style.css}"/>
+</head>
+<body>
+<script>
+let message = '[[${message}]]';
+function Redirect() 
+{  
+	if(message === 'height_or_weight_is_not_set') {
+		window.location="https://localhost:8443/set_height_and_weight"; 
+	} else {
+		window.location="https://localhost:8443/home"; 
+	} 
+} 
+document.write("You will be redirected to a new page in 5 seconds"); 
+setTimeout('Redirect()', 5000);   
+</script>
+</body>
+</html>

@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,17 +34,26 @@ public class CurriculumVitaeController {
 
 	@GetMapping(path = { "/curriculum-vitae" })
 	public String curriculumVitae(Model model) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Account account = accountService.findByUsername(auth.getName());
-		if (!model.containsAttribute("curriculumVitae")) {
-			AccountInformation curriculumVitae = new AccountInformation();
-			curriculumVitae.setSkills(new ArrayList<Skill>());
-			curriculumVitae.setEducation(new ArrayList<Education>());
-			curriculumVitae.setExperiences(new ArrayList<Experience>());
-			model.addAttribute("curriculumVitae", curriculumVitae);
+		Account account = accountService.getAccountConnected();
+		boolean roleNutritionist = false;
+		if (account.getRoles().stream().map(element -> element.getName().equals("ROLE_NUTRITIONIST")) != null) {
+			roleNutritionist = true;
 		}
-		model.addAttribute("account", account);
-		return "common/curriculum-vitae";
+		if (account.isActive()) {
+			if (!model.containsAttribute("curriculumVitae")) {
+				AccountInformation curriculumVitae = new AccountInformation();
+				curriculumVitae.setSkills(new ArrayList<Skill>());
+				curriculumVitae.setEducation(new ArrayList<Education>());
+				curriculumVitae.setExperiences(new ArrayList<Experience>());
+				model.addAttribute("curriculumVitae", curriculumVitae);
+			}
+			model.addAttribute("account", account);
+			return "common/curriculum-vitae";
+		} else if (roleNutritionist) {
+			return "redirect:/nutritionist";
+		} else {
+			return "redirect:/trainer";
+		}
 	}
 
 	@PostMapping(path = { "/curriculumVitaeSave" })

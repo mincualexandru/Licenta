@@ -1,5 +1,6 @@
 package com.web.serviceimpl;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.Set;
 
@@ -44,6 +45,18 @@ public class FoodEatenServiceImpl implements FoodEatenService {
 	@Override
 	public Set<FoodEaten> findAllByUserAccountId(Integer accountId) {
 		return foodEatenDao.findAllByUserAccountId(accountId);
+	}
+
+	@Override
+	public Set<FoodEaten> findAllByUserAccountIdAndDateOfExecutionBetween(Integer accountId,
+			Timestamp timestampStartDate, Timestamp timestampEndDate) {
+		return foodEatenDao.findAllByUserAccountIdAndDateOfExecutionBetween(accountId, timestampStartDate,
+				timestampEndDate);
+	}
+
+	@Override
+	public Optional<FoodEaten> findTopByUserAccountIdOrderByDateOfExecutionDesc(Integer accountId) {
+		return foodEatenDao.findTopByUserAccountIdOrderByDateOfExecutionDesc(accountId);
 	}
 
 }

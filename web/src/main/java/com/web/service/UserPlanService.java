@@ -27,4 +27,6 @@ public interface UserPlanService {
 	Set<UserPlan> findAllByBoughtAndUserAccountIdAndHelperPlanTypeOfPlan(boolean b, Integer accountId, String string);
 
 	Set<UserPlan> findAllByBoughtAndUserAccountId(boolean b, Integer accountId);
+
+	Optional<UserPlan> findTopByOrderByDateOfPurchaseDesc();
 }

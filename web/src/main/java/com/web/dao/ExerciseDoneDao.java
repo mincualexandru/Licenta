@@ -1,5 +1,6 @@
 package com.web.dao;
 
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.data.repository.CrudRepository;
@@ -14,5 +15,7 @@ public interface ExerciseDoneDao extends CrudRepository<ExerciseDone, Integer> {
 	Set<ExerciseDone> findAll();
 
 	Set<ExerciseDone> findAllByUserAccountId(Integer accountId);
+
+	Optional<ExerciseDone> findTopByUserAccountIdOrderByDateOfExecutionDesc(Integer accountId);
 
 }

@@ -5,98 +5,146 @@
 <title>Sign up</title>
 <base href="/">
 <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<script src="https://kit.fontawesome.com/8f58d13ed0.js" crossorigin="anonymous"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+<script src="https://kit.fontawesome.com/8f58d13ed0.js"
+	crossorigin="anonymous"></script>
 <link rel="stylesheet" type="text/css" th:href="@{css/style.css}" />
 </head>
 <body>
 	<h1>Salut utilizator</h1>
-	<a th:href="@{/view_profile}">Vezi profil</a>
-	<a th:href="@{/view_feedbacks_from_helper}">Vezi feedback-uri</a>
-	<a th:href="@{/transaction_history}">Istoric Tranzactii</a>
+	<div th:if="${user.active == false}">
+		<div th:if="${passedTenDaysFoodEaten and passedTenDaysExerciseDone}">
+			Contul tau este dezactivat pentru urmatoarele motive
+			<ul>
+				<div th:if="${passedTenDaysFoodEaten}">
+					<li>Au trecut 10 zile de cand ai consumat un aliment propus de
+						unul dintre nutritionistii tai</li>
+				</div>
+				<div th:if="${passedTenDaysExerciseDone}">
+					<li>Au trecut 10 zile de cand ai efectuat un exercitiu propus
+						de unul dintre antrenorii tai</li>
+				</div>
+			</ul>
+			Pentru activare intra <a th:href="@{/action_activate_account}">aici</a>
+		</div>
+		<div th:unles="${passedTenDaysFoodEaten and passedTenDaysExerciseDone}">
+			Contul tau este dezactivat
+		</div>
+	</div>
+	<div th:if="${user.active == true}">
+		<a th:href="@{/view_profile}">Vezi profil</a> <a
+			th:href="@{/view_feedbacks_from_helper}">Vezi feedback-uri</a> <a
+			th:href="@{/transaction_history}">Istoric Tranzactii</a>
 		<div th:if="${#lists.size(userMeasurements)}">
 			<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-12">
-				<h2 style="text-align: center;">Ultimele Masuratori</h2>
 				<div class="row">
-					<div th:each="type: ${typeMeasurements}">
-						<div th:if="${type.type eq 'HKQuantityTypeIdentifierBodyMassIndex'}">
-							<div class="col-md-3" style="margin-bottom: 20px;">
-								<div class="title-type">BMI</div>
-								<div th:each="measure: ${userMeasurements}">
-									<div th:if="${measure.name eq 'HKQuantityTypeIdentifierBodyMassIndex'}">
-										<div th:text="${measure.value + ' ' + measure.unitOfMeasurement + ' ' + measure.startDate}"></div>
+					<div class="col-md-12">
+						<h2 style="text-align: center;">Ultimele Masuratori</h2>
+						<div class="row">
+							<div th:each="type: ${typeMeasurements}">
+								<div
+									th:if="${type.type eq 'HKQuantityTypeIdentifierBodyMassIndex'}">
+									<div class="col-md-3" style="margin-bottom: 20px;">
+										<div class="title-type">BMI</div>
+										<div th:each="measure: ${userMeasurements}">
+											<div
+												th:if="${measure.name eq 'HKQuantityTypeIdentifierBodyMassIndex'}">
+												<div
+													th:text="${measure.value + ' ' + measure.unitOfMeasurement + ' ' + measure.startDate}"></div>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-						<div th:if="${type.type eq 'HKQuantityTypeIdentifierStepCount'}">
-							<div class="col-md-3" style="margin-bottom: 20px;">
-								<div class="title-type">Pasii Efectuati</div>
-								<div th:each="measure: ${userMeasurements}">
-									<div th:if="${measure.name eq 'HKQuantityTypeIdentifierStepCount'}">
-										<div th:text="${measure.value + ' ' + measure.unitOfMeasurement + ' ' + measure.startDate}"></div>
+								<div th:if="${type.type eq 'HKQuantityTypeIdentifierStepCount'}">
+									<div class="col-md-3" style="margin-bottom: 20px;">
+										<div class="title-type">Pasii Efectuati</div>
+										<div th:each="measure: ${userMeasurements}">
+											<div
+												th:if="${measure.name eq 'HKQuantityTypeIdentifierStepCount'}">
+												<div
+													th:text="${measure.value + ' ' + measure.unitOfMeasurement + ' ' + measure.startDate}"></div>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-						<div th:if="${type.type eq 'HKQuantityTypeIdentifierActiveEnergyBurned'}">
-							<div class="col-md-3" style="margin-bottom: 20px;">
-								<div class="title-type">Caloriile Arse</div>
-								<div th:each="measure: ${userMeasurements}">
-									<div th:if="${measure.name eq 'HKQuantityTypeIdentifierActiveEnergyBurned'}">
-										<div th:text="${measure.value + ' ' + measure.unitOfMeasurement + ' ' + measure.startDate}"></div>
+								<div
+									th:if="${type.type eq 'HKQuantityTypeIdentifierActiveEnergyBurned'}">
+									<div class="col-md-3" style="margin-bottom: 20px;">
+										<div class="title-type">Caloriile Arse</div>
+										<div th:each="measure: ${userMeasurements}">
+											<div
+												th:if="${measure.name eq 'HKQuantityTypeIdentifierActiveEnergyBurned'}">
+												<div
+													th:text="${measure.value + ' ' + measure.unitOfMeasurement + ' ' + measure.startDate}"></div>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-						<div th:if="${type.type eq 'HKCategoryTypeIdentifierSleepAnalysis'}">
-							<div class="col-md-3" style="margin-bottom: 20px;">
-								<div class="title-type">Analiza Somn</div>
-								<div th:each="measure: ${userMeasurements}">
-									<div th:if="${measure.name eq 'HKCategoryTypeIdentifierSleepAnalysis'}">
-										<div th:text="${measure.value + ' ' + measure.unitOfMeasurement + ' ' + measure.startDate}"></div>
+								<div
+									th:if="${type.type eq 'HKCategoryTypeIdentifierSleepAnalysis'}">
+									<div class="col-md-3" style="margin-bottom: 20px;">
+										<div class="title-type">Analiza Somn</div>
+										<div th:each="measure: ${userMeasurements}">
+											<div
+												th:if="${measure.name eq 'HKCategoryTypeIdentifierSleepAnalysis'}">
+												<div
+													th:text="${measure.value + ' ' + measure.unitOfMeasurement + ' ' + measure.startDate}"></div>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-						<div th:if="${type.type eq 'HKQuantityTypeIdentifierBodyFatPercentage'}">
-							<div class="col-md-3" style="margin-bottom: 20px;">
-								<div class="title-type">Procentaj Grasime Corp</div>
-								<div th:each="measure: ${userMeasurements}">
-									<div th:if="${measure.name eq 'HKQuantityTypeIdentifierBodyFatPercentage'}">
-										<div th:text="${measure.value + ' ' + measure.unitOfMeasurement + ' ' + measure.startDate}"></div>
+								<div
+									th:if="${type.type eq 'HKQuantityTypeIdentifierBodyFatPercentage'}">
+									<div class="col-md-3" style="margin-bottom: 20px;">
+										<div class="title-type">Procentaj Grasime Corp</div>
+										<div th:each="measure: ${userMeasurements}">
+											<div
+												th:if="${measure.name eq 'HKQuantityTypeIdentifierBodyFatPercentage'}">
+												<div
+													th:text="${measure.value + ' ' + measure.unitOfMeasurement + ' ' + measure.startDate}"></div>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-						<div th:if="${type.type eq 'HKQuantityTypeIdentifierLeanBodyMass'}">
-							<div class="col-md-3" style="margin-bottom: 20px;">
-								<div class="title-type">Masa Corporala Slaba</div>
-								<div th:each="measure: ${userMeasurements}">
-									<div th:if="${measure.name eq 'HKQuantityTypeIdentifierLeanBodyMass'}">
-										<div th:text="${measure.value + ' ' + measure.unitOfMeasurement + ' ' + measure.startDate}"></div>
+								<div
+									th:if="${type.type eq 'HKQuantityTypeIdentifierLeanBodyMass'}">
+									<div class="col-md-3" style="margin-bottom: 20px;">
+										<div class="title-type">Masa Corporala Slaba</div>
+										<div th:each="measure: ${userMeasurements}">
+											<div
+												th:if="${measure.name eq 'HKQuantityTypeIdentifierLeanBodyMass'}">
+												<div
+													th:text="${measure.value + ' ' + measure.unitOfMeasurement + ' ' + measure.startDate}"></div>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-						<div th:if="${type.type eq 'HKQuantityTypeIdentifierBodyMassIndex'}">
-							<div class="col-md-3" style="margin-bottom: 20px;">
-								<div class="title-type">Index Masa Corporala</div>
-								<div th:each="measure: ${userMeasurements}">
-									<div th:if="${measure.name eq 'HKQuantityTypeIdentifierBodyMassIndex'}">
-										<div th:text="${measure.value + ' ' + measure.unitOfMeasurement + ' ' + measure.startDate}"></div>
+								<div
+									th:if="${type.type eq 'HKQuantityTypeIdentifierBodyMassIndex'}">
+									<div class="col-md-3" style="margin-bottom: 20px;">
+										<div class="title-type">Index Masa Corporala</div>
+										<div th:each="measure: ${userMeasurements}">
+											<div
+												th:if="${measure.name eq 'HKQuantityTypeIdentifierBodyMassIndex'}">
+												<div
+													th:text="${measure.value + ' ' + measure.unitOfMeasurement + ' ' + measure.startDate}"></div>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-						<div th:if="${type.type eq 'HKQuantityTypeIdentifierBodyMass'}">
-							<div class="col-md-3" style="margin-bottom: 20px;">
-								<div class="title-type">Masa Corporala</div>
-								<div th:each="measure: ${userMeasurements}">
-									<div th:if="${measure.name eq 'HKQuantityTypeIdentifierBodyMass'}">
-										<div th:text="${measure.value + ' ' + measure.unitOfMeasurement + ' ' + measure.startDate}"></div>
+								<div th:if="${type.type eq 'HKQuantityTypeIdentifierBodyMass'}">
+									<div class="col-md-3" style="margin-bottom: 20px;">
+										<div class="title-type">Masa Corporala</div>
+										<div th:each="measure: ${userMeasurements}">
+											<div
+												th:if="${measure.name eq 'HKQuantityTypeIdentifierBodyMass'}">
+												<div
+													th:text="${measure.value + ' ' + measure.unitOfMeasurement + ' ' + measure.startDate}"></div>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -105,172 +153,171 @@
 				</div>
 			</div>
 		</div>
+		<div class="container main">
+			<div class="row">
+				<div class="col-lg-12"></div>
+			</div>
+			<div class="row">
+				<div class="col-lg-6 col-md-6">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-xs-6">
+									<h2>Sold Curent:</h2>
+								</div>
+								<div class="col-xs-6 text-right">
+									<h1>
+										<span th:text="${user.transaction.availableBalance + ' lei'}"></span>
+										<i class="fas fa-money-bill-alt"></i>
+									</h1>
+								</div>
+							</div>
+						</div>
+						<a th:href="@{/current_balance}">
+							<div class="panel-footer">
+								<span class="pull-left">Vezi Detalii</span> <span
+									class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+								<div class="clearfix"></div>
+							</div>
+						</a>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-xs-6">
+									<h2>Cosul Meu</h2>
+								</div>
+								<div class="col-xs-6 text-right">
+									<h1>
+										<span th:text="${10 + ' produse'}"></span>
+									</h1>
+								</div>
+							</div>
+						</div>
+						<a th:href="@{/shopping_cart}">
+							<div class="panel-footer">
+								<span class="pull-left">Vezi Detalii</span> <span
+									class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+								<div class="clearfix"></div>
+							</div>
+						</a>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-xs-6">
+									<h2>Alege Dispozitiv</h2>
+								</div>
+							</div>
+						</div>
+						<a th:href="@{/choose_device}">
+							<div class="panel-footer">
+								<span class="pull-left">Detalii</span> <span class="pull-right"><i
+									class="fa fa-arrow-circle-right"></i></span>
+								<div class="clearfix"></div>
+							</div>
+						</a>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-xs-6">
+									<h2>Dispozitive</h2>
+								</div>
+							</div>
+						</div>
+						<a th:href="@{/view_user_devices}">
+							<div class="panel-footer">
+								<span class="pull-left">Detalii</span> <span class="pull-right"><i
+									class="fa fa-arrow-circle-right"></i></span>
+								<div class="clearfix"></div>
+							</div>
+						</a>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-xs-6">
+									<h2>Alege expert</h2>
+								</div>
+							</div>
+						</div>
+						<a th:href="@{/choose_helper}">
+							<div class="panel-footer">
+								<span class="pull-left">Antrenori sau Nutritionisti</span> <span
+									class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+								<div class="clearfix"></div>
+							</div>
+						</a>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-xs-6">
+									<h2>Expertii tai</h2>
+								</div>
+							</div>
+						</div>
+						<a th:href="@{/view_helpers}">
+							<div class="panel-footer">
+								<span class="pull-left">Detalii</span> <span class="pull-right"><i
+									class="fa fa-arrow-circle-right"></i></span>
+								<div class="clearfix"></div>
+							</div>
+						</a>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-xs-6">
+									<h2>Anternamente</h2>
+								</div>
+							</div>
+						</div>
+						<a th:href="@{/view_training_plans}">
+							<div class="panel-footer">
+								<span class="pull-left">Detalii</span> <span class="pull-right"><i
+									class="fa fa-arrow-circle-right"></i></span>
+								<div class="clearfix"></div>
+							</div>
+						</a>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-xs-6">
+									<h2>Diete</h2>
+								</div>
+							</div>
+						</div>
+						<a th:href="@{/view_diet_plans}">
+							<div class="panel-footer">
+								<span class="pull-left">Detalii</span> <span class="pull-right"><i
+									class="fa fa-arrow-circle-right"></i></span>
+								<div class="clearfix"></div>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="container"></div>
+		<div id="container2"></div>
 	</div>
-		</div>
-	<div class="container main">
-		<div class="row">
-			<div class="col-lg-12"></div>
-		</div>
-		<div class="row">
-			<div class="col-lg-6 col-md-6">
-				<div class="panel panel-info">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-xs-6">
-								<h2>Sold Curent:</h2>
-							</div>
-							<div class="col-xs-6 text-right">
-								<h1>
-									<span th:text="${user.transaction.availableBalance + ' lei'}"></span>
-									<i class="fas fa-money-bill-alt"></i>
-								</h1>
-							</div>
-						</div>
-					</div>
-					<a th:href="@{/current_balance}">
-						<div class="panel-footer">
-							<span class="pull-left">Vezi Detalii</span> 
-							<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-					</a>
-				</div>
-			</div>
-			<div class="col-lg-6 col-md-6">
-				<div class="panel panel-info">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-xs-6">
-								<h2>Cosul Meu</h2>
-							</div>
-							<div class="col-xs-6 text-right">
-								<h1>
-									<span th:text="${10 + ' produse'}"></span>
-								</h1>
-							</div>
-						</div>
-					</div>
-					<a th:href="@{/shopping_cart}">
-						<div class="panel-footer">
-							<span class="pull-left">Vezi Detalii</span> 
-							<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-					</a>
-				</div>
-			</div>
-			<div class="col-lg-6 col-md-6">
-				<div class="panel panel-info">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-xs-6">
-								<h2>Alege Dispozitiv</h2>
-							</div>
-						</div>
-					</div>
-					<a th:href="@{/choose_device}">
-						<div class="panel-footer">
-							<span class="pull-left">Detalii</span> 
-							<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-					</a>
-				</div>
-			</div>
-			<div class="col-lg-6 col-md-6">
-				<div class="panel panel-info">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-xs-6">
-								<h2>Dispozitivele</h2>
-							</div>
-						</div>
-					</div>
-					<a th:href="@{/view_devices}">
-						<div class="panel-footer">
-							<span class="pull-left">Detalii</span> 
-							<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-					</a>
-				</div>
-			</div>
-			<div class="col-lg-6 col-md-6">
-				<div class="panel panel-info">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-xs-6">
-								<h2>Alege expert</h2>
-							</div>
-						</div>
-					</div>
-					<a th:href="@{/choose_helper}">
-						<div class="panel-footer">
-							<span class="pull-left">Antrenori sau Nutritionisti</span> 
-							<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-					</a>
-				</div>
-			</div>
-			<div class="col-lg-6 col-md-6">
-				<div class="panel panel-info">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-xs-6">
-								<h2>Expertii tai</h2>
-							</div>
-						</div>
-					</div>
-					<a th:href="@{/view_helpers}">
-						<div class="panel-footer">
-							<span class="pull-left">Detalii</span> 
-							<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-					</a>
-				</div>
-			</div>
-			<div class="col-lg-6 col-md-6">
-				<div class="panel panel-info">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-xs-6">
-								<h2>Anternamente</h2>
-							</div>
-						</div>
-					</div>
-					<a th:href="@{/view_training_plans}">
-						<div class="panel-footer">
-							<span class="pull-left">Detalii</span> 
-							<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-					</a>
-				</div>
-			</div>
-			<div class="col-lg-6 col-md-6">
-				<div class="panel panel-info">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-xs-6">
-								<h2>Diete</h2>
-							</div>
-						</div>
-					</div>
-					<a th:href="@{/view_diet_plans}">
-						<div class="panel-footer">
-							<span class="pull-left">Detalii</span> 
-							<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-							<div class="clearfix"></div>
-						</div>
-					</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div id="container"></div>
-	<div id="container2"></div>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
 		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
 		crossorigin="anonymous"></script>
@@ -1412,4 +1459,5 @@
 <!-- </body> -->
 
 <!-- </html> -->
-<!-- <!-- end document--> -->
+<!-- <!-- end document-->
+-->

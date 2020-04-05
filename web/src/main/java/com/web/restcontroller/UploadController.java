@@ -84,7 +84,6 @@ public class UploadController {
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
-
 				message = "Felicitari";
 				return ResponseEntity.status(HttpStatus.OK).body(message);
 			} else {
@@ -99,19 +98,16 @@ public class UploadController {
 
 	@PostMapping("/devices_from_user")
 	public Set<Device> loginResource(@RequestBody String userName) {
-		String message = "";
 		try {
 			Account account = accountService.findByUsername(userName);
 			Set<Device> devicesFromUser = new HashSet<>();
 			for (UserDevice userDevice : account.getUserDevices()) {
-				devicesFromUser.add(userDevice.getDevice());
+				if (userDevice.isBought()) {
+					devicesFromUser.add(userDevice.getDevice());
+				}
 			}
-			message = "You logged in successfully  " + userName + "!";
-			ResponseEntity.status(HttpStatus.OK).body(message);
 			return devicesFromUser;
 		} catch (Exception e) {
-			message = "FAIL " + userName + "!";
-			ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
 			return null;
 		}
 	}

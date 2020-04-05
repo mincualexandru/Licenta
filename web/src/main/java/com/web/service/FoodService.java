@@ -23,4 +23,6 @@ public interface FoodService {
 	Set<Food> findAllNotEatenFoods();
 
 	Set<Food> findAllByDietPlanHelperPlanIdAndDietPlanTypeOfPlan(Integer trainingPlanId, String string);
+
+	Optional<Food> findTopByDietPlanHelperAccountIdOrderByCreateDateTimeDesc(Integer accountId);
 }

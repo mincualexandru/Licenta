@@ -62,4 +62,9 @@ public class ExerciseServiceImpl implements ExerciseService {
 			String string) {
 		return exerciseDao.findAllByTrainingPlanHelperPlanIdAndTrainingPlanTypeOfPlan(trainingPlanId, string);
 	}
+
+	@Override
+	public Optional<Exercise> findTopByTrainingPlanHelperAccountIdOrderByCreateDateTimeDesc(Integer accountId) {
+		return exerciseDao.findTopByTrainingPlanHelperAccountIdOrderByCreateDateTimeDesc(accountId);
+	}
 }

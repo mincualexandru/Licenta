@@ -46,4 +46,9 @@ public class ExerciseDoneServiceImpl implements ExerciseDoneService {
 		return exerciseServiceDao.findAllByUserAccountId(accountId);
 	}
 
+	@Override
+	public Optional<ExerciseDone> findTopByUserAccountIdOrderByDateOfExecutionDesc(Integer accountId) {
+		return exerciseServiceDao.findTopByUserAccountIdOrderByDateOfExecutionDesc(accountId);
+	}
+
 }

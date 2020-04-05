@@ -11,13 +11,11 @@
   <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 <body>
-<div th:unless="${#lists.size(userTrainings)}">Nu exista niciun
-  antrenor sau nutritionist disponibil
+<div th:unless="${#lists.size(userTrainings)}">>Nu ai cumparat niciun plan de antrenament
 </div>
 <div th:if="${#lists.size(userTrainings)}">
   <h3
-    style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Antrenori
-    sau Nutritionisti</h3>
+    style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Planuri de antrenamente cumparate</h3>
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
@@ -38,7 +36,7 @@
                     <form th:action="@{/plan_content}" method="post">
                       <input type="hidden" name="trainingPlanId" th:value="${userTraining.helperPlan.helperPlanId}"/>
                       <button type="submit" class="btn btn-success">Vezi
-                        Exercitiile Nefacute
+                        Exercitii
                       </button>
                     </form>
                   </td>

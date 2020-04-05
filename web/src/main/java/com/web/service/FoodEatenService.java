@@ -1,5 +1,6 @@
 package com.web.service;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.Set;
 
@@ -17,4 +18,9 @@ public interface FoodEatenService {
 	Set<FoodEaten> findAll();
 
 	Set<FoodEaten> findAllByUserAccountId(Integer accountId);
+
+	Set<FoodEaten> findAllByUserAccountIdAndDateOfExecutionBetween(Integer accountId, Timestamp timestampStartDate,
+			Timestamp timestampEndDate);
+
+	Optional<FoodEaten> findTopByUserAccountIdOrderByDateOfExecutionDesc(Integer accountId);
 }

@@ -12,7 +12,7 @@ import com.web.service.RoleService;
 
 @Service("roleService")
 public class RoleServiceImpl implements RoleService {
-	
+
 	@Autowired
 	private RoleDao roleDao;
 
@@ -39,6 +39,11 @@ public class RoleServiceImpl implements RoleService {
 	@Override
 	public Set<Role> findAll() {
 		return roleDao.findAll();
+	}
+
+	@Override
+	public Optional<Role> findByName(String string) {
+		return roleDao.findByName(string);
 	}
 
 }

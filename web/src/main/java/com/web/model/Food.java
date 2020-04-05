@@ -54,6 +54,9 @@ public class Food {
 	@Column(name = "recommended_time_range", nullable = true)
 	private String recommendedTimeRange;
 
+	@Column(name = "recommended_consumption_time", nullable = false)
+	private String recommendedConsumptionTime;
+
 	@Column(name = "date")
 	@CreationTimestamp
 	private Timestamp createDateTime;
@@ -207,5 +210,13 @@ public class Food {
 
 	public void setFoodsFeedbacks(Set<FoodFeedback> foodsFeedbacks) {
 		this.foodsFeedbacks = foodsFeedbacks;
+	}
+
+	public String getRecommendedConsumptionTime() {
+		return recommendedConsumptionTime;
+	}
+
+	public void setRecommendedConsumptionTime(String recommendedConsumptionTime) {
+		this.recommendedConsumptionTime = recommendedConsumptionTime;
 	}
 }

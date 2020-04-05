@@ -94,4 +94,9 @@ public class UserDeviceServiceImpl implements UserDeviceService {
 	public boolean checkIfDeviceIsPresent(Account account, String nameOfDevice) {
 		return userDeviceDao.findByDeviceNameAndUserAccountId(nameOfDevice, account.getAccountId()).isPresent();
 	}
+
+	@Override
+	public Optional<UserDevice> findTopByOrderByDateOfPurchaseDesc() {
+		return userDeviceDao.findTopByOrderByDateOfPurchaseDesc();
+	}
 }

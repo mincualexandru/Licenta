@@ -27,4 +27,6 @@ public interface UserDeviceDao extends CrudRepository<UserDevice, Integer> {
 	void deleteByDeviceIdAndUserId(Integer deviceId, Integer userId);
 
 	Optional<UserDevice> findByDeviceNameAndUserAccountId(String string, Integer accountId);
+
+	Optional<UserDevice> findTopByOrderByDateOfPurchaseDesc();
 }

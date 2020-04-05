@@ -23,4 +23,6 @@ public interface ExerciseService {
 	Set<Exercise> findAllNotPerfomerdExercises();
 
 	Set<Exercise> findAllByTrainingPlanHelperPlanIdAndTrainingPlanTypeOfPlan(Integer trainingPlanId, String string);
+
+	Optional<Exercise> findTopByTrainingPlanHelperAccountIdOrderByCreateDateTimeDesc(Integer accountId);
 }

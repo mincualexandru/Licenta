@@ -54,9 +54,9 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public void saveUser(Account user, String chooseRoleName) {
-		user.getRoles().add(roleDao.findByName(chooseRoleName));
+		user.getRoles().add(roleDao.findByName(chooseRoleName).get());
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-		user.setDateOfcreation(new Timestamp(System.currentTimeMillis()));
+		user.setDateOfCreation(new Timestamp(System.currentTimeMillis()));
 		accountDao.save(user);
 	}
 
