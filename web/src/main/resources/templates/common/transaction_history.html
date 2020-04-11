@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Admin</title>
+<title>Transaction History</title>
 <link th:href="@{css/font-face.css}" rel="stylesheet" media="all">
 <link th:href="@{vendor/font-awesome-4.7/css/font-awesome.min.css}"
 	rel="stylesheet" media="all">
@@ -28,66 +28,124 @@
 	media="all">
 <link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
 	rel="stylesheet" media="all">
-
+<script src="https://kit.fontawesome.com/8f58d13ed0.js"
+	crossorigin="anonymous"></script>
 <link th:href="@{css/theme.css}" rel="stylesheet" media="all">
+<link th:href="@{css/style.css}" rel="stylesheet" media="all">
 </head>
 <body>
-	<div class="page-wrapper">
-		<header class="header-mobile d-block d-lg-none">
-			<div class="header-mobile__bar">
-				<div class="container-fluid">
-					<div class="header-mobile-inner">
-						<a class="logo" href="index.html"> <img
-							src="images/icon/logo.png" alt="CoolAdmin" />
-						</a>
-						<button class="hamburger hamburger--slider" type="button">
-							<span class="hamburger-box"> <span class="hamburger-inner"></span>
-							</span>
-						</button>
+	<div th:each="role: ${account.roles}">
+		<div class="page-wrapper">
+			<header class="header-mobile d-block d-lg-none">
+				<div class="header-mobile__bar">
+					<div class="container-fluid">
+						<div class="header-mobile-inner">
+							<a class="logo" href="index.html"> <img
+								src="images/Screenshot_18.png">
+							</a>
+							<button class="hamburger hamburger--slider" type="button">
+								<span class="hamburger-box"> <span
+									class="hamburger-inner"></span>
+								</span>
+							</button>
+						</div>
 					</div>
 				</div>
-			</div>
-			<nav class="navbar-mobile">
-				<div class="container-fluid">
-					<ul class="navbar-mobile__list list-unstyled">
-						<li><a th:href="@{/admin}">Admin</a></li>
-						<li><a th:href="@{/accounts}">Conturi</a></li>
-						<li><a th:href="@{/view_devices}">Dispozitive</a></li>
-						<li><a th:href="@{/view_measurements}">Masuratori</a></li>
-						<li><a th:href="@{/view_plans}">Planuri</a></li>
-						<li><a th:href="@{/view_exercises}">Exercitii</a></li>
-						<li><a th:href="@{/view_foods}">Alimente</a></li>
-					</ul>
-				</div>
-			</nav>
-		</header>
-		<aside class="menu-sidebar d-none d-lg-block">
-			<div class="logo">
-				<a href="#"> <img src="images/icon/logo.png" alt="Cool Admin" />
-				</a>
-			</div>
-			<div class="menu-sidebar__content js-scrollbar1">
-				<nav class="navbar-sidebar">
-					<ul class="list-unstyled navbar__list">
-						<li><a th:href="@{/admin}">Admin</a></li>
-						<li><a th:href="@{/accounts}">Conturi</a></li>
-						<li><a th:href="@{/view_devices}">Dispozitive</a></li>
-						<li><a th:href="@{/view_measurements}">Masuratori</a></li>
-						<li><a th:href="@{/view_plans}">Planuri</a></li>
-						<li><a th:href="@{/view_exercises}">Exercitii</a></li>
-						<li><a th:href="@{/view_foods}">Alimente</a></li>
-					</ul>
+				<nav class="navbar-mobile">
+					<div class="container-fluid">
+						<ul class="navbar-mobile__list list-unstyled">
+							<div th:if="${role.name eq 'ROLE_USER'}">
+								<li><a th:href="@{/home}" class="links"> <i
+										class="fas fa-home icon-link"></i> <span>Home</span>
+								</a></li>
+								<li><a th:href="@{/view_profile}" class="links"><i
+										class="far fa-id-card icon-link"></i><span>Profil</span></a></li>
+								<li><a th:href="@{/shopping_cart}" class="links"><i
+										class="fas fa-shopping-cart icon-link"></i><span>Cos
+											Cumparaturi</span></a></li>
+								<li><a th:href="@{/choose_device}" class="links"><i
+										class="fas fa-laptop-medical icon-link"></i><span>Alege
+											Dispozitiv</span></a></li>
+								<li><a th:href="@{/choose_helper}" class="links"><i
+										class="fas fa-user-friends icon-link"></i><span>Alege
+											Experti</span></a></li>
+								<li><a th:href="@{/view_helpers}" class="links"><i
+										class="fas fa-clipboard-list icon-link"
+										style="font-size: 30px; width: 30px;"></i><span>Alege
+											Planuri</span></a></li>
+								<li><a th:href="@{/choose_helper}" class="links"><i
+										class="fas fa-laptop-medical icon-link"></i><span>Dispozitive</span></a></li>
+								<li><a th:href="@{/view_training_plans}" class="links"><i
+										class="fas fa-dumbbell icon-link"></i><span>Planuri
+											Antrenamente</span></a></li>
+								<li><a th:href="@{/view_diet_plans}" class="links"><i
+										class="fas fa-utensils icon-link" style="width: 27px;"></i><span>Planuri
+											Diete</span></a></li>
+								<li><a th:href="@{/view_feedbacks_from_helper}"
+									class="links"><i class="fas fa-comment-dots icon-link"></i><span>Feedback-uri</span></a></li>
+								<li><a th:href="@{/transaction_history}" class="links"><i
+										class="fas fa-money-check icon-link"></i><span>Istoric
+											Tranzactii</span></a></li>
+							</div>
+							<div th:if="${role.name eq 'ROLE_TRAINER'}"></div>
+							<div th:if="${role.name eq 'ROLE_NUTRITIONIST'}"></div>
+						</ul>
+					</div>
 				</nav>
-			</div>
-		</aside>
-		<div class="page-container">
-			<div class="main-content">
-				<div class="section__content section__content--p30">
-					<div th:each="role: ${account.roles}">
+			</header>
+			<aside class="menu-sidebar d-none d-lg-block">
+				<a class="logo" href="index.html"> <img
+					src="images/Screenshot_18.png">
+				</a>
+				<div class="menu-sidebar__content js-scrollbar1">
+					<nav class="navbar-sidebar">
+						<ul class="list-unstyled navbar__list">
+							<div th:if="${role.name eq 'ROLE_USER'}">
+								<li><a th:href="@{/home}" class="links"> <i
+										class="fas fa-home icon-link"></i> <span>Home</span>
+								</a></li>
+								<li><a th:href="@{/view_profile}" class="links"><i
+										class="far fa-id-card icon-link"></i><span>Profil</span></a></li>
+								<li><a th:href="@{/shopping_cart}" class="links"><i
+										class="fas fa-shopping-cart icon-link"></i><span>Cos
+											Cumparaturi</span></a></li>
+								<li><a th:href="@{/choose_device}" class="links"><i
+										class="fas fa-laptop-medical icon-link"></i><span>Alege
+											Dispozitiv</span></a></li>
+								<li><a th:href="@{/choose_helper}" class="links"><i
+										class="fas fa-user-friends icon-link"></i><span>Alege
+											Experti</span></a></li>
+								<li><a th:href="@{/view_helpers}" class="links"><i
+										class="fas fa-clipboard-list icon-link"
+										style="font-size: 30px; width: 30px;"></i><span>Alege
+											Planuri</span></a></li>
+								<li><a th:href="@{/choose_helper}" class="links"><i
+										class="fas fa-laptop-medical icon-link"></i><span>Dispozitive</span></a></li>
+								<li><a th:href="@{/view_training_plans}" class="links"><i
+										class="fas fa-dumbbell icon-link"></i><span>Planuri
+											Antrenamente</span></a></li>
+								<li><a th:href="@{/view_diet_plans}" class="links"><i
+										class="fas fa-utensils icon-link" style="width: 27px;"></i><span>Planuri
+											Diete</span></a></li>
+								<li><a th:href="@{/view_feedbacks_from_helper}"
+									class="links"><i class="fas fa-comment-dots icon-link"></i><span>Feedback-uri</span></a></li>
+								<li><a th:href="@{/transaction_history}" class="links"><i
+										class="fas fa-money-check icon-link"></i><span>Istoric
+											Tranzactii</span></a></li>
+							</div>
+							<div th:if="${role.name eq 'ROLE_TRAINER'}"></div>
+							<div th:if="${role.name eq 'ROLE_NUTRITIONIST'}"></div>
+						</ul>
+					</nav>
+				</div>
+			</aside>
+			<div class="page-container">
+				<div class="main-content">
+					<div class="section__content section__content--p30">
 						<div th:if="${role.name eq 'ROLE_USER'}">
 							<div th:if="${#lists.size(products)}">
 								<h3
-									style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Istoric
+									style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px; color: white;">Istoric
 									Tranzactii</h3>
 								<div class="container-fluid">
 									<div class="row">
@@ -110,28 +168,38 @@
 											</div>
 											<div class="row">
 												<div class="col-md-12">
-													<h3 class="title-5 m-b-35">Produse Cumparate</h3>
-													<div class="table-responsive table-responsive-data2">
-														<table class="table table-data2">
-															<thead>
-																<tr>
-																	<th>Nume</th>
-																	<th>Pret</th>
-																	<th>Tip</th>
-																	<th>Date Cumparare</th>
-																</tr>
-															</thead>
-															<tbody>
-																<tr class="tr-shadow" th:each="product: ${products}">
-																	<td><span class="block-email"
-																		th:text="${product.productName}"></span></td>
-																		<td th:text="${product.price}"></td>
-																	<td th:text="${product.type}"><span
-																		class="status--process"></span></td>
-																	<td th:text="${product.dateOfPurchased}"></td>
-																</tr>
-															</tbody>
-														</table>
+													<h3
+														style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px; color: white;">Produse
+														Cumparate</h3>
+
+													<div class="slider">
+														<a th:each="product, iter: ${products}"
+															th:href="${'#slide-'+ product.productId}"
+															th:text="${iter.index + 1}"></a>
+														<div class="slides">
+															<div th:each="product: ${products}">
+																<div th:id="${'slide-'+ product.productId}">
+																	<div class="wrapper-slider">
+																		<div class="product-img">
+																			<img
+																				style="display: block; position: absolute; top: 50%; left: 50%; min-height: 100%; min-width: 100%; transform: translate(-50%, -50%);"
+																				th:src="@{'images/'+${product.imageName}}">
+																		</div>
+																		<div class="product-info">
+																			<div class="product-text">
+																				<h1 th:text="${product.productName}"></h1>
+																				<h2 th:text="${product.dateOfPurchased}"></h2>
+																				<p th:text="${product.description}"></p>
+																			</div>
+																			<div
+																				style="position: relative; left: 22px; top: 35px;">
+																				<h1 th:text="${product.price + ' LEI'}"></h1>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
 													</div>
 												</div>
 											</div>
@@ -141,20 +209,29 @@
 							</div>
 							<div th:unless="${#lists.size(products)}">
 								<h3
-									style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Istoric
+									style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px; color: white;">Istoric
 									Tranzactii</h3>
 								<div th:if="${availableBalance > 0 and payments > 0}">
 									<div class="container-fluid">
 										<div class="row">
-											<div class="col-md-10 mx-auto">
-												<canvas id="container"></canvas>
+											<div class="col-md-6 mx-auto">
+												<div class="au-card m-b-30" style="min-height: 100%;">
+													<div class="au-card-inner">
+														<canvas id="container"></canvas>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
 								<div th:unless="${availableBalance > 0 and payments > 0}">
-									<h5 style="text-align: center;">Nu ai cumparat niciun
-										produs disponibil</h5>
+									<div style="text-align: center;">
+										<span
+											style="font-size: 300px; font-weight: 900; color: white;">0</span>
+										<br style=""> <span
+											style="font-size: 100px; color: white; position: relative; top: -100px;">produse
+											cumparate</span>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -162,7 +239,7 @@
 							th:if="${role.name eq 'ROLE_TRAINER' or role.name eq 'ROLE_NUTRITIONIST'}">
 							<div th:if="${#lists.size(products)}">
 								<h3
-									style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Istoric
+									style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px; color: white;">Istoric
 									Tranzactii</h3>
 								<div class="container-fluid">
 									<div class="row">
@@ -185,28 +262,41 @@
 											</div>
 											<div class="row">
 												<div class="col-md-12">
-													<h3 class="title-5 m-b-35">Produse Cumparate</h3>
-													<div class="table-responsive table-responsive-data2">
-														<table class="table table-data2">
-															<thead>
-																<tr>
-																	<th>Nume</th>
-																	<th>Pret</th>
-																	<th>Tip</th>
-																	<th>Date Cumparare</th>
-																</tr>
-															</thead>
-															<tbody>
-																<tr class="tr-shadow" th:each="product: ${products}">
-																	<td><span class="block-email"
-																		th:text="${product.productName}"></span></td>
-																		<td th:text="${product.price}"></td>
-																	<td th:text="${product.type}"><span
-																		class="status--process"></span></td>
-																	<td th:text="${product.dateOfPurchased}"></td>
-																</tr>
-															</tbody>
-														</table>
+													<h3
+														style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px; color: white;">Produse
+														Vandute</h3>
+													<div class="row">
+														<div class="col-md-11 mx-auto">
+															<div class="table100 ver6 m-b-110">
+																<table data-vertable="ver6">
+																	<thead style="text-align: center;">
+																		<tr class="row100 head"
+																			style="border-bottom: 5px solid #7300e6;">
+																			<th style="border-right: 5px solid #7300e6;"
+																				class="column100">Nume</th>
+																			<th style="border-right: 5px solid #7300e6;"
+																				class="column100">Pret</th>
+																			<th style="border-right: 5px solid #7300e6;"
+																				class="column100">Tip</th>
+																			<th class="column100">Date Vanzare</th>
+																		</tr>
+																	</thead>
+																	<tbody style="text-align: center;">
+																		<tr class="row100" th:each="product: ${products}">
+																			<td style="border-right: 5px solid #7300e6;"
+																				class="column100" th:text="${product.productName}"></td>
+																			<td style="border-right: 5px solid #7300e6;"
+																				class="column100"
+																				th:text="${product.price + ' LEI'}"></td>
+																			<td style="border-right: 5px solid #7300e6;"
+																				class="column100" th:text="${product.type}"></td>
+																			<td class="column100"
+																				th:text="${product.dateOfPurchased}"></td>
+																		</tr>
+																	</tbody>
+																</table>
+															</div>
+														</div>
 													</div>
 												</div>
 											</div>
@@ -216,12 +306,15 @@
 							</div>
 							<div th:unless="${#lists.size(products)}">
 								<h3
-									style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Istoric
+									style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px; color: white;">Istoric
 									Tranzactii</h3>
-								<h5 style="text-align: center;">Niciunul dintre produsele
-									tale nu a fost vandut</h5>
+								<div style="text-align: center;">
+									<span style="font-size: 300px; font-weight: 900; color: white;">0</span>
+									<br style=""> <span
+										style="font-size: 100px; color: white; position: relative; top: -100px;">produse
+										vandute</span>
+								</div>
 							</div>
-
 						</div>
 					</div>
 				</div>
@@ -267,16 +360,8 @@
           datasets: [{
             data: [availableBalance, payments],
             backgroundColor: [
-              "rgba(0, 123, 255,0.9)",
-              "rgba(0, 123, 255,0.7)",
-              "rgba(0, 123, 255,0.5)",
-              "rgba(0,0,0,0.07)"
-            ],
-            hoverBackgroundColor: [
-              "rgba(0, 123, 255,0.9)",
-              "rgba(0, 123, 255,0.7)",
-              "rgba(0, 123, 255,0.5)",
-              "rgba(0,0,0,0.07)"
+                '#7300e6',
+                'black'
             ]
 
           }],
@@ -289,7 +374,9 @@
           legend: {
             position: 'top',
             labels: {
-              fontFamily: 'Poppins'
+            	fontSize: 13,
+	            fontStyle: 'bold',
+	            fontColor: 'black'
             }
 
           },
@@ -316,9 +403,8 @@
 		            {
 		              label: "Pret",
 		              data: priceOfProducts,
-		              borderColor: "rgba(0, 123, 255, 0.9)",
 		              borderWidth: "0",
-		              backgroundColor: "rgba(0, 123, 255, 0.5)"
+		              backgroundColor: "#7300e6"
 		            }
 		          ]
 		        },
@@ -326,21 +412,34 @@
 		          legend: {
 		            position: 'top',
 		            labels: {
-		              fontFamily: 'Poppins'
+		            	fontSize: 13,
+			            fontStyle: 'bold',
+			            fontColor: 'black'
 		            }
 
 		          },
 		          scales: {
 		            xAxes: [{
 		              ticks: {
-		                fontFamily: "Poppins"
+		                fontSize: 13,
+			            fontStyle: 'bold',
+			            fontColor: 'black'
 
+		              },
+		              gridLines: {
+		                  display:false,
+		                  
 		              }
 		            }],
 		            yAxes: [{
 		              ticks: {
 		                beginAtZero: true,
-		                fontFamily: "Poppins"
+		                fontSize: 14,
+			            fontStyle: 'bold',
+			            fontColor: 'black'
+		              },
+		              gridLines: {
+		                  display:false
 		              }
 		            }]
 		          }

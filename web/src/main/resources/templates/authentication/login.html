@@ -1,21 +1,68 @@
+<!DOCTYPE html>
 <html>
-<head></head>
+<head>
+	<title>Fit Buddy</title>
+	<link rel="stylesheet" type="text/css" href="css/authentication.css">
+	<link href="https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap" rel="stylesheet">
+	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
+</head>
 <body>
-   <h1>Login</h1>
-   <form name='f' action="login" method='POST'>
-      <table>
-         <tr>
-            <td>User:</td>
-            <td><input type="text" id="name" name="name" value=''></td>
-         </tr>
-         <tr>
-            <td>Password:</td>
-            <td><input type="password" id="password" name="password" /></td>
-         </tr>
-         <tr>
-            <td><input name="submit" type="submit" value="submit" /></td>
-         </tr>
-      </table>
-  </form>
+	<div>
+		<img class="wave filter" src="images/authentication/wave.png">
+	</div>
+	<div class="container">
+		<div class="img">
+			<img style="filter: hue-rotate(230deg) brightness(0.8)" src="images/authentication/man.png">
+		</div>
+		<div class="login-content">
+			<form name='f' action="login" method='POST'>
+				<img src="images/authentication/young.png" style="filter: hue-rotate(230deg) brightness(0.7) contrast(2); height: 100px;">
+				<h2 class="title" style="color: #7300e6">Fit Buddy</h2>
+           		<div class="input-div one">
+           		   <div class="i">
+           		   		<i class="fas fa-user" style="color: #7300e6"></i>
+           		   </div>
+           		   <div class="div">
+           		   		<h5 style="color: #7300e6">Nume Utilizator</h5>
+           		   		<input type="text" id="name" name="name" value='' class="input" style="color: #7300e6">
+           		   </div>
+           		</div>
+           		<div class="input-div pass">
+           		   <div class="i"> 
+           		    	<i class="fas fa-lock" style="color: #7300e6"></i>
+           		   </div>
+           		   <div class="div">
+           		    	<h5 style="color: #7300e6">Parola</h5>
+           		    	<input type="password" id="password" name="password" class="input" style="color: #7300e6">
+            	   </div>
+            	</div>
+            	<input name="submit" type="submit" class="btn" value="Login" style="background-color: #7300e6;">
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script>
+    const inputs = document.querySelectorAll(".input");
+
+
+    function addcl(){
+    	let parent = this.parentNode.parentNode;
+    	parent.classList.add("focus");
+    }
+
+    function remcl(){
+    	let parent = this.parentNode.parentNode;
+    	if(this.value == ""){
+    		parent.classList.remove("focus");
+    	}
+    }
+
+
+    inputs.forEach(input => {
+    	input.addEventListener("focus", addcl);
+    	input.addEventListener("blur", remcl);
+    });
+
+    </script>
 </body>
 </html>

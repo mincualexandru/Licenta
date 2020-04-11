@@ -4,12 +4,17 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +38,7 @@ import com.web.service.FoodService;
 import com.web.service.HelperFeedbackService;
 import com.web.service.RoleService;
 import com.web.service.UserDeviceService;
+import com.web.utils.Gender;
 import com.web.utils.Product;
 import com.web.utils.Qualifying;
 
@@ -68,20 +74,59 @@ public class CommonController {
 	@GetMapping(path = { "/view_profile" })
 	public String viewProfile(Model model) {
 		Account account = accountService.getAccountConnected();
-		if (!model.containsAttribute("skill")) {
-			model.addAttribute("skill", new Skill());
+		if (account.isActive()) {
+			if (!model.containsAttribute("account")) {
+				model.addAttribute("account", account);
+			}
+			if (!model.containsAttribute("skill")) {
+				model.addAttribute("skill", new Skill());
+			}
+			if (!model.containsAttribute("education")) {
+				model.addAttribute("education", new Education());
+			}
+			if (!model.containsAttribute("experience")) {
+				model.addAttribute("experience", new Experience());
+			}
+			for (UserDevice userDevice : account.getUserDevices()) {
+				userDeviceService.getHeightAndWeight(model, userDevice);
+			}
+			if (account.getRoles().contains(roleService.findByName("ROLE_TRAINER").get())
+					|| account.getRoles().contains(roleService.findByName("ROLE_NUTRITIONIST").get())) {
+				List<Education> educations = account.getAccountInformation().getEducation().stream()
+						.sorted((e1, e2) -> e2.getStart().compareTo(e1.getStart())).collect(Collectors.toList());
+				List<Experience> experiences = account.getAccountInformation().getExperiences().stream()
+						.sorted((e1, e2) -> e2.getStart().compareTo(e1.getStart())).collect(Collectors.toList());
+				model.addAttribute("experiences", experiences);
+				model.addAttribute("educations", educations);
+			}
+			model.addAttribute("account", account);
+			return "common/view_profile";
+		} else if (account.getRoles().contains(roleService.findByName("ROLE_TRAINER").get())) {
+			return "redirect:/trainer";
+		} else if (account.getRoles().contains(roleService.findByName("ROLE_NUTRITIONIST").get())) {
+			return "redirect:/nutritionist";
+		} else {
+			return "redirect:/home";
 		}
-		if (!model.containsAttribute("education")) {
-			model.addAttribute("education", new Education());
+
+	}
+
+	@PostMapping(path = { "/edit_account_information" })
+	public String editAccountInformation(Model model, @Valid @ModelAttribute("account") Account account,
+			BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+		if (bindingResult.hasErrors()) {
+			redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.account", bindingResult);
+			redirectAttributes.addFlashAttribute("account", account);
+			return "redirect:/view_profile";
+		} else {
+			Account accountConnected = accountService.getAccountConnected();
+			accountConnected.setEmail(account.getEmail());
+			accountConnected.setFirstName(account.getFirstName());
+			accountConnected.setLastName(account.getLastName());
+			accountConnected.setPhoneNumber(account.getPhoneNumber());
+			accountService.save(accountConnected);
+			return "redirect:/view_profile";
 		}
-		if (!model.containsAttribute("experience")) {
-			model.addAttribute("experience", new Experience());
-		}
-		for (UserDevice userDevice : account.getUserDevices()) {
-			userDeviceService.getHeightAndWeight(model, userDevice);
-		}
-		model.addAttribute("account", account);
-		return "common/view_profile";
 	}
 
 	@PostMapping(path = { "/helper_offers_feedback" })
@@ -169,6 +214,7 @@ public class CommonController {
 							product.setProductName(userDevice.getDevice().getName());
 							product.setPrice(userDevice.getDevice().getPrice());
 							product.setType("Dispozitiv");
+							product.setImageName("");
 							product.setDateOfPurchased(userDevice.getDateOfPurchase());
 							products.add(product);
 						}
@@ -183,6 +229,19 @@ public class CommonController {
 							product.setForWho(userPlan.getHelperPlan().getForWho());
 							product.setType(userPlan.getHelperPlan().getTypeOfPlan());
 							product.setDateOfPurchased(userPlan.getDateOfPurchase());
+							product.setDescription(userPlan.getHelperPlan().getDescription());
+							if (userPlan.getHelperPlan().getForWho().equals(Gender.BARBAT)) {
+								product.setImageName("800.gif");
+							} else if (userPlan.getHelperPlan().getForWho().equals(Gender.FEMEIE)) {
+								product.setImageName("jumpingrope-dribble.gif");
+							}
+							for (Exercise exercise : userPlan.getHelperPlan().getExercises()) {
+								if (exercise.getExerciseImages().size() > 0) {
+									System.out.println("Exista o imagine pe exercitiu");
+									product.setImageName(
+											exercise.getExerciseImages().stream().findFirst().get().getFileName());
+								}
+							}
 							products.add(product);
 						}
 					}
@@ -197,7 +256,7 @@ public class CommonController {
 								product.setProductName(userTrainingPlan.getHelperPlan().getName());
 								product.setPrice(userTrainingPlan.getHelperPlan().getPrice());
 								product.setForWho(userTrainingPlan.getHelperPlan().getForWho());
-								product.setType("trainingPlan");
+								product.setType("Antrenament");
 								product.setDateOfPurchased(userTrainingPlan.getDateOfPurchase());
 								products.add(product);
 							}
@@ -214,7 +273,7 @@ public class CommonController {
 								product.setProductName(userDietPlan.getHelperPlan().getName());
 								product.setPrice(userDietPlan.getHelperPlan().getPrice());
 								product.setForWho(userDietPlan.getHelperPlan().getForWho());
-								product.setType("dietPlan");
+								product.setType("Dieta");
 								product.setDateOfPurchased(userDietPlan.getDateOfPurchase());
 								products.add(product);
 							}

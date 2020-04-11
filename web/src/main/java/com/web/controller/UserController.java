@@ -56,6 +56,7 @@ import com.web.service.TypeMeasurementService;
 import com.web.service.UserDeviceService;
 import com.web.service.UserPlanService;
 import com.web.utils.BandTypeMeasurement;
+import com.web.utils.Gender;
 import com.web.utils.Product;
 import com.web.utils.ScaleTypeMeasurement;
 
@@ -357,7 +358,7 @@ public class UserController {
 		if (account.isActive()) {
 			UserDevice userDevice = userDeviceService
 					.findByDeviceNameAndUserAccountId("Fit Buddy", account.getAccountId()).get();
-			if (!(weight == null)) {
+			if (!(weight == null) && weight > 0) {
 				Measurement measurementForWeight = new Measurement();
 				measurementForWeight.setStartDate(new Timestamp(System.currentTimeMillis()));
 				measurementForWeight.setEndDate(null);
@@ -368,7 +369,7 @@ public class UserController {
 				measurementForWeight.setUserDevice(userDevice);
 				measurementService.save(measurementForWeight);
 			}
-			if (!(height == null)) {
+			if (!(height == null) && height > 0) {
 				Measurement measurementForHeight = new Measurement();
 				measurementForHeight.setStartDate(new Timestamp(System.currentTimeMillis()));
 				measurementForHeight.setEndDate(null);
@@ -378,6 +379,18 @@ public class UserController {
 				measurementForHeight.setValue(height);
 				measurementForHeight.setUserDevice(userDevice);
 				measurementService.save(measurementForHeight);
+			} else {
+				if (height == null || weight == null) {
+					redirectAttributes.addFlashAttribute("enterValue", true);
+				} else if (!(height == null) && height < 0 && !(weight == null) && weight < 0) {
+					redirectAttributes.addFlashAttribute("negativeValueForHeight", true);
+					redirectAttributes.addFlashAttribute("negativeValueForWeight", true);
+				} else if (!(height == null) && height < 0) {
+					redirectAttributes.addFlashAttribute("negativeValueForHeight", true);
+				} else if (!(weight == null) && weight < 0) {
+					redirectAttributes.addFlashAttribute("negativeValueForWeight", true);
+				}
+				return "redirect:/set_height_and_weight";
 			}
 			redirectAttributes.addFlashAttribute("message", "from_set_height_and_weight");
 			return "redirect:/success";
@@ -385,17 +398,6 @@ public class UserController {
 			return "redirect:/home";
 		}
 
-	}
-
-	@GetMapping(path = { "/current_balance" })
-	public String availableBalance(Model model) {
-		Account user = accountService.getAccountConnected();
-		if (user.isActive()) {
-			model.addAttribute("transaction", user.getTransaction());
-			return "home/current_balance";
-		} else {
-			return "redirect:/home";
-		}
 	}
 
 	@GetMapping(path = { "/load_funds_account" })
@@ -459,10 +461,10 @@ public class UserController {
 			boolean bandAlreadyBought = false;
 			boolean scaleAlreadyBought = false;
 			for (UserDevice userDevice : account.getUserDevices()) {
-				if (userDevice.getDevice().getName().equals("Bratara") && userDevice.isBought()) {
+				if (userDevice.getDevice().getName().equals("Bratara")) {
 					bandAlreadyBought = true;
 
-				} else if (userDevice.getDevice().getName().equals("Cantar Inteligent") && userDevice.isBought()) {
+				} else if (userDevice.getDevice().getName().equals("Cantar Inteligent")) {
 					scaleAlreadyBought = true;
 				}
 			}
@@ -527,17 +529,48 @@ public class UserController {
 				product.setCompanyName(userDevice.getDevice().getCompany());
 				product.setProductName(userDevice.getDevice().getName());
 				product.setPrice(userDevice.getDevice().getPrice());
-				product.setType("device");
+				if (userDevice.getDevice().getName().equals("Fit Buddy")) {
+					product.setImageName("4e56fc0b-28d1-4bd4-98c6-697e5a8e4721_rw_1200.gif");
+				} else if (userDevice.getDevice().getName().equals("Bratara")) {
+					product.setImageName("band.jpg");
+				} else if (userDevice.getDevice().getName().equals("Cantar Inteligent")) {
+					product.setImageName("scale.jpg");
+				}
+				product.setType("Dispozitiv");
 				products.add(product);
 			}
 			Integer totalCostOfPlans = 0;
 			for (UserPlan userPlan : userPlans) {
 				Product product = new Product();
 				totalCostOfPlans += userPlan.getHelperPlan().getPrice();
+				product.setProductId(userPlan.getHelperPlan().getHelperPlanId());
 				product.setProductName(userPlan.getHelperPlan().getName());
 				product.setPrice(userPlan.getHelperPlan().getPrice());
 				product.setForWho(userPlan.getHelperPlan().getForWho());
 				product.setType(userPlan.getHelperPlan().getTypeOfPlan());
+				if (userPlan.getHelperPlan().getTypeOfPlan().equals("Antrenament")) {
+					if (userPlan.getHelperPlan().getForWho().equals(Gender.BARBAT)) {
+						product.setImageName("strong-man-back-black-white_158538-8451.jpg");
+					} else if (userPlan.getHelperPlan().getForWho().equals(Gender.FEMEIE)) {
+						product.setImageName("beautiful-sportive-woman-training-with-dumbbells_176420-978.jpg");
+					}
+					for (Exercise exercise : userPlan.getHelperPlan().getExercises()) {
+						if (exercise.getExerciseImages().size() > 0) {
+							product.setImageName(exercise.getExerciseImages().stream().findFirst().get().getFileName());
+						}
+					}
+				} else if (userPlan.getHelperPlan().getTypeOfPlan().equals("Dieta")) {
+					System.out.println("Este Dieta");
+					for (Exercise exercise : userPlan.getHelperPlan().getExercises()) {
+						if (exercise.getExerciseImages().size() > 0) {
+							product.setImageName(exercise.getExerciseImages().stream().findFirst().get().getFileName());
+						}
+					}
+					if (product.getImageName() == null) {
+						System.out.println("Nu s a setat nicio imagine");
+						product.setImageName("green-apple-with-leaves_1101-453.jpg");
+					}
+				}
 				products.add(product);
 			}
 			model.addAttribute("products", products);
@@ -570,8 +603,10 @@ public class UserController {
 			} else {
 				UserPlan userPlanToDelete = userPlanService.findByUserAccountIdAndHelperPlanHelperPlanId(userId,
 						productId);
+				System.out.println("Id estte " + userPlanToDelete.getUserPlanId());
 				userPlanService.deleteByUserPlanId(userPlanToDelete.getUserPlanId());
 			}
+			redirectAttributes.addFlashAttribute("succesDeleteProduct", true);
 			return "redirect:/shopping_cart";
 		} else {
 			return "redirect:/home";
@@ -622,7 +657,7 @@ public class UserController {
 					}
 				}
 			} else {
-				redirectAttributes.addFlashAttribute("insufficientBalance", "Fonduri insuficiente");
+				redirectAttributes.addFlashAttribute("insufficientBalance", true);
 				return "redirect:/shopping_cart";
 			}
 			redirectAttributes.addFlashAttribute("message", "from_buy_shopping_cart");
@@ -672,6 +707,7 @@ public class UserController {
 					"ROLE_NUTRITIONIST");
 			allTrainersOrNutritionists.removeIf(element -> !(element.isActive()));
 			allTrainersOrNutritionists.removeIf(element -> user.getHelpers().contains(element));
+			allTrainersOrNutritionists.forEach(element -> System.out.println(element.getUsername()));
 			model.addAttribute("allTrainersOrNutritionists", allTrainersOrNutritionists);
 			return "home/choose_helper";
 		} else {

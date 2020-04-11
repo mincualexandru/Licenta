@@ -4,22 +4,86 @@
 <head>
 <title>Sign up</title>
 <base href="/">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<script src="https://kit.fontawesome.com/8f58d13ed0.js" crossorigin="anonymous"></script>
-<link rel="stylesheet" type="text/css" th:href="@{css/style.css}" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+<script src="https://kit.fontawesome.com/8f58d13ed0.js"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" th:href="@{css/founds.css}" />
 </head>
 <body>
-	<form th:action="@{/set_height_and_weight_save}" method="post">
-		<div th:if="${heightIsNotCalculated}">
-			<label>Inaltime</label>
-			<input type="number" step="0.01" name="height"/>
+<div class="alert" th:if="${negativeValueForWeight}">
+		<div
+			style="float: left; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 250px;">
+			<h5 style="font-weight: 900; font-size: 16px;">Eroare</h5>
+			<p style="font-size: 13px;">Nu poti introduce o valoare negativa pentru greutatea corporala</p>
 		</div>
-		<div th:if="${weightIsNotCalculated}">
-			<label>Greutate</label>
-			<input type="number" step="0.01" name="weight"/>
+		<div style="float: right;">
+			<span class="closebtn"
+				onclick="this.parentElement.style.display='none';">&times;</span>
 		</div>
-		<button type="submit">Salveaza</button>
-	</form>
+	</div>
+	<div class="alert" th:if="${negativeValueForHeight}">
+		<div
+			style="float: left; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 250px;">
+			<h5 style="font-weight: 900; font-size: 16px;">Eroare</h5>
+			<p style="font-size: 13px;">Nu poti introduce o valoare negativa pentru inaltimea corpului</p>
+		</div>
+		<div style="float: right;">
+			<span class="closebtn"
+				onclick="this.parentElement.style.display='none';">&times;</span>
+		</div>
+	</div>
+	<div class="alert" th:if="${enterValue}">
+		<div
+			style="float: left; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 250px;">
+			<h5 style="font-weight: 900; font-size: 16px;">Eroare</h5>
+			<p style="font-size: 13px;">Trebuie sa introduci o valoare</p>
+		</div>
+		<div style="float: right;">
+			<span class="closebtn"
+				onclick="this.parentElement.style.display='none';">&times;</span>
+		</div>
+	</div>
+	<div class="wrapper"
+		style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 35vw;">
+		<div class="app-wrapper" style="height: 600px;">
+			<content class="transactions-wrapper"
+				style="display:flex;align-items: center;justify-content: center;">
+			<div style="flex: 0 0 50%;">
+				<form th:action="@{/set_height_and_weight_save}" method="post"
+					style="margin: 0 auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);">
+					<div style="margin-bottom: 20px; text-align: center;">
+						<i class="fas fa-child fa-6x" style="color: #7300e6;"></i>
+					</div>
+					<div th:if="${heightIsNotCalculated}">
+						<div class="form-group">
+							<label style="display: block; color: #7300e6; font-size: 25px;">Inaltime</label>
+							<div style="display: flex;">
+								<input type="number" step="0.01" name="height"
+									style="outline: none; border-bottom: 2px solid #7300e6; border-top: none; border-left: none; border-right: none; font-size: 25px; color: #7300e6;" />
+								<label style="font-size: 25px; color: #7300e6;">CM</label>
+							</div>
+						</div>
+					</div>
+					<div th:if="${weightIsNotCalculated}">
+						<div class="form-group">
+							<label style="display: block; color: #7300e6; font-size: 25px;">Greutate</label>
+							<div style="display: flex;">
+								<input type="number" step="0.01" name="weight"
+									style="outline: none; border-bottom: 2px solid #7300e6; border-top: none; border-left: none; border-right: none; font-size: 25px; color: #7300e6;" />
+								<label style="font-size: 25px; color: #7300e6;">KG</label>
+							</div>
+						</div>
+					</div>
+					<button class="btn btn-block" type="submit"
+						style="background-color: #7300e6; color: white; font-size: 25px; margin-top: 30px;">Salveaza</button>
+				</form>
+			</div>
+			</content>
+		</div>
+	</div>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
 		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
 		crossorigin="anonymous"></script>

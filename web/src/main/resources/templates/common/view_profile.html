@@ -9,667 +9,1057 @@
 	rel="stylesheet" id="bootstrap-css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
+<link th:href="@{css/font-face.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-4.7/css/font-awesome.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-5/css/fontawesome-all.min.css}"
+	rel="stylesheet" media="all">
+<link
+	th:href="@{vendor/mdi-font/css/material-design-iconic-font.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/animsition/animsition.min.css}" rel="stylesheet"
+	media="all">
+<link
+	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/wow/animate.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/css-hamburgers/hamburgers.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/slick/slick.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/select2/select2.min.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
+	rel="stylesheet" media="all">
+<script src="https://kit.fontawesome.com/8f58d13ed0.js"
+	crossorigin="anonymous"></script>
+<link th:href="@{css/theme.css}" rel="stylesheet" media="all">
 <link rel="stylesheet" type="text/css" th:href="@{css/style.css}" />
-<style>
-ul.menu li {
-	display: inline;
-}
-</style>
 </head>
 <body>
-	<a th:href="@{/logout}">Logout</a>
 	<div th:each="role, iterStat : ${account.roles}">
-		<div th:if="${role.name eq 'ROLE_USER'}">
-			<ul>
-				<li th:text="${account.username}"></li>
-				<li th:text="${account.firstName}"></li>
-				<li th:text="${account.lastName}"></li>
-				<li th:text="${account.email}"></li>
-				<li th:text="${account.phoneNumber}"></li>
-				<li th:text="${account.bornDate}"></li>
-				<li th:text="${account.gender}"></li>
-				<div th:if="${height}">
-					<li th:text="${height}"></li>
-				</div>
-				<div th:if="${weight}">
-					<li th:text="${weight}"></li>
-				</div>
-			</ul>
-		</div>
-		<div
-			th:if="${role.name eq 'ROLE_NUTRITIONIST' or role.name eq 'ROLE_TRAINER'}">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-md-8 mx-auto">
-						<div class="about-me">
-							<h1>Despre mine</h1>
-							<p th:text="${account.accountInformation.description}"></p>
-							<button type="button" data-toggle="modal" data-target="#about-me"
-								data-backdrop="static" data-keyboard="false"
-								class="btn btn-primary">Editeaza descrierea</button>
-							<form id="aboutMe" th:action="@{/update_about_me}" method="post"
-								th:object=${account.accountInformation}>
-								<input type="hidden" name="accountInformationId"
-									th:value="${account.accountInformation.accountInformationId}" />
-								<div class="modal fade" id="about-me" tabindex="-1"
-									role="dialog" aria-labelledby="about-meLabel"
-									aria-hidden="true">
-									<div class="modal-dialog" role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h5 class="modal-title" id="about-meLabel">Editeaza
-													Descrierea</h5>
-												<button type="button" class="close" data-dismiss="modal"
-													aria-label="Close">
-													<span aria-hidden="true">&times;</span>
-												</button>
-											</div>
-											<div class="modal-body">
-												<div class="row">
-													<div class="col-md-6">
-														<div class="form-group">
-															<label>Descriere</label>
-															<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-																<input type="text" id="descriptionAccountInformation"
-																	name="descriptionAccountInformation"
-																	th:value="${account.accountInformation.description}"
-																	class="form-control validation" autofocus>
-																<div id="showErrorAboutMe"></div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-secondary"
-													data-dismiss="modal">Close</button>
-												<button class="btn btn-primary">Save changes</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</form>
-						</div>
-						<div class="education">
-							<h1>Educatie</h1>
-							<button type="button" data-toggle="modal"
-								data-target="#addEducation" data-backdrop="static"
-								data-keyboard="false" class="btn btn-primary">Adauga
-								Educatie</button>
-							<form class="education" th:action="@{/add_education}"
-								method="post" th:object="${education}">
-								<input type="hidden" name="accountInformationId"
-									th:value="${account.accountInformation.accountInformationId}" />
-								<div class="modal fade" id="addEducation" tabindex="-1"
-									role="dialog" aria-labelledby="addEducationLabel"
-									aria-hidden="true">
-									<div class="modal-dialog" role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h5 class="modal-title" id="addEducationLabel">Adauga
-													Educatie</h5>
-												<button type="button" class="close" data-dismiss="modal"
-													aria-label="Close">
-													<span aria-hidden="true">&times;</span>
-												</button>
-											</div>
-											<div class="modal-body">
-												<div class="row">
-													<div class="col-md-6">
-														<div class="form-group">
-															<label>Institutie</label>
-															<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-																<input type="text" name="description" th:field="*{name}"
-																	class="form-control validation" autofocus
-																	onblur="justLetters(this.value,event,0)">
-																<div th:class="showErrorNameCreate00"></div>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="row">
-													<div class="col-md-6">
-														<div class="form-group">
-															<label>Oras</label>
-															<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-																<input type="text" name="name" th:field="*{city}"
-																	style="text-transform: capitalize;"
-																	class="form-control validation" autofocus>
-																<div id="cityEducation"></div>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="row">
-													<div class="col-md-6">
-														<div class="form-group">
-															<label>Start</label>
-															<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-																<input type="text" name="start" th:field="*{start}"
-																	onblur="year(this, this.value,event,0)"
-																	class="form-control validation" autofocus>
-																<div class="showErrorStartYearCreate01"></div>
-																<div class="showErrorStartYearCreate02"></div>
-																<div class="showErrorStartYearCreate03"></div>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="row">
-													<div class="col-md-6">
-														<div class="form-group">
-															<label>Sfarsit</label>
-															<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-																<input type="text" name="end" th:field="*{end}"
-																	onblur="year(this, this.value,event,3)"
-																	class="form-control validation" autofocus>
-																<div class="showErrorEndYearCreate31"></div>
-																<div class="showErrorEndYearCreate32"></div>
-																<div class="showErrorEndYearCreate33"></div>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div th:class="minimDuration"></div>
-											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-secondary"
-													data-dismiss="modal">Close</button>
-												<button class="btn btn-primary" id="adaugaEducatie">Save
-													changes</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</form>
-						</div>
-						<ul class="menu"
-							th:each="ed : ${account.accountInformation.education}">
-							<li th:text="${ed.name}"></li>
-							<li th:text="${ed.city}"></li>
-							<li th:text="${ed.start}"></li>
-							<li th:text="${ed.end}"></li>
-							<!-- 						<button th:onclick="|selecteazaEducatia('${ed.educationId}')|" data-toggle="modal" data-target="#modal-education" -->
-							<button th:onclick="|selecteazaEducatia('${ed.educationId}')|"
-								data-toggle="modal" data-target="#modal-education"
-								th:attr="data-target='#modal-education'+${ed.educationId}">
-								<span class="glyphicon glyphicon-trash"></span>Editeaza educatia
+		<div class="page-wrapper">
+			<header style="background-color: white;"
+				class="header-mobile d-block d-lg-none">
+				<div class="header-mobile__bar">
+					<div class="container-fluid">
+						<div class="header-mobile-inner">
+							<a class="logo" href="index.html"> <img
+								src="images/Screenshot_18.png">
+							</a>
+							<button class="hamburger hamburger--slider" type="button">
+								<span class="hamburger-box"> <span
+									class="hamburger-inner"></span>
+								</span>
 							</button>
-							<form th:action="@{/update_education}" method="post"
-								id="editEducation">
-								<input type="hidden" name="educationId"
-									th:value="${ed.educationId}" />
-								<div class="modal modal-education fade in"
-									th:id="modal-education+${ed.educationId}">
-									<div class="modal-dialog">
-										<div class="modal-content">
-											<div class="modal-header">
-												<button type="button" class="close" data-dismiss="modal"
-													aria-label="Close">
-													<span aria-hidden="true">×</span>
-												</button>
-												<h5 class="modal-title">Editeaza educatiaaaaa</h5>
-											</div>
-											<div class="modal-body">
-												<div class="row">
-													<div class="col-md-6">
-														<div class="form-group">
-															<label>Nume</label>
-															<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-																<input type="text" id="editName"
-																	onblur="justLetters2(this.value,event,3)"
-																	name="editName" th:value="${ed.name}"
-																	class="form-control validation" autofocus>
-																<div th:class="showErrorNameEdit31"></div>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="row">
-													<div class="col-md-6">
-														<div class="form-group">
-															<label>Oras</label>
-															<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-																<input type="text" id="editCity" name="editCity"
-																	style="text-transform: capitalize;"
-																	th:value="${ed.city}" class="form-control validation"
-																	autofocus>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="row">
-													<div class="col-md-6">
-														<div class="form-group">
-															<label>Inceput</label>
-															<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-																<input type="text" id="editStart" name="editStart"
-																	onblur="yearValidation(this,this.value,event,6)"
-																	th:value="${ed.start}" class="form-control validation"
-																	autofocus>
-																<div
-																	th:class="showErrorStartYearEdit61+${ed.educationId}"></div>
-																<div
-																	th:class="showErrorStartYearEdit62+${ed.educationId}"></div>
-																<div
-																	th:class="showErrorStartYearEdit63+${ed.educationId}"></div>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="row">
-													<div class="col-md-6">
-														<div class="form-group">
-															<label>Sfarsit</label>
-															<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-																<input type="text" id="editEnd" name="editEnd"
-																	onblur="yearValidation(this,this.value,event,9)"
-																	th:value="${ed.end}" class="form-control validation"
-																	autofocus>
-																<div th:class="showErrorEndYearEdit91+${ed.educationId}"></div>
-																<div th:class="showErrorEndYearEdit92+${ed.educationId}"></div>
-																<div th:class="showErrorEndYearEdit93+${ed.educationId}"></div>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div th:class="minimDuration"></div>
-											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-outline pull-left"
-													data-dismiss="modal">Close</button>
-												<button type="submit">Save</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</form>
-							<button data-toggle="modal" data-target="#modal-education-delete"
-								th:attr="data-target='#modal-education-delete'+${ed.educationId}">
-								<span class="glyphicon glyphicon-trash"></span>Sterge educatia
-							</button>
-							<form th:action="@{/delete_education}" method="post">
-								<input type="hidden" name="educationId"
-									th:value="${ed.educationId}" />
-								<div class="modal modal-education-delete fade in"
-									th:id="modal-education-delete+${ed.educationId}">
-									<div class="modal-dialog">
-										<div class="modal-content">
-											<div class="modal-header">
-												<button type="button" class="close" data-dismiss="modal"
-													aria-label="Close">
-													<span aria-hidden="true">×</span>
-												</button>
-												<h5 class="modal-title">Sterge educatia</h5>
-											</div>
-											<div class="modal-body">
-												<h3>Esti sigur ca vrei sa faci asta?</h3>
-											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-outline pull-left"
-													data-dismiss="modal">Close</button>
-												<button type="submit" class="btn btn-danger">Yes</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</form>
+						</div>
+					</div>
+				</div>
+				<nav class="navbar-mobile">
+					<div class="container-fluid">
+						<ul class="navbar-mobile__list list-unstyled">
+							<div th:if="${role.name eq 'ROLE_USER'}">
+								<li><a th:href="@{/home}" class="links"> <i
+										class="fas fa-home icon-link"></i> <span>Home</span>
+								</a></li>
+								<li><a th:href="@{/view_profile}" class="links"><i
+										class="far fa-id-card icon-link"></i><span>Profil</span></a></li>
+								<li><a th:href="@{/shopping_cart}" class="links"><i
+										class="fas fa-shopping-cart icon-link"></i><span>Cos
+											Cumparaturi</span></a></li>
+								<li><a th:href="@{/choose_device}" class="links"><i
+										class="fas fa-laptop-medical icon-link"></i><span>Alege
+											Dispozitiv</span></a></li>
+								<li><a th:href="@{/choose_helper}" class="links"><i
+										class="fas fa-user-friends icon-link"></i><span>Alege
+											Experti</span></a></li>
+								<li><a th:href="@{/view_helpers}" class="links"><i
+										class="fas fa-clipboard-list icon-link"
+										style="font-size: 30px; width: 30px;"></i><span>Alege
+											Planuri</span></a></li>
+								<li><a th:href="@{/choose_helper}" class="links"><i
+										class="fas fa-laptop-medical icon-link"></i><span>Dispozitive</span></a></li>
+								<li><a th:href="@{/view_training_plans}" class="links"><i
+										class="fas fa-dumbbell icon-link"></i><span>Planuri
+											Antrenamente</span></a></li>
+								<li><a th:href="@{/view_diet_plans}" class="links"><i
+										class="fas fa-utensils icon-link" style="width: 27px;"></i><span>Planuri
+											Diete</span></a></li>
+								<li><a th:href="@{/view_feedbacks_from_helper}"
+									class="links"><i class="fas fa-comment-dots icon-link"></i><span>Feedback-uri</span></a></li>
+								<li><a th:href="@{/transaction_history}"
+									class="links"><i class="fas fa-money-check icon-link"></i><span>Istoric Tranzactii</span></a></li>
+							</div>
 						</ul>
-						<div class="experiences">
-							<h1>Experienta profesionala</h1>
-							<button type="button" data-toggle="modal"
-								data-target="#addExperience" data-backdrop="static"
-								data-keyboard="false" class="btn btn-primary">Adauga
-								Experienta</button>
-							<form class="experience" th:action="@{/add_experience}"
-								method="post" th:object="${experience}">
-								<input type="hidden" name="accountInformationId"
-									th:value="${account.accountInformation.accountInformationId}" />
-								<div class="modal fade" id="addExperience" tabindex="-1"
-									role="dialog" aria-labelledby="addExperienceLabel"
-									aria-hidden="true">
-									<div class="modal-dialog" role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h5 class="modal-title" id="addExperienceLabel">Adauga
-													Experienta</h5>
-												<button type="button" class="close" data-dismiss="modal"
-													aria-label="Close">
-													<span aria-hidden="true">&times;</span>
-												</button>
-											</div>
-											<div class="modal-body">
-												<div class="row">
-													<div class="col-md-6">
-														<div class="form-group">
-															<label>Institutie</label>
-															<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-																<input type="text" id="expName" name="expName"
-																	th:field="*{name}" class="form-control validation"
-																	autofocus onblur="justLetters(this.value,event,1)">
-																<div th:class="showErrorNameCreate10"></div>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="row">
-													<div class="col-md-6">
-														<div class="form-group">
-															<label>Oras</label>
-															<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-																<input type="text" id="expCity" name="expCity"
-																	th:field="*{city}" style="text-transform: capitalize;"
-																	class="form-control validation" autofocus>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="row">
-													<div class="col-md-6">
-														<div class="form-group">
-															<label>Start</label>
-															<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-																<input type="text" id="expStart" name="expStart"
-																	th:field="*{start}"
-																	onblur="year(this,this.value,event,1)"
-																	class="form-control validation" autofocus>
-																<div class="showErrorStartYearCreate11"></div>
-																<div class="showErrorStartYearCreate12"></div>
-																<div class="showErrorStartYearCreate13"></div>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="row">
-													<div class="col-md-6">
-														<div class="form-group">
-															<label>Sfarsit</label>
-															<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-																<input type="text" id="expEnd" name="expEnd"
-																	th:field="*{end}"
-																	onblur="year(this,this.value,event,2)"
-																	class="form-control validation" autofocus>
-																<div class="showErrorEndYearCreate21"></div>
-																<div class="showErrorEndYearCreate22"></div>
-																<div class="showErrorEndYearCreate23"></div>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div th:class="minimDuration"></div>
-											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-secondary"
-													data-dismiss="modal">Close</button>
-												<button class="btn btn-primary">Save changes</button>
-											</div>
-										</div>
+					</div>
+				</nav>
+			</header>
+			<aside style="background-color: white;"
+				class="menu-sidebar d-none d-lg-block">
+				<div class="logo">
+					<a href="#"> <img src="images/Screenshot_18.png">
+					</a>
+				</div>
+				<div class="menu-sidebar__content js-scrollbar1">
+					<nav class="navbar-sidebar">
+						<ul class="list-unstyled navbar__list">
+							<div th:if="${role.name eq 'ROLE_USER'}">
+								<li><a th:href="@{/home}" class="links"> <i
+										class="fas fa-home icon-link"></i> <span>Home</span>
+								</a></li>
+								<li><a th:href="@{/view_profile}" class="links"><i
+										class="far fa-id-card icon-link"></i><span>Profil</span></a></li>
+								<li><a th:href="@{/shopping_cart}" class="links"><i
+										class="fas fa-shopping-cart icon-link"></i><span>Cos
+											Cumparaturi</span></a></li>
+								<li><a th:href="@{/choose_device}" class="links"><i
+										class="fas fa-laptop-medical icon-link"></i><span>Alege
+											Dispozitiv</span></a></li>
+								<li><a th:href="@{/choose_helper}" class="links"><i
+										class="fas fa-user-friends icon-link"></i><span>Alege
+											Experti</span></a></li>
+								<li><a th:href="@{/view_helpers}" class="links"><i
+										class="fas fa-clipboard-list icon-link"
+										style="font-size: 30px; width: 30px;"></i><span>Alege
+											Planuri</span></a></li>
+								<li><a th:href="@{/choose_helper}" class="links"><i
+										class="fas fa-laptop-medical icon-link"></i><span>Dispozitive</span></a></li>
+								<li><a th:href="@{/view_training_plans}" class="links"><i
+										class="fas fa-dumbbell icon-link"></i><span>Planuri
+											Antrenamente</span></a></li>
+								<li><a th:href="@{/view_diet_plans}" class="links"><i
+										class="fas fa-utensils icon-link" style="width: 27px;"></i><span>Planuri
+											Diete</span></a></li>
+								<li><a th:href="@{/view_feedbacks_from_helper}"
+									class="links"><i class="fas fa-comment-dots icon-link"></i><span>Feedback-uri</span></a></li>
+								<li><a th:href="@{/transaction_history}"
+									class="links"><i class="fas fa-money-check icon-link"></i><span>Istoric Tranzactii</span></a></li>
+							</div>
+						</ul>
+					</nav>
+				</div>
+			</aside>
+			<div class="page-container">
+				<div class="main-content">
+					<div class="section__content section__content--p30">
+						<div class="wrapper">
+							<div class="profile-card js-profile-card">
+								<div class="profile-card__img">
+									<div th:if="${account.gender.getGender() eq 'Barbat'}"
+										style="background-color: black;">
+										<img src="/images/man.png" alt="profile card">
+									</div>
+									<div th:if="${account.gender.getGender() eq 'Femeie'}"
+										style="background-color: black;">
+										<img src="/images/woman.png" alt="profile card">
 									</div>
 								</div>
-							</form>
-							<ul class="menu"
-								th:each="experience : ${account.accountInformation.experiences}">
-								<li th:text="${experience.name}"></li>
-								<li th:text="${experience.city}"></li>
-								<li th:text="${experience.start}"></li>
-								<li th:text="${experience.end}"></li>
-								<button
-									th:onclick="|selecteazaEducatia('${experience.experienceId}')|"
-									data-toggle="modal" data-target="#modal-experience"
-									th:attr="data-target='#modal-experience'+${experience.experienceId}">
-									<span class="glyphicon glyphicon-trash"></span>Editeaza
-									experienta
-								</button>
-								<button data-toggle="modal"
-									data-target="#modal-experience-delete"
-									th:attr="data-target='#modal-experience-delete'+${experience.experienceId}">
-									<span class="glyphicon glyphicon-trash"></span>Sterge
-									experienta
-								</button>
-								<form th:action="@{/delete_experience}" method="post">
-									<input type="hidden" name="experienceId"
-										th:value="${experience.experienceId}" />
-									<div class="modal modal-experience-delete fade in"
-										th:id="modal-experience-delete+${experience.experienceId}">
-										<div class="modal-dialog">
-											<div class="modal-content">
-												<div class="modal-header">
-													<button type="button" class="close" data-dismiss="modal"
-														aria-label="Close">
-														<span aria-hidden="true">×</span>
-													</button>
-													<h5 class="modal-title">Sterge experienta</h5>
+								<div class="profile-card__cnt js-profile-cnt">
+									<div class="profile-card__name" th:text="${account.username}"></div>
+									<div th:if="${weight > 0 or height > 0}">
+										<div class="profile-card-inf">
+											<div th:if="${weight}">
+												<div class="profile-card-inf__item">
+													<div class="profile-card-inf__title" th:text="${weight}"></div>
+													<div class="profile-card-inf__txt">Greutate</div>
 												</div>
-												<div class="modal-body">
-													<h3>Esti sigur ca vrei sa faci asta?</h3>
-												</div>
-												<div class="modal-footer">
-													<button type="button" class="btn btn-outline pull-left"
-														data-dismiss="modal">Close</button>
-													<button type="submit" class="btn btn-danger">Yes</button>
+											</div>
+
+											<div th:if="${height}">
+												<div class="profile-card-inf__item">
+													<div class="profile-card-inf__title" th:text="${height}"></div>
+													<div class="profile-card-inf__txt">Inaltime</div>
 												</div>
 											</div>
 										</div>
 									</div>
-								</form>
-								<form th:action="@{/update_experience}" method="post"
-									id="editExperience">
-									<input type="hidden" name="experienceId"
-										th:value="${experience.experienceId}" />
-									<div class="modal modal-experience fade in"
-										th:id="modal-experience+${experience.experienceId}">
-										<div class="modal-dialog">
-											<div class="modal-content">
-												<div class="modal-header">
-													<button type="button" class="close" data-dismiss="modal"
-														aria-label="Close">
-														<span aria-hidden="true">×</span>
-													</button>
-													<h5 class="modal-title">Editeaza experienta</h5>
-												</div>
-												<div class="modal-body">
-													<div class="row">
-														<div class="col-md-6">
-															<div class="form-group">
-																<label>Nume</label>
-																<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-																	<input type="text" id="expEditName" name="expEditName"
-																		th:value="${experience.name}"
-																		class="form-control validation" autofocus
-																		onblur="justLetters2(this.value,event,1)">
-																	<div th:class="showErrorNameEdit11"></div>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="row">
-														<div class="col-md-6">
-															<div class="form-group">
-																<label>Oras</label>
-																<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-																	<input type="text" id="expEditCity" name="expEditCity"
-																		th:value="${experience.city}"
-																		class="form-control validation" autofocus>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="row">
-														<div class="col-md-6">
-															<div class="form-group">
-																<label>Inceput</label>
-																<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-																	<input type="text" id="expEditStart" name="editStart"
-																		th:value="${experience.start}"
-																		class="form-control validation" autofocus
-																		onblur="yearValidation(this,this.value,event,7)">
-																	<div
-																		th:class="showErrorStartYearEdit71+${experience.experienceId}"></div>
-																	<div
-																		th:class="showErrorStartYearEdit72+${experience.experienceId}"></div>
-																	<div
-																		th:class="showErrorStartYearEdit73+${experience.experienceId}"></div>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="row">
-														<div class="col-md-6">
-															<div class="form-group">
-																<label>Sfarsit</label>
-																<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-																	<input type="text" id="expEditEnd" name="editEnd"
-																		th:value="${experience.end}"
-																		class="form-control validation" autofocus
-																		onblur="yearValidation(this,this.value,event,5)">
-																	<div
-																		th:class="showErrorEndYearEdit51+${experience.experienceId}"></div>
-																	<div
-																		th:class="showErrorEndYearEdit52+${experience.experienceId}"></div>
-																	<div
-																		th:class="showErrorEndYearEdit53+${experience.experienceId}"></div>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div th:class="minimDuration"></div>
-												</div>
-												<div class="modal-footer">
-													<button type="button" class="btn btn-outline pull-left"
-														data-dismiss="modal">Close</button>
-													<button type="submit" class="btn btn-success">Salveaza</button>
-												</div>
-											</div>
+									<div class="profile-card-inf">
+										<div class="profile-card-inf__item">
+											<div class="profile-card-inf__title"
+												th:text="${account.firstName}"></div>
+											<div class="profile-card-inf__txt">Nume</div>
+										</div>
+
+										<div class="profile-card-inf__item">
+											<div class="profile-card-inf__title"
+												th:text="${account.lastName}"></div>
+											<div class="profile-card-inf__txt">Prenume</div>
+										</div>
+
+										<div class="profile-card-inf__item">
+											<div class="profile-card-inf__title"
+												th:text="${account.phoneNumber}"></div>
+											<div class="profile-card-inf__txt">Numar Telefon</div>
+										</div>
+
+										<div class="profile-card-inf__item">
+											<div class="profile-card-inf__title"
+												th:text="${account.email}"></div>
+											<div class="profile-card-inf__txt">Email</div>
 										</div>
 									</div>
-								</form>
-							</ul>
+									<div class="profile-card-ctr">
+										<button
+											class="profile-card__button button--blue js-message-btn">Editeaza</button>
+									</div>
+								</div>
+								<div class="profile-card-message js-message">
+									<form class="profile-card-form"
+										th:action="@{/edit_account_information}" method="post"
+										th:object="${account}">
+										<div class="profile-card-form__container"
+											style="margin-left: 30px; margin-right: 30px;">
+											<div style="text-align: center; color: #7300e6;">
+												<i class="fas fa-4x fa-user-edit" aria-hidden="true"
+													style="margin-bottom: 20px;"></i>
+												<h2 style="margin-bottom: 20px; color: #7300e6;">Editeaza
+													Informatii Cont</h2>
+											</div>
+											<div class="form-group">
+												<label
+													style="color: #7300e6; font-weight: 600; font-size: 20px;">Nume</label>
+												<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+													<input type="text"
+														class="form-control validation input-edit"
+														th:field="*{firstName}" autofocus>
+													<div class="animation-input"></div>
+												</div>
+												<div th:if="${#fields.hasErrors('firstName')}"
+													th:errors="*{firstName}"></div>
+											</div>
+											<div class="form-group">
+												<label
+													style="color: #7300e6; font-weight: 600; font-size: 20px;">Prenume</label>
+												<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+													<input type="text"
+														class="form-control validation input-edit"
+														th:field="*{lastName}" autofocus>
+													<div class="animation-input"></div>
+												</div>
+												<div th:if="${#fields.hasErrors('lastName')}"
+													th:errors="*{lastName}"></div>
+											</div>
+											<div class="form-group">
+												<label
+													style="color: #7300e6; font-weight: 600; font-size: 20px;">Numar
+													Telefon</label>
+												<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+													<input type="text"
+														class="form-control validation input-edit"
+														th:field="*{phoneNumber}" autofocus>
+													<div class="animation-input"></div>
+												</div>
+												<div th:if="${#fields.hasErrors('phoneNumber')}"
+													th:errors="*{phoneNumber}"></div>
+											</div>
+											<div class="form-group">
+												<label
+													style="color: #7300e6; font-weight: 600; font-size: 20px;">Email</label>
+												<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+													<input type="text"
+														class="form-control validation input-edit"
+														th:field="*{email}" autofocus>
+													<div class="animation-input"></div>
+												</div>
+												<div th:if="${#fields.hasErrors('email')}"
+													th:errors="*{email}"></div>
+											</div>
+										</div>
+
+										<div class="profile-card-form__bottom">
+											<button type="submit"
+												class="profile-card__button button--blue">Salveaza</button>
+
+											<button
+												class="profile-card__button button--gray js-message-close">
+												Nu, multumesc</button>
+										</div>
+									</form>
+									<div class="profile-card__overlay js-message-close"></div>
+								</div>
+							</div>
 						</div>
-						<div class="skills">
-							<h1>Abilitati</h1>
-							<button type="button" data-toggle="modal"
-								data-target="#exampleModal" data-backdrop="static"
-								data-keyboard="false" class="btn btn-primary">Adauga
-								Abilitate</button>
-							<form id="myForm" th:action="@{/add_skill}" method="post"
-								th:object="${skill}">
-								<input type="hidden" name="accountInformationId"
-									th:value="${account.accountInformation.accountInformationId}" />
-								<div class="modal fade" id="exampleModal" tabindex="-1"
-									role="dialog" aria-labelledby="exampleModalLabel"
-									aria-hidden="true">
-									<div class="modal-dialog" role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h5 class="modal-title" id="exampleModalLabel">Adauga
-													Abilitate</h5>
-												<button type="button" class="close" data-dismiss="modal"
-													aria-label="Close">
-													<span aria-hidden="true">&times;</span>
-												</button>
-											</div>
-											<div class="modal-body">
-												<div class="row">
-													<div class="col-md-6">
-														<div class="form-group">
-															<label>Descriere</label>
-															<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-																<input type="text" name="description"
-																	th:field="*{description}"
-																	class="form-control validation" autofocus>
+					</div>
+					<div
+						th:if="${role.name eq 'ROLE_NUTRITIONIST' or role.name eq 'ROLE_TRAINER'}">
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-md-11 mx-auto">
+									<div class="row" style="margin-bottom: 40px;">
+										<div class="col-lg-6">
+											<div class="au-card m-b-30" style="min-height: 100%;">
+												<div class="au-card-inner">
+													<div class="education"
+														style="display: flex; justify-content: center; align-items: center;">
+														<h1 style="font-size: 45px; float: left; color: #7300e6;">Educatie</h1>
+														<button
+															style="float: right; margin: 0px !important; position: absolute; right: 50px; top: 50px;"
+															type="button" data-toggle="modal"
+															data-target="#addEducation" data-backdrop="static"
+															data-keyboard="false">
+															<i class="fas fa-plus edit-about"></i>
+														</button>
+														<form class="education" th:action="@{/add_education}"
+															method="post" th:object="${education}">
+															<input type="hidden" name="accountInformationId"
+																th:value="${account.accountInformation.accountInformationId}" />
+															<div class="modal fade" id="addEducation" tabindex="-1"
+																role="dialog" aria-labelledby="addEducationLabel"
+																aria-hidden="true">
+																<div class="modal-dialog" role="document">
+																	<div class="modal-content"
+																		style="box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6); border-radius: 12px; height: 580px;">
+																		<div class="modal-body">
+																			<div class="profile-card-form__container"
+																				style="margin-left: 30px; margin-right: 30px;">
+																				<div style="text-align: center; color: #7300e6;">
+																					<i class="fas fa-4x fa-user-plus"
+																						aria-hidden="true" style="margin-bottom: 20px;"></i>
+																					<h2 style="margin-bottom: 20px; color: #7300e6;">Adauga
+																						Educatie</h2>
+																				</div>
+																				<div class="form-group">
+																					<label
+																						style="color: #7300e6; font-weight: 600; font-size: 20px;">Institutie</label>
+																					<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+																						<input type="text" name="description"
+																							th:field="*{name}"
+																							class="form-control validatio input-edit2"
+																							style="width: auto;" autofocus
+																							onblur="justLetters(this.value,event,0)">
+
+																						<div th:class="showErrorNameCreate00"></div>
+																					</div>
+																				</div>
+																				<div class="form-group">
+																					<label
+																						style="color: #7300e6; font-weight: 600; font-size: 20px;">Oras</label>
+																					<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+																						<input type="text" name="name" th:field="*{city}"
+																							style="text-transform: capitalize; width: auto;"
+																							class="form-control validatio input-edit2"
+																							autofocus>
+
+																						<div id="cityEducation"></div>
+																					</div>
+																				</div>
+																				<div class="form-group">
+																					<label
+																						style="color: #7300e6; font-weight: 600; font-size: 20px;">Start</label>
+																					<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+																						<input type="text" name="start"
+																							th:field="*{start}"
+																							onblur="year(this, this.value,event,0)"
+																							class="form-control validatio input-edit2"
+																							style="width: auto;" autofocus>
+
+																						<div class="showErrorStartYearCreate01"></div>
+																						<div class="showErrorStartYearCreate02"></div>
+																						<div class="showErrorStartYearCreate03"></div>
+																					</div>
+																				</div>
+																				<div class="form-group">
+																					<label
+																						style="color: #7300e6; font-weight: 600; font-size: 20px;">Sfarsit</label>
+																					<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+																						<input type="text" name="end" th:field="*{end}"
+																							onblur="year(this, this.value,event,3)"
+																							class="form-control validatio input-edit2"
+																							style="width: auto;" autofocus>
+
+																						<div class="showErrorEndYearCreate31"></div>
+																						<div class="showErrorEndYearCreate32"></div>
+																						<div class="showErrorEndYearCreate33"></div>
+																					</div>
+																				</div>
+																				<div class="form-group">
+																					<div th:class="minimDuration"></div>
+																				</div>
+																			</div>
+																			<div class="profile-card-form__bottom">
+																				<button type="submit"
+																					class="profile-card__button button--blue">Salveaza</button>
+																				<button
+																					class="profile-card__button button--gray js-message-close"
+																					data-dismiss="modal">Nu, multumesc</button>
+																			</div>
+																		</div>
+																	</div>
+																</div>
 															</div>
-															<div id="showError"></div>
-															<div th:if="${#fields.hasErrors('description')}"
-																th:errors="*{description}"></div>
-														</div>
+														</form>
 													</div>
-												</div>
-											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-secondary"
-													data-dismiss="modal">Close</button>
-												<button class="btn btn-primary">Save changes</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</form>
-							<ul class="menu"
-								th:each="skill : ${account.accountInformation.skills}">
-								<li th:text="${skill.description}"></li>
-								<button data-toggle="modal" data-target="#modal-skill"
-									th:attr="data-target='#modal-skill'+${skill.skillId}">
-									<span class="glyphicon glyphicon-trash"></span>Editeaza
-									abilitatea
-								</button>
-								<button data-toggle="modal" data-target="#modal-skill-delete"
-									th:attr="data-target='#modal-skill-delete'+${skill.skillId}">
-									<span class="glyphicon glyphicon-trash"></span>Sterge
-									abilitatea
-								</button>
-								<form th:action="@{/delete_skill}" method="post">
-									<input type="hidden" name="skillId" th:value="${skill.skillId}" />
-									<div class="modal modal-skill-delete fade in"
-										th:id="modal-skill-delete+${skill.skillId}">
-										<div class="modal-dialog">
-											<div class="modal-content">
-												<div class="modal-header">
-													<button type="button" class="close" data-dismiss="modal"
-														aria-label="Close">
-														<span aria-hidden="true">×</span>
-													</button>
-													<h5 class="modal-title">Sterge educatia</h5>
-												</div>
-												<div class="modal-body">
-													<h3>Esti sigur ca vrei sa faci asta?</h3>
-												</div>
-												<div class="modal-footer">
-													<button type="button" class="btn btn-outline pull-left"
-														data-dismiss="modal">Close</button>
-													<button type="submit" class="btn btn-danger">Yes</button>
-												</div>
-											</div>
-										</div>
-									</div>
-								</form>
-								<form th:action="@{/update_skill}" method="post" id="editSkill">
-									<input type="hidden" name="skillId" th:value="${skill.skillId}" />
-									<div class="modal modal-skill fade in"
-										th:id="modal-skill+${skill.skillId}">
-										<div class="modal-dialog">
-											<div class="modal-content">
-												<div class="modal-header">
-													<button type="button" class="close" data-dismiss="modal"
-														aria-label="Close">
-														<span aria-hidden="true">×</span>
-													</button>
-													<h5 class="modal-title">Editeaza abilitateaaaaaaa</h5>
-												</div>
-												<div class="modal-body">
-													<div class="row">
-														<div class="col-md-6">
-															<div class="form-group">
-																<label>Descriere</label>
-																<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-																	<input type="text" id="description2"
-																		name="description2" th:value="${skill.description}"
-																		class="form-control validation" autofocus>
-																	<div id="showError2"></div>
+													<div class="timeline">
+														<div class="container right" th:each="ed : ${educations}">
+															<div class="content">
+																<div class="left-content">
+																	<h2 th:text="${ed.start + ' - ' + ed.end}"></h2>
+																	<h5 th:text="${'Institutie: ' + ed.name}"></h5>
+																	<h5 th:text="${'Oras: ' + ed.city}"></h5>
+																</div>
+																<div class="right-content">
+																	<div>
+																		<button
+																			th:onclick="|selecteazaEducatia('${ed.educationId}')|"
+																			data-toggle="modal" data-target="#modal-education"
+																			th:attr="data-target='#modal-education'+${ed.educationId}">
+																			<i class="fas fa-pen edit-about"></i>
+																		</button>
+																		<button class="ml-3" data-toggle="modal"
+																			data-target="#modal-education-delete"
+																			th:attr="data-target='#modal-education-delete'+${ed.educationId}">
+																			<i class="fas fa-trash-alt edit-about"></i>
+																		</button>
+																	</div>
+																	<form th:action="@{/update_education}" method="post"
+																		id="editEducation">
+																		<input type="hidden" name="educationId"
+																			th:value="${ed.educationId}" />
+																		<div class="modal modal-education fade in"
+																			th:id="modal-education+${ed.educationId}">
+																			<div class="modal-dialog">
+																				<div class="modal-content"
+																					style="box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6); border-radius: 12px; height: 600px;">
+																					<div class="modal-body">
+																						<div class="profile-card-form__container"
+																							style="margin-left: 30px; margin-right: 30px;">
+																							<div style="text-align: center; color: #7300e6;">
+																								<i class="fas fa-4x fa-user-edit"
+																									aria-hidden="true" style="margin-bottom: 20px;"></i>
+																								<h2 style="margin-bottom: 20px; color: #7300e6;">Editeaza
+																									Educatia</h2>
+																							</div>
+																							<div class="form-group">
+																								<label
+																									style="color: #7300e6; font-weight: 600; font-size: 20px;">Nume</label>
+																								<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+																									<input type="text" id="editName"
+																										onblur="justLetters2(this.value,event,3)"
+																										name="editName" th:value="${ed.name}"
+																										class="form-control validation input-edit2"
+																										style="width: auto;" autofocus>
+
+																									<div th:class="showErrorNameEdit31"></div>
+																								</div>
+																							</div>
+																							<div class="animation-input"></div>
+																							<div class="form-group">
+																								<label
+																									style="color: #7300e6; font-weight: 600; font-size: 20px;">Oras</label>
+																								<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+																									<input type="text" id="editCity"
+																										name="editCity"
+																										style="text-transform: capitalize; width: auto;"
+																										th:value="${ed.city}"
+																										class="form-control validation input-edit2"
+																										autofocus>
+
+																								</div>
+																							</div>
+																							<div class="form-group">
+																								<label
+																									style="color: #7300e6; font-weight: 600; font-size: 20px;">Inceput</label>
+																								<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+																									<input type="text" id="editStart"
+																										name="editStart"
+																										onblur="yearValidation(this,this.value,event,6)"
+																										th:value="${ed.start}"
+																										class="form-control validation input-edit2"
+																										style="width: auto;" autofocus>
+																									<div
+																										th:class="showErrorStartYearEdit61+${ed.educationId}"></div>
+																									<div
+																										th:class="showErrorStartYearEdit62+${ed.educationId}"></div>
+																									<div
+																										th:class="showErrorStartYearEdit63+${ed.educationId}"></div>
+
+																								</div>
+																							</div>
+																							<div class="form-group">
+																								<label
+																									style="color: #7300e6; font-weight: 600; font-size: 20px;">Sfarsit</label>
+																								<div
+																									class="input-group mb-2 mr-sm-2 mb-sm-0 edit-input">
+																									<input type="text" id="editEnd" name="editEnd"
+																										onblur="yearValidation(this,this.value,event,9)"
+																										th:value="${ed.end}"
+																										class="form-control validation input-edit2"
+																										style="width: auto;" autofocus>
+																									<div
+																										th:class="showErrorEndYearEdit91+${ed.educationId}"></div>
+																									<div
+																										th:class="showErrorEndYearEdit92+${ed.educationId}"></div>
+																									<div
+																										th:class="showErrorEndYearEdit93+${ed.educationId}"></div>
+
+																								</div>
+																							</div>
+																							<div class="form-group">
+																								<div th:class="minimDuration"></div>
+																							</div>
+																						</div>
+																					</div>
+																					<div class="profile-card-form__bottom">
+																						<button type="submit"
+																							class="profile-card__button button--blue">Salveaza</button>
+																						<button
+																							class="profile-card__button button--gray js-message-close"
+																							data-dismiss="modal">Nu, multumesc</button>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</form>
+																	<form th:action="@{/delete_education}" method="post">
+																		<input type="hidden" name="educationId"
+																			th:value="${ed.educationId}" />
+																		<div class="modal modal-education-delete fade in"
+																			th:id="modal-education-delete+${ed.educationId}">
+																			<div class="modal-dialog">
+																				<div class="modal-content"
+																					style="box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6); border-radius: 12px; height: 270px;">
+																					<div class="modal-body">
+																						<div class="profile-card-form__container"
+																							style="margin-left: 30px; margin-right: 30px;">
+																							<div style="text-align: center; color: #7300e6;">
+																								<i class="fas fa-4x fa-user-minus"
+																									aria-hidden="true" style="margin-bottom: 20px;"></i>
+																								<h2 style="margin-bottom: 20px; color: #7300e6;">Sterge
+																									Educatia</h2>
+																							</div>
+																							<div class="form-group">
+																								<h3 style="text-align: center;">Educatia
+																									selectata va fi stearsa</h3>
+																							</div>
+																						</div>
+																					</div>
+																					<div class="profile-card-form__bottom">
+																						<button type="submit"
+																							class="profile-card__button button--blue">Sterge</button>
+																						<button
+																							class="profile-card__button button--gray js-message-close"
+																							data-dismiss="modal">Nu, multumesc</button>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</form>
 																</div>
 															</div>
 														</div>
 													</div>
 												</div>
-												<div class="modal-footer">
-													<button type="button" class="btn btn-outline pull-left"
-														data-dismiss="modal">Close</button>
-													<button class="btn btn-success">Salveaza</button>
+											</div>
+										</div>
+										<div class="col-lg-6">
+											<div class="au-card m-b-30" style="min-height: 100%;">
+												<div class="au-card-inner">
+													<div class="experiences"
+														style="display: flex; justify-content: center; align-items: center;">
+														<h1 style="font-size: 45px; float: left; color: #7300e6;">Experienta</h1>
+														<button
+															style="float: right; margin: 0px !important; position: absolute; right: 50px; top: 50px;"
+															type="button" data-toggle="modal"
+															data-target="#addExperience" data-backdrop="static"
+															data-keyboard="false">
+															<i class="fas fa-plus edit-about"></i>
+														</button>
+														<form class="experience" th:action="@{/add_experience}"
+															method="post" th:object="${experience}">
+															<input type="hidden" name="accountInformationId"
+																th:value="${account.accountInformation.accountInformationId}" />
+															<div class="modal fade" id="addExperience" tabindex="-1"
+																role="dialog" aria-labelledby="addExperienceLabel"
+																aria-hidden="true">
+																<div class="modal-dialog" role="document">
+																	<div class="modal-content"
+																		style="box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6); border-radius: 12px; height: 600px;">
+																		<div class="modal-body">
+																			<div class="profile-card-form__container"
+																				style="margin-left: 30px; margin-right: 30px;">
+																				<div style="text-align: center; color: #7300e6;">
+																					<i class="fas fa-4x fa-user-plus"
+																						aria-hidden="true" style="margin-bottom: 20px;"></i>
+																					<h2 style="margin-bottom: 20px; color: #7300e6;">Adauga
+																						Experienta</h2>
+																				</div>
+																				<div class="form-group">
+																					<label
+																						style="color: #7300e6; font-weight: 600; font-size: 20px;">Institutie</label>
+																					<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+																						<input type="text" id="expName" name="expName"
+																							th:field="*{name}"
+																							class="form-control validation input-edit2"
+																							style="width: auto;" autofocus
+																							onblur="justLetters(this.value,event,1)">
+
+																						<div th:class="showErrorNameCreate10"></div>
+																					</div>
+																				</div>
+																				<div class="form-group">
+																					<label
+																						style="color: #7300e6; font-weight: 600; font-size: 20px;">Oras</label>
+																					<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+																						<input type="text" id="expCity" name="expCity"
+																							th:field="*{city}"
+																							style="text-transform: capitalize; width: auto;"
+																							class="form-control validation input-edit2"
+																							autofocus>
+
+																					</div>
+																				</div>
+																				<div class="form-group">
+																					<label
+																						style="color: #7300e6; font-weight: 600; font-size: 20px;">Start</label>
+																					<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+																						<input type="text" id="expStart" name="expStart"
+																							th:field="*{start}"
+																							onblur="year(this,this.value,event,1)"
+																							class="form-control validation input-edit2"
+																							style="width: auto;" autofocus>
+
+																						<div class="showErrorStartYearCreate11"></div>
+																						<div class="showErrorStartYearCreate12"></div>
+																						<div class="showErrorStartYearCreate13"></div>
+																					</div>
+																				</div>
+																				<div class="form-group">
+																					<label
+																						style="color: #7300e6; font-weight: 600; font-size: 20px;">Sfarsit</label>
+																					<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+																						<input type="text" id="expEnd" name="expEnd"
+																							th:field="*{end}"
+																							onblur="year(this,this.value,event,2)"
+																							class="form-control validation input-edit2"
+																							style="width: auto;" autofocus>
+
+																						<div class="showErrorEndYearCreate21"></div>
+																						<div class="showErrorEndYearCreate22"></div>
+																						<div class="showErrorEndYearCreate23"></div>
+																					</div>
+																				</div>
+																				<div class="form-group">
+																					<div th:class="minimDuration"></div>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="profile-card-form__bottom">
+																			<button type="submit"
+																				class="profile-card__button button--blue">Salveaza</button>
+																			<button
+																				class="profile-card__button button--gray js-message-close"
+																				data-dismiss="modal">Nu, multumesc</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</form>
+													</div>
+													<div class="timeline">
+														<div class="container right"
+															th:each="experience : ${experiences}">
+															<div class="content">
+																<div class="left-content">
+																	<h2
+																		th:text="${experience.start + ' - ' + experience.end}"></h2>
+																	<h5 th:text="${'Institutie: ' + experience.name}"></h5>
+																	<h5 th:text="${'Oras: ' + experience.city}"></h5>
+																</div>
+																<div class="right-content">
+																	<div>
+																		<button
+																			th:onclick="|selecteazaEducatia('${experience.experienceId}')|"
+																			data-toggle="modal" data-target="#modal-experience"
+																			th:attr="data-target='#modal-experience'+${experience.experienceId}">
+																			<i class="fas fa-pen edit-about"></i>
+																		</button>
+																		<button class="ml-3" data-toggle="modal"
+																			data-target="#modal-experience-delete"
+																			th:attr="data-target='#modal-experience-delete'+${experience.experienceId}">
+																			<i class="fas fa-trash-alt edit-about"></i>
+																		</button>
+																		<form th:action="@{/delete_experience}" method="post">
+																			<input type="hidden" name="experienceId"
+																				th:value="${experience.experienceId}" />
+																			<div class="modal modal-experience-delete fade in"
+																				th:id="modal-experience-delete+${experience.experienceId}">
+																				<div class="modal-dialog">
+																					<div class="modal-content"
+																						style="box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6); border-radius: 12px; height: 270px;">
+																						<div class="modal-body">
+																							<div class="profile-card-form__container"
+																								style="margin-left: 30px; margin-right: 30px;">
+																								<div style="text-align: center; color: #7300e6;">
+																									<i class="fas fa-4x fa-user-minus"
+																										aria-hidden="true"
+																										style="margin-bottom: 20px;"></i>
+																									<h2
+																										style="margin-bottom: 20px; color: #7300e6;">Sterge
+																										Experienta</h2>
+																								</div>
+																								<div class="form-group">
+																									<h3 style="text-align: center;">Experienta
+																										selectata va fi stearsa</h3>
+																								</div>
+																							</div>
+																						</div>
+																						<div class="profile-card-form__bottom">
+																							<button type="submit"
+																								class="profile-card__button button--blue">Sterge</button>
+																							<button
+																								class="profile-card__button button--gray js-message-close"
+																								data-dismiss="modal">Nu, multumesc</button>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</form>
+																		<form th:action="@{/update_experience}" method="post"
+																			id="editExperience">
+																			<input type="hidden" name="experienceId"
+																				th:value="${experience.experienceId}" />
+																			<div class="modal modal-experience fade in"
+																				th:id="modal-experience+${experience.experienceId}">
+																				<div class="modal-dialog">
+																					<div class="modal-content"
+																						style="box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6); border-radius: 12px; height: 540px;">
+																						<div class="modal-body">
+																							<div class="profile-card-form__container"
+																								style="margin-left: 30px; margin-right: 30px;">
+																								<div style="text-align: center; color: #7300e6;">
+																									<i class="fas fa-4x fa-user-edit2"
+																										aria-hidden="true"
+																										style="margin-bottom: 20px;"></i>
+																									<h2
+																										style="margin-bottom: 20px; color: #7300e6;">Editeaza
+																										Experienta</h2>
+																								</div>
+																								<div class="form-group">
+																									<label
+																										style="color: #7300e6; font-weight: 600; font-size: 20px;">Nume</label>
+																									<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+																										<input type="text" id="expEditName"
+																											name="expEditName"
+																											th:value="${experience.name}"
+																											class="form-control validation input-edit2"
+																											style="width: auto;" autofocus
+																											onblur="justLetters2(this.value,event,1)">
+
+																										<div th:class="showErrorNameEdit11"></div>
+																									</div>
+																								</div>
+																								<div class="form-group">
+																									<label
+																										style="color: #7300e6; font-weight: 600; font-size: 20px;">Oras</label>
+																									<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+																										<input type="text" id="expEditCity"
+																											name="expEditCity"
+																											th:value="${experience.city}"
+																											class="form-control validation input-edit2"
+																											style="width: auto;" autofocus>
+
+																									</div>
+																								</div>
+																								<div class="form-group">
+																									<label
+																										style="color: #7300e6; font-weight: 600; font-size: 20px;">Inceput</label>
+																									<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+																										<input type="text" id="expEditStart"
+																											name="editStart"
+																											th:value="${experience.start}"
+																											class="form-control validation input-edit2"
+																											style="width: auto;" autofocus
+																											onblur="yearValidation(this,this.value,event,7)">
+
+																										<div
+																											th:class="showErrorStartYearEdit71+${experience.experienceId}"></div>
+																										<div
+																											th:class="showErrorStartYearEdit72+${experience.experienceId}"></div>
+																										<div
+																											th:class="showErrorStartYearEdit73+${experience.experienceId}"></div>
+
+																									</div>
+																								</div>
+																								<div class="form-group">
+																									<label
+																										style="color: #7300e6; font-weight: 600; font-size: 20px;">Sfarsit</label>
+																									<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+																										<input type="text" id="expEditEnd"
+																											name="editEnd" th:value="${experience.end}"
+																											class="form-control validation input-edit2"
+																											style="width: auto;" autofocus
+																											onblur="yearValidation(this,this.value,event,5)">
+
+																										<div
+																											th:class="showErrorEndYearEdit51+${experience.experienceId}"></div>
+																										<div
+																											th:class="showErrorEndYearEdit52+${experience.experienceId}"></div>
+																										<div
+																											th:class="showErrorEndYearEdit53+${experience.experienceId}"></div>
+																									</div>
+																								</div>
+																								<div class="form-group">
+																									<div th:class="minimDuration"></div>
+																								</div>
+																							</div>
+																						</div>
+																						<div class="profile-card-form__bottom">
+																							<button type="submit"
+																								class="profile-card__button button--blue">Salveaza</button>
+																							<button
+																								class="profile-card__button button--gray js-message-close"
+																								data-dismiss="modal">Nu, multumesc</button>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</form>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-								</form>
-							</ul>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-11 mx-auto">
+									<div class="row" style="margin-bottom: 40px;">
+										<div class="col-lg-6">
+											<div class="au-card m-b-30" style="min-height: 100%;">
+												<div class="au-card-inner">
+													<div class="skills"
+														style="display: flex; justify-content: center; align-items: center;">
+														<h1 style="float: left; color: #7300e6; font-size: 45px;">Abilitati</h1>
+														<button
+															style="float: right; margin: 0px !important; position: absolute; right: 50px; top: 50px;"
+															type="button" data-toggle="modal"
+															data-target="#exampleModal" data-backdrop="static"
+															data-keyboard="false">
+															<i class="fas fa-plus edit-about"></i>
+														</button>
+														<form id="myForm" th:action="@{/add_skill}" method="post"
+															th:object="${skill}">
+															<input type="hidden" name="accountInformationId"
+																th:value="${account.accountInformation.accountInformationId}" />
+															<div class="modal fade" id="exampleModal" tabindex="-1"
+																role="dialog" aria-labelledby="exampleModalLabel"
+																aria-hidden="true">
+																<div class="modal-dialog" role="document">
+																	<div class="modal-content"
+																		style="box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6); border-radius: 12px; height: 315px;">
+																		<div class="modal-body">
+																			<div class="profile-card-form__container"
+																				style="margin-left: 30px; margin-right: 30px;">
+																				<div style="text-align: center; color: #7300e6;">
+																					<i class="fas fa-4x fa-user-plus"
+																						aria-hidden="true" style="margin-bottom: 20px;"></i>
+																					<h2 style="margin-bottom: 20px; color: #7300e6;">Adauga
+																						Abilitate</h2>
+																				</div>
+																				<div class="form-group">
+																					<label
+																						style="color: #7300e6; font-weight: 600; font-size: 20px;">Descriere</label>
+																					<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+																						<input type="text" name="description"
+																							th:field="*{description}"
+																							class="form-control validation input-edit2"
+																							style="width: auto;" autofocus>
+																					</div>
+																					<div id="showError"></div>
+																					<div th:if="${#fields.hasErrors('description')}"
+																						th:errors="*{description}"></div>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="profile-card-form__bottom">
+																			<button type="submit"
+																				class="profile-card__button button--blue">Salveaza</button>
+																			<button
+																				class="profile-card__button button--gray js-message-close"
+																				data-dismiss="modal">Nu, multumesc</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</form>
+													</div>
+													<div
+														style="padding: 10px 40px; position: relative; background-color: inherit;"
+														th:each="skill : ${account.accountInformation.skills}">
+														<div class="content">
+															<div class="left-content">
+																<h3 th:text="${skill.description}"></h3>
+															</div>
+															<div class="right-content">
+																<button data-toggle="modal" data-target="#modal-skill"
+																	th:attr="data-target='#modal-skill'+${skill.skillId}">
+																	<i class="fas fa-pen edit-about"></i>
+																</button>
+																<button class="ml-3" data-toggle="modal"
+																	data-target="#modal-skill-delete"
+																	th:attr="data-target='#modal-skill-delete'+${skill.skillId}">
+																	<i class="fas fa-trash-alt edit-about"></i>
+																</button>
+																<form th:action="@{/delete_skill}" method="post">
+																	<input type="hidden" name="skillId"
+																		th:value="${skill.skillId}" />
+																	<div class="modal modal-skill-delete fade in"
+																		th:id="modal-skill-delete+${skill.skillId}">
+																		<div class="modal-dialog">
+																			<div class="modal-content"
+																				style="box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6); border-radius: 12px; height: 270px;">
+																				<div class="modal-body">
+																					<div class="profile-card-form__container"
+																						style="margin-left: 30px; margin-right: 30px;">
+																						<div style="text-align: center; color: #7300e6;">
+																							<i class="fas fa-4x fa-user-minus"
+																								aria-hidden="true" style="margin-bottom: 20px;"></i>
+																							<h2 style="margin-bottom: 20px; color: #7300e6;">Sterge
+																								Abilitatea</h2>
+																						</div>
+																						<div class="form-group">
+																							<h3 style="text-align: center;">Abilitatea
+																								selectata va fi stearsa</h3>
+																						</div>
+																					</div>
+																				</div>
+																				<div class="profile-card-form__bottom">
+																					<button type="submit"
+																						class="profile-card__button button--blue">Sterge</button>
+																					<button
+																						class="profile-card__button button--gray js-message-close"
+																						data-dismiss="modal">Nu, multumesc</button>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</form>
+																<form th:action="@{/update_skill}" method="post"
+																	id="editSkill">
+																	<input type="hidden" name="skillId"
+																		th:value="${skill.skillId}" />
+																	<div class="modal modal-skill fade in"
+																		th:id="modal-skill+${skill.skillId}">
+																		<div class="modal-dialog">
+																			<div class="modal-content"
+																				style="box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6); border-radius: 12px; height: 315px;">
+																				<div class="modal-body">
+																					<div class="profile-card-form__container"
+																						style="margin-left: 30px; margin-right: 30px;">
+																						<div style="text-align: center; color: #7300e6;">
+																							<i class="fas fa-4x fa-user-edit"
+																								aria-hidden="true" style="margin-bottom: 20px;"></i>
+																							<h2 style="margin-bottom: 20px; color: #7300e6;">Editeaza
+																								Abilitatea</h2>
+																						</div>
+																						<div class="form-group">
+																							<label
+																								style="color: #7300e6; font-weight: 600; font-size: 20px;">Descriere</label>
+																							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+																								<input type="text" id="description2"
+																									name="description2"
+																									th:value="${skill.description}"
+																									class="form-control validation input-edit"
+																									style="width: auto;" autofocus>
+																								<div id="showError2"></div>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																				<div class="profile-card-form__bottom">
+																					<button type="submit"
+																						class="profile-card__button button--blue">Salveaza</button>
+																					<button
+																						class="profile-card__button button--gray js-message-close"
+																						data-dismiss="modal">Nu, multumesc</button>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</form>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-6">
+											<div class="au-card m-b-30" style="min-height: 100%;">
+												<div class="au-card-inner">
+													<div class="about-me"
+														style="display: flex; justify-content: center; align-items: center;">
+														<h1 style="float: left; color: #7300e6; font-size: 45px;">Despre
+															mine</h1>
+														<button
+															style="float: right; margin: 0px !important; position: absolute; right: 50px; top: 50px;"
+															type="button" data-toggle="modal" data-target="#about-me"
+															data-backdrop="static" data-keyboard="false">
+															<i class="fas fa-pen edit-about"></i>
+														</button>
+													</div>
+													<div
+														style="padding: 30px 40px; position: relative; background-color: inherit;">
+														<h5 class="content"
+															th:text="${account.accountInformation.description}"></h5>
+													</div>
+													<form id="aboutMe" th:action="@{/update_about_me}"
+														method="post" th:object=${account.accountInformation}>
+														<input type="hidden" name="accountInformationId"
+															th:value="${account.accountInformation.accountInformationId}" />
+														<div class="modal fade" id="about-me" tabindex="-1"
+															role="dialog" aria-labelledby="about-meLabel"
+															aria-hidden="true">
+															<div class="modal-dialog" role="document">
+																<div class="modal-content"
+																	style="box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6); border-radius: 12px; height: 315px;">
+																	<div class="modal-body">
+																		<div class="profile-card-form__container"
+																			style="margin-left: 30px; margin-right: 30px;">
+																			<div style="text-align: center; color: #7300e6;">
+																				<i class="fas fa-4x fa-user-edit" aria-hidden="true"
+																					style="margin-bottom: 20px;"></i>
+																				<h2 style="margin-bottom: 20px; color: #7300e6;">Editeaza
+																					Descrierea</h2>
+																			</div>
+																			<div class="form-group">
+																				<label
+																					style="color: #7300e6; font-weight: 600; font-size: 20px;">Descriere</label>
+																				<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+																					<input type="text"
+																						id="descriptionAccountInformation"
+																						name="descriptionAccountInformation"
+																						th:value="${account.accountInformation.description}"
+																						class="form-control validation input-edit2"
+																						style="width: auto;" autofocus>
+																					<div id="showErrorAboutMe"></div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="profile-card-form__bottom">
+																		<button type="submit"
+																			class="profile-card__button button--blue">Salveaza</button>
+																		<button
+																			class="profile-card__button button--gray js-message-close"
+																			data-dismiss="modal">Nu, multumesc</button>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</form>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -682,5 +1072,54 @@ ul.menu li {
 	<script
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 	<script type="text/javascript" th:src="@{/js/validationcv.js}"></script>
+	<script src="https://code.highcharts.com/modules/data.js"></script>
+	<script src="https://code.highcharts.com/stock/highstock.js"></script>
+	<script src="https://code.highcharts.com/modules/drilldown.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script src="https://code.highcharts.com/modules/export-data.js"></script>
+	<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+	<script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
+	<script th:src="@{/vendor/slick/slick.min.js}">
+		
+	</script>
+	<script th:src="@{/vendor/wow/wow.min.js}"></script>
+	<script th:src="@{/vendor/animsition/animsition.min.js}"></script>
+	<script
+		th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
+		
+	</script>
+	<script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
+	<script th:src="@{/vendor/counter-up/jquery.counterup.min.js}">
+		
+	</script>
+	<script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
+	<script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
+	<script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
+	<script th:src="@{/vendor/select2/select2.min.js}">
+		
+	</script>
+
+	<script th:src="@{/js/main.js}"></script>
+	<script>
+		var messageBox = document.querySelector('.js-message');
+		var btn = document.querySelector('.js-message-btn');
+		var card = document.querySelector('.js-profile-card');
+		var closeBtn = document.querySelectorAll('.js-message-close');
+
+		btn.addEventListener('click', function(e) {
+			e.preventDefault();
+			card.classList.add('active');
+		});
+
+		closeBtn.forEach(function(element, index) {
+			console.log(element);
+			element.addEventListener('click', function(e) {
+				e.preventDefault();
+				card.classList.remove('active');
+			});
+		});
+	</script>
 </body>
 </html>

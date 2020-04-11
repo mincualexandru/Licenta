@@ -196,17 +196,22 @@ public class TrainerController {
 	@PostMapping(path = { "/create_training_plan_save" })
 	public String createTrainingPlanSave(Model model, @Valid @ModelAttribute("trainingPlan") HelperPlan trainingPlan,
 			BindingResult bindingResult, RedirectAttributes attr) {
-		if (bindingResult.hasErrors()) {
-			attr.addFlashAttribute("org.springframework.validation.BindingResult.trainingPlan", bindingResult);
-			attr.addFlashAttribute("trainingPlan", trainingPlan);
-			return "redirect:/create_training_plan";
+		Account trainer = accountService.getAccountConnected();
+		if (trainer.isActive()) {
+			if (bindingResult.hasErrors()) {
+				attr.addFlashAttribute("org.springframework.validation.BindingResult.trainingPlan", bindingResult);
+				attr.addFlashAttribute("trainingPlan", trainingPlan);
+				return "redirect:/create_training_plan";
+			} else {
+				trainingPlan.setHelper(trainer);
+				trainingPlan.setTypeOfPlan("Antrenament");
+				helperPlanService.save(trainingPlan);
+				return "redirect:/training_plans";
+			}
 		} else {
-			Account trainer = accountService.getAccountConnected();
-			trainingPlan.setHelper(trainer);
-			trainingPlan.setTypeOfPlan("Antrenament");
-			helperPlanService.save(trainingPlan);
-			return "redirect:/training_plans";
+			return "redirect:/trainer";
 		}
+
 	}
 
 	@GetMapping(path = { "/edit_training_plan/{id}" })
@@ -234,19 +239,24 @@ public class TrainerController {
 	@PostMapping(path = { "/edit_training_plan_save" })
 	public String editTrainingPlanSave(@Valid @ModelAttribute("trainingPlan") HelperPlan trainingPlan,
 			BindingResult bindingResult, RedirectAttributes attr, Model model, @RequestParam Integer trainingPlanId) {
-		if (bindingResult.hasErrors()) {
-			attr.addFlashAttribute("org.springframework.validation.BindingResult.trainingPlan", bindingResult);
-			attr.addFlashAttribute("trainingPlan", trainingPlan);
-			return "redirect:/edit_training_plan/" + trainingPlanId;
+		Account account = accountService.getAccountConnected();
+		if (account.isActive()) {
+			if (bindingResult.hasErrors()) {
+				attr.addFlashAttribute("org.springframework.validation.BindingResult.trainingPlan", bindingResult);
+				attr.addFlashAttribute("trainingPlan", trainingPlan);
+				return "redirect:/edit_training_plan/" + trainingPlanId;
+			} else {
+				HelperPlan oldTrainingPlan = helperPlanService.findById(trainingPlanId).get();
+				oldTrainingPlan.setForWho(trainingPlan.getForWho());
+				oldTrainingPlan.setName(trainingPlan.getName());
+				oldTrainingPlan.setPrice(trainingPlan.getPrice());
+				oldTrainingPlan.setDateOfCreation(oldTrainingPlan.getDateOfCreation());
+				oldTrainingPlan.setHelper(oldTrainingPlan.getHelper());
+				helperPlanService.save(oldTrainingPlan);
+				return "redirect:/training_plans";
+			}
 		} else {
-			HelperPlan oldTrainingPlan = helperPlanService.findById(trainingPlanId).get();
-			oldTrainingPlan.setForWho(trainingPlan.getForWho());
-			oldTrainingPlan.setName(trainingPlan.getName());
-			oldTrainingPlan.setPrice(trainingPlan.getPrice());
-			oldTrainingPlan.setDateOfCreation(oldTrainingPlan.getDateOfCreation());
-			oldTrainingPlan.setHelper(oldTrainingPlan.getHelper());
-			helperPlanService.save(oldTrainingPlan);
-			return "redirect:/training_plans";
+			return "redirect:/trainer";
 		}
 	}
 
@@ -277,14 +287,19 @@ public class TrainerController {
 	public String createExerciseForTrainingPlanSave(Model model, @RequestParam Integer trainingPlanId,
 			@Valid @ModelAttribute("exercise") Exercise exercise, BindingResult bindingResult,
 			RedirectAttributes attr) {
-		if (bindingResult.hasErrors()) {
-			attr.addFlashAttribute("org.springframework.validation.BindingResult.exercise", bindingResult);
-			attr.addFlashAttribute("exercise", exercise);
-			return "redirect:/create_exercise_for_training_plan/" + trainingPlanId;
+		Account account = accountService.getAccountConnected();
+		if (account.isActive()) {
+			if (bindingResult.hasErrors()) {
+				attr.addFlashAttribute("org.springframework.validation.BindingResult.exercise", bindingResult);
+				attr.addFlashAttribute("exercise", exercise);
+				return "redirect:/create_exercise_for_training_plan/" + trainingPlanId;
+			} else {
+				exercise.setTrainingPlan(helperPlanService.findById(trainingPlanId).get());
+				exerciseService.save(exercise);
+				return "redirect:/training_plans";
+			}
 		} else {
-			exercise.setTrainingPlan(helperPlanService.findById(trainingPlanId).get());
-			exerciseService.save(exercise);
-			return "redirect:/training_plans";
+			return "redirect:/trainer";
 		}
 	}
 
@@ -322,49 +337,75 @@ public class TrainerController {
 	public String addPhotoForExerciseSave(Model model, @RequestParam Integer exerciseId,
 			@RequestParam("imageFile") MultipartFile imageFile,
 			@ModelAttribute("exerciseImage") ExerciseImage exerciseImage) {
-		exerciseImage.setFileName(imageFile.getOriginalFilename());
-		Exercise exercise = exerciseService.findById(exerciseId).get();
-		exerciseImage.setExercise(exercise);
-		try {
-			exerciseImageService.saveImage(imageFile, exerciseImage);
-			exerciseImage.setPath("/images/");
-		} catch (Exception e) {
-			e.printStackTrace();
+		Account account = accountService.getAccountConnected();
+		if (account.isActive()) {
+			exerciseImage.setFileName(imageFile.getOriginalFilename());
+			Exercise exercise = exerciseService.findById(exerciseId).get();
+			exerciseImage.setExercise(exercise);
+			try {
+				exerciseImageService.saveImage(imageFile, exerciseImage);
+				exerciseImage.setPath("/images/");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			;
+			exerciseImageService.save(exerciseImage);
+			return "redirect:/view_exercise/" + exerciseId;
+		} else {
+			return "redirect:/trainer";
 		}
-		;
-		exerciseImageService.save(exerciseImage);
-		return "redirect:/view_exercise/" + exerciseId;
 	}
 
 	@PostMapping(path = { "/add_advice_for_exercise_save" })
 	public String addAdviceForExerciseSave(Model model, @ModelAttribute("exerciseAdvice") ExerciseAdvice exerciseAdvice,
 			@RequestParam Integer exerciseId) {
-		exerciseAdvice.setExercise(exerciseService.findById(exerciseId).get());
-		exerciseAdviceService.save(exerciseAdvice);
-		return "redirect:/view_exercise/" + exerciseId;
+		Account account = accountService.getAccountConnected();
+		if (account.isActive()) {
+			exerciseAdvice.setExercise(exerciseService.findById(exerciseId).get());
+			exerciseAdviceService.save(exerciseAdvice);
+			return "redirect:/view_exercise/" + exerciseId;
+		} else {
+			return "redirect:/trainer";
+		}
 	}
 
 	@PostMapping(path = { "/delete_photo_from_exercise" })
 	public String deletePhotoFromExercise(Model model, @RequestParam Integer exerciseId,
 			@RequestParam Integer photoId) {
-		exerciseImageService.deleteByExerciseImagesIdAndExerciseExerciseId(photoId, exerciseId);
-		return "redirect:/view_exercise/" + exerciseId;
+		Account account = accountService.getAccountConnected();
+		if (account.isActive()) {
+			exerciseImageService.deleteByExerciseImagesIdAndExerciseExerciseId(photoId, exerciseId);
+			return "redirect:/view_exercise/" + exerciseId;
+		} else {
+			return "redirect:/trainer";
+		}
 	}
 
 	@PostMapping(path = { "/edit_advice_exercise" })
 	public String editAdviceExercise(Model model, @RequestParam Integer exerciseId, @RequestParam Integer adviceId,
 			@RequestParam String editName) {
-		ExerciseAdvice advice = exerciseAdviceService.findByExerciseAdviceIdAndExerciseExerciseId(adviceId, exerciseId);
-		advice.setAdvice(editName);
-		exerciseAdviceService.save(advice);
-		return "redirect:/view_exercise/" + exerciseId;
+		Account account = accountService.getAccountConnected();
+		if (account.isActive()) {
+			ExerciseAdvice advice = exerciseAdviceService.findByExerciseAdviceIdAndExerciseExerciseId(adviceId,
+					exerciseId);
+			advice.setAdvice(editName);
+			exerciseAdviceService.save(advice);
+			return "redirect:/view_exercise/" + exerciseId;
+		} else {
+			return "redirect:/trainer";
+		}
 	}
 
 	@PostMapping(path = { "/delete_advice_exercise" })
 	public String deleteAdviceExercise(Model model, @RequestParam Integer exerciseId, @RequestParam Integer adviceId) {
-		exerciseAdviceService
-				.delete(exerciseAdviceService.findByExerciseAdviceIdAndExerciseExerciseId(adviceId, exerciseId));
-		return "redirect:/view_exercise/" + exerciseId;
+		Account account = accountService.getAccountConnected();
+		if (account.isActive()) {
+			exerciseAdviceService
+					.delete(exerciseAdviceService.findByExerciseAdviceIdAndExerciseExerciseId(adviceId, exerciseId));
+			return "redirect:/view_exercise/" + exerciseId;
+		} else {
+			return "redirect:/trainer";
+		}
 	}
 
 	private boolean checkId(String userDeviceId) {

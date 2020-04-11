@@ -138,16 +138,21 @@ public class NutritionistController {
 	@PostMapping(path = { "/create_diet_plan_save" })
 	public String createDietPlanSave(Model model, @Valid @ModelAttribute("dietPlan") HelperPlan dietPlan,
 			BindingResult bindingResult, RedirectAttributes attr) {
-		if (bindingResult.hasErrors()) {
-			attr.addFlashAttribute("org.springframework.validation.BindingResult.dietPlan", bindingResult);
-			attr.addFlashAttribute("dietPlan", dietPlan);
-			return "redirect:/create_diet_plan";
+		Account account = accountService.getAccountConnected();
+		if (account.isActive()) {
+			if (bindingResult.hasErrors()) {
+				attr.addFlashAttribute("org.springframework.validation.BindingResult.dietPlan", bindingResult);
+				attr.addFlashAttribute("dietPlan", dietPlan);
+				return "redirect:/create_diet_plan";
+			} else {
+				Account trainer = accountService.getAccountConnected();
+				dietPlan.setHelper(trainer);
+				dietPlan.setTypeOfPlan("Dieta");
+				helperPlanService.save(dietPlan);
+				return "redirect:/diet_plans";
+			}
 		} else {
-			Account trainer = accountService.getAccountConnected();
-			dietPlan.setHelper(trainer);
-			dietPlan.setTypeOfPlan("Dieta");
-			helperPlanService.save(dietPlan);
-			return "redirect:/diet_plans";
+			return "redirect:/nutritionist";
 		}
 	}
 
@@ -175,19 +180,24 @@ public class NutritionistController {
 	@PostMapping(path = { "/edit_diet_plan_save" })
 	public String editDietPlanSave(@Valid @ModelAttribute("dietPlan") HelperPlan dietPlan, BindingResult bindingResult,
 			RedirectAttributes attr, Model model, @RequestParam Integer dietPlanId) {
-		if (bindingResult.hasErrors()) {
-			attr.addFlashAttribute("org.springframework.validation.BindingResult.dietPlan", bindingResult);
-			attr.addFlashAttribute("dietPlan", dietPlan);
-			return "redirect:/edit_diet_plan/" + dietPlanId;
+		Account account = accountService.getAccountConnected();
+		if (account.isActive()) {
+			if (bindingResult.hasErrors()) {
+				attr.addFlashAttribute("org.springframework.validation.BindingResult.dietPlan", bindingResult);
+				attr.addFlashAttribute("dietPlan", dietPlan);
+				return "redirect:/edit_diet_plan/" + dietPlanId;
+			} else {
+				HelperPlan oldDietPlan = helperPlanService.findById(dietPlanId).get();
+				oldDietPlan.setForWho(dietPlan.getForWho());
+				oldDietPlan.setName(dietPlan.getName());
+				oldDietPlan.setPrice(dietPlan.getPrice());
+				oldDietPlan.setDateOfCreation(oldDietPlan.getDateOfCreation());
+				oldDietPlan.setHelper(oldDietPlan.getHelper());
+				helperPlanService.save(oldDietPlan);
+				return "redirect:/diet_plans";
+			}
 		} else {
-			HelperPlan oldDietPlan = helperPlanService.findById(dietPlanId).get();
-			oldDietPlan.setForWho(dietPlan.getForWho());
-			oldDietPlan.setName(dietPlan.getName());
-			oldDietPlan.setPrice(dietPlan.getPrice());
-			oldDietPlan.setDateOfCreation(oldDietPlan.getDateOfCreation());
-			oldDietPlan.setHelper(oldDietPlan.getHelper());
-			helperPlanService.save(oldDietPlan);
-			return "redirect:/diet_plans";
+			return "redirect:/nutritionist";
 		}
 	}
 
@@ -214,14 +224,19 @@ public class NutritionistController {
 	@PostMapping(path = { "/create_food_for_diet_plan_save" })
 	public String createFoodForDietPlanSave(Model model, @RequestParam Integer dietPlanId,
 			@Valid @ModelAttribute("food") Food food, BindingResult bindingResult, RedirectAttributes attr) {
-		if (bindingResult.hasErrors()) {
-			attr.addFlashAttribute("org.springframework.validation.BindingResult.food", bindingResult);
-			attr.addFlashAttribute("food", food);
-			return "redirect:/create_food_for_diet_plan/" + dietPlanId;
+		Account account = accountService.getAccountConnected();
+		if (account.isActive()) {
+			if (bindingResult.hasErrors()) {
+				attr.addFlashAttribute("org.springframework.validation.BindingResult.food", bindingResult);
+				attr.addFlashAttribute("food", food);
+				return "redirect:/create_food_for_diet_plan/" + dietPlanId;
+			} else {
+				food.setDietPlan(helperPlanService.findById(dietPlanId).get());
+				foodService.save(food);
+				return "redirect:/diet_plans";
+			}
 		} else {
-			food.setDietPlan(helperPlanService.findById(dietPlanId).get());
-			foodService.save(food);
-			return "redirect:/diet_plans";
+			return "redirect:/nutritionist";
 		}
 	}
 
@@ -278,50 +293,74 @@ public class NutritionistController {
 	@PostMapping(path = { "/add_photo_for_food_save" })
 	public String addPhotoForExerciseSave(Model model, @RequestParam Integer foodId,
 			@RequestParam("imageFile") MultipartFile imageFile, @ModelAttribute("foodImage") FoodImage foodImage) {
-		foodImage.setFileName(imageFile.getOriginalFilename());
-		Food food = foodService.findById(foodId).get();
-		foodImage.setFood(food);
-		try {
-			foodImageService.saveImage(imageFile, foodImage);
-			foodImage.setPath("/images/");
-		} catch (Exception e) {
-			e.printStackTrace();
+		Account account = accountService.getAccountConnected();
+		if (account.isActive()) {
+			foodImage.setFileName(imageFile.getOriginalFilename());
+			Food food = foodService.findById(foodId).get();
+			foodImage.setFood(food);
+			try {
+				foodImageService.saveImage(imageFile, foodImage);
+				foodImage.setPath("/images/");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			foodImageService.save(foodImage);
+			return "redirect:/view_food/" + foodId;
+		} else {
+			return "redirect:/nutritionist";
 		}
-		;
-		foodImageService.save(foodImage);
-		return "redirect:/view_food/" + foodId;
 	}
 
 	@PostMapping(path = { "/add_recommendation_for_food_save" })
 	public String addAdviceForExerciseSave(Model model,
 			@ModelAttribute("foodRecommendation") FoodRecommendation foodRecommendation, @RequestParam Integer foodId) {
-		foodRecommendation.setFood(foodService.findById(foodId).get());
-		foodRecommendationService.save(foodRecommendation);
-		return "redirect:/view_food/" + foodId;
+		Account account = accountService.getAccountConnected();
+		if (account.isActive()) {
+			foodRecommendation.setFood(foodService.findById(foodId).get());
+			foodRecommendationService.save(foodRecommendation);
+			return "redirect:/view_food/" + foodId;
+		} else {
+			return "redirect:/nutritionist";
+		}
 	}
 
 	@PostMapping(path = { "/delete_photo_from_food" })
 	public String deletePhotoFromExercise(Model model, @RequestParam Integer foodId, @RequestParam Integer photoId) {
-		foodImageService.deleteByFoodImageIdAndFoodFoodId(photoId, foodId);
-		return "redirect:/view_food/" + foodId;
+		Account account = accountService.getAccountConnected();
+		if (account.isActive()) {
+			foodImageService.deleteByFoodImageIdAndFoodFoodId(photoId, foodId);
+			return "redirect:/view_food/" + foodId;
+		} else {
+			return "redirect:/nutritionist";
+		}
 	}
 
 	@PostMapping(path = { "/edit_recommendation_food" })
 	public String editAdviceExercise(Model model, @RequestParam Integer foodId, @RequestParam Integer recommendationId,
 			@RequestParam String editName) {
-		FoodRecommendation advice = foodRecommendationService.findByFoodRecommendationIdAndFoodFoodId(recommendationId,
-				foodId);
-		advice.setRecommendation(editName);
-		foodRecommendationService.save(advice);
-		return "redirect:/view_food/" + foodId;
+		Account account = accountService.getAccountConnected();
+		if (account.isActive()) {
+			FoodRecommendation advice = foodRecommendationService
+					.findByFoodRecommendationIdAndFoodFoodId(recommendationId, foodId);
+			advice.setRecommendation(editName);
+			foodRecommendationService.save(advice);
+			return "redirect:/view_food/" + foodId;
+		} else {
+			return "redirect:/nutritionist";
+		}
 	}
 
 	@PostMapping(path = { "/delete_recommendation_food" })
 	public String deleteAdviceExercise(Model model, @RequestParam Integer foodId,
 			@RequestParam Integer recommendationId) {
-		foodRecommendationService
-				.delete(foodRecommendationService.findByFoodRecommendationIdAndFoodFoodId(recommendationId, foodId));
-		return "redirect:/view_food/" + foodId;
+		Account account = accountService.getAccountConnected();
+		if (account.isActive()) {
+			foodRecommendationService.delete(
+					foodRecommendationService.findByFoodRecommendationIdAndFoodFoodId(recommendationId, foodId));
+			return "redirect:/view_food/" + foodId;
+		} else {
+			return "redirect:/nutritionist";
+		}
 	}
 
 	@GetMapping(path = { "/view_progress_nutritionist/{id}" })

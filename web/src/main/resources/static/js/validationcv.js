@@ -234,7 +234,7 @@ function yearValidation2(year, yearType) {
 	}
 }
 
-$(".experience").submit(function () {
+$(".experience").submit(function (e) {
 	let name = document.getElementById("expName").value;
 	let start = document.getElementById("expStart").value;
 	let end = document.getElementById("expEnd").value;
@@ -258,6 +258,7 @@ $(".experience").submit(function () {
 					$(".experience").data("valid", true);
 					$(".experience").submit();
 				} else {
+					e.preventDefault();
 					$(".minimDuration").html("Durata minima este de un an");
 				}
 			}
@@ -269,7 +270,7 @@ $(".experience").submit(function () {
 	$(this).data("valid", false);
 });
 
-$("#editExperience").submit(function () {
+$("#editExperience").submit(function (e) {
 	let name = document.getElementById("expEditName").value;
 	let start = document.getElementById("expEditStart").value;
 	let end = document.getElementById("expEditEnd").value;
@@ -291,6 +292,7 @@ $("#editExperience").submit(function () {
 					$("#editExperience").data("valid", true);
 					$("#editExperience").submit();
 				} else {
+					e.preventDefault();
 					$(".minimDuration").html("Durata minima este de un an");
 				}
 			}
@@ -301,7 +303,7 @@ $("#editExperience").submit(function () {
 	$(this).data("valid", false);
 });
 
-$(".education").submit(function () {
+$(".education").submit(function (e) {
 	let name = document.getElementById("name").value;
 	let start = document.getElementById("start").value;
 	let end = document.getElementById("end").value;
@@ -325,6 +327,7 @@ $(".education").submit(function () {
 					$(".education").data("valid", true);
 					$(".education").submit();
 				} else {
+					e.preventDefault();
 					$(".minimDuration").html("Durata minima este de un an");
 				}
 			}
@@ -336,7 +339,7 @@ $(".education").submit(function () {
 	$(this).data("valid", false);
 });
 
-$("#editEducation").submit(function () {
+$("#editEducation").submit(function (e) {
 	let name = document.getElementById("editName").value;
 	let start = document.getElementById("editStart").value;
 	let end = document.getElementById("editEnd").value;
@@ -358,6 +361,7 @@ $("#editEducation").submit(function () {
 					$("#editEducation").data("valid", true);
 					$("#editEducation").submit();
 				} else {
+					e.preventDefault();
 					$(".minimDuration").html("Durata minima este de un an");
 				}
 			}
@@ -368,7 +372,7 @@ $("#editEducation").submit(function () {
 	$(this).data("valid", false);
 });
 
-$("#myForm").submit(function () {
+$("#myForm").submit(function (e) {
 	let description = document.getElementById("description").value;
 	if ($(this).data("valid")) {
 		//you've already validated, allow the form to submit
@@ -383,6 +387,7 @@ $("#myForm").submit(function () {
 					$("#myForm").data("valid", true);
 					$("#myForm").submit();
 				} else {
+					e.preventDefault();
 					$("#showError").html(
 						"Dimensiunea campului este de minim 3 caractere"
 					);

@@ -41,6 +41,10 @@ public class HelperPlan implements Comparable<HelperPlan> {
 	@NotEmpty(message = "Campul este obligatoriu !")
 	private String name;
 
+	@Column(name = "description")
+	@NotEmpty(message = "Campul este obligatoriu !")
+	private String description;
+
 	@Column(name = "for_who")
 	@Enumerated(EnumType.STRING)
 	private Gender forWho;
@@ -164,6 +168,14 @@ public class HelperPlan implements Comparable<HelperPlan> {
 
 	public void setFoods(Set<Food> foods) {
 		this.foods = foods;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override

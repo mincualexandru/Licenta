@@ -22,7 +22,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="row">
-					<div class="col-md-10 mx-auto">
+					<div class="col-md-11 mx-auto">
 						<table class="table table-striped">
 							<thead class="center-align">
 								<tr>
@@ -42,7 +42,11 @@
 										<td th:text="${feedback.exercise.trainingPlan.name}"></td>
 										<td th:text="${feedback.dateOfFeedbackProvied}"></td>
 										<td th:text="${feedback.message}"></td>
-										<td th:text="${feedback.rating}"></td>
+										<td>
+											<div th:each="i: ${#numbers.sequence(1, feedback.rating)}">
+												<img src="images/star2.png" class="fa-size-tip flaticon-size" style="width: 20px; height: 20px; float:left;">			
+											</div>
+										</td>
 									</tr>
 								</th:block>
 							</tbody>

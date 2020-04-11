@@ -1,74 +1,341 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Admin</title>
+<title>Shopping Cart</title>
+<link th:href="@{css/font-face.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-4.7/css/font-awesome.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-5/css/fontawesome-all.min.css}"
+	rel="stylesheet" media="all">
 <link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-	rel="stylesheet" id="bootstrap-css">
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-</head>
+	th:href="@{vendor/mdi-font/css/material-design-iconic-font.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/animsition/animsition.min.css}" rel="stylesheet"
+	media="all">
+<link
+	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/wow/animate.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/css-hamburgers/hamburgers.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/slick/slick.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/select2/select2.min.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{css/theme.css}" rel="stylesheet" media="all">
+<link th:href="@{css/cart.css}" rel="stylesheet" media="all">
 <body>
-<div th:unless="${#lists.size(products)}">
-	Nu ai selectat niciun produs momentan
-</div>
-<div th:if="${#lists.size(products)}">
-	<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Cosul meu</h3>
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="row">
-					<div class="col-md-10 mx-auto">
-						<table class="table table-striped">
-							<thead class="center-align">
-								<tr>
-									<th>Nume</th>
-									<th>Pret</th>
-									<th>Actiuni</th>
-								</tr>
-							</thead>
-							<tbody class="center-align">
-								<th:block th:each="product, iterStat : ${products}">
-									<tr>
-										<div th:if="${product.type == 'device'}">
-											<td th:text="${product.productName + ' ' + product.companyName}"></td>
-											<td th:text="${product.price}"></td>
-										</div>
-										<div th:if="${product.type == 'Dieta'}">
-											<td th:text="${product.productName + ' ' + product.forWho}"></td>
-											<td th:text="${product.price}"></td>
-										</div>
-										<div th:if="${product.type == 'Antrenament'}">
-											<td th:text="${product.productName + ' ' + product.forWho}"></td>
-											<td th:text="${product.price}"></td>
-										</div>
-										<td>
-											<form th:action="@{/delete_product_from_shopping_cart}" method="post">
-												<input type="hidden" name="userId" th:value="${user.accountId}"/>
-												<input type="hidden" name="productId" th:value="${product.productId}"/>
-												<input type="hidden" name="productName" th:value="${product.productName}"/>
-												<button type="submit">Sterge Produs din Cos</button>
+	<div class="page-wrapper">
+		<header style="background-color: white;"
+			class="header-mobile d-block d-lg-none">
+			<div class="header-mobile__bar">
+				<div class="container-fluid">
+					<div class="header-mobile-inner">
+						<a class="logo" href="index.html"> <img
+							src="images/Screenshot_18.png">
+						</a>
+						<button class="hamburger hamburger--slider" type="button">
+							<span class="hamburger-box"> <span class="hamburger-inner"></span>
+							</span>
+						</button>
+					</div>
+				</div>
+			</div>
+			<nav class="navbar-mobile">
+				<div class="container-fluid">
+					<ul class="navbar-mobile__list list-unstyled">
+						<li><a th:href="@{/home}" class="links"> <i
+								class="fas fa-home icon-link"></i> <span>Home</span>
+						</a></li>
+						<li><a th:href="@{/view_profile}" class="links"><i
+								class="far fa-id-card icon-link"></i><span>Profil</span></a></li>
+						<li><a th:href="@{/shopping_cart}" class="links"><i
+								class="fas fa-shopping-cart icon-link"></i><span>Cos
+									Cumparaturi</span></a></li>
+						<li><a th:href="@{/choose_device}" class="links"><i
+								class="fas fa-laptop-medical icon-link"></i><span>Alege
+									Dispozitiv</span></a></li>
+						<li><a th:href="@{/choose_helper}" class="links"><i
+								class="fas fa-user-friends icon-link"></i><span>Alege
+									Experti</span></a></li>
+						<li><a th:href="@{/view_helpers}" class="links"><i
+								class="fas fa-clipboard-list icon-link"
+								style="font-size: 30px; width: 30px;"></i><span>Alege
+									Planuri</span></a></li>
+						<li><a th:href="@{/choose_helper}" class="links"><i
+								class="fas fa-laptop-medical icon-link"></i><span>Dispozitive</span></a></li>
+						<li><a th:href="@{/view_training_plans}" class="links"><i
+								class="fas fa-dumbbell icon-link"></i><span>Planuri
+									Antrenamente</span></a></li>
+						<li><a th:href="@{/view_diet_plans}" class="links"><i
+								class="fas fa-utensils icon-link" style="width: 27px;"></i><span>Planuri
+									Diete</span></a></li>
+						<li><a th:href="@{/view_feedbacks_from_helper}" class="links"><i
+								class="fas fa-comment-dots icon-link"></i><span>Feedback-uri</span></a></li>
+						<li><a th:href="@{/transaction_history}" class="links"><i
+								class="fas fa-money-check icon-link"></i><span>Istoric
+									Tranzactii</span></a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<aside style="background-color: white;"
+			class="menu-sidebar d-none d-lg-block">
+			<div class="logo">
+				<a href="#"> <img src="images/Screenshot_18.png">
+				</a>
+			</div>
+			<div class="menu-sidebar__content js-scrollbar1">
+				<nav class="navbar-sidebar">
+					<ul class="list-unstyled navbar__list">
+						<li><a th:href="@{/home}" class="links"> <i
+								class="fas fa-home icon-link"></i> <span>Home</span>
+						</a></li>
+						<li><a th:href="@{/view_profile}" class="links"><i
+								class="far fa-id-card icon-link"></i><span>Profil</span></a></li>
+						<li><a th:href="@{/shopping_cart}" class="links"><i
+								class="fas fa-shopping-cart icon-link"></i><span>Cos
+									Cumparaturi</span></a></li>
+						<li><a th:href="@{/choose_device}" class="links"><i
+								class="fas fa-laptop-medical icon-link"></i><span>Alege
+									Dispozitiv</span></a></li>
+						<li><a th:href="@{/choose_helper}" class="links"><i
+								class="fas fa-user-friends icon-link"></i><span>Alege
+									Experti</span></a></li>
+						<li><a th:href="@{/view_helpers}" class="links"><i
+								class="fas fa-clipboard-list icon-link"
+								style="font-size: 30px; width: 30px;"></i><span>Alege
+									Planuri</span></a></li>
+						<li><a th:href="@{/choose_helper}" class="links"><i
+								class="fas fa-laptop-medical icon-link"></i><span>Dispozitive</span></a></li>
+						<li><a th:href="@{/view_training_plans}" class="links"><i
+								class="fas fa-dumbbell icon-link"></i><span>Planuri
+									Antrenamente</span></a></li>
+						<li><a th:href="@{/view_diet_plans}" class="links"><i
+								class="fas fa-utensils icon-link" style="width: 27px;"></i><span>Planuri
+									Diete</span></a></li>
+						<li><a th:href="@{/view_feedbacks_from_helper}" class="links"><i
+								class="fas fa-comment-dots icon-link"></i><span>Feedback-uri</span></a></li>
+						<li><a th:href="@{/transaction_history}" class="links"><i
+								class="fas fa-money-check icon-link"></i><span>Istoric
+									Tranzactii</span></a></li>
+					</ul>
+				</nav>
+			</div>
+		</aside>
+		<div class="page-container">
+			<div class="main-content">
+				<div class="section__content section__content--p30">
+					<div class="alert" th:if="${succesDeleteProduct}">
+						<div
+							style="float: left; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 250px;">
+							<h5 style="font-weight: 900; font-size: 20px; color: green;">Succes</h5>
+							<p style="font-size: 15px; color: black; margin-top: 5px;">Ai
+								sters produsul din cos</p>
+						</div>
+						<div style="float: right; display: none;">
+							<span class="closebtn"
+								onclick="this.parentElement.style.display='none';">×</span>
+						</div>
+					</div>
+					<div class="alert" th:if="${insufficientBalance}">
+						<div
+							style="float: left; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 250px;">
+							<h5 style="font-weight: 900; font-size: 20px; color: red;">Eroare</h5>
+							<p style="font-size: 15px; color: black; margin-top: 5px;">Fonduri
+								insuficiente pentru aceasta comanda</p>
+						</div>
+						<div style="float: right; display: none;">
+							<span class="closebtn"
+								onclick="this.parentElement.style.display='none';">×</span>
+						</div>
+					</div>
+					<div class="container-fluid">
+						<div class="row">
+							<div class="wrap cf">
+								<div
+									style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px; color: white; font-weight: 700;">
+									<i class="fas fa-2x fa-shopping-cart icon-link"></i> Cos Cumparaturi
+								</div>
+								<div class="cart">
+									<ul class="cartWrap effect5"
+										style="background-color: white; box-shadow: 15px 20px 17px 9px rgba(0, 0, 0, 0.75); margin-bottom: 30px;"
+										th:each="product, iterStat : ${products}">
+										<li class="items odd">
+
+											<div class="infoWrap">
+												<div class="cartSection">
+													<img th:src="@{'images/'+${product.imageName}}" alt=""
+														class="itemImg" />
+												</div>
+												<div class="prodTotal cartSection">
+													<p style="color: black;" th:text="${product.productName}"></p>
+												</div>
+												<div class="prodTotal cartSection">
+													<p style="color: black;" th:text="${product.forWho}"
+														th:if="${product.type == 'Antrenament' or product.type == 'Dieta'}"></p>
+												</div>
+												<div class="prodTotal cartSection">
+													<p style="color: black;" th:text="${product.companyName}"
+														th:if="${product.type == 'Dispozitiv'}"></p>
+												</div>
+												<div class="prodTotal cartSection">
+													<p style="color: black;"
+														th:text="${product.price + ' LEI'}"></p>
+												</div>
+												<div class="cartSection removeWrap"
+													style="display: flex; align-items: center; justify-content: center;">
+													<form th:action="@{/delete_product_from_shopping_cart}"
+														method="post">
+														<input type="hidden" name="userId"
+															th:value="${user.accountId}" /> <input type="hidden"
+															name="productId" th:value="${product.productId}" /> <input
+															type="hidden" name="productName"
+															th:value="${product.productName}" />
+														<button type="submit" class="btnn2">Sterge</button>
+													</form>
+												</div>
+											</div>
+										</li>
+									</ul>
+									<ul
+										style="list-style: none; color: #7300e6; font-size: 25px; font-weight: 700; margin-top: 20px; background-color: white; height: 250px; padding: 30px; width: 350px; box-shadow: 15px 20px 17px 9px rgba(0, 0, 0, 0.75)">
+										<li><span class="label">Numar Produse:</span> <span class="value"
+											th:text="${#lists.size(products)}" style="color: black;"></span></li>
+										<li><span class="label">Total:</span> <span class="value"
+											th:text="${totalSum + ' LEI'}" style="color: black;"></span></li>
+										<li><span class="label">Sold Curent:</span> <span
+											class="value" style="color: black;"
+											th:text="${user.transaction.availableBalance + ' LEI'}"></span>
+										</li>
+										<li>
+											<form th:action="@{/buy_shopping_cart}" method="post">
+												<input type="hidden" name="userId"
+													th:value="${user.accountId}" /> <input type="hidden"
+													name="totalSum" th:value="${totalSum}" />
+												<button type="submit" class="btnn">Cumpara</button>
 											</form>
-										</td>
-									</tr>
-								</th:block>
-							</tbody>
-						</table>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<h4 th:text="${insufficientBalance}"></h4>
-	<h4>Suma totala a produselor este de <span th:text="${totalSum}"></span> lei</h4>
-	<h4>Soldul tau curent este de <span th:text="${user.transaction.availableBalance}"></span></h4>
-	<form th:action="@{/buy_shopping_cart}" method="post">
-	<input type="hidden" name="userId" th:value="${user.accountId}"/>
-	<input type="hidden" name="totalSum" th:value="${totalSum}"/>
-	<button type="submit" class="btn btn-success">Cumpara</button>
-	</form>
-</div>
+
+	<!-- <div th:unless="${#lists.size(products)}"> -->
+	<!-- 	Nu ai selectat niciun produs momentan -->
+	<!-- </div> -->
+	<!-- <div th:if="${#lists.size(products)}"> -->
+	<!-- 	<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Cosul meu</h3> -->
+	<!-- 	<div class="container-fluid"> -->
+	<!-- 		<div class="row"> -->
+	<!-- 			<div class="col-md-12"> -->
+	<!-- 				<div class="row"> -->
+	<!-- 					<div class="col-md-10 mx-auto"> -->
+	<!-- 						<table class="table table-striped"> -->
+	<!-- 							<thead class="center-align"> -->
+	<!-- 								<tr> -->
+	<!-- 									<th>Nume</th> -->
+	<!-- 									<th>Pret</th> -->
+	<!-- 									<th>Actiuni</th> -->
+	<!-- 								</tr> -->
+	<!-- 							</thead> -->
+	<!-- 							<tbody class="center-align"> -->
+	<!-- 								<th:block th:each="product, iterStat : ${products}"> -->
+	<!-- 									<tr> -->
+	<!-- 										<div th:if="${product.type == 'device'}"> -->
+	<!-- 											<td th:text="${product.productName + ' ' + product.companyName}"></td> -->
+	<!-- 											<td th:text="${product.price}"></td> -->
+	<!-- 										</div> -->
+	<!-- 										<div th:if="${product.type == 'Dieta'}"> -->
+	<!-- 											<td th:text="${product.productName + ' ' + product.forWho}"></td> -->
+	<!-- 											<td th:text="${product.price}"></td> -->
+	<!-- 										</div> -->
+	<!-- 										<div th:if="${product.type == 'Antrenament'}"> -->
+	<!-- 											<td th:text="${product.productName + ' ' + product.forWho}"></td> -->
+	<!-- 											<td th:text="${product.price}"></td> -->
+	<!-- 										</div> -->
+	<!-- 										<td> -->
+	<!-- 											<form th:action="@{/delete_product_from_shopping_cart}" method="post"> -->
+	<!-- 												<input type="hidden" name="userId" th:value="${user.accountId}"/> -->
+	<!-- 												<input type="hidden" name="productId" th:value="${product.productId}"/> -->
+	<!-- 												<input type="hidden" name="productName" th:value="${product.productName}"/> -->
+	<!-- 												<button type="submit">Sterge Produs din Cos</button> -->
+	<!-- 											</form> -->
+	<!-- 										</td> -->
+	<!-- 									</tr> -->
+	<!-- 								</th:block> -->
+	<!-- 							</tbody> -->
+	<!-- 						</table> -->
+	<!-- 					</div> -->
+	<!-- 				</div> -->
+	<!-- 			</div> -->
+	<!-- 		</div> -->
+	<!-- 	</div> -->
+	<!-- 	<h4 th:text="${insufficientBalance}"></h4> -->
+	<!-- 	<h4>Suma totala a produselor este de <span th:text="${totalSum}"></span> lei</h4> -->
+	<!-- 	<h4>Soldul tau curent este de <span th:text="${user.transaction.availableBalance}"></span></h4> -->
+	<!-- 	<form th:action="@{/buy_shopping_cart}" method="post"> -->
+	<!-- 	<input type="hidden" name="userId" th:value="${user.accountId}"/> -->
+	<!-- 	<input type="hidden" name="totalSum" th:value="${totalSum}"/> -->
+	<!-- 	<button type="submit" class="btn btn-success">Cumpara</button> -->
+	<!-- 	</form> -->
+	<!-- </div> -->
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<script type="text/javascript" th:src="@{/js/validationcv.js}"></script>
+	<script src="https://code.highcharts.com/modules/data.js"></script>
+	<script src="https://code.highcharts.com/stock/highstock.js"></script>
+	<script src="https://code.highcharts.com/modules/drilldown.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script src="https://code.highcharts.com/modules/export-data.js"></script>
+	<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+	<script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
+	<script th:src="@{/vendor/slick/slick.min.js}">
+    </script>
+	<script th:src="@{/vendor/wow/wow.min.js}"></script>
+	<script th:src="@{/vendor/animsition/animsition.min.js}"></script>
+	<script
+		th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
+    </script>
+	<script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
+	<script th:src="@{/vendor/counter-up/jquery.counterup.min.js}">
+    </script>
+	<script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
+	<script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
+	<script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
+	<script th:src="@{/vendor/select2/select2.min.js}">
+    </script>
+	<script src="https://kit.fontawesome.com/8f58d13ed0.js"
+		crossorigin="anonymous"></script>
+	<script th:src="@{/js/main.js}"></script>
+	<script>
+	document.querySelectorAll(".button").forEach(button =>
+	  button.addEventListener("click", e => {
+	    if (!button.classList.contains("delete")) {
+	      button.classList.add("delete");
+
+	      setTimeout(() => button.classList.remove("delete"), 2200);
+	    }
+	    e.preventDefault();
+	  })
+	);
+
+	</script>
 </body>
 </html>

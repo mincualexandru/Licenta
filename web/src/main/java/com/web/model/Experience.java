@@ -34,7 +34,6 @@ public class Experience {
 	private String name;
 
 	@Column(name = "city")
-	@Pattern(regexp = "^[A-Z][a-zA-Z]{3,15}$", message = "Orasul introdus gresit")
 	private String city;
 
 	@ManyToOne

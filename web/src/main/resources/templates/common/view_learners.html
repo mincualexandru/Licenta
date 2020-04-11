@@ -3,70 +3,117 @@
 	xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Admin</title>
+<link th:href="@{css/font-face.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-4.7/css/font-awesome.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-5/css/fontawesome-all.min.css}"
+	rel="stylesheet" media="all">
 <link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-	rel="stylesheet" id="bootstrap-css">
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	th:href="@{vendor/mdi-font/css/material-design-iconic-font.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/animsition/animsition.min.css}" rel="stylesheet"
+	media="all">
+<link
+	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/wow/animate.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/css-hamburgers/hamburgers.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/slick/slick.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/select2/select2.min.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{css/theme.css}" rel="stylesheet" media="all">
 </head>
 <body>
-<div th:unless="${#lists.size(learners)}">
-		Nu ai niciun cursant
-	</div>
+	<div th:unless="${#lists.size(learners)}">Nu ai niciun client</div>
 	<div th:if="${#lists.size(learners)}">
-		<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Cursanti</h3>
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="row">
-					<div class="col-md-10 mx-auto">
-						<table class="table table-striped">
-							<thead class="center-align">
-								<tr>
-									<th>Nume Utilizator</th>
-									<th>Nume</th>
-									<th>Prenume</th>
-									<th>Email</th>
-									<th>Telefon</th>
-									<th>Data Nasterii</th>
-									<th>Sex</th>
-									<th>Actiuni</th>
-								</tr>
-							</thead>
-							<tbody class="center-align">
-								<th:block th:each="account, iterStat : ${learners}">
-									<tr>
-										<td th:text="${account.username}"></td>
-										<td th:text="${account.firstName}"></td>
-										<td th:text="${account.lastName}"></td>
-										<td th:text="${account.email}"></td>
-										<td th:text="${account.phoneNumber}"></td>
-										<td th:text="${account.bornDate}"></td>
-										<td th:text="${account.gender}"></td>
-										<td>
-											<div th:each="role : ${helper.roles}">
-												<div th:if="${role.name == 'ROLE_TRAINER'}">
-													<div th:if="${#lists.size(account.exerciseDone)}">
-														<a th:href="@{/view_progress/{id}(id=${account.accountId})}" class="btn btn-success">Vezi Progres</a>
+		<h3
+			style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Clienti</h3>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-10 mx-auto">
+							<div class="table-responsive table-responsive-data2">
+								<table class="table table-data2">
+									<thead>
+										<tr>
+											<th>Nume Utilizator</th>
+											<th>Nume</th>
+											<th>Prenume</th>
+											<th>Email</th>
+											<th>Telefon</th>
+											<th>Data Nasterii</th>
+											<th>Sex</th>
+											<th>Actiuni</th>
+										</tr>
+									</thead>
+									<tbody>
+										<th:block th:each="account, iterStat : ${learners}">
+											<tr class="tr-shadow">
+												<td th:text="${account.username}"></td>
+												<td th:text="${account.firstName}"></td>
+												<td th:text="${account.lastName}"></td>
+												<td th:text="${account.email}"></td>
+												<td th:text="${account.phoneNumber}"></td>
+												<td th:text="${account.bornDate}"></td>
+												<td th:text="${account.gender}"></td>
+												<td>
+													<div th:each="role : ${helper.roles}">
+														<div th:if="${role.name == 'ROLE_TRAINER'}">
+															<div th:if="${#lists.size(account.exerciseDone)}">
+																<a
+																	th:href="@{/view_progress/{id}(id=${account.accountId})}"
+																	class="block-email">P R O G R E S</a>
+															</div>
+														</div>
+														<div th:if="${role.name == 'ROLE_NUTRITIONIST'}">
+															<div th:if="${#lists.size(account.foodEaten)}">
+																<a
+																	th:href="@{/view_progress_nutritionist/{id}(id=${account.accountId})}"
+																	class="block-email">P R O G R E S</a>
+															</div>
+														</div>
 													</div>
-												</div>
-												<div th:if="${role.name == 'ROLE_NUTRITIONIST'}">
-													<div th:if="${#lists.size(account.foodEaten)}">
-														<a th:href="@{/view_progress_nutritionist/{id}(id=${account.accountId})}" class="btn btn-success">Vezi Progres</a>
-													</div>
-												</div>
-											</div>
-										</td>
-									</tr>
-								</th:block>
-							</tbody>
-						</table>
+												</td>
+											</tr>
+										</th:block>
+									</tbody>
+								</table>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	</div>
+		<script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
+	<script th:src="@{/vendor/slick/slick.min.js}">
+    </script>
+	<script th:src="@{/vendor/wow/wow.min.js}"></script>
+	<script th:src="@{/vendor/animsition/animsition.min.js}"></script>
+	<script
+		th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
+    </script>
+	<script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
+	<script th:src="@{/vendor/counter-up/jquery.counterup.min.js}">
+    </script>
+	<script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
+	<script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
+	<script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
+	<script th:src="@{/vendor/select2/select2.min.js}">
+    </script>
+
+	<script th:src="@{/js/main.js}"></script>
+	<script type="text/javascript" th:src="@{/js/validationcv.js}"></script>
 </body>
 </html>

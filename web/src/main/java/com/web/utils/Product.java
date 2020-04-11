@@ -18,6 +18,10 @@ public class Product {
 
 	Timestamp dateOfPurchased;
 
+	String imageName;
+
+	String description;
+
 	public Product() {
 	}
 
@@ -89,10 +93,26 @@ public class Product {
 		this.dateOfPurchased = dateOfPurchased;
 	}
 
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	@Override
 	public String toString() {
 		return "Product [productId=" + productId + ", productName=" + productName + ", price=" + price
 				+ ", companyName=" + companyName + ", forWho=" + forWho + ", type=" + type + ", dateOfPurchased="
-				+ dateOfPurchased + "]";
+				+ dateOfPurchased + ", imageName=" + imageName + ", description=" + description + "]";
 	}
 }

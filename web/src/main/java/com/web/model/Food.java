@@ -14,8 +14,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.validator.constraints.Range;
 
 @Entity
 @Table(name = "foods")
@@ -31,31 +33,39 @@ public class Food {
 	private HelperPlan dietPlan;
 
 	@Column(name = "name", nullable = false)
+	@NotEmpty(message = "Campul este obligatoriu !")
+	@Range(min = 0, message = "Valorile negative nu sunt permise")
 	private String name;
 
 	@Column(name = "calories", nullable = true)
+	@NotEmpty(message = "Campul este obligatoriu !")
+	@Range(min = 0, message = "Valorile negative nu sunt permise")
 	private float calories;
 
 	@Column(name = "protein", nullable = true)
+	@NotEmpty(message = "Campul este obligatoriu !")
+	@Range(min = 0, message = "Valorile negative nu sunt permise")
 	private float protein;
 
 	@Column(name = "lipids", nullable = true)
+	@NotEmpty(message = "Campul este obligatoriu !")
+	@Range(min = 0, message = "Valorile negative nu sunt permise")
 	private float lipids;
 
 	@Column(name = "carbohydrates", nullable = true)
+	@NotEmpty(message = "Campul este obligatoriu !")
+	@Range(min = 0, message = "Valorile negative nu sunt permise")
 	private float carbohydrates;
 
 	@Column(name = "fiber", nullable = true)
+	@NotEmpty(message = "Campul este obligatoriu !")
+	@Range(min = 0, message = "Valorile negative nu sunt permise")
 	private float fiber;
 
 	@Column(name = "weight", nullable = true)
+	@NotEmpty(message = "Campul este obligatoriu !")
+	@Range(min = 0, message = "Valorile negative nu sunt permise")
 	private float weight;
-
-	@Column(name = "recommended_time_range", nullable = true)
-	private String recommendedTimeRange;
-
-	@Column(name = "recommended_consumption_time", nullable = false)
-	private String recommendedConsumptionTime;
 
 	@Column(name = "date")
 	@CreationTimestamp
@@ -88,7 +98,6 @@ public class Food {
 		this.carbohydrates = carbohydrates;
 		this.fiber = fiber;
 		this.weight = weight;
-		this.recommendedTimeRange = recommendedTimeRange;
 		this.createDateTime = createDateTime;
 	}
 
@@ -164,14 +173,6 @@ public class Food {
 		this.weight = weight;
 	}
 
-	public String getRecommendedTimeRange() {
-		return recommendedTimeRange;
-	}
-
-	public void setRecommendedTimeRange(String recommendedTimeRange) {
-		this.recommendedTimeRange = recommendedTimeRange;
-	}
-
 	public Timestamp getCreateDateTime() {
 		return createDateTime;
 	}
@@ -210,13 +211,5 @@ public class Food {
 
 	public void setFoodsFeedbacks(Set<FoodFeedback> foodsFeedbacks) {
 		this.foodsFeedbacks = foodsFeedbacks;
-	}
-
-	public String getRecommendedConsumptionTime() {
-		return recommendedConsumptionTime;
-	}
-
-	public void setRecommendedConsumptionTime(String recommendedConsumptionTime) {
-		this.recommendedConsumptionTime = recommendedConsumptionTime;
 	}
 }

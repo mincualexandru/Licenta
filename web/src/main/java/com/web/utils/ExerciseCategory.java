@@ -2,7 +2,7 @@ package com.web.utils;
 
 public enum ExerciseCategory {
 
-	ANDURANTA("Anduranta"), AEROBIC("Aerobic"), STRECHING("STRECHING"), ECHILIBRU("Echilibru"),
+	ANDURANTA("Anduranta"), AEROBIC("Aerobic"), STRECHING("Streching"), ECHILIBRU("Echilibru"),
 	REZISTENTA("Rezistenta"), MASA("Masa Musculara");
 
 	private final String exerciseCategory;

@@ -23,7 +23,7 @@ public class LoginController {
 	@PostMapping("/loginResource")
 	public AccountRest loginResource(@RequestParam String userName, @RequestParam String password) {
 		Account userConnected = userDAO.findByUsername(userName);
-		if (userConnected != null) {
+		if (userConnected.isActive()) {
 			if (bCryptPasswordEncoder.matches(password, userConnected.getPassword())) {
 				Role selectedRole = null;
 				for (Role role : userConnected.getRoles()) {
@@ -49,5 +49,4 @@ public class LoginController {
 			return null;
 		}
 	}
-
 }
