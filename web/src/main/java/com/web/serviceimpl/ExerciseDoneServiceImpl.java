@@ -1,5 +1,6 @@
 package com.web.serviceimpl;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.Set;
 
@@ -49,6 +50,13 @@ public class ExerciseDoneServiceImpl implements ExerciseDoneService {
 	@Override
 	public Optional<ExerciseDone> findTopByUserAccountIdOrderByDateOfExecutionDesc(Integer accountId) {
 		return exerciseServiceDao.findTopByUserAccountIdOrderByDateOfExecutionDesc(accountId);
+	}
+
+	@Override
+	public Set<ExerciseDone> findAllByUserAccountIdAndDateOfExecutionBetween(Integer accountId,
+			Timestamp timestampStartDate, Timestamp timestampEndDate) {
+		return exerciseServiceDao.findAllByUserAccountIdAndDateOfExecutionBetween(accountId, timestampStartDate,
+				timestampEndDate);
 	}
 
 }

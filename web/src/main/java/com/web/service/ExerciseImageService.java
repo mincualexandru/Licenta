@@ -6,6 +6,7 @@ import java.util.Set;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.web.model.ExerciseImage;
+import com.web.model.HelperPlan;
 
 public interface ExerciseImageService {
 
@@ -19,9 +20,9 @@ public interface ExerciseImageService {
 
 	Set<ExerciseImage> findAll();
 
-	void savePhotoImage(ExerciseImage exerciseImage, MultipartFile imageFile) throws Exception;
+	void savePhotoImage(ExerciseImage exerciseImage, MultipartFile imageFile, HelperPlan helperPlan) throws Exception;
 
-	void saveImage(MultipartFile imageFile, ExerciseImage exerciseImage) throws Exception;
+	void saveImage(MultipartFile imageFile, ExerciseImage exerciseImage, HelperPlan helperPlan) throws Exception;
 
 	void deleteByExerciseImagesIdAndExerciseExerciseId(Integer photoId, Integer exerciseId);
 }

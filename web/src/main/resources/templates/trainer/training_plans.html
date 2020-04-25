@@ -11,9 +11,12 @@
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 <body>
-	<div th:unless="${#lists.size(trainingPlans)}">Nu ai creat niciun plan de antrenament momentan</div>
+	<div th:unless="${#lists.size(trainingPlans)}">Nu ai creat niciun
+		plan de antrenament momentan</div>
 	<div th:if="${#lists.size(trainingPlans)}">
-		<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Antrenamente Necumparate</h3>
+		<h3
+			style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Antrenamente
+			Necumparate</h3>
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12">
@@ -31,13 +34,19 @@
 										<tr>
 											<td th:text="${trainingPlan.name}"></td>
 											<td>
-												<form th:action="@{/exercises_training_plan}" method="post">
-													<input type="hidden" name="trainingPlanId" th:value="${trainingPlan.helperPlanId}"/>
-													<button type="submit" class="btn btn-success">Vezi
+												<div th:if="${trainingPlan.exercises.size() > 0 }">
+													<form th:action="@{/plan_content}" method="post">
+													<input type="hidden" name="trainingPlanId"
+														th:value="${trainingPlan.helperPlanId}" />
+													<button type="submit"
+														style="padding: 10px 15px; letter-spacing: 0px; font-size: 15px; text-decoration: none; font-family: 'Montserrat', sans-serif; color: white; background: #7300e6; font-weight: bold; border-radius: 15px; margin: 0px !important;">Vezi
 														Exercitii</button>
 												</form>
-												<a th:href="@{/edit_training_plan/{id}(id=${trainingPlan.helperPlanId})}" class="btn btn-success">Editeaza Antrenamentul</a>
-												<a th:href="@{/create_exercise_for_training_plan/{id}(id = ${trainingPlan.helperPlanId})}" class="btn btn-success">Creeaza exercitiu</a>
+												</div> <a
+												th:href="@{/edit_training_plan/{id}(id=${trainingPlan.helperPlanId})}"
+												class="btn btn-success">Editeaza Antrenamentul</a> <a
+												th:href="@{/create_exercise_for_training_plan/{id}(id = ${trainingPlan.helperPlanId})}"
+												class="btn btn-success">Creeaza exercitiu</a>
 											</td>
 										</tr>
 									</th:block>

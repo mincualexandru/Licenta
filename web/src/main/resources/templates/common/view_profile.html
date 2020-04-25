@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Sign up</title>
+<title>View Profile</title>
 <base href="/">
 <link
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -34,8 +34,6 @@
 	media="all">
 <link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
 	rel="stylesheet" media="all">
-<script src="https://kit.fontawesome.com/8f58d13ed0.js"
-	crossorigin="anonymous"></script>
 <link th:href="@{css/theme.css}" rel="stylesheet" media="all">
 <link rel="stylesheet" type="text/css" th:href="@{css/style.css}" />
 </head>
@@ -48,7 +46,7 @@
 					<div class="container-fluid">
 						<div class="header-mobile-inner">
 							<a class="logo" href="index.html"> <img
-								src="images/Screenshot_18.png">
+								src="images/logo/Screenshot_18.png">
 							</a>
 							<button class="hamburger hamburger--slider" type="button">
 								<span class="hamburger-box"> <span
@@ -61,38 +59,54 @@
 				<nav class="navbar-mobile">
 					<div class="container-fluid">
 						<ul class="navbar-mobile__list list-unstyled">
-							<div th:if="${role.name eq 'ROLE_USER'}">
-								<li><a th:href="@{/home}" class="links"> <i
-										class="fas fa-home icon-link"></i> <span>Home</span>
-								</a></li>
-								<li><a th:href="@{/view_profile}" class="links"><i
-										class="far fa-id-card icon-link"></i><span>Profil</span></a></li>
-								<li><a th:href="@{/shopping_cart}" class="links"><i
-										class="fas fa-shopping-cart icon-link"></i><span>Cos
-											Cumparaturi</span></a></li>
-								<li><a th:href="@{/choose_device}" class="links"><i
-										class="fas fa-laptop-medical icon-link"></i><span>Alege
-											Dispozitiv</span></a></li>
-								<li><a th:href="@{/choose_helper}" class="links"><i
-										class="fas fa-user-friends icon-link"></i><span>Alege
-											Experti</span></a></li>
-								<li><a th:href="@{/view_helpers}" class="links"><i
-										class="fas fa-clipboard-list icon-link"
-										style="font-size: 30px; width: 30px;"></i><span>Alege
-											Planuri</span></a></li>
-								<li><a th:href="@{/choose_helper}" class="links"><i
-										class="fas fa-laptop-medical icon-link"></i><span>Dispozitive</span></a></li>
-								<li><a th:href="@{/view_training_plans}" class="links"><i
-										class="fas fa-dumbbell icon-link"></i><span>Planuri
-											Antrenamente</span></a></li>
-								<li><a th:href="@{/view_diet_plans}" class="links"><i
-										class="fas fa-utensils icon-link" style="width: 27px;"></i><span>Planuri
-											Diete</span></a></li>
-								<li><a th:href="@{/view_feedbacks_from_helper}"
-									class="links"><i class="fas fa-comment-dots icon-link"></i><span>Feedback-uri</span></a></li>
-								<li><a th:href="@{/transaction_history}"
-									class="links"><i class="fas fa-money-check icon-link"></i><span>Istoric Tranzactii</span></a></li>
-							</div>
+							<li><a href="/home" class="links" style=""><img
+									style="height: 40px; width: 40px;" width="800" height="800"
+									src="images/logo/home.png"><span
+									style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+							<li><a href="/choose_helper" class="links" style=""><img
+									style="height: 40px; width: 40px;" width="800" height="800"
+									src="images/logo/trainer.jpg"><span
+									style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+										Experti</span></a></li>
+							<li><a href="/choose_plan" class="links" style=""><img
+									style="height: 40px; width: 40px;" width="800" height="800"
+									src="images/logo/strategy.png"><span
+									style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+										Planuri</span></a></li>
+							<li><a href="/choose_device" class="links" style=""><img
+									style="height: 40px; width: 40px;" width="800" height="800"
+									src="images/logo/smartwatch2.png"><span
+									style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+										Dispozitive</span></a></li>
+							<li><a href="/shopping_cart" class="links" style=""><img
+									style="height: 40px; width: 40px;" width="800" height="800"
+									src="images/logo/supermarket.png"><span
+									style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+										Cumparaturi</span></a></li>
+							<li><a href="/view_user_plans" class="links" style=""><img
+									style="height: 40px; width: 40px;" width="800" height="800"
+									src="images/logo/fitness-plan.jpg"><span
+									style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+										Cumparate</span></a></li>
+							<li><a href="/view_user_devices" class="links" style=""><img
+									style="height: 40px; width: 40px;" width="800" height="800"
+									src="images/logo/smartwatch3.png"><span
+									style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+										Cumparate</span></a></li>
+							<li><a href="/foods_eaten" class="links" style=""><img
+									style="height: 40px; width: 40px;" width="800" height="800"
+									src="images/logo/popsicle.png"><span
+									style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+										Consumate</span></a></li>
+							<li><a href="/exercises_done" class="links" style=""><img
+									style="height: 40px; width: 40px;" width="800" height="800"
+									src="images/logo/exercise.png"><span
+									style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+										Efectuate</span></a></li>
+							<li><a href="/logout" class="links" style=""><img
+									style="height: 40px; width: 40px;" width="800" height="800"
+									src="images/logo/logout.png"><span
+									style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
 						</ul>
 					</div>
 				</nav>
@@ -100,44 +114,60 @@
 			<aside style="background-color: white;"
 				class="menu-sidebar d-none d-lg-block">
 				<div class="logo">
-					<a href="#"> <img src="images/Screenshot_18.png">
+					<a href="#"> <img src="images/logo/Screenshot_18.png">
 					</a>
 				</div>
 				<div class="menu-sidebar__content js-scrollbar1">
 					<nav class="navbar-sidebar">
-						<ul class="list-unstyled navbar__list">
-							<div th:if="${role.name eq 'ROLE_USER'}">
-								<li><a th:href="@{/home}" class="links"> <i
-										class="fas fa-home icon-link"></i> <span>Home</span>
-								</a></li>
-								<li><a th:href="@{/view_profile}" class="links"><i
-										class="far fa-id-card icon-link"></i><span>Profil</span></a></li>
-								<li><a th:href="@{/shopping_cart}" class="links"><i
-										class="fas fa-shopping-cart icon-link"></i><span>Cos
-											Cumparaturi</span></a></li>
-								<li><a th:href="@{/choose_device}" class="links"><i
-										class="fas fa-laptop-medical icon-link"></i><span>Alege
-											Dispozitiv</span></a></li>
-								<li><a th:href="@{/choose_helper}" class="links"><i
-										class="fas fa-user-friends icon-link"></i><span>Alege
-											Experti</span></a></li>
-								<li><a th:href="@{/view_helpers}" class="links"><i
-										class="fas fa-clipboard-list icon-link"
-										style="font-size: 30px; width: 30px;"></i><span>Alege
-											Planuri</span></a></li>
-								<li><a th:href="@{/choose_helper}" class="links"><i
-										class="fas fa-laptop-medical icon-link"></i><span>Dispozitive</span></a></li>
-								<li><a th:href="@{/view_training_plans}" class="links"><i
-										class="fas fa-dumbbell icon-link"></i><span>Planuri
-											Antrenamente</span></a></li>
-								<li><a th:href="@{/view_diet_plans}" class="links"><i
-										class="fas fa-utensils icon-link" style="width: 27px;"></i><span>Planuri
-											Diete</span></a></li>
-								<li><a th:href="@{/view_feedbacks_from_helper}"
-									class="links"><i class="fas fa-comment-dots icon-link"></i><span>Feedback-uri</span></a></li>
-								<li><a th:href="@{/transaction_history}"
-									class="links"><i class="fas fa-money-check icon-link"></i><span>Istoric Tranzactii</span></a></li>
-							</div>
+						<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+							<li><a href="/home" class="links" style=""><img
+									style="height: 40px; width: 40px;" width="800" height="800"
+									src="images/logo/home.png"><span
+									style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+							<li><a href="/choose_helper" class="links" style=""><img
+									style="height: 40px; width: 40px;" width="800" height="800"
+									src="images/logo/trainer.jpg"><span
+									style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+										Experti</span></a></li>
+							<li><a href="/choose_plan" class="links" style=""><img
+									style="height: 40px; width: 40px;" width="800" height="800"
+									src="images/logo/strategy.png"><span
+									style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+										Planuri</span></a></li>
+							<li><a href="/choose_device" class="links" style=""><img
+									style="height: 40px; width: 40px;" width="800" height="800"
+									src="images/logo/smartwatch2.png"><span
+									style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+										Dispozitive</span></a></li>
+							<li><a href="/shopping_cart" class="links" style=""><img
+									style="height: 40px; width: 40px;" width="800" height="800"
+									src="images/logo/supermarket.png"><span
+									style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+										Cumparaturi</span></a></li>
+							<li><a href="/view_user_plans" class="links" style=""><img
+									style="height: 40px; width: 40px;" width="800" height="800"
+									src="images/logo/fitness-plan.jpg"><span
+									style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+										Cumparate</span></a></li>
+							<li><a href="/view_user_devices" class="links" style=""><img
+									style="height: 40px; width: 40px;" width="800" height="800"
+									src="images/logo/smartwatch3.png"><span
+									style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+										Cumparate</span></a></li>
+							<li><a href="/foods_eaten" class="links" style=""><img
+									style="height: 40px; width: 40px;" width="800" height="800"
+									src="images/logo/popsicle.png"><span
+									style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+										Consumate</span></a></li>
+							<li><a href="/exercises_done" class="links" style=""><img
+									style="height: 40px; width: 40px;" width="800" height="800"
+									src="images/logo/exercise.png"><span
+									style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+										Efectuate</span></a></li>
+							<li><a href="/logout" class="links" style=""><img
+									style="height: 40px; width: 40px;" width="800" height="800"
+									src="images/logo/logout.png"><span
+									style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
 						</ul>
 					</nav>
 				</div>
@@ -150,11 +180,11 @@
 								<div class="profile-card__img">
 									<div th:if="${account.gender.getGender() eq 'Barbat'}"
 										style="background-color: black;">
-										<img src="/images/man.png" alt="profile card">
+										<img src="/images/avatar/man.png" alt="profile card">
 									</div>
 									<div th:if="${account.gender.getGender() eq 'Femeie'}"
 										style="background-color: black;">
-										<img src="/images/woman.png" alt="profile card">
+										<img src="/images/avatar/woman.png" alt="profile card">
 									</div>
 								</div>
 								<div class="profile-card__cnt js-profile-cnt">
@@ -220,11 +250,11 @@
 											</div>
 											<div class="form-group">
 												<label
-													style="color: #7300e6; font-weight: 600; font-size: 20px;">Nume</label>
+													style="margin-top: 15px; color: #7300e6; font-weight: 600; font-size: 20px;">Nume</label>
 												<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 													<input type="text"
 														class="form-control validation input-edit"
-														th:field="*{firstName}" autofocus>
+														th:field="*{firstName}" autofocus style="width: 350px;">
 													<div class="animation-input"></div>
 												</div>
 												<div th:if="${#fields.hasErrors('firstName')}"
@@ -232,11 +262,11 @@
 											</div>
 											<div class="form-group">
 												<label
-													style="color: #7300e6; font-weight: 600; font-size: 20px;">Prenume</label>
+													style="margin-top: 15px; color: #7300e6; font-weight: 600; font-size: 20px;">Prenume</label>
 												<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 													<input type="text"
 														class="form-control validation input-edit"
-														th:field="*{lastName}" autofocus>
+														th:field="*{lastName}" autofocus style="width: 350px;">
 													<div class="animation-input"></div>
 												</div>
 												<div th:if="${#fields.hasErrors('lastName')}"
@@ -244,12 +274,12 @@
 											</div>
 											<div class="form-group">
 												<label
-													style="color: #7300e6; font-weight: 600; font-size: 20px;">Numar
+													style="margin-top: 15px; color: #7300e6; font-weight: 600; font-size: 20px;">Numar
 													Telefon</label>
 												<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 													<input type="text"
 														class="form-control validation input-edit"
-														th:field="*{phoneNumber}" autofocus>
+														th:field="*{phoneNumber}" autofocus style="width: 350px;">
 													<div class="animation-input"></div>
 												</div>
 												<div th:if="${#fields.hasErrors('phoneNumber')}"
@@ -257,25 +287,27 @@
 											</div>
 											<div class="form-group">
 												<label
-													style="color: #7300e6; font-weight: 600; font-size: 20px;">Email</label>
+													style="margin-top: 15px; color: #7300e6; font-weight: 600; font-size: 20px;">Email</label>
 												<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 													<input type="text"
 														class="form-control validation input-edit"
-														th:field="*{email}" autofocus>
+														th:field="*{email}" autofocus style="width: 350px;">
 													<div class="animation-input"></div>
 												</div>
 												<div th:if="${#fields.hasErrors('email')}"
 													th:errors="*{email}"></div>
 											</div>
-										</div>
+											<div class="form-group"
+												style="margin-top: 55px; position: relative; top: 20px; left: -20px;">
+												<div class="profile-card-form__bottom">
+													<button type="submit"
+														class="profile-card__button button--blue">Salveaza</button>
 
-										<div class="profile-card-form__bottom">
-											<button type="submit"
-												class="profile-card__button button--blue">Salveaza</button>
-
-											<button
-												class="profile-card__button button--gray js-message-close">
-												Nu, multumesc</button>
+													<button
+														class="ml-3 profile-card__button button--gray js-message-close">
+														Nu, multumesc</button>
+												</div>
+											</div>
 										</div>
 									</form>
 									<div class="profile-card__overlay js-message-close"></div>
@@ -328,7 +360,7 @@
 																						<input type="text" name="description"
 																							th:field="*{name}"
 																							class="form-control validatio input-edit2"
-																							style="width: auto;" autofocus
+																							style="width: 350px;" autofocus
 																							onblur="justLetters(this.value,event,0)">
 
 																						<div th:class="showErrorNameCreate00"></div>
@@ -336,10 +368,10 @@
 																				</div>
 																				<div class="form-group">
 																					<label
-																						style="color: #7300e6; font-weight: 600; font-size: 20px;">Oras</label>
+																						style="margin-top: 15px; color: #7300e6; font-weight: 600; font-size: 20px;">Oras</label>
 																					<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 																						<input type="text" name="name" th:field="*{city}"
-																							style="text-transform: capitalize; width: auto;"
+																							style="text-transform: capitalize; width: 350px;"
 																							class="form-control validatio input-edit2"
 																							autofocus>
 
@@ -348,13 +380,13 @@
 																				</div>
 																				<div class="form-group">
 																					<label
-																						style="color: #7300e6; font-weight: 600; font-size: 20px;">Start</label>
+																						style="margin-top: 15px; color: #7300e6; font-weight: 600; font-size: 20px;">Start</label>
 																					<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 																						<input type="text" name="start"
 																							th:field="*{start}"
 																							onblur="year(this, this.value,event,0)"
 																							class="form-control validatio input-edit2"
-																							style="width: auto;" autofocus>
+																							style="width: 350px;" autofocus>
 
 																						<div class="showErrorStartYearCreate01"></div>
 																						<div class="showErrorStartYearCreate02"></div>
@@ -363,12 +395,12 @@
 																				</div>
 																				<div class="form-group">
 																					<label
-																						style="color: #7300e6; font-weight: 600; font-size: 20px;">Sfarsit</label>
+																						style="margin-top: 15px; color: #7300e6; font-weight: 600; font-size: 20px;">Sfarsit</label>
 																					<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 																						<input type="text" name="end" th:field="*{end}"
 																							onblur="year(this, this.value,event,3)"
 																							class="form-control validatio input-edit2"
-																							style="width: auto;" autofocus>
+																							style="width: 350px;" autofocus>
 
 																						<div class="showErrorEndYearCreate31"></div>
 																						<div class="showErrorEndYearCreate32"></div>
@@ -379,13 +411,14 @@
 																					<div th:class="minimDuration"></div>
 																				</div>
 																			</div>
-																			<div class="profile-card-form__bottom">
-																				<button type="submit"
-																					class="profile-card__button button--blue">Salveaza</button>
-																				<button
-																					class="profile-card__button button--gray js-message-close"
-																					data-dismiss="modal">Nu, multumesc</button>
-																			</div>
+																		</div>
+																		<div class="profile-card-form__bottom"
+																			style="margin-top: 20px;">
+																			<button type="submit"
+																				class="profile-card__button button--blue">Salveaza</button>
+																			<button
+																				class="profile-card__button button--gray js-message-close"
+																				data-dismiss="modal">Nu, multumesc</button>
 																		</div>
 																	</div>
 																</div>
@@ -434,13 +467,13 @@
 																							</div>
 																							<div class="form-group">
 																								<label
-																									style="color: #7300e6; font-weight: 600; font-size: 20px;">Nume</label>
+																									style="margin-top: 15px; color: #7300e6; font-weight: 600; font-size: 20px;">Nume</label>
 																								<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 																									<input type="text" id="editName"
 																										onblur="justLetters2(this.value,event,3)"
 																										name="editName" th:value="${ed.name}"
 																										class="form-control validation input-edit2"
-																										style="width: auto;" autofocus>
+																										style="width: 350px;" autofocus>
 
 																									<div th:class="showErrorNameEdit31"></div>
 																								</div>
@@ -448,11 +481,11 @@
 																							<div class="animation-input"></div>
 																							<div class="form-group">
 																								<label
-																									style="color: #7300e6; font-weight: 600; font-size: 20px;">Oras</label>
+																									style="margin-top: 15px; color: #7300e6; font-weight: 600; font-size: 20px;">Oras</label>
 																								<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 																									<input type="text" id="editCity"
 																										name="editCity"
-																										style="text-transform: capitalize; width: auto;"
+																										style="text-transform: capitalize; width: 350px;"
 																										th:value="${ed.city}"
 																										class="form-control validation input-edit2"
 																										autofocus>
@@ -461,14 +494,14 @@
 																							</div>
 																							<div class="form-group">
 																								<label
-																									style="color: #7300e6; font-weight: 600; font-size: 20px;">Inceput</label>
+																									style="margin-top: 15px; color: #7300e6; font-weight: 600; font-size: 20px;">Inceput</label>
 																								<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 																									<input type="text" id="editStart"
 																										name="editStart"
 																										onblur="yearValidation(this,this.value,event,6)"
 																										th:value="${ed.start}"
 																										class="form-control validation input-edit2"
-																										style="width: auto;" autofocus>
+																										style="width: 350px;" autofocus>
 																									<div
 																										th:class="showErrorStartYearEdit61+${ed.educationId}"></div>
 																									<div
@@ -480,14 +513,14 @@
 																							</div>
 																							<div class="form-group">
 																								<label
-																									style="color: #7300e6; font-weight: 600; font-size: 20px;">Sfarsit</label>
+																									style="margin-top: 15px; color: #7300e6; font-weight: 600; font-size: 20px;">Sfarsit</label>
 																								<div
 																									class="input-group mb-2 mr-sm-2 mb-sm-0 edit-input">
 																									<input type="text" id="editEnd" name="editEnd"
 																										onblur="yearValidation(this,this.value,event,9)"
 																										th:value="${ed.end}"
 																										class="form-control validation input-edit2"
-																										style="width: auto;" autofocus>
+																										style="width: 350px;" autofocus>
 																									<div
 																										th:class="showErrorEndYearEdit91+${ed.educationId}"></div>
 																									<div
@@ -502,7 +535,8 @@
 																							</div>
 																						</div>
 																					</div>
-																					<div class="profile-card-form__bottom">
+																					<div class="profile-card-form__bottom"
+																						style="margin-top: 20px;">
 																						<button type="submit"
 																							class="profile-card__button button--blue">Salveaza</button>
 																						<button
@@ -588,12 +622,12 @@
 																				</div>
 																				<div class="form-group">
 																					<label
-																						style="color: #7300e6; font-weight: 600; font-size: 20px;">Institutie</label>
+																						style="margin-top: 15px; color: #7300e6; font-weight: 600; font-size: 20px;">Institutie</label>
 																					<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 																						<input type="text" id="expName" name="expName"
 																							th:field="*{name}"
 																							class="form-control validation input-edit2"
-																							style="width: auto;" autofocus
+																							style="width: 350px;" autofocus
 																							onblur="justLetters(this.value,event,1)">
 
 																						<div th:class="showErrorNameCreate10"></div>
@@ -601,11 +635,11 @@
 																				</div>
 																				<div class="form-group">
 																					<label
-																						style="color: #7300e6; font-weight: 600; font-size: 20px;">Oras</label>
+																						style="margin-top: 15px; color: #7300e6; font-weight: 600; font-size: 20px;">Oras</label>
 																					<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 																						<input type="text" id="expCity" name="expCity"
 																							th:field="*{city}"
-																							style="text-transform: capitalize; width: auto;"
+																							style="text-transform: capitalize; width: 350px;"
 																							class="form-control validation input-edit2"
 																							autofocus>
 
@@ -613,13 +647,13 @@
 																				</div>
 																				<div class="form-group">
 																					<label
-																						style="color: #7300e6; font-weight: 600; font-size: 20px;">Start</label>
+																						style="margin-top: 15px; color: #7300e6; font-weight: 600; font-size: 20px;">Start</label>
 																					<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 																						<input type="text" id="expStart" name="expStart"
 																							th:field="*{start}"
 																							onblur="year(this,this.value,event,1)"
 																							class="form-control validation input-edit2"
-																							style="width: auto;" autofocus>
+																							style="width: 350px;" autofocus>
 
 																						<div class="showErrorStartYearCreate11"></div>
 																						<div class="showErrorStartYearCreate12"></div>
@@ -628,13 +662,13 @@
 																				</div>
 																				<div class="form-group">
 																					<label
-																						style="color: #7300e6; font-weight: 600; font-size: 20px;">Sfarsit</label>
+																						style="margin-top: 15px; color: #7300e6; font-weight: 600; font-size: 20px;">Sfarsit</label>
 																					<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 																						<input type="text" id="expEnd" name="expEnd"
 																							th:field="*{end}"
 																							onblur="year(this,this.value,event,2)"
 																							class="form-control validation input-edit2"
-																							style="width: auto;" autofocus>
+																							style="width: 350px;" autofocus>
 
 																						<div class="showErrorEndYearCreate21"></div>
 																						<div class="showErrorEndYearCreate22"></div>
@@ -646,7 +680,8 @@
 																				</div>
 																			</div>
 																		</div>
-																		<div class="profile-card-form__bottom">
+																		<div class="profile-card-form__bottom"
+																			style="margin-top: 20px;">
 																			<button type="submit"
 																				class="profile-card__button button--blue">Salveaza</button>
 																			<button
@@ -739,13 +774,13 @@
 																								</div>
 																								<div class="form-group">
 																									<label
-																										style="color: #7300e6; font-weight: 600; font-size: 20px;">Nume</label>
+																										style="margin-top: 15px; color: #7300e6; font-weight: 600; font-size: 20px;">Nume</label>
 																									<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 																										<input type="text" id="expEditName"
 																											name="expEditName"
 																											th:value="${experience.name}"
 																											class="form-control validation input-edit2"
-																											style="width: auto;" autofocus
+																											style="width: 350px;" autofocus
 																											onblur="justLetters2(this.value,event,1)">
 
 																										<div th:class="showErrorNameEdit11"></div>
@@ -753,25 +788,25 @@
 																								</div>
 																								<div class="form-group">
 																									<label
-																										style="color: #7300e6; font-weight: 600; font-size: 20px;">Oras</label>
+																										style="margin-top: 15px; color: #7300e6; font-weight: 600; font-size: 20px;">Oras</label>
 																									<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 																										<input type="text" id="expEditCity"
 																											name="expEditCity"
 																											th:value="${experience.city}"
 																											class="form-control validation input-edit2"
-																											style="width: auto;" autofocus>
+																											style="width: 350px;" autofocus>
 
 																									</div>
 																								</div>
 																								<div class="form-group">
 																									<label
-																										style="color: #7300e6; font-weight: 600; font-size: 20px;">Inceput</label>
+																										style="margin-top: 15px; color: #7300e6; font-weight: 600; font-size: 20px;">Inceput</label>
 																									<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 																										<input type="text" id="expEditStart"
 																											name="editStart"
 																											th:value="${experience.start}"
 																											class="form-control validation input-edit2"
-																											style="width: auto;" autofocus
+																											style="width: 350px;" autofocus
 																											onblur="yearValidation(this,this.value,event,7)">
 
 																										<div
@@ -785,12 +820,12 @@
 																								</div>
 																								<div class="form-group">
 																									<label
-																										style="color: #7300e6; font-weight: 600; font-size: 20px;">Sfarsit</label>
+																										style="margin-top: 15px; color: #7300e6; font-weight: 600; font-size: 20px;">Sfarsit</label>
 																									<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 																										<input type="text" id="expEditEnd"
 																											name="editEnd" th:value="${experience.end}"
 																											class="form-control validation input-edit2"
-																											style="width: auto;" autofocus
+																											style="width: 350px;" autofocus
 																											onblur="yearValidation(this,this.value,event,5)">
 
 																										<div
@@ -806,7 +841,8 @@
 																								</div>
 																							</div>
 																						</div>
-																						<div class="profile-card-form__bottom">
+																						<div class="profile-card-form__bottom"
+																							style="margin-top: 20px;">
 																							<button type="submit"
 																								class="profile-card__button button--blue">Salveaza</button>
 																							<button
@@ -865,12 +901,12 @@
 																				</div>
 																				<div class="form-group">
 																					<label
-																						style="color: #7300e6; font-weight: 600; font-size: 20px;">Descriere</label>
+																						style="margin-top: 15px; color: #7300e6; font-weight: 600; font-size: 20px;">Descriere</label>
 																					<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 																						<input type="text" name="description"
 																							th:field="*{description}"
 																							class="form-control validation input-edit2"
-																							style="width: auto;" autofocus>
+																							style="width: 350px;" autofocus>
 																					</div>
 																					<div id="showError"></div>
 																					<div th:if="${#fields.hasErrors('description')}"
@@ -878,7 +914,8 @@
 																				</div>
 																			</div>
 																		</div>
-																		<div class="profile-card-form__bottom">
+																		<div class="profile-card-form__bottom"
+																			style="margin-top: 20px;">
 																			<button type="submit"
 																				class="profile-card__button button--blue">Salveaza</button>
 																			<button
@@ -961,19 +998,20 @@
 																						</div>
 																						<div class="form-group">
 																							<label
-																								style="color: #7300e6; font-weight: 600; font-size: 20px;">Descriere</label>
+																								style="margin-top: 15px; color: #7300e6; font-weight: 600; font-size: 20px;">Descriere</label>
 																							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 																								<input type="text" id="description2"
 																									name="description2"
 																									th:value="${skill.description}"
 																									class="form-control validation input-edit"
-																									style="width: auto;" autofocus>
+																									style="width: 350px;" autofocus>
 																								<div id="showError2"></div>
 																							</div>
 																						</div>
 																					</div>
 																				</div>
-																				<div class="profile-card-form__bottom">
+																				<div class="profile-card-form__bottom"
+																					style="margin-top: 20px;">
 																					<button type="submit"
 																						class="profile-card__button button--blue">Salveaza</button>
 																					<button
@@ -1037,13 +1075,14 @@
 																						name="descriptionAccountInformation"
 																						th:value="${account.accountInformation.description}"
 																						class="form-control validation input-edit2"
-																						style="width: auto;" autofocus>
+																						style="width: 350px;" autofocus>
 																					<div id="showErrorAboutMe"></div>
 																				</div>
 																			</div>
 																		</div>
 																	</div>
-																	<div class="profile-card-form__bottom">
+																	<div class="profile-card-form__bottom"
+																		style="margin-top: 20px;">
 																		<button type="submit"
 																			class="profile-card__button button--blue">Salveaza</button>
 																		<button

@@ -63,6 +63,13 @@ public class Device {
 		this.userDevices = userDevices;
 	}
 
+	public Device(String name, String company, String serialNumber, Integer price) {
+		this.name = name;
+		this.company = company;
+		this.serialNumber = serialNumber;
+		this.price = price;
+	}
+
 	public Integer getDeviceId() {
 		return deviceId;
 	}

@@ -12,21 +12,65 @@
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" th:href="@{css/style.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{css/style.css}" />
+<style>
+h1 {
+	color: #7300e6;
+	font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+	font-weight: 900;
+	font-size: 60px;
+	margin-bottom: 10px;
+}
+
+p {
+	color: black;
+	font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+	font-size: 30px;
+	margin: 0;
+}
+
+i {
+	color: #7300e6;
+	font-size: 100px;
+	line-height: 200px;
+	margin-left: -15px;
+	font-weight: bold;
+}
+
+.card {
+	background: white;
+    padding: 60px;
+    border-radius: 4px;
+    box-shadow: 0 2px 3px black;
+    display: inline-block;
+    margin: 0 auto;
+}
+</style>
 </head>
-<body>
-<script>
-let message = '[[${message}]]';
-function Redirect() 
-{  
-	if(message === 'height_or_weight_is_not_set') {
-		window.location="https://localhost:8443/set_height_and_weight"; 
-	} else {
-		window.location="https://localhost:8443/home"; 
-	} 
-} 
-document.write("You will be redirected to a new page in 5 seconds"); 
-setTimeout('Redirect()', 5000);   
-</script>
+<body style="background: #7300e6;">
+	<div class="card"
+		style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 600px; height: 450px;">
+		<div
+			style="border-radius: 200px; height: 200px; width: 200px; background: #F8FAF5; margin: 0 auto; position: relative;">
+			<img
+				style="height: 250px; width: 250px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);"
+				src="/images/logo/check.png">
+		</div>
+		<div
+			style="position: absolute; left: 50%; top: 80%; transform: translate(-50%, -50%); width: 350px; text-align: center;">
+			<h1 style="color: #00CE8E;">Succes!</h1>
+		</div>
+	</div>
+	<script>
+		let message = '[[${message}]]';
+		function redirect() {
+			if (message === 'height_or_weight_is_not_set') {
+				window.location = "https://localhost:8443/set_height_and_weight";
+			} else {
+				window.location = "https://localhost:8443/home";
+			}
+		}
+		setTimeout('redirect()', 1500);
+	</script>
 </body>
 </html>

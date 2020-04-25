@@ -144,4 +144,11 @@ public class MeasurementServiceImpl implements MeasurementService {
 	public void deleteByUserDeviceUserDeviceIdAndMeasurementId(Integer userDeviceId, Integer measurementId) {
 		measurementDao.deleteByUserDeviceUserDeviceIdAndMeasurementId(userDeviceId, measurementId);
 	}
+
+	@Override
+	public Set<Measurement> findAllByUserDeviceUserDeviceIdAndStartDateBetween(Integer userDeviceId,
+			Timestamp timestampStartDate, Timestamp timestampEndDate) {
+		return measurementDao.findAllByUserDeviceUserDeviceIdAndStartDateBetween(userDeviceId, timestampStartDate,
+				timestampEndDate);
+	}
 }

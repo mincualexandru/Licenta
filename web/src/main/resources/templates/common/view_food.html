@@ -1,218 +1,933 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
+<title>Home</title>
+<link th:href="@{../css/font-face.css}" rel="stylesheet" media="all">
+<link th:href="@{../vendor/font-awesome-4.7/css/font-awesome.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{../vendor/font-awesome-5/css/fontawesome-all.min.css}"
+	rel="stylesheet" media="all">
+<link
+	th:href="@{../vendor/mdi-font/css/material-design-iconic-font.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{../vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{../vendor/animsition/animsition.min.css}"
+	rel="stylesheet" media="all">
+<link
+	th:href="@{../vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{../vendor/wow/animate.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{../vendor/css-hamburgers/hamburgers.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{../vendor/slick/slick.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{../vendor/select2/select2.min.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{../vendor/perfect-scrollbar/perfect-scrollbar.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{../css/theme.css}" rel="stylesheet" media="all">
+<link th:href="@{../css/cart.css}" rel="stylesheet" media="all">
 <style>
-div.gallery {
-	margin: 5px;
-	border: 1px solid #ccc;
-	float: left;
-	width: 180px;
+.modal-backdrop {
+	display: none;
 }
 
-div.gallery:hover {
-	border: 1px solid #777;
+.modal {
+	background: rgba(0, 0, 0, 0.5);
 }
 
-div.gallery img {
-	width: 100%;
-	height: auto;
-}
-
-div.desc {
+#yourBtn {
+	font-family: calibri;
+	width: 300px;
 	padding: 15px;
+	-webkit-border-radius: 5px;
+	border: 3px dashed black;
 	text-align: center;
+	background-color: #7300e6;
+	color: white;
+	cursor: pointer;
+	font-size: 25px;
+	font-weight: 600;
 }
 </style>
-<title>Admin</title>
-<link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-	rel="stylesheet" id="bootstrap-css">
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 <body>
-<div th:if="${inexistentValue}">
-	Valoarea introdusa nu exista
-</div>
-<div th:unless="${inexistentValue}">
-<div th:each="role, iterStat : ${account.roles}">
-	<div th:if="${role.name == 'ROLE_USER'}">
-	<div th:if="${attentionToCalories}"><h4 th:text="${'Atentie ! Deja ai mancat ' + sumOfAccumulatedCaloriesToday + ' calorii pana acum'}"></h4></div>
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-8 mx-auto">
-				<h1>Poze Aliment</h1>
-					<div class="gallery" th:each="photo, iterStat : ${food.images}">
-						<img th:src="@{${'/images/' + photo.fileName}}" alt="Cinque Terre" width="600" height="400">
-					</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-8 mx-auto">
-				<h1>Recomandari Aliment</h1>
-					<ul th:each="adv, iterStat : ${food.recommendations}">
-						<li th:text="${adv.recommendation}"></li>
-					</ul>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-8 mx-auto">
-				<form th:action="@{/eat_this_food}" method="post">
-					<input type="hidden" name="foodId" th:value="${food.foodId}"/>
-					<input type="hidden" name="accountId" th:value="${account.accountId}"/>
-					<button type="submit" class="btn btn-success">Mananca acest aliment</button>
-				</form>
-			</div>
-		</div>
-	</div>
-	</div>
-	<div th:if="${role.name == 'ROLE_NUTRITIONIST'}">
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-8 mx-auto">
-				<div class="photos">
-					<h1>Poze Aliment</h1>
-					<button type="button" data-toggle="modal" data-target="#addPhoto"
-						data-backdrop="static" data-keyboard="false"
-						class="btn btn-primary">Adauga Poza</button>
-					<form class="photo" th:action="@{/add_photo_for_food_save}"
-						th:object="${foodImage}" method="POST"
-						enctype="multipart/form-data">
-						<div class="modal fade" id="addPhoto" tabindex="-1" role="dialog"
-							aria-labelledby="addPhotoLabel" aria-hidden="true">
-							<div class="modal-dialog" role="document">
-								<div class="modal-content">
-									<div class="modal-header">
-										<h5 class="modal-title" id="addPhotoLabel">Adauga Poza</h5>
-										<button type="button" class="close" data-dismiss="modal"
-											aria-label="Close">
-											<span aria-hidden="true">&times;</span>
-										</button>
-									</div>
-									<div class="modal-body">
-										<input type="hidden" name="foodImageId"
-											th:field="*{foodImageId}"> <input type="hidden"
-											th:value="${food.foodId}" name="foodId" /> <input
-											type="file" name="imageFile">
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-secondary"
-											data-dismiss="modal">Close</button>
-										<button class="btn btn-primary">Save changes</button>
-									</div>
-								</div>
-							</div>
-						</div>
-					</form>
-					<div class="gallery"
-						th:each="photo, iterStat : ${food.images}">
-						<img th:src="@{${'/images/' + photo.fileName}}" alt="Cinque Terre"
-							width="600" height="400">
-						<div class="desc">
-							<form method="post" th:action="@{/delete_photo_from_food}">
-								<input type="hidden" name="photoId"
-									th:value="${photo.foodImageId}" /> <input type="hidden"
-									name="foodId" th:value="${food.foodId}" />
-								<button type="submit">Sterge Poza</button>
-							</form>
-						</div>
+	<div class="page-wrapper">
+		<header style="background-color: white;"
+			class="header-mobile d-block d-lg-none">
+			<div class="header-mobile__bar">
+				<div class="container-fluid">
+					<div class="header-mobile-inner">
+						<a class="logo" href="index.html"> <img
+							src="/images/logo/Screenshot_18.png">
+						</a>
+						<button class="hamburger hamburger--slider" type="button">
+							<span class="hamburger-box"> <span class="hamburger-inner"></span>
+							</span>
+						</button>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-8 mx-auto">
-				<div class="advices">
-					<h1>Recomandari Aliment</h1>
-					<button type="button" data-toggle="modal" data-target="#advice"
-						data-backdrop="static" data-keyboard="false"
-						class="btn btn-primary">Adauga Recomandari</button>
-					<form id="aboutMe" class="advice" th:action="@{/add_recommendation_for_food_save}"
-						th:object="${foodRecommendation}" method="POST">
-						<div class="modal fade" id="advice" tabindex="-1" role="dialog"
-							aria-labelledby="adviceLabel" aria-hidden="true">
-							<div class="modal-dialog" role="document">
-								<div class="modal-content">
-									<div class="modal-header">
-										<h5 class="modal-title" id="advice">Adauga Recomandare</h5>
-										<button type="button" class="close" data-dismiss="modal"
-											aria-label="Close">
-											<span aria-hidden="true">&times;</span>
-										</button>
+			<nav class="navbar-mobile">
+				<div class="container-fluid">
+					<ul class="navbar-mobile__list list-unstyled">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<aside style="background-color: white;"
+			class="menu-sidebar d-none d-lg-block">
+			<div class="logo">
+				<a href="#"> <img src="/images/logo/Screenshot_18.png">
+				</a>
+			</div>
+			<div class="menu-sidebar__content js-scrollbar1">
+				<nav class="navbar-sidebar">
+					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</nav>
+			</div>
+		</aside>
+		<div class="page-container">
+			<div class="main-content">
+				<div class="section__content section__content--p30">
+					<div th:if="${inexistentValue}" style="font-size: 90px; color: white; font-weight: 800; text-align: center; position: relative; top: 200px;">Ai introdus o valoare care nu exista
+					</div>
+					<div th:unless="${inexistentValue}">
+						<div th:each="role, iterStat : ${account.roles}">
+							<div th:if="${role.name == 'ROLE_USER'}">
+								<div class="alert" id="attentionToCalories"
+									th:if="${attentionToCalories}">
+									<div
+										style="float: left; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 250px;">
+										<h5 style="font-weight: 900; font-size: 16px;">Notificare</h5>
+										<p style="font-size: 13px;"
+											th:text="${'Atentie ! Deja ai mancat ' + sumOfAccumulatedCaloriesToday + ' calorii pana acum'}"></p>
 									</div>
-									<div class="modal-body">
-										<input type="text" id="descriptionAccountInformation" name="recommendation" th:field="*{recommendation}">
-  										<input type="hidden" name="foodId" th:value="${food.foodId}"/>
-  										<div id="showErrorAboutMe"></div>
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-secondary"
-											data-dismiss="modal">Close</button>
-										<button class="btn btn-primary">Save changes</button>
+									<div style="float: right;">
+										<span class="closebtn"
+											onclick="document.getElementById('attentionToCalories').style.display = 'none';">&times;</span>
 									</div>
 								</div>
-							</div>
-						</div>
-					</form>
-					<ul th:each="adv, iterStat : ${foodRecommendationSorted}">
-						<li th:text="${adv.recommendation}"></li>
-						<button th:onclick="|selecteazaSfat('${adv.foodRecommendationId}', '${food.foodId}')|" data-toggle="modal" data-target="#modal-edit-advice" th:attr="data-target='#modal-edit-advice'+${adv.foodRecommendationId}">Editeaza Recomandare</button>
-						<form class="editAdvice" th:action="@{/edit_recommendation_food}" method="post">
-							<div class="modal modal-edit-advice fade in"
-								th:id="modal-edit-advice+${adv.foodRecommendationId}">
-								<div class="modal-dialog">
-									<div class="modal-content">
-										<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal"
-												aria-label="Close">
-												<span aria-hidden="true">×</span>
-											</button>
-											<h5 class="modal-title">Editeaza Recomandare</h5>
-										</div>
-										<div class="modal-body">
-											<div class="row">
-												<div class="col-md-6">
-													<div class="form-group">
-														<label>Recomandare</label>
-														<div class="input-group mb-2 mr-sm-2 mb-sm-0" th:id="validName+${adv.foodRecommendationId}">
-															<input type="text" id="description2" name="editName" th:value="${adv.recommendation}">
-															<input type="hidden" name="recommendationId" th:value="${adv.foodRecommendationId}"/>
-															<input type="hidden" th:value="${food.foodId}" name="foodId"/>
-															<div th:id="showError+${adv.foodRecommendationId}"></div>
+								<div class="alert" th:if="${food.calories > 150}" id="calories">
+									<div
+										style="float: left; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 250px;">
+										<h5 style="font-weight: 900; font-size: 20px;">Atentie</h5>
+										<p style="font-size: 15px; width: 180px; margin-top: 5px;">Acest
+											aliment contine un numar ridicat de calorii</p>
+									</div>
+									<div style="float: right;">
+										<span class="closebtn"
+											onclick="document.getElementById('calories').style.display = 'none';">&times;</span>
+									</div>
+								</div>
+								<div class="container-fluid">
+									<h3
+										style="text-align: center; font-size: 60px; margin-top: 30px; color: white; font-weight: 700; margin-bottom: 100px;">Detalii
+										Aliment</h3>
+									<div class="row">
+										<div class="col-md-8 mx-auto"
+											style="border-radius: 30px; padding: 50px; margin-bottom: 30px; height: 330px; background-color: white; filter: drop-shadow(5px -5px 5px black) drop-shadow(-5px 0px 5px black) drop-shadow(0px 5px 5px black)">
+											<div class="avatarr"
+												style="position: absolute; width: 130px; height: 130px; background-color: white; top: -70px; left: 340px; border-radius: 50%; box-shadow: 0px 0px 0px 7px black; display: flex; justify-content: center; align-items: center;">
+												<img style="width: 80px; height: 80px;"
+													src="/images/logo/salad.png">
+											</div>
+											<div style="float: left">
+												<div class="product-info"
+													style="position: relative; width: auto; height: 350px;">
+													<div class="product-text"
+														style="z-index: 2; color: black; text-align: center; font-size: 15px; position: relative;">
+														<div
+															style="margin-top: 20px; font-size: 50px; font-weight: 600; color: #7300e6; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;"
+															th:text="${food.name}"></div>
+														<div style="display: inline-flex; align-items: baseline;">
+															Calorii:
+															<div
+																style="color: #7300e6; margin-left: 5px; margin-right: 10px; font-size: 40px; font-weight: 900;"
+																th:text="${food.calories}"></div>
+															<img style="width: 40px; height: 40px;"
+																src="/images/logo/meal.png">
+														</div>
+														<div style="display: inline-flex; align-items: baseline;">
+															Proteine:
+															<div
+																style="color: #7300e6; margin-left: 5px; margin-right: 10px; font-size: 40px; font-weight: 900;"
+																th:text="${food.protein}"></div>
+															<img style="width: 40px; height: 40px;"
+																src="/images/logo/proteins.png">
+														</div>
+														<div style="display: inline-flex; align-items: baseline;">
+															Lipide:
+															<div
+																style="color: #7300e6; margin-left: 5px; margin-right: 10px; font-size: 40px; font-weight: 900;"
+																th:text="${food.lipids}"></div>
+															<img style="width: 40px; height: 40px;"
+																src="/images/logo/trans-fat.png">
+														</div>
+														<div
+															style="margin-left: 10px; display: inline-flex; align-items: baseline;">
+															Carbohidrati:
+															<div
+																style="color: #7300e6; margin-left: 5px; margin-right: 10px; font-size: 40px; font-weight: 900;"
+																th:text="${food.carbohydrates}"></div>
+															<img style="width: 40px; height: 40px;"
+																src="/images/logo/potato.png">
+														</div>
+														<div
+															style="margin-left: 10px; display: inline-flex; align-items: baseline;">
+															Gramaj:
+															<div
+																style="color: #7300e6; margin-left: 5px; margin-right: 10px; font-size: 40px; font-weight: 900;"
+																th:text="${food.weight}"></div>
+															<img style="width: 40px; height: 40px;"
+																src="/images/logo/scale.png">
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-outline pull-left"
-												data-dismiss="modal">Close</button>
-											<button type="submit">Save</button>
+									</div>
+									<div th:if="${foodRecommendationSorted.size() > 0}">
+										<div class="row">
+											<div class="col-md-7 mx-auto">
+												<div class="au-card m-b-30"
+													style="margin-bottom: 40px; margin-top: 40px; height: auto; filter: drop-shadow(5px -5px 5px black) drop-shadow(-5px 0px 5px black) drop-shadow(0px 5px 5px black);">
+													<div class="au-card-inner">
+														<div class="skills"
+															style="display: flex; justify-content: space-between;">
+															<h1 style="float: left; color: #7300e6; font-size: 45px;">Beneficii
+																Aliment</h1>
+														</div>
+														<div
+															style="padding: 10px 40px; position: relative; background-color: inherit;"
+															th:each="rec, iterStat : ${foodRecommendationSorted}">
+															<div class="content">
+																<div class="left-content">
+																	<h3
+																		th:text="${iterStat.index + 1 + '. ' + rec.recommendation}"></h3>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div th:if="${food.images.size() > 0}">
+										<div class="row">
+											<div class="col-md-12">
+												<h2
+													style="font-size: 60px; font-weight: 700; margin-bottom: 20px; color: white; text-align: center;">Imagini
+													Aliment</h2>
+												<div style="margin-left: 35px;">
+													<div style="height: 270px; background-color: white;"
+														th:each="photo, iterStat : ${food.images}" class="gallery">
+														<th:block th:if="${photo.fileName != null}">
+															<img style="padding: 30px;" width="600" height="400"
+																th:src="@{${'/images/plans/diets/' + photo.fileName}}">
+														</th:block>
+														<th:block th:if="${photo.fileName eq null}">
+															<img style="padding: 30px;" width="600" height="400"
+																class="gallery-image" th:src="@{${'/images/di.png'}}">
+														</th:block>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-8 mx-auto">
+											<form th:action="@{/eat_this_food}" method="post">
+												<input type="hidden" name="foodId" th:value="${food.foodId}" />
+												<input type="hidden" name="accountId"
+													th:value="${account.accountId}" />
+												<button type="submit" class="btnn2"
+													style="color: #7300e6; background-color: white; font-size: 25px; margin-top: 50px !important; margin-bottom: 50px !important;">Consuma
+													Aliment</button>
+											</form>
 										</div>
 									</div>
 								</div>
 							</div>
-						</form>
-						<form th:action="@{/delete_recommendation_food}" method="post">
-							<input type="hidden" name="recommendationId" th:value="${adv.foodRecommendationId}"/>
-							<input type="hidden" th:value="${food.foodId}" name="foodId"/>
-							<button type="submit">Sterge Recomandare</button>
-						</form>
-					</ul>
+							<div th:if="${role.name == 'ROLE_NUTRITIONIST'}">
+								<div class="container-fluid">
+									<h3
+										style="text-align: center; font-size: 60px; margin-top: 30px; color: white; font-weight: 700; margin-bottom: 100px;">Detalii
+										Aliment</h3>
+									<div class="row">
+										<div class="col-md-8 mx-auto"
+											style="border-radius: 30px; padding: 50px; margin-bottom: 30px; height: 330px; background-color: white;">
+											<div class="avatarr"
+												style="position: absolute; width: 130px; height: 130px; background-color: white; top: -70px; left: 340px; border-radius: 50%; box-shadow: 0px 0px 0px 7px black; display: flex; justify-content: center; align-items: center;">
+												<img style="width: 80px; height: 80px;"
+													src="/images/logo/salad.png">
+											</div>
+											<div style="float: left">
+												<div class="product-info"
+													style="position: relative; width: auto; height: 350px;">
+													<div class="product-text"
+														style="z-index: 2; color: black; text-align: center; font-size: 15px; position: relative;">
+														<div
+															style="margin-top: 20px; font-size: 50px; font-weight: 600; color: #7300e6; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;"
+															th:text="${food.name}"></div>
+														<div style="display: inline-flex; align-items: baseline;">
+															Calorii:
+															<div
+																style="color: #7300e6; margin-left: 5px; margin-right: 10px; font-size: 40px; font-weight: 900;"
+																th:text="${food.calories}"></div>
+															<img style="width: 40px; height: 40px;"
+																src="/images/logo/meal.png">
+														</div>
+														<div style="display: inline-flex; align-items: baseline;">
+															Proteine:
+															<div
+																style="color: #7300e6; margin-left: 5px; margin-right: 10px; font-size: 40px; font-weight: 900;"
+																th:text="${food.protein}"></div>
+															<img style="width: 40px; height: 40px;"
+																src="/images/logo/proteins.png">
+														</div>
+														<div style="display: inline-flex; align-items: baseline;">
+															Lipide:
+															<div
+																style="color: #7300e6; margin-left: 5px; margin-right: 10px; font-size: 40px; font-weight: 900;"
+																th:text="${food.lipids}"></div>
+															<img style="width: 40px; height: 40px;"
+																src="/images/logo/trans-fat.png">
+														</div>
+														<div
+															style="margin-left: 10px; display: inline-flex; align-items: baseline;">
+															Carbohidrati:
+															<div
+																style="color: #7300e6; margin-left: 5px; margin-right: 10px; font-size: 40px; font-weight: 900;"
+																th:text="${food.carbohydrates}"></div>
+															<img style="width: 40px; height: 40px;"
+																src="/images/logo/potato.png">
+														</div>
+														<div
+															style="margin-left: 10px; display: inline-flex; align-items: baseline;">
+															Gramaj:
+															<div
+																style="color: #7300e6; margin-left: 5px; margin-right: 10px; font-size: 40px; font-weight: 900;"
+																th:text="${food.weight}"></div>
+															<img style="width: 40px; height: 40px;"
+																src="/images/logo/scale.png">
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row" th:if="${food.dietPlan.userPlans.size() eq 0}">
+										<div class="col-md-7 mx-auto">
+											<div class="au-card m-b-30"
+												style="margin-bottom: 40px; margin-top: 40px; height: auto;">
+												<div class="au-card-inner">
+													<div class="skills"
+														style="display: flex; justify-content: space-between;">
+														<h1 style="float: left; color: #7300e6; font-size: 45px;">Beneficii
+															Aliment</h1>
+														<th:block th:if="${food.dietPlan.userPlans.size() eq 0}">
+															<button
+																style="float: right; margin: 0px !important; position: relative;"
+																type="button" data-toggle="modal" data-target="#advice"
+																data-keyboard="false">
+																<i class="fas fa-plus edit-about"></i>
+															</button>
+															<form id="aboutMe" class="advice"
+																th:action="@{/add_recommendation_for_food_save}"
+																th:object="${foodRecommendation}" method="POST">
+																<div class="modal fade" id="advice" tabindex="-1"
+																	role="dialog" aria-labelledby="adviceLabel"
+																	aria-hidden="true">
+																	<div class="modal-dialog" role="document">
+																		<div class="modal-content"
+																			style="box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6); border-radius: 12px; height: auto;">
+																			<div class="modal-body">
+																				<div class="profile-card-form__container"
+																					style="margin-left: 30px; margin-right: 30px;">
+																					<div style="text-align: center; color: #7300e6;">
+																						<i class="fas fa-4x fa-user-plus"
+																							aria-hidden="true" style="margin-bottom: 20px;"></i>
+																						<h2 style="margin-bottom: 20px; color: #7300e6;">Adauga
+																							Beneficiu</h2>
+																					</div>
+																					<div class="form-group">
+																						<label
+																							style="color: #7300e6; font-weight: 600; font-size: 20px;">Recomandare</label>
+																						<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+																							<input type="text"
+																								id="descriptionAccountInformation"
+																								name="recommendation"
+																								th:field="*{recommendation}"
+																								class="form-control validation input-edit"
+																								style="width: 350px;" autofocus> <input
+																								type="hidden" name="foodId"
+																								th:value="${food.foodId}" />
+																							<div id="showErrorAboutMe"></div>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																			<div class="profile-card-form__bottom"
+																				style="margin-top: 20px; position: relative; top: 20px;">
+																				<button type="submit"
+																					class="profile-card__button button--blue">Salveaza</button>
+																				<button
+																					class="profile-card__button button--gray js-message-close"
+																					data-dismiss="modal">Nu, multumesc</button>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</form>
+														</th:block>
+													</div>
+													<div
+														style="padding: 10px 40px; position: relative; background-color: inherit;"
+														th:each="adv, iterStat : ${foodRecommendationSorted}">
+														<div class="content">
+															<div class="left-content">
+																<h3
+																	th:text="${iterStat.index + 1 + '. ' + adv.recommendation}"></h3>
+															</div>
+															<div class="right-content"
+																th:if="${food.dietPlan.userPlans.size() eq 0}">
+																<button
+																	th:onclick="|selecteazaSfat('${adv.foodRecommendationId}', '${food.foodId}')|"
+																	data-toggle="modal" data-target="#modal-edit-advice"
+																	th:attr="data-target='#modal-edit-advice'+${adv.foodRecommendationId}">
+																	<i class="fas fa-pen edit-about"></i>
+																</button>
+																<button class="ml-3" data-toggle="modal"
+																	data-target="#modal-skill-delete"
+																	th:attr="data-target='#modal-skill-delete'+${adv.foodRecommendationId}">
+																	<i class="fas fa-trash-alt edit-about"></i>
+																</button>
+																<form class="editAdvice"
+																	th:action="@{/edit_recommendation_food}" method="post">
+																	<div class="modal modal-edit-advice fade in"
+																		th:id="modal-edit-advice+${adv.foodRecommendationId}">
+																		<div class="modal-dialog">
+																			<div class="modal-content"
+																				style="box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6); border-radius: 12px; height: auto;">
+																				<div class="modal-body">
+																					<div class="profile-card-form__container"
+																						style="margin-left: 30px; margin-right: 30px;">
+																						<div style="text-align: center; color: #7300e6;">
+																							<i class="fas fa-4x fa-user-minus"
+																								aria-hidden="true" style="margin-bottom: 20px;"></i>
+																							<h2 style="margin-bottom: 20px; color: #7300e6;">Editeaza
+																								Beneficiu</h2>
+																						</div>
+																						<div class="form-group">
+																							<label
+																								style="color: #7300e6; font-weight: 600; font-size: 20px;">Beneficiu</label>
+																							<div class="input-group mb-2 mr-sm-2 mb-sm-0"
+																								th:id="validName+${adv.foodRecommendationId}">
+																								<input type="text" id="description2"
+																									name="editName"
+																									th:value="${adv.recommendation}"
+																									class="form-control validation input-edit"
+																									style="width: 350px;" autofocus> <input
+																									type="hidden" name="recommendationId"
+																									th:value="${adv.foodRecommendationId}" /> <input
+																									type="hidden" th:value="${food.foodId}"
+																									name="foodId" />
+																								<div
+																									th:id="showError+${adv.foodRecommendationId}"></div>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																				<div class="profile-card-form__bottom"
+																					style="margin-top: 20px; position: relative; top: 20px;">
+																					<button type="submit"
+																						class="profile-card__button button--blue">Editeaza</button>
+																					<button
+																						class="profile-card__button button--gray js-message-close"
+																						data-dismiss="modal">Nu, multumesc</button>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</form>
+																<form th:action="@{/delete_recommendation_food}"
+																	method="post">
+																	<input type="hidden" name="recommendationId"
+																		th:value="${adv.foodRecommendationId}" /> <input
+																		type="hidden" th:value="${food.foodId}" name="foodId" />
+																	<div class="modal modal-skill-delete fade in"
+																		th:id="modal-skill-delete+${adv.foodRecommendationId}">
+																		<div class="modal-dialog">
+																			<div class="modal-content"
+																				style="box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6); border-radius: 12px; height: auto;">
+																				<div class="modal-body">
+																					<div class="profile-card-form__container"
+																						style="margin-left: 30px; margin-right: 30px;">
+																						<div style="text-align: center; color: #7300e6;">
+																							<i class="fas fa-4x fa-user-minus"
+																								aria-hidden="true" style="margin-bottom: 20px;"></i>
+																							<h2 style="margin-bottom: 20px; color: #7300e6;">Sterge
+																								Beneficiu</h2>
+																						</div>
+																						<div class="form-group">
+																							<h3 style="text-align: center;">Beneficiul
+																								selectat va fi sters</h3>
+																						</div>
+																					</div>
+																				</div>
+																				<div class="profile-card-form__bottom" style="margin-top: 20px; position: relative; top: 20px;">
+																					<button type="submit"
+																						class="profile-card__button button--blue">Sterge</button>
+																					<button
+																						class="profile-card__button button--gray js-message-close"
+																						data-dismiss="modal">Nu, multumesc</button>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</form>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row" th:if="${food.dietPlan.userPlans.size() eq 0}">
+										<div class="col-md-12" style="margin-bottom: 50px;">
+											<div class="education"
+												style="display: flex; justify-content: center; align-items: center;">
+												<h1 style="font-size: 45px; float: left; color: white;">Imagini
+													Aliment</h1>
+												<th:block th:if="${food.dietPlan.userPlans.size() eq 0}">
+													<button
+														style="float: right; margin: 0px !important; position: absolute; right: 360px; top: 15px;"
+														type="button" data-toggle="modal"
+														data-target="#addEducation" data-backdrop="static"
+														data-keyboard="false">
+														<i class="fas fa-plus edit-about" style="color: white;"></i>
+													</button>
+													<form class="education"
+														th:action="@{/add_photo_for_food_save}"
+														th:object="${foodImage}" method="POST"
+														enctype="multipart/form-data">
+														<div class="modal fade" id="addEducation" tabindex="-1"
+															role="dialog" aria-labelledby="addEducationLabel"
+															aria-hidden="true">
+															<div class="modal-dialog" role="document">
+																<div class="modal-content"
+																	style="box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6); border-radius: 12px; height: 300px;">
+																	<div class="modal-body">
+																		<div class="profile-card-form__container"
+																			style="margin-left: 30px; margin-right: 30px;">
+																			<div class="form-group"
+																				style="position: relative; left: 30px; top: 80px;">
+																				<div id="yourBtn" onclick="getFile()">Incarca
+																					Poza</div>
+																				<div
+																					style='height: 0px; width: 0px; overflow: hidden;'>
+																					<input name="imageFile" id="upfile" type="file"
+																						onchange="sub(this)" />
+																				</div>
+																				<input type="hidden" name="foodImageId"
+																					th:field="*{foodImageId}"> <input
+																					type="hidden" th:value="${food.foodId}"
+																					name="foodId" />
+																			</div>
+																		</div>
+																	</div>
+																	<div class="profile-card-form__bottom"
+																		style="margin-top: 20px; position: relative; top: 20px;">
+																		<button type="submit"
+																			class="profile-card__button button--blue">Salveaza</button>
+																		<button
+																			class="profile-card__button button--gray js-message-close"
+																			data-dismiss="modal">Nu, multumesc</button>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</form>
+												</th:block>
+											</div>
+											<div style="margin-left: 35px;">
+												<div class="gallery"
+													style="height: 320px; background-color: white;"
+													th:each="photo, iterStat : ${food.images}">
+													<img style="padding: 30px;" width="600" height="400"
+														th:src="@{${'/images/plans/diets/' + photo.fileName}}">
+													<div class="desc"
+														th:if="${food.dietPlan.userPlans.size() eq 0}">
+														<form method="post" style="text-align: center;"
+															th:action="@{/delete_photo_from_food}">
+															<input type="hidden" name="photoId"
+																th:value="${photo.foodImageId}" /> <input type="hidden"
+																name="foodId" th:value="${food.foodId}" />
+															<button class="delete-photo" type="submit">STERGE</button>
+														</form>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	</div>
-</div>
-</div>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
 		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
 		crossorigin="anonymous"></script>
 	<script
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-		<script type="text/javascript" th:src="@{/js/validationcv.js}"></script>
+	<script type="text/javascript" th:src="@{/js/validationcv.js}"></script>
+	<script src="https://code.highcharts.com/modules/data.js"></script>
+	<script src="https://code.highcharts.com/stock/highstock.js"></script>
+	<script src="https://code.highcharts.com/modules/drilldown.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script src="https://code.highcharts.com/modules/export-data.js"></script>
+	<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+	<script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
+	<script th:src="@{/vendor/slick/slick.min.js}">
+		
+	</script>
+	<script th:src="@{/vendor/wow/wow.min.js}"></script>
+	<script th:src="@{/vendor/animsition/animsition.min.js}"></script>
+	<script
+		th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
+		
+	</script>
+	<script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
+	<script th:src="@{/vendor/counter-up/jquery.counterup.min.js}">
+		
+	</script>
+	<script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
+	<script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
+	<script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
+	<script th:src="@{/vendor/select2/select2.min.js}">
+		
+	</script>
+
+	<script th:src="@{/js/main.js}"></script>
+	<script>
+		function getFile() {
+			document.getElementById("upfile").click();
+		}
+
+		function sub(obj) {
+			var file = obj.value;
+			var fileName = file.split("\\");
+			document.getElementById("yourBtn").innerHTML = fileName[fileName.length - 1];
+			document.myForm.submit();
+			event.preventDefault();
+		}
+	</script>
 </body>
 </html>
+
+<!-- <!DOCTYPE html> -->
+<!-- <html xmlns="http://www.w3.org/1999/xhtml" -->
+<!-- 	xmlns:th="http://www.thymeleaf.org"> -->
+<!-- <head> -->
+<!-- <style> -->
+<!-- </style> -->
+<!-- <title>Admin</title> -->
+<!-- <link -->
+<!-- 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" -->
+<!-- 	rel="stylesheet" id="bootstrap-css"> -->
+<!-- <script -->
+<!-- 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script> -->
+<!-- <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script> -->
+<!-- </head> -->
+<!-- <body> -->
+<!-- <div th:if="${inexistentValue}"> -->
+<!-- 	Valoarea introdusa nu exista -->
+<!-- </div> -->
+<!-- <div th:unless="${inexistentValue}"> -->
+<!-- <div th:each="role, iterStat : ${account.roles}"> -->
+<!-- 	<div th:if="${role.name == 'ROLE_USER'}"> -->
+<!-- 	<div th:if="${attentionToCalories}"><h4 th:text="${'Atentie ! Deja ai mancat ' + sumOfAccumulatedCaloriesToday + ' calorii pana acum'}"></h4></div> -->
+<!-- 	<div class="container-fluid"> -->
+<!-- 		<div class="row"> -->
+<!-- 			<div class="col-md-8 mx-auto"> -->
+<!-- 				<h1>Poze Aliment</h1> -->
+<!-- 					<div class="gallery" th:each="photo, iterStat : ${food.images}"> -->
+<!-- 						<img th:src="@{${'/images/' + photo.fileName}}" alt="Cinque Terre" width="600" height="400"> -->
+<!-- 					</div> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 		<div class="row"> -->
+<!-- 			<div class="col-md-8 mx-auto"> -->
+<!-- 				<h1>Recomandari Aliment</h1> -->
+<!-- 					<ul th:each="adv, iterStat : ${food.recommendations}"> -->
+<!-- 						<li th:text="${adv.recommendation}"></li> -->
+<!-- 					</ul> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 		<div class="row"> -->
+<!-- 			<div class="col-md-8 mx-auto"> -->
+<!-- 				<form th:action="@{/eat_this_food}" method="post"> -->
+<!-- 					<input type="hidden" name="foodId" th:value="${food.foodId}"/> -->
+<!-- 					<input type="hidden" name="accountId" th:value="${account.accountId}"/> -->
+<!-- 					<button type="submit" class="btn btn-success">Mananca acest aliment</button> -->
+<!-- 				</form> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+<!-- 	</div> -->
+<!-- 	<div th:if="${role.name == 'ROLE_NUTRITIONIST'}"> -->
+<!-- 	<div class="container-fluid"> -->
+<!-- 		<div class="row"> -->
+<!-- 			<div class="col-md-8 mx-auto"> -->
+<!-- 				<div class="photos"> -->
+<!-- 					<h1>Poze Aliment</h1> -->
+<!-- 					<button type="button" data-toggle="modal" data-target="#addPhoto" -->
+<!-- 						data-backdrop="static" data-keyboard="false" -->
+<!-- 						class="btn btn-primary">Adauga Poza</button> -->
+<!-- 					<form class="photo" th:action="@{/add_photo_for_food_save}" -->
+<!-- 						th:object="${foodImage}" method="POST" -->
+<!-- 						enctype="multipart/form-data"> -->
+<!-- 						<div class="modal fade" id="addPhoto" tabindex="-1" role="dialog" -->
+<!-- 							aria-labelledby="addPhotoLabel" aria-hidden="true"> -->
+<!-- 							<div class="modal-dialog" role="document"> -->
+<!-- 								<div class="modal-content"> -->
+<!-- 									<div class="modal-header"> -->
+<!-- 										<h5 class="modal-title" id="addPhotoLabel">Adauga Poza</h5> -->
+<!-- 										<button type="button" class="close" data-dismiss="modal" -->
+<!-- 											aria-label="Close"> -->
+<!-- 											<span aria-hidden="true">&times;</span> -->
+<!-- 										</button> -->
+<!-- 									</div> -->
+<!-- 									<div class="modal-body"> -->
+<!-- 										<input type="hidden" name="foodImageId" -->
+<!-- 											th:field="*{foodImageId}"> <input type="hidden" -->
+<!-- 											th:value="${food.foodId}" name="foodId" /> <input -->
+<!-- 											type="file" name="imageFile"> -->
+<!-- 									</div> -->
+<!-- 									<div class="modal-footer"> -->
+<!-- 										<button type="button" class="btn btn-secondary" -->
+<!-- 											data-dismiss="modal">Close</button> -->
+<!-- 										<button class="btn btn-primary">Save changes</button> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</form> -->
+<!-- 					<div class="gallery" -->
+<!-- 						th:each="photo, iterStat : ${food.images}"> -->
+<!-- 						<img th:src="@{${'/images/' + photo.fileName}}" alt="Cinque Terre" -->
+<!-- 							width="600" height="400"> -->
+<!-- 						<div class="desc"> -->
+<!-- 							<form method="post" th:action="@{/delete_photo_from_food}"> -->
+<!-- 								<input type="hidden" name="photoId" -->
+<!-- 									th:value="${photo.foodImageId}" /> <input type="hidden" -->
+<!-- 									name="foodId" th:value="${food.foodId}" /> -->
+<!-- 								<button type="submit">Sterge Poza</button> -->
+<!-- 							</form> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 		<div class="row"> -->
+<!-- 			<div class="col-md-8 mx-auto"> -->
+<!-- 				<div class="advices"> -->
+<!-- 					<h1>Recomandari Aliment</h1> -->
+<!-- 					<button type="button" data-toggle="modal" data-target="#advice" -->
+<!-- 						data-backdrop="static" data-keyboard="false" -->
+<!-- 						class="btn btn-primary">Adauga Recomandari</button> -->
+<!-- 					<form id="aboutMe" class="advice" th:action="@{/add_recommendation_for_food_save}" -->
+<!-- 						th:object="${foodRecommendation}" method="POST"> -->
+<!-- 						<div class="modal fade" id="advice" tabindex="-1" role="dialog" -->
+<!-- 							aria-labelledby="adviceLabel" aria-hidden="true"> -->
+<!-- 							<div class="modal-dialog" role="document"> -->
+<!-- 								<div class="modal-content"> -->
+<!-- 									<div class="modal-header"> -->
+<!-- 										<h5 class="modal-title" id="advice">Adauga Recomandare</h5> -->
+<!-- 										<button type="button" class="close" data-dismiss="modal" -->
+<!-- 											aria-label="Close"> -->
+<!-- 											<span aria-hidden="true">&times;</span> -->
+<!-- 										</button> -->
+<!-- 									</div> -->
+<!-- 									<div class="modal-body"> -->
+<!-- 										<input type="text" id="descriptionAccountInformation" name="recommendation" th:field="*{recommendation}"> -->
+<!--   										<input type="hidden" name="foodId" th:value="${food.foodId}"/> -->
+<!--   										<div id="showErrorAboutMe"></div> -->
+<!-- 									</div> -->
+<!-- 									<div class="modal-footer"> -->
+<!-- 										<button type="button" class="btn btn-secondary" -->
+<!-- 											data-dismiss="modal">Close</button> -->
+<!-- 										<button class="btn btn-primary">Save changes</button> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</form> -->
+<!-- 					<ul th:each="adv, iterStat : ${foodRecommendationSorted}"> -->
+<!-- 						<li th:text="${adv.recommendation}"></li> -->
+<!-- 						<button th:onclick="|selecteazaSfat('${adv.foodRecommendationId}', '${food.foodId}')|" data-toggle="modal" data-target="#modal-edit-advice" th:attr="data-target='#modal-edit-advice'+${adv.foodRecommendationId}">Editeaza Recomandare</button> -->
+<!-- 						<form class="editAdvice" th:action="@{/edit_recommendation_food}" method="post"> -->
+<!-- 							<div class="modal modal-edit-advice fade in" -->
+<!-- 								th:id="modal-edit-advice+${adv.foodRecommendationId}"> -->
+<!-- 								<div class="modal-dialog"> -->
+<!-- 									<div class="modal-content"> -->
+<!-- 										<div class="modal-header"> -->
+<!-- 											<button type="button" class="close" data-dismiss="modal" -->
+<!-- 												aria-label="Close"> -->
+<!-- 												<span aria-hidden="true">×</span> -->
+<!-- 											</button> -->
+<!-- 											<h5 class="modal-title">Editeaza Recomandare</h5> -->
+<!-- 										</div> -->
+<!-- 										<div class="modal-body"> -->
+<!-- 											<div class="row"> -->
+<!-- 												<div class="col-md-6"> -->
+<!-- 													<div class="form-group"> -->
+<!-- 														<label>Recomandare</label> -->
+<!-- 														<div class="input-group mb-2 mr-sm-2 mb-sm-0" th:id="validName+${adv.foodRecommendationId}"> -->
+<!-- 															<input type="text" id="description2" name="editName" th:value="${adv.recommendation}"> -->
+<!-- 															<input type="hidden" name="recommendationId" th:value="${adv.foodRecommendationId}"/> -->
+<!-- 															<input type="hidden" th:value="${food.foodId}" name="foodId"/> -->
+<!-- 															<div th:id="showError+${adv.foodRecommendationId}"></div> -->
+<!-- 														</div> -->
+<!-- 													</div> -->
+<!-- 												</div> -->
+<!-- 											</div> -->
+<!-- 										</div> -->
+<!-- 										<div class="modal-footer"> -->
+<!-- 											<button type="button" class="btn btn-outline pull-left" -->
+<!-- 												data-dismiss="modal">Close</button> -->
+<!-- 											<button type="submit">Save</button> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 						</form> -->
+<!-- 						<form th:action="@{/delete_recommendation_food}" method="post"> -->
+<!-- 							<input type="hidden" name="recommendationId" th:value="${adv.foodRecommendationId}"/> -->
+<!-- 							<input type="hidden" th:value="${food.foodId}" name="foodId"/> -->
+<!-- 							<button type="submit">Sterge Recomandare</button> -->
+<!-- 						</form> -->
+<!-- 					</ul> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+<!-- 	</div> -->
+<!-- </div> -->
+<!-- </div> -->
+<!-- 	<script src="https://code.jquery.com/jquery-3.4.1.min.js" -->
+<!-- 		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" -->
+<!-- 		crossorigin="anonymous"></script> -->
+<!-- 	<script -->
+<!-- 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script> -->
+<!-- 		<script type="text/javascript" th:src="@{/js/validationcv.js}"></script> -->
+<!-- </body> -->
+<!-- </html> -->

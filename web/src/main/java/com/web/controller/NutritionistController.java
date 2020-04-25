@@ -243,50 +243,44 @@ public class NutritionistController {
 	@GetMapping(path = { "/view_food/{id}" })
 	public String viewExercise(Model model, @PathVariable("id") String foodId) {
 		Account user = accountService.getAccountConnected();
-		if (user.isActive()) {
-			if (checkId(foodId) && foodService.findById(Integer.parseInt(foodId)).isPresent()) {
-				Food food = foodService.findById(Integer.parseInt(foodId)).get();
-				Set<FoodRecommendation> foodRecommendation = food.getRecommendations();
-				List<FoodRecommendation> foodRecommendationSorted = foodRecommendation.stream()
-						.sorted((e1, e2) -> e1.getRecommendation().compareTo(e2.getRecommendation()))
-						.collect(Collectors.toList());
-				if (user.getRoles().contains(roleService.findByName("ROLE_USER").get())) {
-					LocalDate date = LocalDate.now();
-					LocalDateTime startDateTime = date.atStartOfDay();
-					LocalDateTime endDateTime = date.atStartOfDay().plusDays(1).minusSeconds(1);
-					Timestamp timestampStartDate = Timestamp.valueOf(startDateTime);
-					Timestamp timestampEndDate = Timestamp.valueOf(endDateTime);
-					Set<FoodEaten> foodsEatenByUser = foodEatenService.findAllByUserAccountIdAndDateOfExecutionBetween(
-							user.getAccountId(), timestampStartDate, timestampEndDate);
-					if (foodsEatenByUser.size() > 0) {
-						Integer sumOfAccumulatedCaloriesToday = foodsEatenByUser.stream()
-								.mapToInt(o -> Math.round(o.getFood().getCalories())).sum();
-						TypeMeasurement typeMeasurement = typeMeasurementService
-								.findByType("HKQuantityTypeIdentifierActiveEnergyAccumulated");
-						LocalDateTime currentDateTime = LocalDateTime.now();
-						if (sumOfAccumulatedCaloriesToday > typeMeasurement.getGoalMax() / 2
-								&& endDateTime.minusHours(12).isBefore(currentDateTime)
-								&& endDateTime.minusHours(3).isAfter(currentDateTime)) {
-							model.addAttribute("attentionToCalories", true);
-							model.addAttribute("sumOfAccumulatedCaloriesToday", sumOfAccumulatedCaloriesToday);
-						}
+		if (checkId(foodId) && foodService.findById(Integer.parseInt(foodId)).isPresent()) {
+			Food food = foodService.findById(Integer.parseInt(foodId)).get();
+			Set<FoodRecommendation> foodRecommendation = food.getRecommendations();
+			List<FoodRecommendation> foodRecommendationSorted = foodRecommendation.stream()
+					.sorted((e1, e2) -> e1.getRecommendation().compareTo(e2.getRecommendation()))
+					.collect(Collectors.toList());
+			if (user.getRoles().contains(roleService.findByName("ROLE_USER").get())) {
+				LocalDate date = LocalDate.now();
+				LocalDateTime startDateTime = date.atStartOfDay();
+				LocalDateTime endDateTime = date.atStartOfDay().plusDays(1).minusSeconds(1);
+				Timestamp timestampStartDate = Timestamp.valueOf(startDateTime);
+				Timestamp timestampEndDate = Timestamp.valueOf(endDateTime);
+				Set<FoodEaten> foodsEatenByUser = foodEatenService.findAllByUserAccountIdAndDateOfExecutionBetween(
+						user.getAccountId(), timestampStartDate, timestampEndDate);
+				if (foodsEatenByUser.size() > 0) {
+					Integer sumOfAccumulatedCaloriesToday = foodsEatenByUser.stream()
+							.mapToInt(o -> Math.round(o.getFood().getCalories())).sum();
+					TypeMeasurement typeMeasurement = typeMeasurementService
+							.findByType("HKQuantityTypeIdentifierActiveEnergyAccumulated");
+					LocalDateTime currentDateTime = LocalDateTime.now();
+					if (sumOfAccumulatedCaloriesToday > typeMeasurement.getGoalMax() / 2
+							&& endDateTime.minusHours(12).isBefore(currentDateTime)
+							&& endDateTime.minusHours(3).isAfter(currentDateTime)) {
+						model.addAttribute("attentionToCalories", true);
+						model.addAttribute("sumOfAccumulatedCaloriesToday", sumOfAccumulatedCaloriesToday);
 					}
-
 				}
-				model.addAttribute("account", user);
-				model.addAttribute("food", food);
-				model.addAttribute("foodRecommendationSorted", foodRecommendationSorted);
-				model.addAttribute("foodImage", new FoodImage());
-				model.addAttribute("foodRecommendation", new FoodRecommendation());
-			} else {
-				model.addAttribute("inexistentValue", true);
+
 			}
-			return "common/view_food";
-		} else if (user.getRoles().contains(roleService.findByName("ROLE_NUTRITIONIST").get())) {
-			return "redirect:/nutritionist";
+			model.addAttribute("account", user);
+			model.addAttribute("food", food);
+			model.addAttribute("foodRecommendationSorted", foodRecommendationSorted);
+			model.addAttribute("foodImage", new FoodImage());
+			model.addAttribute("foodRecommendation", new FoodRecommendation());
 		} else {
-			return "redirect:/home";
+			model.addAttribute("inexistentValue", true);
 		}
+		return "common/view_food";
 
 	}
 
@@ -300,7 +294,7 @@ public class NutritionistController {
 			foodImage.setFood(food);
 			try {
 				foodImageService.saveImage(imageFile, foodImage);
-				foodImage.setPath("/images/");
+				foodImage.setPath("/images/plans/diets/");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

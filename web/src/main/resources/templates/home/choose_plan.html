@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Choose Plan</title>
+<link th:href="@{css/font-face.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-4.7/css/font-awesome.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-5/css/fontawesome-all.min.css}"
+	rel="stylesheet" media="all">
+<link
+	th:href="@{vendor/mdi-font/css/material-design-iconic-font.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/animsition/animsition.min.css}" rel="stylesheet"
+	media="all">
+<link
+	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/wow/animate.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/css-hamburgers/hamburgers.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/slick/slick.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/select2/select2.min.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{css/theme.css}" rel="stylesheet" media="all">
+<style>
+.modal-backdrop {
+	display: none;
+}
+
+.modal {
+	background: rgba(0, 0, 0, 0.5);
+}
+</style>
+</head>
+<body>
+	<div class="page-wrapper">
+		<header style="background-color: white;"
+			class="header-mobile d-block d-lg-none">
+			<div class="header-mobile__bar">
+				<div class="container-fluid">
+					<div class="header-mobile-inner">
+						<a class="logo" href="index.html"> <img
+							src="images/logo/Screenshot_18.png">
+						</a>
+						<button class="hamburger hamburger--slider" type="button">
+							<span class="hamburger-box"> <span class="hamburger-inner"></span>
+							</span>
+						</button>
+					</div>
+				</div>
+			</div>
+			<nav class="navbar-mobile">
+				<div class="container-fluid">
+					<ul class="navbar-mobile__list list-unstyled">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<aside style="background-color: white;"
+			class="menu-sidebar d-none d-lg-block">
+			<div class="logo">
+				<a href="#"> <img src="images/logo/Screenshot_18.png">
+				</a>
+			</div>
+			<div class="menu-sidebar__content js-scrollbar1">
+				<nav class="navbar-sidebar">
+					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</nav>
+			</div>
+		</aside>
+		<div class="page-container">
+			<div class="main-content">
+				<div class="section__content section__content--p30">
+					<div th:unless="${#lists.size(plans)}"
+						style="font-size: 90px; color: white; font-weight: 800; text-align: center; position: relative; top: 150px;">
+						Nu exista niciun <br> plan de antrenament disponibil momentan
+					</div>
+					<div th:if="${#lists.size(plans)}">
+						<div
+							style="width: 1250px;">
+							<div
+								style="text-align: center; font-size: 60px; margin-top: -10px; margin-bottom: 30px; color: white; font-weight: 700;">
+								Alege Planuri</div>
+							<section
+								style="height: 355px; width: 550px; display: inline-grid; grid-template-columns: 0.7fr 1fr; margin: 0 auto; padding: 2.5em 0; background-color: white; border-radius: 20px; margin-bottom: 80px; margin-left: 35px;"
+								th:each="plan, iterStat : ${plans}"
+								th:if="${plan.foods.size() > 0 or plan.exercises.size() > 0}">
+								<th:block th:if="${plan.typeOfPlan eq 'Dieta'}">
+									<img
+										th:src="@{'images/plans/diets/diet'+${iterStat.index+1}+'.jpg'}"
+										onerror="if (this.src != 'images/plans/diets/default-diet.jpg') this.src = 'images/plans/diets/default-diet.jpg';"
+										style="position: absolute; left: 24%; top: 50%; transform: translate(-50%, -50%); width: 230px; height: 250px;"
+										alt="green apple slice">
+								</th:block>
+								<th:block
+									th:if="${plan.typeOfPlan eq 'Antrenament' and user.gender.getGender() eq 'Barbat'}">
+									<img
+										th:src="@{'images/plans/trainings/man/man_training'+${iterStat.index+1}+'.jpg'}"
+										onerror="if (this.src != 'images/plans/trainings/man/default_training.jpg') this.src = 'images/plans/trainings/man/default_training.jpg';"
+										style="position: absolute; left: 24%; top: 50%; transform: translate(-50%, -50%); width: 230px; height: 250px;"
+										alt="green apple slice">
+								</th:block>
+								<th:block
+									th:if="${plan.typeOfPlan eq 'Antrenament' and user.gender.getGender() eq 'Femeie'}">
+									<img
+										th:src="@{'images/plans/trainings/woman/woman_training'+${iterStat.index+1}+'.jpg'}"
+										onerror="if (this.src != 'images/plans/trainings/woman/default_training.jpg') this.src = ''images/plans/trainings/woman/default_training.jpg'';"
+										style="position: absolute; left: 24%; top: 50%; transform: translate(-50%, -50%); width: 230px; height: 250px;"
+										alt="green apple slice">
+								</th:block>
+								<div class="product__info"
+									style="position: relative; left: 17em; text-align: center; width: 245px;">
+									<div class="title">
+										<h1 th:text="${plan.name}" style="font-size: 17px;"></h1>
+										<h6 style="margin-top: 5px;" th:text="${'Expert: ' + plan.helper.username}"></h6>
+										<span th:text="${'Gen: ' + plan.forWho}"></span>
+									</div>
+									<div class="price" style="margin: 0px;">
+										<span style="font-size: 35px; color: #7300e6"
+											th:text="${plan.price + ' LEI'}"></span>
+									</div>
+									<div style="font-size: 12px;">Lorem Ipsum has been the
+										industry's standard dummy text ever since the 1500s, when an
+										unknown printer took a galley of type and scrambled it to make
+										a type specimen book.</div>
+									<div class="btn-group">
+										<th:block
+											th:if="${plan.typeOfPlan eq 'Dieta' and plan.foods.size() > 0}">
+											<button data-toggle="modal" data-target="#modal-foods"
+												th:attr="data-target='#modal-foods'+${plan.helperPlanId}"
+												class="buy--btn"
+												style="padding: 10px 10px; font-size: 12px; letter-spacing: 0px; background-color: #7300e6">VEZI
+												ALIMENTE</button>
+											<div class="modal modal-foods fade in"
+												th:id="modal-foods+${plan.helperPlanId}">
+												<div class="modal-dialog"
+													style="overflow-y: initial !important;">
+													<div class="modal-content"
+														style="box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6); border-radius: 12px; width: 900px; position: relative; left: -50px;">
+														<div class="modal-body"
+															style="height: 680px; overflow-y: auto;">
+															<div class="profile-card-form__container"
+																style="margin-left: 30px; margin-right: 30px;">
+																<div style="text-align: center; color: #7300e6;">
+																	<h2
+																		style="margin-bottom: 20px; color: #7300e6; font-size: 100px;">Alimente</h2>
+																</div>
+																<div class="wrap cf">
+																	<div class="cart">
+																		<div class="infoWrap"
+																			style="display: flex; justify-content: space-around; align-items: center;">
+																			<div style="overflow-x: auto;">
+																				<table
+																					style="border-collapse: separate; border-spacing: 30px 35px;">
+																					<thead>
+																						<tr>
+																							<th></th>
+																							<th>Nume</th>
+																							<th>Calorii</th>
+																							<th>Proteine</th>
+																							<th>Lipide</th>
+																							<th>Carbohidrati</th>
+																							<th>Fibre</th>
+																							<th>Gramaj</th>
+																						</tr>
+																					</thead>
+																					<tbody>
+																						<tr th:each="food, iterStat : ${plan.foods}">
+																							<td>
+																								<th:block
+																									th:if="${food.images.size() > 0}">
+																									<img
+																										style="width: 115px; filter: drop-shadow(5px 5px 5px #a6a6a6);"
+																										th:src="@{'images/plans/diets/'+${food.images[0].fileName}}"
+																										alt="" class="itemImg" />
+																								</th:block> <th:block
+																									th:unless="${food.images.size() > 0}">
+																									<img
+																										style="width: 115px; filter: drop-shadow(5px 5px 5px #a6a6a6);"
+																										th:src="@{'images/plans/diets/default-diet.jpg'}"
+																										alt="" class="itemImg" />
+																								</th:block>
+																							</td>
+																							<td th:text="${food.name}"></td>
+																							<td th:text="${food.calories}"></td>
+																							<td th:text="${food.protein}"></td>
+																							<td th:text="${food.lipids}"></td>
+																							<td th:text="${food.carbohydrates}"></td>
+																							<td th:text="${food.fiber}"></td>
+																							<td th:text="${food.weight}"></td>
+																						</tr>
+																					</tbody>
+																				</table>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<form th:action="@{/add_to_shopping_cart}" method="post"
+												id="myForm">
+												<input type="hidden" name="dietId"
+													th:value="${plan.helperPlanId}" /> <input type="hidden"
+													name="accountId" th:value="${user.accountId}" />
+												<button type="submit" class="buy--btn ml-3"
+													style="padding: 10px 10px; font-size: 12px; letter-spacing: 0px; background-color: #7300e6">ADAUGA
+													IN COS</button>
+											</form>
+										</th:block>
+										<th:block
+											th:if="${plan.typeOfPlan eq 'Antrenament' and plan.exercises.size() > 0}">
+											<button data-toggle="modal" data-target="#modal-exercises"
+												th:attr="data-target='#modal-exercises'+${plan.helperPlanId}"
+												class="buy--btn"
+												style="padding: 10px 10px; font-size: 12px; letter-spacing: 0px; background-color: #7300e6">VEZI
+												EXERCITII</button>
+											<div class="modal modal-exercises fade in"
+												th:id="modal-exercises+${plan.helperPlanId}">
+												<div class="modal-dialog"
+													style="overflow-y: initial !important;">
+													<div class="modal-content"
+														style="box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6); border-radius: 12px; width: 900px; position: relative; left: -50px;">
+														<div class="modal-body"
+															style="height: 735px; overflow-y: auto;">
+															<div class="profile-card-form__container"
+																style="margin-left: 30px; margin-right: 30px;">
+																<div style="text-align: center; color: #7300e6;">
+																	<h2
+																		style="margin-bottom: 20px; color: #7300e6; font-size: 100px;">Exercitii</h2>
+																</div>
+																<div class="wrap cf">
+																	<div class="cart">
+																		<div class="infoWrap"
+																			style="display: flex; justify-content: space-around; align-items: center;">
+																			<div style="overflow-x: auto;">
+																				<table
+																					style="border-collapse: separate; border-spacing: 30px 35px;">
+																					<thead>
+																						<tr style="color: black;">
+																							<th></th>
+																							<th>Nume</th>
+																							<th>Calorii Arse</th>
+																							<th>Seri</th>
+																							<th>Repetari</th>
+																							<th>Grupa Muschi</th>
+																						</tr>
+																					</thead>
+																					<tbody>
+																						<tr style="color: black;"
+																							th:each="exercise, iterStat : ${plan.exercises}">
+																							<td>
+																								<th:block
+																									th:if="${exercise.exerciseImages.size() > 0}">
+																									<img
+																										style="width: 115px; filter: drop-shadow(5px 5px 5px #a6a6a6);"
+																										th:src="@{'images/plans/trainings/man/'+${exercise.exerciseImages[0].fileName}}"
+																										alt="" class="itemImg" />
+																								</th:block> <th:block
+																									th:unless="${exercise.exerciseImages.size() > 0}">
+																									<img
+																										style="width: 115px; filter: drop-shadow(5px 5px 5px #a6a6a6);"
+																										th:src="@{'images/plans/trainings/man/default_training.jpg'}"
+																										alt="" class="itemImg" />
+																								</th:block>
+																							</td>
+																							<td th:text="${exercise.name}"></td>
+																							<td th:text="${exercise.caloriesBurned}"></td>
+																							<td th:text="${exercise.numberOfSeries}"></td>
+																							<td th:text="${exercise.numberOfReps}"></td>
+																							<td th:text="${exercise.trainedMuscleGroup}"></td>
+																						</tr>
+																					</tbody>
+																				</table>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<form th:action="@{/add_to_shopping_cart}" method="post"
+												id="myForm">
+												<input type="hidden" name="trainingId"
+													th:value="${plan.helperPlanId}" /> <input type="hidden"
+													name="accountId" th:value="${user.accountId}" />
+												<button type="submit" class="buy--btn ml-3"
+													style="padding: 10px 10px; font-size: 12px; letter-spacing: 0px; background-color: #7300e6">ADAUGA
+													IN COS</button>
+											</form>
+										</th:block>
+									</div>
+								</div>
+							</section>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</body>
+</html>

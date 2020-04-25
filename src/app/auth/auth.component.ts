@@ -46,7 +46,8 @@ export class AuthComponent implements OnDestroy{
             this.isLoading = false;
             this.router.navigate(['/data-transfer']);
         }, 
-        () => {
+        errorMessage => {
+            console.log(errorMessage);
             this.error = "Nume utilizator sau parola gresite";
             this.showErrorAlert(this.error);
             this.isLoading = false;

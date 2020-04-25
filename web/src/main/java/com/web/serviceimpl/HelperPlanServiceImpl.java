@@ -66,4 +66,9 @@ public class HelperPlanServiceImpl implements HelperPlanService {
 		return helperPlanDao.findAllDietPlansByHelperPlanNotAssociated(helperId);
 	}
 
+	@Override
+	public Set<HelperPlan> findAllPlansByHelperIdAndUserIdNotAssociated(Integer helperId, Integer userId) {
+		return helperPlanDao.findAllPlansByHelperIdAndUserIdNotAssociated(helperId, userId);
+	}
+
 }

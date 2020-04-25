@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Sign up</title>
+<base href="/">
+<link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+<link
+	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{css/theme.css}" rel="stylesheet" media="all">
+<link rel="stylesheet" type="text/css" th:href="@{css/founds.css}" />
+<link th:href="@{css/theme.css}" rel="stylesheet" media="all">
+</head>
+<body>
+	<div class="page-wrapper">
+		<header style="background-color: white;"
+			class="header-mobile d-block d-lg-none">
+			<div class="header-mobile__bar">
+				<div class="container-fluid">
+					<div class="header-mobile-inner">
+						<a class="logo" href="index.html"> <img
+							src="images/logo/Screenshot_18.png">
+						</a>
+						<button class="hamburger hamburger--slider" type="button">
+							<span class="hamburger-box"> <span class="hamburger-inner"></span>
+							</span>
+						</button>
+					</div>
+				</div>
+			</div>
+			<nav class="navbar-mobile">
+				<div class="container-fluid">
+					<ul class="navbar-mobile__list list-unstyled">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<aside style="background-color: white;"
+			class="menu-sidebar d-none d-lg-block">
+			<div class="logo">
+				<a href="#"> <img src="images/logo/Screenshot_18.png">
+				</a>
+			</div>
+			<div class="menu-sidebar__content js-scrollbar1">
+				<nav class="navbar-sidebar">
+					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</nav>
+			</div>
+		</aside>
+		<div class="page-container">
+			<div class="main-content">
+				<div class="alert" th:if="${negativeValue}">
+					<div
+						style="float: left; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 250px;">
+						<h5 style="font-weight: 900; font-size: 16px;">Eroare</h5>
+						<p style="font-size: 13px;" th:text="${negativeValue}"></p>
+					</div>
+					<div style="float: right;">
+						<span class="closebtn"
+							onclick="this.parentElement.style.display='none';">&times;</span>
+					</div>
+				</div>
+				<div class="alert" th:if="${insufficientBalance}">
+					<div
+						style="float: left; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 250px;">
+						<h5 style="font-weight: 900; font-size: 16px;">Eroare</h5>
+						<p style="font-size: 13px;">Nu ai fonduri suficiente pentru
+							achizitionarea acestui dispozitiv</p>
+					</div>
+					<div style="float: right;">
+						<span class="closebtn"
+							onclick="this.parentElement.style.display='none';">&times;</span>
+					</div>
+				</div>
+				<div class="wrapper"
+					style="position: absolute; left: 59%; top: 50%; transform: translate(-50%, -50%);">
+					<div class="app-wrapper">
+						<!--Wallet-->
+						<aside class="wallet"
+							style="display: flex; align-items: center; justify-content: center;">
+							<div style="flex: 0 0 50%;">
+								<h2 style="color: white;">Sold</h2>
+								<div class="modal-control">+</div>
+							</div>
+						</aside>
+
+						<div class="transactions-wrapper"
+							style="display: flex; align-items: center; justify-content: center;">
+							<div style="text-align: center; flex: 0 0 50%;">
+								<h2 style="color: black;">Sold Curent</h2>
+								<span class="total-balance" style="color: black;"
+									th:text="${transaction.availableBalance + ' LEI'}"></span>
+							</div>
+							<div style="text-align: center; flex: 0 0 50%;">
+								<h2 style="color: black;">Cheltuieli</h2>
+								<span class="total-balance" style="color: black;"
+									th:text="${transaction.payments + ' LEI'}"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal">
+					<div class="modal-body"
+						style="position: absolute; left: 50%; top: 10%; transform: translate(-50%, -50%); height: 350px;">
+						<div class="modal-close">+</div>
+						<form th:action="@{/modify_current_balance}" method="post"
+							style="width: 70%; margin: 0 auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);">
+							<input type="hidden" name="transactionId"
+								th:value="${transaction.transactionId}" />
+							<div style="margin-bottom: 20px;">
+								<i class="fas fa-money-bill-wave fa-6x" style="color: #7300e6;"></i>
+							</div>
+							<div class="form-group" style="display: flex;">
+								<input class="btn-block" type="number" name="availableBalance"
+									style="outline: none; border-bottom: 1px solid #7300e6; border-top: none; border-left: none; border-right: none; color: #7300e6; font-size: 50px;" />
+								<label style="font-size: 50px; color: #7300e6;">LEI</label>
+							</div>
+							<div class="form-group">
+								<button class="btn btn-block" type="submit"
+									style="background-color: #7300e6; color: white; font-size: 25px; margin-top: 30px;">Adauga
+									Bani</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		var modalControl = document.querySelector(".modal-control");
+		var modalClose = document.querySelector(".modal-close");
+		var modal = document.querySelector(".modal");
+		modalControl.addEventListener("click", function() {
+			document.querySelector(".modal").classList.add("open");
+		}, false);
+
+		//click anywhere to close example modal
+		modalClose.addEventListener("click", function() {
+			document.querySelector(".modal").classList.remove("open");
+		}, false);
+	</script>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<script type="text/javascript" th:src="@{/js/validationcv.js}"></script>
+</body>
+</html>

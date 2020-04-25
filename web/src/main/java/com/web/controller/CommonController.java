@@ -3,10 +3,13 @@ package com.web.controller;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.validation.Valid;
 
@@ -36,6 +39,7 @@ import com.web.service.AccountService;
 import com.web.service.ExerciseService;
 import com.web.service.FoodService;
 import com.web.service.HelperFeedbackService;
+import com.web.service.HelperPlanService;
 import com.web.service.RoleService;
 import com.web.service.UserDeviceService;
 import com.web.utils.Gender;
@@ -64,6 +68,9 @@ public class CommonController {
 
 	@Autowired
 	private RoleService roleService;
+
+	@Autowired
+	private HelperPlanService helperPlanService;
 
 	@GetMapping(path = { "/success" })
 	public String success(Model model, @ModelAttribute("message") String message) {
@@ -305,38 +312,41 @@ public class CommonController {
 			selectedRole = role;
 			break;
 		}
-		if (account.isActive()) {
-			if (trainingPlanId != null) {
-				if (selectedRole.getName().equals("ROLE_USER")) {
-					Set<Exercise> notPerformedExercises = exerciseService
-							.findAllByTrainingPlanHelperPlanId(trainingPlanId);
-					model.addAttribute("notPerformedExercises", notPerformedExercises);
-				} else if (selectedRole.getName().equals("ROLE_TRAINER")) {
-					Set<Exercise> exercises = exerciseService
-							.findAllByTrainingPlanHelperPlanIdAndTrainingPlanTypeOfPlan(trainingPlanId, "Antrenament");
-					model.addAttribute("exercises", exercises);
-				}
-			} else if (dietPlanId != null) {
-				if (selectedRole.getName().equals("ROLE_USER")) {
-					Set<Food> notEatenFoods = foodService.findAllByDietPlanHelperPlanId(dietPlanId);
-					model.addAttribute("notEatenFoods", notEatenFoods);
-				} else if (selectedRole.getName().equals("ROLE_NUTRITIONIST")) {
-					Set<Food> foods = foodService.findAllByDietPlanHelperPlanIdAndDietPlanTypeOfPlan(dietPlanId,
-							"Dieta");
-					model.addAttribute("foods", foods);
-				}
+		if (trainingPlanId != null) {
+			HelperPlan selectedTrainingPlan = helperPlanService.findById(trainingPlanId).get();
+			if (selectedRole.getName().equals("ROLE_USER")) {
+				Set<Exercise> notPerformedExercises = exerciseService.findAllByTrainingPlanHelperPlanId(trainingPlanId);
+				String mostRepeatedMuscleGroup = Stream.of(notPerformedExercises)
+						.collect(Collectors.groupingBy(w -> w, Collectors.counting())).entrySet().stream()
+						.max(Comparator.comparing(Entry::getValue)).get().getKey().stream().findFirst().get()
+						.getTrainedMuscleGroup().getMuscleGroup();
+				model.addAttribute("notPerformedExercises", notPerformedExercises);
+				model.addAttribute("mostRepeatedMuscleGroup", mostRepeatedMuscleGroup);
+			} else if (selectedRole.getName().equals("ROLE_TRAINER")) {
+				Set<Exercise> exercises = exerciseService
+						.findAllByTrainingPlanHelperPlanIdAndTrainingPlanTypeOfPlan(trainingPlanId, "Antrenament");
+				String mostRepeatedMuscleGroup = Stream.of(exercises)
+						.collect(Collectors.groupingBy(w -> w, Collectors.counting())).entrySet().stream()
+						.max(Comparator.comparing(Entry::getValue)).get().getKey().stream().findFirst().get()
+						.getTrainedMuscleGroup().getMuscleGroup();
+				model.addAttribute("exercises", exercises);
+				model.addAttribute("mostRepeatedMuscleGroup", mostRepeatedMuscleGroup);
 			}
-			model.addAttribute("account", account);
-			model.addAttribute("trainingPlanId", trainingPlanId);
-			model.addAttribute("dietPlanId", dietPlanId);
-			return "common/plan_content";
-		} else if (selectedRole.getName().equals("ROLE_TRAINER")) {
-			return "redirect:/trainer";
-		} else if (selectedRole.getName().equals("ROLE_NUTRITIONIST")) {
-			return "redirect:/nutritionist";
-		} else {
-			return "redirect:/home";
+			model.addAttribute("selectedTrainingPlan", selectedTrainingPlan);
+		} else if (dietPlanId != null) {
+			HelperPlan selectedDietPlan = helperPlanService.findById(dietPlanId).get();
+			if (selectedRole.getName().equals("ROLE_USER")) {
+				Set<Food> notEatenFoods = foodService.findAllByDietPlanHelperPlanId(dietPlanId);
+				model.addAttribute("notEatenFoods", notEatenFoods);
+			} else if (selectedRole.getName().equals("ROLE_NUTRITIONIST")) {
+				Set<Food> foods = foodService.findAllByDietPlanHelperPlanIdAndDietPlanTypeOfPlan(dietPlanId, "Dieta");
+				model.addAttribute("foods", foods);
+			}
+			model.addAttribute("selectedDietPlan", selectedDietPlan);
 		}
-
+		model.addAttribute("account", account);
+		model.addAttribute("trainingPlanId", trainingPlanId);
+		model.addAttribute("dietPlanId", dietPlanId);
+		return "common/plan_content";
 	}
 }

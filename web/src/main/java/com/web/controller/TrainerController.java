@@ -310,26 +310,20 @@ public class TrainerController {
 		if (account.getRoles().contains(roleService.findByName("ROLE_TRAINER").get())) {
 			roleTrainer = true;
 		}
-		if (account.isActive()) {
-			if (checkId(exerciseId) && exerciseService.findById(Integer.parseInt(exerciseId)).isPresent()) {
-				Exercise exercise = exerciseService.findById(Integer.parseInt(exerciseId)).get();
-				Set<ExerciseAdvice> exerciseAdvice = exercise.getExerciseAdvices();
-				List<ExerciseAdvice> exerciseAdviceSorted = exerciseAdvice.stream()
-						.sorted((e1, e2) -> e1.getAdvice().compareTo(e2.getAdvice())).collect(Collectors.toList());
-				model.addAttribute("account", account);
-				model.addAttribute("exercise", exercise);
-				model.addAttribute("exerciseAdviceSorted", exerciseAdviceSorted);
-				model.addAttribute("exerciseImage", new ExerciseImage());
-				model.addAttribute("exerciseAdvice", new ExerciseAdvice());
-			} else {
-				model.addAttribute("inexistentValue", true);
-			}
-			return "common/view_exercise";
-		} else if (roleTrainer) {
-			return "redirect:/trainer";
+		if (checkId(exerciseId) && exerciseService.findById(Integer.parseInt(exerciseId)).isPresent()) {
+			Exercise exercise = exerciseService.findById(Integer.parseInt(exerciseId)).get();
+			Set<ExerciseAdvice> exerciseAdvice = exercise.getExerciseAdvices();
+			List<ExerciseAdvice> exerciseAdviceSorted = exerciseAdvice.stream()
+					.sorted((e1, e2) -> e1.getAdvice().compareTo(e2.getAdvice())).collect(Collectors.toList());
+			model.addAttribute("account", account);
+			model.addAttribute("exercise", exercise);
+			model.addAttribute("exerciseAdviceSorted", exerciseAdviceSorted);
+			model.addAttribute("exerciseImage", new ExerciseImage());
+			model.addAttribute("exerciseAdvice", new ExerciseAdvice());
 		} else {
-			return "redirect:/home";
+			model.addAttribute("inexistentValue", true);
 		}
+		return "common/view_exercise";
 
 	}
 
@@ -339,12 +333,17 @@ public class TrainerController {
 			@ModelAttribute("exerciseImage") ExerciseImage exerciseImage) {
 		Account account = accountService.getAccountConnected();
 		if (account.isActive()) {
+			HelperPlan helperPlan = exerciseService.findById(exerciseId).get().getTrainingPlan();
 			exerciseImage.setFileName(imageFile.getOriginalFilename());
 			Exercise exercise = exerciseService.findById(exerciseId).get();
 			exerciseImage.setExercise(exercise);
 			try {
-				exerciseImageService.saveImage(imageFile, exerciseImage);
-				exerciseImage.setPath("/images/");
+				exerciseImageService.saveImage(imageFile, exerciseImage, helperPlan);
+				if (helperPlan.getForWho().getGender().equals("Barbat")) {
+					exerciseImage.setPath("/images/plans/trainings/man/exercise/");
+				} else if (helperPlan.getForWho().getGender().equals("Femeie")) {
+					exerciseImage.setPath("/images/plans/trainings/woman/exercise/");
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

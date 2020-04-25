@@ -118,9 +118,9 @@ public class XmlParserServiceImpl implements XmlParserService {
 					Integer differenceMinutes = difference / (60 * 1000);
 					measure.setValue(differenceMinutes);
 					if (differenceMinutes > 1) {
-						measure.setUnitOfMeasurement("minutes");
-					} else {
 						measure.setUnitOfMeasurement("minute");
+					} else {
+						measure.setUnitOfMeasurement("minut");
 					}
 				} else {
 					measure.setValue(Float.parseFloat(valueOfMeasurement));

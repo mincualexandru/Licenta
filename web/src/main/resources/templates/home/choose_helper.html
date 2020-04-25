@@ -3,90 +3,364 @@
 	xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Admin</title>
+<link th:href="@{css/font-face.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-4.7/css/font-awesome.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-5/css/fontawesome-all.min.css}"
+	rel="stylesheet" media="all">
 <link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-	rel="stylesheet" id="bootstrap-css">
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	th:href="@{vendor/mdi-font/css/material-design-iconic-font.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/animsition/animsition.min.css}" rel="stylesheet"
+	media="all">
+<link
+	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/wow/animate.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/css-hamburgers/hamburgers.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/slick/slick.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/select2/select2.min.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{css/theme.css}" rel="stylesheet" media="all">
+<style>
+.modal-backdrop {
+	display: none;
+}
+
+.modal {
+	background: rgba(0, 0, 0, 0.5);
+}
+</style>
 </head>
 <body>
-	<div th:unless="${#lists.size(allTrainersOrNutritionists)}">
-	Nu exista niciun antrenor sau nutritionist disponibil
-</div>
-	<div th:if="${#lists.size(allTrainersOrNutritionists)}">
-		<h3
-			style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Antrenori
-			sau Nutritionisti</h3>
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="row">
-						<div class="col-md-10 mx-auto">
-							<table class="table table-striped">
-								<thead class="center-align">
-									<tr>
-										<th>Nume</th>
-										<th>Vezi Detalii</th>
-									</tr>
-								</thead>
-								<tbody class="center-align">
-									<th:block
-										th:each="trainerOrNutritionist, iterStat : ${allTrainersOrNutritionists}">
-										<tr>
-											<td th:text="${trainerOrNutritionist.username}"></td>
-											<td><button data-toggle="modal"
-												data-target="#modal-trainer-nutritionist"
-												th:attr="data-target='#modal-trainer-nutritionist'+${trainerOrNutritionist.accountId}">
-												<span class="glyphicon glyphicon-trash"></span>Mai mult..
-											</button></td>
-											<form th:action="@{/choose_helper_save}" method="post">
-											<input type="hidden" name="helperId" th:value="${trainerOrNutritionist.accountId}"/>
-												<div class="modal modal-trainer-nutritionist fade in"
-													th:id="modal-trainer-nutritionist+${trainerOrNutritionist.accountId}">
-													<div class="modal-dialog">
-														<div class="modal-content">
-															<div class="modal-header">
-																<button type="button" class="close" data-dismiss="modal"
-																	aria-label="Close">
-																	<span aria-hidden="true">×</span>
-																</button>
-																<h5 class="modal-title">Informatii</h5>
-															</div>
-															<div class="modal-body">
-																<h5 th:text="${trainerOrNutritionist.firstName}"></h5>
-																<h5 th:text="${trainerOrNutritionist.lastName}"></h5>
-																<h5 th:text="${trainerOrNutritionist.accountInformation.description}"></h5>
-																<div th:each="skill : ${trainerOrNutritionist.accountInformation.skills}">
-																	<h5 th:text="${skill.description}"></h5>
+	<div class="page-wrapper">
+		<header style="background-color: white;"
+			class="header-mobile d-block d-lg-none">
+			<div class="header-mobile__bar">
+				<div class="container-fluid">
+					<div class="header-mobile-inner">
+						<a class="logo" href="index.html"> <img
+							src="images/logo/Screenshot_18.png">
+						</a>
+						<button class="hamburger hamburger--slider" type="button">
+							<span class="hamburger-box"> <span class="hamburger-inner"></span>
+							</span>
+						</button>
+					</div>
+				</div>
+			</div>
+			<nav class="navbar-mobile">
+				<div class="container-fluid">
+					<ul class="navbar-mobile__list list-unstyled">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<aside style="background-color: white;"
+			class="menu-sidebar d-none d-lg-block">
+			<div class="logo">
+				<a href="#"> <img src="images/logo/Screenshot_18.png">
+				</a>
+			</div>
+			<div class="menu-sidebar__content js-scrollbar1">
+				<nav class="navbar-sidebar">
+					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</nav>
+			</div>
+		</aside>
+		<div class="page-container">
+			<div class="main-content">
+				<div class="section__content section__content--p30">
+					<div th:unless="${#lists.size(allTrainersOrNutritionists)}"
+						style="font-size: 90px; color: white; font-weight: 800; text-align: center; position: relative; top: 200px;">
+						Nu mai exista <br> niciun expert disponibil
+					</div>
+					<div th:if="${#lists.size(allTrainersOrNutritionists)}">
+						<div
+							style="text-align: center; font-size: 60px; margin-top: 30px; margin-bottom: 30px; color: white; font-weight: 700;">
+							Expertii Nostri</div>
+						<section class="product" style="height: 650px;"
+							th:each="trainerOrNutritionist, iterStat : ${allTrainersOrNutritionists}">
+							<div class="product__photo">
+								<div class="photo-container" style="border-radius: 30px;">
+									<div style="border-radius: 30px;" class="photo-main">
+										<th:block th:each="role: ${trainerOrNutritionist.roles}">
+											<th:block
+												th:if="${role.name eq 'ROLE_TRAINER' and trainerOrNutritionist.gender.getGender() eq 'Femeie'}">
+												<img
+													th:src="@{'images/helpers/woman_trainer/woman_trainer'+${iterStat.index+1}+'.png'}"
+													style="position: absolute; left: 30%; top: 50%; transform: translate(-50%, -50%); width: 400px; height: 450px;"
+													alt="green apple slice">
+											</th:block>
+											<th:block
+												th:if="${role.name eq 'ROLE_TRAINER' and trainerOrNutritionist.gender.getGender() eq 'Barbat'}">
+												<img
+													th:src="@{'images/helpers/man_trainer/man_trainer'+${iterStat.index+1}+'.png'}"
+													style="position: absolute; left: 30%; top: 50%; transform: translate(-50%, -50%); width: 400px; height: 450px;"
+													alt="green apple slice">
+											</th:block>
+											<th:block
+												th:if="${role.name eq 'ROLE_NUTRITIONIST' and trainerOrNutritionist.gender.getGender() eq 'Femeie'}">
+												<img
+													th:src="@{'images/helpers/woman_nutritionist/woman_nutritionist'+${iterStat.index+1}+'.png'}"
+													style="position: absolute; left: 30%; top: 50%; transform: translate(-50%, -50%); width: 400px; height: 450px;"
+													alt="green apple slice">
+											</th:block>
+											<th:block
+												th:if="${role.name eq 'ROLE_NUTRITIONIST' and trainerOrNutritionist.gender.getGender() eq 'Barbat'}">
+												<img
+													th:src="@{'images/helpers/man_nutritionist/man_nutritionist'+${iterStat.index+1}+'.png'}"
+													style="position: absolute; left: 30%; top: 50%; transform: translate(-50%, -50%); width: 400px; height: 450px;"
+													alt="green apple slice">
+											</th:block>
+										</th:block>
+									</div>
+								</div>
+							</div>
+							<div class="product__info">
+								<div class="title">
+									<h1 th:text="${trainerOrNutritionist.username}"></h1>
+									<span th:text="${trainerOrNutritionist.lastName}"></span>
+								</div>
+								<div class="price">
+									<th:block th:each="role: ${trainerOrNutritionist.roles}">
+										<th:block th:switch="${role.name}">
+											<div th:case="'ROLE_TRAINER'">
+												<span>Antrenor</span>
+											</div>
+											<div th:case="'ROLE_NUTRITIONIST'">
+												<span>Nutritionist</span>
+											</div>
+										</th:block>
+									</th:block>
+								</div>
+								<div class="description">
+									<h3>Detalii</h3>
+									<ul>
+										<th:block
+											th:each="experience: ${trainerOrNutritionist.getAccountInformation().getExperiences()}">
+											<input type="hidden"
+												th:value="${T(Integer).parseInt(experience.end) - T(Integer).parseInt(experience.start)}" />
+										</th:block>
+										<th:block
+											th:if="${#lists.size(trainerOrNutritionist.accountInformation.experiences)}">
+											<li
+												th:text="${'Ani Experienta: ' + #aggregates.sum(trainerOrNutritionist.getAccountInformation().getExperiences().![T(Integer).parseInt(end) - T(Integer).parseInt(start)])}"
+												th:if="${trainerOrNutritionist.getAccountInformation().getExperiences().size() > 0}"></li>
+										</th:block>
+										<th:block
+											th:unless="${#lists.size(trainerOrNutritionist.accountInformation.experiences)}">
+											<li th:text="${'Ani Experienta: 0'}"></li>
+										</th:block>
+										<th:block
+											th:if="${#lists.size(trainerOrNutritionist.accountInformation.education)}">
+											<th:block
+												th:with="education=${trainerOrNutritionist.accountInformation.education[0]}">
+												<li
+													th:utext="${'Ultima Educatie: ' + '<br>' + education.name + ' ' + education.city + ' ' + education.start + ' - ' + education.end}"></li>
+											</th:block>
+										</th:block>
+										<th:block
+											th:unless="${#lists.size(trainerOrNutritionist.accountInformation.education)}">
+											<li th:utext="${'Ultima Educatie: -'}"></li>
+										</th:block>
+										<th:block th:if="${#lists.size(trainerOrNutritionist.plans)}">
+											<li
+												th:text="${'Antrenamente Propuse: ' + trainerOrNutritionist.plans.size()}"></li>
+										</th:block>
+										<th:block
+											th:unless="${#lists.size(trainerOrNutritionist.plans)}">
+											<li th:text="${'Antrenamente Propuse: 0 '}"></li>
+										</th:block>
+									</ul>
+									<div class="btn-group">
+										<form th:action="@{/choose_helper_save}" method="post">
+											<input type="hidden" name="helperId"
+												th:value="${trainerOrNutritionist.accountId}" />
+											<button type="submit" class="buy--btn">ALEGE EXPERT</button>
+										</form>
+										<div th:if="${#lists.size(trainerOrNutritionist.plans)}">
+											<button data-toggle="modal" data-target="#modal-plans"
+												th:attr="data-target='#modal-plans'+${trainerOrNutritionist.accountId}"
+												class="buy--btn ml-3">VEZI PLANURI</button>
+											<div class="modal modal-plans fade in"
+												th:id="modal-plans+${trainerOrNutritionist.accountId}">
+												<div class="modal-dialog"
+													style="overflow-y: initial !important;">
+													<div class="modal-content"
+														style="box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6); border-radius: 12px; width: 900px; position: relative; left: -50px;">
+														<div class="modal-body"
+															style="height: 735px; overflow-y: auto;">
+															<div class="profile-card-form__container"
+																style="margin-left: 30px; margin-right: 30px;">
+																<div style="text-align: center; color: #7300e6;">
+																	<h2
+																		style="margin-bottom: 20px; color: #7300e6; font-size: 100px;">Planuri</h2>
 																</div>
-																<div th:each="experience : ${trainerOrNutritionist.accountInformation.experiences}">
-																	<h5 th:text="${experience.name}"></h5>
-																	<h5 th:text="${experience.city}"></h5>
-																	<h5 th:text="${experience.start}"></h5>
-																	<h5 th:text="${experience.end}"></h5>
+																<div class="wrap cf">
+																	<div class="cart">
+																		<ul class="cartWrap effect5"
+																			style="background-color: white; margin-bottom: 30px; list-style: none;"
+																			th:each="plan, iterStat : ${trainerOrNutritionist.plans}">
+																			<li class="items odd">
+																				<div class="infoWrap"
+																					style="display: flex; justify-content: space-around; align-items: center;">
+																					<div class="cartSection"
+																						style="margin-right: 50px;">
+																						<th:block th:if="${plan.typeOfPlan eq 'Dieta'}">
+																							<img
+																								style="width: 400px; filter: drop-shadow(5px 5px 5px #a6a6a6);"
+																								th:src="@{'images/plans/diets/diet'+${iterStat.index+1}+'.jpg'}"
+																								alt="" class="itemImg" />
+																						</th:block>
+																						<th:block
+																							th:if="${plan.typeOfPlan eq 'Antrenament' and plan.forWho.getGender() eq 'Barbat'}">
+																							<img
+																								style="width: 400px; filter: drop-shadow(5px 5px 5px #a6a6a6);"
+																								th:src="@{'images/plans/trainings/man/man_training'+${iterStat.index+1}+'.jpg'}"
+																								alt="" class="itemImg" />
+																						</th:block>
+																						<th:block
+																							th:if="${plan.typeOfPlan eq 'Antrenament' and plan.forWho.getGender() eq 'Femeie'}">
+																							<img
+																								style="width: 400px; filter: drop-shadow(5px 5px 5px #a6a6a6);"
+																								th:src="@{'images/plans/trainings/woman/woman_training'+${iterStat.index+1}+'.jpg'}"
+																								alt="" class="itemImg" />
+																						</th:block>
+																					</div>
+																					<div class="prodTotal cartSection"
+																						style="text-align: center; width: 400px; color: black; font-size: 18px; font-weight: 600;">
+																						<div style="color: black;" th:text="${plan.name}"></div>
+																					</div>
+																					<div class="prodTotal cartSection"
+																						style="text-align: center; width: 400px; color: black; font-size: 18px; font-weight: 600;">
+																						<div style="color: black;"
+																							th:text="${plan.forWho.getGender()}"></div>
+																					</div>
+																					<div class="prodTotal cartSection"
+																						style="text-align: center; width: 400px; color: black; font-size: 18px; font-weight: 600;">
+																						<div style="color: black;"
+																							th:text="${plan.price + ' LEI'}"></div>
+																					</div>
+																				</div>
+																			</li>
+																		</ul>
+																	</div>
 																</div>
-																<div th:each="edu : ${trainerOrNutritionist.accountInformation.education}">
-																	<h5 th:text="${edu.name}"></h5>
-																	<h5 th:text="${edu.city}"></h5>
-																	<h5 th:text="${edu.start}"></h5>
-																	<h5 th:text="${edu.end}"></h5>
-																</div>
-															</div>
-															<div class="modal-footer">
-																<button type="button" class="btn btn-outline pull-left"
-																	data-dismiss="modal">Close</button>
-																<button type="submit" class="btn btn-success">Yes</button>
 															</div>
 														</div>
 													</div>
 												</div>
-											</form>
-										</tr>
-									</th:block>
-								</tbody>
-							</table>
-						</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</section>
 					</div>
 				</div>
 			</div>

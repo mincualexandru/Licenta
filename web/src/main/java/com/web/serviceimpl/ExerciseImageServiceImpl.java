@@ -12,7 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.web.dao.ExerciseImageDao;
 import com.web.model.ExerciseImage;
+import com.web.model.HelperPlan;
 import com.web.service.ExerciseImageService;
+import com.web.utils.Gender;
 
 @Service("exerciseImageService")
 public class ExerciseImageServiceImpl implements ExerciseImageService {
@@ -46,18 +48,24 @@ public class ExerciseImageServiceImpl implements ExerciseImageService {
 	}
 
 	@Override
-	public void savePhotoImage(ExerciseImage exerciseImage, MultipartFile imageFile) throws Exception {
+	public void savePhotoImage(ExerciseImage exerciseImage, MultipartFile imageFile, HelperPlan helperPlan)
+			throws Exception {
 		Path currentPath = Paths.get(".");
 		Path absolutePath = currentPath.toAbsolutePath();
-		exerciseImage.setPath(absolutePath + "/src/main/resources/static/images/");
+		if (helperPlan.getForWho().equals(Gender.BARBAT)) {
+			exerciseImage.setPath(absolutePath + "/src/main/resources/static/images/plans/trainings/man/exercise/");
+		} else if (helperPlan.getForWho().equals(Gender.FEMEIE)) {
+			exerciseImage.setPath(absolutePath + "/src/main/resources/static/images/plans/trainings/woman/exercise/");
+		}
 		byte[] bytes = imageFile.getBytes();
 		Path path = Paths.get(exerciseImage.getPath() + imageFile.getOriginalFilename());
 		Files.write(path, bytes);
 	}
 
 	@Override
-	public void saveImage(MultipartFile imageFile, ExerciseImage exerciseImage) throws Exception {
-		savePhotoImage(exerciseImage, imageFile);
+	public void saveImage(MultipartFile imageFile, ExerciseImage exerciseImage, HelperPlan helperPlan)
+			throws Exception {
+		savePhotoImage(exerciseImage, imageFile, helperPlan);
 		exerciseImageDao.save(exerciseImage);
 	}
 

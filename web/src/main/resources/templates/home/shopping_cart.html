@@ -38,7 +38,7 @@
 				<div class="container-fluid">
 					<div class="header-mobile-inner">
 						<a class="logo" href="index.html"> <img
-							src="images/Screenshot_18.png">
+							src="images/logo/Screenshot_18.png">
 						</a>
 						<button class="hamburger hamburger--slider" type="button">
 							<span class="hamburger-box"> <span class="hamburger-inner"></span>
@@ -50,37 +50,54 @@
 			<nav class="navbar-mobile">
 				<div class="container-fluid">
 					<ul class="navbar-mobile__list list-unstyled">
-						<li><a th:href="@{/home}" class="links"> <i
-								class="fas fa-home icon-link"></i> <span>Home</span>
-						</a></li>
-						<li><a th:href="@{/view_profile}" class="links"><i
-								class="far fa-id-card icon-link"></i><span>Profil</span></a></li>
-						<li><a th:href="@{/shopping_cart}" class="links"><i
-								class="fas fa-shopping-cart icon-link"></i><span>Cos
-									Cumparaturi</span></a></li>
-						<li><a th:href="@{/choose_device}" class="links"><i
-								class="fas fa-laptop-medical icon-link"></i><span>Alege
-									Dispozitiv</span></a></li>
-						<li><a th:href="@{/choose_helper}" class="links"><i
-								class="fas fa-user-friends icon-link"></i><span>Alege
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
 									Experti</span></a></li>
-						<li><a th:href="@{/view_helpers}" class="links"><i
-								class="fas fa-clipboard-list icon-link"
-								style="font-size: 30px; width: 30px;"></i><span>Alege
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
 									Planuri</span></a></li>
-						<li><a th:href="@{/choose_helper}" class="links"><i
-								class="fas fa-laptop-medical icon-link"></i><span>Dispozitive</span></a></li>
-						<li><a th:href="@{/view_training_plans}" class="links"><i
-								class="fas fa-dumbbell icon-link"></i><span>Planuri
-									Antrenamente</span></a></li>
-						<li><a th:href="@{/view_diet_plans}" class="links"><i
-								class="fas fa-utensils icon-link" style="width: 27px;"></i><span>Planuri
-									Diete</span></a></li>
-						<li><a th:href="@{/view_feedbacks_from_helper}" class="links"><i
-								class="fas fa-comment-dots icon-link"></i><span>Feedback-uri</span></a></li>
-						<li><a th:href="@{/transaction_history}" class="links"><i
-								class="fas fa-money-check icon-link"></i><span>Istoric
-									Tranzactii</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
 					</ul>
 				</div>
 			</nav>
@@ -88,43 +105,60 @@
 		<aside style="background-color: white;"
 			class="menu-sidebar d-none d-lg-block">
 			<div class="logo">
-				<a href="#"> <img src="images/Screenshot_18.png">
+				<a href="#"> <img src="images/logo/Screenshot_18.png">
 				</a>
 			</div>
 			<div class="menu-sidebar__content js-scrollbar1">
 				<nav class="navbar-sidebar">
-					<ul class="list-unstyled navbar__list">
-						<li><a th:href="@{/home}" class="links"> <i
-								class="fas fa-home icon-link"></i> <span>Home</span>
-						</a></li>
-						<li><a th:href="@{/view_profile}" class="links"><i
-								class="far fa-id-card icon-link"></i><span>Profil</span></a></li>
-						<li><a th:href="@{/shopping_cart}" class="links"><i
-								class="fas fa-shopping-cart icon-link"></i><span>Cos
-									Cumparaturi</span></a></li>
-						<li><a th:href="@{/choose_device}" class="links"><i
-								class="fas fa-laptop-medical icon-link"></i><span>Alege
-									Dispozitiv</span></a></li>
-						<li><a th:href="@{/choose_helper}" class="links"><i
-								class="fas fa-user-friends icon-link"></i><span>Alege
+					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
 									Experti</span></a></li>
-						<li><a th:href="@{/view_helpers}" class="links"><i
-								class="fas fa-clipboard-list icon-link"
-								style="font-size: 30px; width: 30px;"></i><span>Alege
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
 									Planuri</span></a></li>
-						<li><a th:href="@{/choose_helper}" class="links"><i
-								class="fas fa-laptop-medical icon-link"></i><span>Dispozitive</span></a></li>
-						<li><a th:href="@{/view_training_plans}" class="links"><i
-								class="fas fa-dumbbell icon-link"></i><span>Planuri
-									Antrenamente</span></a></li>
-						<li><a th:href="@{/view_diet_plans}" class="links"><i
-								class="fas fa-utensils icon-link" style="width: 27px;"></i><span>Planuri
-									Diete</span></a></li>
-						<li><a th:href="@{/view_feedbacks_from_helper}" class="links"><i
-								class="fas fa-comment-dots icon-link"></i><span>Feedback-uri</span></a></li>
-						<li><a th:href="@{/transaction_history}" class="links"><i
-								class="fas fa-money-check icon-link"></i><span>Istoric
-									Tranzactii</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
 					</ul>
 				</nav>
 			</div>
@@ -148,81 +182,132 @@
 						<div
 							style="float: left; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 250px;">
 							<h5 style="font-weight: 900; font-size: 20px; color: red;">Eroare</h5>
-							<p style="font-size: 15px; color: black; margin-top: 5px;">Fonduri
-								insuficiente pentru aceasta comanda</p>
+							<p style="font-size: 15px; color: black; margin-top: 5px;">
+								Fonduri insuficiente pentru aceasta comanda. <a
+									th:href="@{/wallet}" style="color: green; font-weight: 800;">Adauga
+									bani</a>
+							</p>
 						</div>
 						<div style="float: right; display: none;">
 							<span class="closebtn"
 								onclick="this.parentElement.style.display='none';">×</span>
 						</div>
 					</div>
-					<div class="container-fluid">
-						<div class="row">
-							<div class="wrap cf">
-								<div
-									style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px; color: white; font-weight: 700;">
-									<i class="fas fa-2x fa-shopping-cart icon-link"></i> Cos Cumparaturi
-								</div>
-								<div class="cart">
-									<ul class="cartWrap effect5"
-										style="background-color: white; box-shadow: 15px 20px 17px 9px rgba(0, 0, 0, 0.75); margin-bottom: 30px;"
-										th:each="product, iterStat : ${products}">
-										<li class="items odd">
+					<div th:unless="${#lists.size(products)}">
+						<div style="text-align: center;">
+							<span style="font-size: 300px; font-weight: 900; color: white;">0</span>
+							<br> <span
+								style="font-size: 100px; color: white; position: relative; top: -100px;">produse
+								selectate</span>
+						</div>
+					</div>
+					<div th:if="${#lists.size(products)}">
+						<div class="container-fluid">
+							<div class="row">
+								<div class="wrap cf">
+									<div
+										style="text-align: center; font-size: 60px; margin-top: 30px; margin-bottom: 30px; color: white; font-weight: 700;">
+										Cos Cumparaturi</div>
+									<div class="cart">
+										<ul class="cartWrap effect5"
+											style="border-radius: 30px; background-color: white; margin-bottom: 30px;"
+											th:each="product, iterStat : ${products}">
+											<li class="items odd">
 
-											<div class="infoWrap">
-												<div class="cartSection">
-													<img th:src="@{'images/'+${product.imageName}}" alt=""
-														class="itemImg" />
+												<div class="infoWrap">
+													<div class="cartSection">
+														<th:block th:if="${product.type == 'Dieta'}">
+															<img style="height: 160px;"
+																th:src="@{'images/plans/diets/diet'+${iterStat.index + 2}+'.jpg'}"
+																alt="" class="itemImg" />
+														</th:block>
+														<th:block
+															th:if="${product.type == 'Antrenament' and product.forWho.getGender() eq 'Barbat'}">
+															<img style="height: 160px;"
+																th:src="@{'images/plans/trainings/man/man_training'+${iterStat.index + 2}+'.jpg'}"
+																alt="" class="itemImg" />
+														</th:block>
+														<th:block
+															th:if="${product.type == 'Dieta' and product.forWho.getGender() eq 'Fmeie'}">
+															<img style="height: 160px;"
+																th:src="@{'images/plans/trainings/woman/woman_training'+${iterStat.index + 2}+'.jpg'}"
+																alt="" class="itemImg" />
+														</th:block>
+														<th:block th:if="${product.productName == 'Bratara'}">
+															<img style="height: 160px;"
+																th:src="@{'images/devices/band/'+${product.imageName}}"
+																alt="" class="itemImg" />
+														</th:block>
+														<th:block
+															th:if="${product.productName == 'Cantar Inteligent'}">
+															<img style="height: 160px;"
+																th:src="@{'images/devices/scale/'+${product.imageName}}"
+																alt="" class="itemImg" />
+														</th:block>
+													</div>
+													<div class="prodTotal cartSection">
+														<p style="color: black;" th:text="${product.productName}"></p>
+													</div>
+													<div class="prodTotal cartSection"
+														style="margin-top: -5px;">
+														<p
+															style="color: gray; font-size: 12px; letter-spacing: 2px;"
+															th:text="${product.forWho}"
+															th:if="${product.type == 'Antrenament' or product.type == 'Dieta'}"></p>
+													</div>
+													<div class="prodTotal cartSection"
+														style="margin-top: -5px;">
+														<p
+															style="color: gray; font-size: 12px; letter-spacing: 2px;"
+															th:text="${product.companyName}"
+															th:if="${product.type == 'Dispozitiv'}"></p>
+													</div>
+													<div class="prodTotal cartSection"
+														style="margin-top: 10px;">
+														<p style="color: black;"
+															th:text="${product.price + ' LEI'}"></p>
+													</div>
+													<div class="cartSection removeWrap"
+														style="display: flex; align-items: center; justify-content: center;">
+														<form th:action="@{/delete_product_from_shopping_cart}"
+															method="post">
+															<input type="hidden" name="userId"
+																th:value="${user.accountId}" /> <input type="hidden"
+																name="productId" th:value="${product.productId}" /> <input
+																type="hidden" name="productName"
+																th:value="${product.productName}" />
+															<button type="submit" class="btnn2"
+																style="padding: 1px 15px; margin-top: 10px;">Sterge</button>
+														</form>
+													</div>
 												</div>
-												<div class="prodTotal cartSection">
-													<p style="color: black;" th:text="${product.productName}"></p>
-												</div>
-												<div class="prodTotal cartSection">
-													<p style="color: black;" th:text="${product.forWho}"
-														th:if="${product.type == 'Antrenament' or product.type == 'Dieta'}"></p>
-												</div>
-												<div class="prodTotal cartSection">
-													<p style="color: black;" th:text="${product.companyName}"
-														th:if="${product.type == 'Dispozitiv'}"></p>
-												</div>
-												<div class="prodTotal cartSection">
-													<p style="color: black;"
-														th:text="${product.price + ' LEI'}"></p>
-												</div>
-												<div class="cartSection removeWrap"
-													style="display: flex; align-items: center; justify-content: center;">
-													<form th:action="@{/delete_product_from_shopping_cart}"
-														method="post">
-														<input type="hidden" name="userId"
-															th:value="${user.accountId}" /> <input type="hidden"
-															name="productId" th:value="${product.productId}" /> <input
-															type="hidden" name="productName"
-															th:value="${product.productName}" />
-														<button type="submit" class="btnn2">Sterge</button>
-													</form>
-												</div>
-											</div>
-										</li>
-									</ul>
-									<ul
-										style="list-style: none; color: #7300e6; font-size: 25px; font-weight: 700; margin-top: 20px; background-color: white; height: 250px; padding: 30px; width: 350px; box-shadow: 15px 20px 17px 9px rgba(0, 0, 0, 0.75)">
-										<li><span class="label">Numar Produse:</span> <span class="value"
-											th:text="${#lists.size(products)}" style="color: black;"></span></li>
-										<li><span class="label">Total:</span> <span class="value"
-											th:text="${totalSum + ' LEI'}" style="color: black;"></span></li>
-										<li><span class="label">Sold Curent:</span> <span
-											class="value" style="color: black;"
-											th:text="${user.transaction.availableBalance + ' LEI'}"></span>
-										</li>
-										<li>
-											<form th:action="@{/buy_shopping_cart}" method="post">
-												<input type="hidden" name="userId"
-													th:value="${user.accountId}" /> <input type="hidden"
-													name="totalSum" th:value="${totalSum}" />
-												<button type="submit" class="btnn">Cumpara</button>
-											</form>
-										</li>
-									</ul>
+											</li>
+										</ul>
+										<ul
+											style="border-radius: 30px; list-style: none; color: black; font-weight: 700; margin-top: 20px; background-color: white; height: 280px; padding: 30px; width: 350px;">
+											<li><span class="label" style="font-size: 20px;">Numar
+													Produse:</span> <span class="value"
+												th:text="${#lists.size(products)}"
+												style="color: #7300e6; font-size: 35px;"></span></li>
+											<li><span class="label" style="font-size: 20px;">Total:</span>
+												<span class="value" th:text="${totalSum + ' LEI'}"
+												style="color: #7300e6; font-size: 35px;"></span></li>
+											<li><span class="label" style="font-size: 20px;">Sold
+													Curent:</span> <span class="value"
+												style="color: #7300e6; font-size: 35px;"
+												th:text="${user.transaction.availableBalance + ' LEI'}"></span>
+											</li>
+											<li>
+												<form th:action="@{/buy_shopping_cart}" method="post">
+													<input type="hidden" name="userId"
+														th:value="${user.accountId}" /> <input type="hidden"
+														name="totalSum" th:value="${totalSum}" />
+													<button type="submit"
+														style="margin-top: 10px; padding: 5px 10px;" class="btnn">Cumpara</button>
+												</form>
+											</li>
+										</ul>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -231,11 +316,6 @@
 			</div>
 		</div>
 	</div>
-
-	<!-- <div th:unless="${#lists.size(products)}"> -->
-	<!-- 	Nu ai selectat niciun produs momentan -->
-	<!-- </div> -->
-	<!-- <div th:if="${#lists.size(products)}"> -->
 	<!-- 	<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Cosul meu</h3> -->
 	<!-- 	<div class="container-fluid"> -->
 	<!-- 		<div class="row"> -->

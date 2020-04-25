@@ -27,7 +27,7 @@ import com.web.utils.TrainedMuscleGroup;
 
 @Entity
 @Table(name = "exercises")
-public class Exercise {
+public class Exercise implements Comparable<Exercise> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +40,6 @@ public class Exercise {
 
 	@Column(name = "category")
 	@Enumerated(EnumType.STRING)
-	@NotEmpty(message = "Campul este obligatoriu !")
 	private ExerciseCategory exerciseCategory;
 
 	@Column(name = "name")
@@ -216,5 +215,10 @@ public class Exercise {
 		return "Exercise [exerciseId=" + exerciseId + ", name=" + name + ", caloriesBurned=" + caloriesBurned
 				+ ", numberOfSeries=" + numberOfSeries + ", numberOfReps=" + numberOfReps + ", trainedMuscleGroup="
 				+ trainedMuscleGroup + ", createDateTime=" + createDateTime + "]";
+	}
+
+	@Override
+	public int compareTo(Exercise o) {
+		return (int) (this.exerciseId - o.getExerciseId());
 	}
 }

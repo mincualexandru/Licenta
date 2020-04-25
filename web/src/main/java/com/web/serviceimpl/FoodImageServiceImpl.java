@@ -49,7 +49,7 @@ public class FoodImageServiceImpl implements FoodImageService {
 	public void savePhotoImage(FoodImage foodImage, MultipartFile imageFile) throws Exception {
 		Path currentPath = Paths.get(".");
 		Path absolutePath = currentPath.toAbsolutePath();
-		foodImage.setPath(absolutePath + "/src/main/resources/static/images/");
+		foodImage.setPath(absolutePath + "/src/main/resources/static/images/plans/diets/");
 		byte[] bytes = imageFile.getBytes();
 		Path path = Paths.get(foodImage.getPath() + imageFile.getOriginalFilename());
 		Files.write(path, bytes);

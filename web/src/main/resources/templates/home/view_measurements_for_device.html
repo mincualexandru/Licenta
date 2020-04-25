@@ -1,38 +1,467 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Admin</title>
+<title>Home</title>
+<link th:href="@{css/font-face.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-4.7/css/font-awesome.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-5/css/fontawesome-all.min.css}"
+	rel="stylesheet" media="all">
 <link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-	rel="stylesheet" id="bootstrap-css">
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	th:href="@{vendor/mdi-font/css/material-design-iconic-font.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/animsition/animsition.min.css}" rel="stylesheet"
+	media="all">
+<link
+	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/wow/animate.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/css-hamburgers/hamburgers.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/slick/slick.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/select2/select2.min.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{css/theme.css}" rel="stylesheet" media="all">
 </head>
 <body>
-<div th:unless="${#lists.size(measurements)}">
-	Acest dispozitiv nu a inregistrat nicio masuratoare
-</div>
-	<div th:if="${#lists.size(measurements)}">
-		<h3 style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Optiuni Tipuri Grafice</h3>
-		<div style="text-align:center;">
-			<div th:if="${userDevice.device.name eq 'Bratara'}">
-				<a th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'heartRate', userDeviceId = ${userDevice.userDeviceId})}" class="btn btn-success">Ritm Cardiac</a>
-				<a th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'stepCount', userDeviceId = ${userDevice.userDeviceId})}" class="btn btn-success">Pasi</a>
-				<a th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'sleepAnalysis', userDeviceId = ${userDevice.userDeviceId})}" class="btn btn-success">Analiza Somn</a>
-				<a th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'activeEnergyBurned', userDeviceId = ${userDevice.userDeviceId})}" class="btn btn-success">Energie Activa</a>
+	<div class="page-wrapper">
+		<header style="background-color: white;"
+			class="header-mobile d-block d-lg-none">
+			<div class="header-mobile__bar">
+				<div class="container-fluid">
+					<div class="header-mobile-inner">
+						<a class="logo" href="index.html"> <img
+							src="images/logo/Screenshot_18.png">
+						</a>
+						<button class="hamburger hamburger--slider" type="button">
+							<span class="hamburger-box"> <span class="hamburger-inner"></span>
+							</span>
+						</button>
+					</div>
+				</div>
 			</div>
-			<div th:if="${userDevice.device.name eq 'Cantar Inteligent'}">
-				<a th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'bodyFatPercentage', userDeviceId = ${userDevice.userDeviceId})}" class="btn btn-success">Procentaj Grasime</a>
-				<a th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'bodyMassIndex', userDeviceId = ${userDevice.userDeviceId})}" class="btn btn-success">Indice Masa Corporala</a>
-				<a th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'bodyMass', userDeviceId = ${userDevice.userDeviceId})}" class="btn btn-success">Masa Corporala</a>
-				<a th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'leanBodyMass', userDeviceId = ${userDevice.userDeviceId})}" class="btn btn-success">Lean Body Mass</a>
+			<nav class="navbar-mobile">
+				<div class="container-fluid">
+					<ul class="navbar-mobile__list list-unstyled">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<aside style="background-color: white;"
+			class="menu-sidebar d-none d-lg-block">
+			<div class="logo">
+				<a href="#"> <img src="images/logo/Screenshot_18.png">
+				</a>
 			</div>
-			<div th:if="${userDevice.device.name eq 'Fit Buddy'}">
-				<a th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'activeEnergyBurnedBuddy', userDeviceId = ${userDevice.userDeviceId})}" class="btn btn-success">Energie Activa Arsa</a>
-				<a th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'activeEnergyAccumulated', userDeviceId = ${userDevice.userDeviceId})}" class="btn btn-success">Energie Activa Acumulata</a>
-		</div>
+			<div class="menu-sidebar__content js-scrollbar1">
+				<nav class="navbar-sidebar">
+					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</nav>
+			</div>
+		</aside>
+		<div class="page-container">
+			<div class="main-content">
+				<div class="section__content section__content--p30">
+					<div th:unless="${#lists.size(measurements)}" style="font-size: 90px; color: white; font-weight: 800; text-align: center; position: relative; top: 140px;">Acest
+						dispozitiv nu a inregistrat nicio masuratoare</div>
+					<div th:if="${#lists.size(measurements)}">
+						<div
+							style="text-align: center; font-size: 70px; margin-bottom: 30px; color: white; font-weight: 700;">
+							Tipuri Masuratori <span th:text="${userDevice.device.name}"></span>
+						</div>
+						<div class="row" style="margin-left: -30px;"
+							th:if="${userDevice.device.name eq 'Bratara'}">
+							<div class="col-md-3" style="margin-bottom: 100px;">
+								<div class="card-type-2">
+									<div class="img-c"
+										style="position: relative; top: -30px; padding-top: 100%;">
+										<img class="img" width="800" height="800"
+											src="images/logo/bpm3.png">
+									</div>
+									<div class="device-info" style="margin-top: -30px;">
+										<h1 style="text-align: center; color: #7300e6;">Ritm
+											Cardiac</h1>
+										<div class="measure-description"
+											style="margin-top: 10px; margin-bottom: 10px; font-size: 13px; color: gray;">
+											<p style="text-indent: 10px;">Ritmul cardiac(pulsul)
+												indica de cate ori iti bate inima pe minut si poate fi un
+												indicator al starii de sanatate cardiovasculara. Măsurarea
+												frecvenţei cardiace este instrumentul cel mai des folosit
+												pentru verificarea stării de sănătate.</p>
+										</div>
+									</div>
+									<a
+										th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'heartRate', userDeviceId = ${userDevice.userDeviceId})}"
+										class="btn btn-success"
+										style="background-color: #7300e6; border: none; border-radius: 5px; padding: 10px 20px; font-weight: 600; font-size: 15px;">Masuratori
+										Calculate ></a>
+								</div>
+							</div>
+							<div class="col-md-3" style="margin-bottom: 100px;">
+								<div class="card-type-2">
+									<div class="img-c"
+										style="position: relative; top: -30px; padding-top: 100%;">
+										<img class="img" width="800" height="800"
+											src="images/logo/step-count1.jpg">
+									</div>
+									<div class="device-info" style="margin-top: -30px;">
+										<h1 style="text-align: center; color: #7300e6;">Pasi
+											Parcursi</h1>
+										<div class="measure-description"
+											style="margin-top: 10px; margin-bottom: 10px; font-size: 13px; color: gray;">
+											<p style="text-indent: 10px;">Pedometrele si
+												dispozitivele digitale de monitorizare a activitatii te pot
+												ajuta sa determini numarul tau de pasi. Aceste dizpotivie
+												contorizeaza pasii pentru orice activitate care implica
+												miscari similare pasitului, mersul, alergarea si urcatul
+												scarilor.</p>
+										</div>
+									</div>
+									<a
+										th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'stepCount', userDeviceId = ${userDevice.userDeviceId})}"
+										class="btn btn-success"
+										style="background-color: #7300e6; border: none; border-radius: 5px; padding: 10px 20px; font-weight: 600; font-size: 15px;">Masuratori
+										Calculate ></a>
+								</div>
+							</div>
+							<div class="col-md-3" style="margin-bottom: 100px;">
+								<div class="card-type-2">
+									<div class="img-c"
+										style="position: relative; top: -30px; padding-top: 100%;">
+										<img class="img" width="800" height="800"
+											style="height: 220px; width: 237px;"
+											src="images/logo/sleep3.jpg">
+									</div>
+									<div class="device-info" style="margin-top: -30px;">
+										<h1 style="text-align: center; color: #7300e6;">Analiza
+											Somn</h1>
+										<div class="measure-description"
+											style="margin-top: 10px; margin-bottom: 10px; font-size: 13px; color: gray;">
+											<p style="text-indent: 10px;">Somnul – unul dintre
+												comportamentele importante ale activitatilor biologice de
+												sustinere a vietii – analizata de catre dispozitve de
+												urmarire si monitorizare. Aceasta analiza incepe cand
+												stingeti lumina si se termina atunci cand va dati jos din
+												pat.</p>
+										</div>
+									</div>
+									<a
+										th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'sleepAnalysis', userDeviceId = ${userDevice.userDeviceId})}"
+										class="btn btn-success"
+										style="background-color: #7300e6; border: none; border-radius: 5px; padding: 10px 20px; font-weight: 600; font-size: 15px;">Masuratori
+										Calculate ></a>
+								</div>
+							</div>
+							<div class="col-md-3" style="margin-bottom: 100px;">
+								<div class="card-type-2">
+									<div class="img-c"
+										style="position: relative; top: -30px; padding-top: 100%;">
+										<img class="img" width="800" height="800"
+											src="images/logo/calories2.png"
+											style="height: 250px; width: 238px;">
+									</div>
+									<div class="device-info" style="margin-top: -30px;">
+										<h1 style="text-align: center; color: #7300e6;">Calorii
+											Arse</h1>
+										<div class="measure-description"
+											style="margin-top: 10px; margin-bottom: 10px; font-size: 13px; color: gray;">
+											<p style="text-indent: 10px;">Corpul uman arde calorii
+												tot timpul, aceste calorii sunt furnizate de nutrienti
+												producatori de caldura in produsele alimentare. Diferite
+												tipuri de exercitii ard diferite cantitati de calorii si
+												pastatrea unor obiceiuri bune de exercitiu te poate ajuta sa
+												te mentii in forma.</p>
+										</div>
+									</div>
+									<a
+										th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'activeEnergyBurned', userDeviceId = ${userDevice.userDeviceId})}"
+										class="btn btn-success"
+										style="background-color: #7300e6; border: none; border-radius: 5px; padding: 10px 20px; font-weight: 600; font-size: 15px;">Masuratori
+										Calculate ></a>
+								</div>
+							</div>
+						</div>
+						<div class="row" style="margin-left: -30px;"
+							th:if="${userDevice.device.name eq 'Cantar Inteligent'}">
+							<div class="col-md-3" style="margin-bottom: 100px;">
+								<div class="card-type-2" style="min-height: 100%;">
+									<div class="img-c"
+										style="position: relative; top: -30px; padding-top: 100%;">
+										<img class="img" width="800" height="800"
+											src="images/logo/imc.jpg" style="height: 200px;">
+									</div>
+									<div class="device-info" style="margin-top: -30px;">
+										<h1 style="text-align: center; color: #7300e6;">Procentaj
+											Grasime</h1>
+										<div class="measure-description"
+											style="margin-top: 10px; margin-bottom: 10px; font-size: 13px; color: gray;">
+											<p style="text-indent: 10px;">Procentul de grăsime este o
+												metoda de a calcula direct compoziția corporală relativă a
+												unei persoane, fără a ține cont de înălțime sau greutate.
+												Indicele de masă corporală utilizat pe scară largă oferă o
+												măsură care permite compararea adipozității indivizilor de
+												diferite înălțimi și greutăți.</p>
+										</div>
+									</div>
+									<a
+										th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'bodyFatPercentage', userDeviceId = ${userDevice.userDeviceId})}"
+										class="btn btn-success"
+										style="background-color: #7300e6; border: none; border-radius: 5px; padding: 10px 20px; font-weight: 600; font-size: 15px;">Masuratori
+										Calculate ></a>
+								</div>
+							</div>
+							<div class="col-md-3" style="margin-bottom: 100px;">
+								<div class="card-type-2" style="min-height: 100%;">
+									<div class="img-c"
+										style="position: relative; top: -30px; padding-top: 100%;">
+										<img class="img" width="800" height="800"
+											src="images/logo/bmi.jpg" style="height: 200px;">
+									</div>
+									<div class="device-info" style="margin-top: -30px;">
+										<h1 style="text-align: center; color: #7300e6;">Indice
+											Masa Corporala</h1>
+										<div class="measure-description"
+											style="margin-top: 10px; margin-bottom: 10px; font-size: 13px; color: gray;">
+											<p style="text-indent: 10px;">Indicele de grasime
+												corporala reprezinta procentul de grasime din organism,
+												raportat la greutatea totala. Tesutul adipos (grasimea) din
+												organism protejeaza organele, captuseste articulatiile,
+												regleaza temperatura corporala, depoziteaza vitamine si are
+												rol de rezerva de energie pentru corp.</p>
+										</div>
+									</div>
+									<a
+										th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'bodyMassIndex', userDeviceId = ${userDevice.userDeviceId})}"
+										class="btn btn-success"
+										style="background-color: #7300e6; border: none; border-radius: 5px; padding: 10px 20px; font-weight: 600; font-size: 15px;">Masuratori
+										Calculate ></a>
+								</div>
+							</div>
+							<div class="col-md-3" style="margin-bottom: 100px;">
+								<div class="card-type-2" style="min-height: 100%;">
+									<div class="img-c"
+										style="position: relative; top: -30px; padding-top: 100%;">
+										<img class="img" width="800" height="800"
+											src="images/logo/bodymass.jpg">
+									</div>
+									<div class="device-info" style="margin-top: -30px;">
+										<h1 style="text-align: center; color: #7300e6;">Masa
+											Corporala</h1>
+										<div class="measure-description"
+											style="margin-top: 10px; margin-bottom: 10px; font-size: 13px; color: gray;">
+											<p style="text-indent: 10px;">Una dintre condiţiile
+												esenţiale ale sănătăţii este atingerea şi menţinerea
+												greutăţii ideale. Pe baza masuratorilor oferite iti poti
+												schimba obiceiurile si poti atinge greutatea ideala. Pe baza
+												masuratorilor oferite iti poti schimba obiceiurile si poti
+												atinge greutatea ideala ideala idela.</p>
+										</div>
+									</div>
+									<a
+										th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'bodyMass', userDeviceId = ${userDevice.userDeviceId})}"
+										class="btn btn-success"
+										style="background-color: #7300e6; border: none; border-radius: 5px; padding: 10px 20px; font-weight: 600; font-size: 15px;">Masuratori
+										Calculate ></a>
+								</div>
+							</div>
+							<div class="col-md-3" style="margin-bottom: 100px;">
+								<div class="card-type-2" style="min-height: 100%;">
+									<div class="img-c"
+										style="position: relative; top: -30px; padding-top: 100%;">
+										<img class="img" width="800" height="800"
+											src="images/logo/bms.jpg">
+									</div>
+									<div class="device-info" style="margin-top: -30px;">
+										<h1
+											style="text-align: center; color: #7300e6; font-size: 30px;">
+											Masa <br> Corporala Slaba
+										</h1>
+										<div class="measure-description"
+											style="margin-top: 23px; margin-bottom: 10px; font-size: 13px; color: gray;">
+											<p style="text-indent: 10px;">Masa corporala slaba
+												reprezinta greutatea corpului minus grasimea
+												corporala(tesutul adipos).Este formata din restul
+												componentelor corpului: mușchi, oase, apă, minerale, creier,
+												organe interne etc. Pentru determinarea masei corporale
+												slabe pot fi utilizate diverse masuratori si tehnici de
+												scanare.</p>
+										</div>
+									</div>
+									<a
+										th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'leanBodyMass', userDeviceId = ${userDevice.userDeviceId})}"
+										class="btn btn-success"
+										style="background-color: #7300e6; border: none; border-radius: 5px; padding: 10px 20px; font-weight: 600; font-size: 15px;">Masuratori
+										Calculate ></a>
+								</div>
+							</div>
+						</div>
+						<div class="row"
+							style="margin-left: -30px; position: relative; left: 25%;"
+							th:if="${userDevice.device.name eq 'Fit Buddy'}">
+							<div class="col-md-3" style="margin-bottom: 100px;">
+								<div class="card-type-2">
+									<div class="img-c"
+										style="position: relative; top: -30px; padding-top: 100%;">
+										<img class="img" width="800" height="800"
+											src="images/logo/step-count1.jpg">
+									</div>
+									<div class="device-info" style="margin-top: -30px;">
+										<h1
+											style="text-align: center; color: #7300e6; font-size: 28px;">Calorii
+											Arse</h1>
+										<div class="measure-description"
+											style="margin-top: 10px; margin-bottom: 10px; font-size: 13px; color: gray;">
+											<p style="text-indent: 10px;">Corpul uman arde calorii
+												tot timpul, aceste calorii sunt furnizate de nutrienti
+												producatori de caldura in produsele alimentare. Diferite
+												tipuri de exercitii ard diferite cantitati de calorii si
+												pastatrea unor obiceiuri bune de exercitiu te poate ajuta sa
+												te mentii in forma.</p>
+										</div>
+									</div>
+									<a
+										th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'activeEnergyBurnedBuddy', userDeviceId = ${userDevice.userDeviceId})}"
+										class="btn btn-success"
+										style="background-color: #7300e6; border: none; border-radius: 5px; padding: 10px 20px; font-weight: 600; font-size: 15px;">Masuratori
+										Calculate ></a>
+								</div>
+							</div>
+							<div class="col-md-3" style="margin-bottom: 100px;">
+								<div class="card-type-2">
+									<div class="img-c"
+										style="position: relative; top: -30px; padding-top: 100%;">
+										<img class="img" width="800" height="800"
+											src="images/logo/calories4.jpg">
+									</div>
+									<div class="device-info" style="margin-top: -30px;">
+										<h1
+											style="text-align: center; color: #7300e6; font-size: 28px;">Calorii
+											Acumulate</h1>
+										<div class="measure-description"
+											style="margin-top: 10px; margin-bottom: 10px; font-size: 13px; color: gray;">
+											<p style="text-indent: 10px;">Corpul uman acumuleaza
+												calorii mereu, aceste calorii sunt furnizate de nutrienti
+												producatori de caldura in produsele alimentare. Diferite
+												alimente produc diferite cantitati de calorii si pastatrea
+												unor obiceiuri alimentare te poate ajuta sa te mentii in
+												forma.</p>
+										</div>
+									</div>
+									<a
+										th:href="@{/view_charts_for_device/{chartOption}/{userDeviceId}(chartOption = 'activeEnergyAccumulated', userDeviceId = ${userDevice.userDeviceId})}"
+										class="btn btn-success"
+										style="background-color: #7300e6; border: none; border-radius: 5px; padding: 10px 20px; font-weight: 600; font-size: 15px;">Masuratori
+										Calculate > </a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"

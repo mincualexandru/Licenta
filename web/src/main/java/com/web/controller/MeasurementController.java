@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -56,8 +57,48 @@ public class MeasurementController {
 		Account account = accountService.getAccountConnected();
 		if (account.isActive()) {
 			UserDevice userDevice = userDeviceService.findById(userDeviceId).get();
-			List<Measurement> measurements = measurementService
-					.findAllByUserDeviceUserDeviceId(userDevice.getUserDeviceId());
+			List<Measurement> measurements = new ArrayList<>();
+			List<Measurement> measurementsToRemove = new ArrayList<>();
+			if (userDevice.getDevice().getName().equals("Fit Buddy")) {
+				if (measurementService
+						.findByNameAndUserDeviceUserDeviceId("HKQuantityTypeIdentifierHeight",
+								userDevice.getUserDeviceId())
+						.isPresent()
+						&& measurementService.findByNameAndUserDeviceUserDeviceId("HKQuantityTypeIdentifierBodyMass",
+								userDevice.getUserDeviceId()).isPresent()) {
+					Measurement height = measurementService.findByNameAndUserDeviceUserDeviceId(
+							"HKQuantityTypeIdentifierHeight", userDevice.getUserDeviceId()).get();
+					measurementsToRemove.add(height);
+					Measurement weight = measurementService.findByNameAndUserDeviceUserDeviceId(
+							"HKQuantityTypeIdentifierBodyMass", userDevice.getUserDeviceId()).get();
+					measurementsToRemove.add(weight);
+				}
+				if (measurementService
+						.findByNameAndUserDeviceUserDeviceId("HKQuantityTypeIdentifierHeight",
+								userDevice.getUserDeviceId())
+						.isPresent()
+						&& !(measurementService.findByNameAndUserDeviceUserDeviceId("HKQuantityTypeIdentifierBodyMass",
+								userDevice.getUserDeviceId()).isPresent())) {
+					Measurement height = measurementService.findByNameAndUserDeviceUserDeviceId(
+							"HKQuantityTypeIdentifierHeight", userDevice.getUserDeviceId()).get();
+					measurementsToRemove.add(height);
+				}
+				if (!(measurementService.findByNameAndUserDeviceUserDeviceId("HKQuantityTypeIdentifierHeight",
+						userDevice.getUserDeviceId()).isPresent())
+						&& measurementService.findByNameAndUserDeviceUserDeviceId("HKQuantityTypeIdentifierBodyMass",
+								userDevice.getUserDeviceId()).isPresent()) {
+					Measurement weight = measurementService.findByNameAndUserDeviceUserDeviceId(
+							"HKQuantityTypeIdentifierBodyMass", userDevice.getUserDeviceId()).get();
+					measurementsToRemove.add(weight);
+				}
+				measurementsToRemove.forEach(element -> LOGGER.info(element.getName()));
+				measurements = measurementService.findAllByUserDeviceUserDeviceId(userDevice.getUserDeviceId());
+				measurements.forEach(element -> LOGGER.info("Inainte " + element.getName()));
+				measurements.removeAll(measurementsToRemove);
+				measurements.forEach(element -> LOGGER.info("Dupa " + element.getName()));
+			} else {
+				measurements = measurementService.findAllByUserDeviceUserDeviceId(userDevice.getUserDeviceId());
+			}
 			model.addAttribute("measurements", measurements);
 			model.addAttribute("userDevice", userDevice);
 			return "home/view_measurements_for_device";
@@ -93,8 +134,6 @@ public class MeasurementController {
 					String activeEnergyBurnedBuddy = BandTypeMeasurement.ENERGYBURNED.getBandTypeMeasurement();
 					typeMeasurement = typeMeasurementService.findByType(activeEnergyBurnedBuddy);
 					if (betweenTimestamp.equals("notSelectedTimestamp")) {
-						chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(
-								activeEnergyBurnedBuddy, userDevice.getUserDeviceId());
 						for (Measurement measurement : measurementsBetweenTimestamps) {
 							LocalDateTime startDate = measurement.getStartDate().toLocalDateTime();
 							LocalDate localDate = startDate.toLocalDate();
@@ -106,7 +145,7 @@ public class MeasurementController {
 								previousValue = value;
 							}
 							sum += measurement.getValue();
-							chartMap.put(localDate + " " + String.format("%02d", hour), sum);
+							chartMap.put("Data: " + localDate + " Ora: " + hour, sum);
 						}
 					} else {
 						chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(
@@ -123,7 +162,7 @@ public class MeasurementController {
 								previousValue = value;
 							}
 							sum += measurement.getValue();
-							chartMap.put(localDate + " " + String.format("%02d", hour), sum);
+							chartMap.put("Data: " + localDate + " Ora: " + hour, sum);
 						}
 					}
 					break;
@@ -166,8 +205,6 @@ public class MeasurementController {
 					String activeEnergyBurned = BandTypeMeasurement.ENERGYBURNED.getBandTypeMeasurement();
 					typeMeasurement = typeMeasurementService.findByType(activeEnergyBurned);
 					if (betweenTimestamp.equals("notSelectedTimestamp")) {
-						chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(
-								activeEnergyBurned, userDevice.getUserDeviceId());
 						for (Measurement measurement : measurementsBetweenTimestamps) {
 							LocalDateTime startDate = measurement.getStartDate().toLocalDateTime();
 							LocalDate localDate = startDate.toLocalDate();
@@ -251,8 +288,6 @@ public class MeasurementController {
 					String stepCount = BandTypeMeasurement.STEPCOUNT.getBandTypeMeasurement();
 					typeMeasurement = typeMeasurementService.findByType(stepCount);
 					if (betweenTimestamp.equals("notSelectedTimestamp")) {
-						chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(stepCount,
-								userDevice.getUserDeviceId());
 						for (Measurement measurement : measurementsBetweenTimestamps) {
 							LocalDateTime startDate = measurement.getStartDate().toLocalDateTime();
 							LocalDate localDate = startDate.toLocalDate();
@@ -398,6 +433,7 @@ public class MeasurementController {
 	public String viewChartsBetweenDates(Model model, @RequestParam String chartOption,
 			@RequestParam Integer userDeviceId, @RequestParam String startDateInput, @RequestParam String endDateInput,
 			RedirectAttributes redirectAttributes) {
+		System.out.println(startDateInput + " " + endDateInput);
 		Account account = accountService.getAccountConnected();
 		if (account.isActive()) {
 			Set<Measurement> measurementsBetweenTimestamps = new HashSet<>();
@@ -406,6 +442,12 @@ public class MeasurementController {
 			Timestamp timestampStartDate = Timestamp.valueOf(startDate.atStartOfDay());
 			Timestamp timestampEndDate = Timestamp.valueOf(endDate.plusDays(1).atStartOfDay());
 			switch (chartOption) {
+			case "activeEnergyBurnedBuddy":
+				String activeEnergyBurnedBuddy = BandTypeMeasurement.ENERGYBURNED.getBandTypeMeasurement();
+				measurementsBetweenTimestamps = measurementService
+						.findAllByNameAndUserDeviceUserDeviceIdAndStartDateBetween(activeEnergyBurnedBuddy,
+								userDeviceId, timestampStartDate, timestampEndDate);
+				break;
 			case "activeEnergyBurned":
 				String activeEnergyBurned = BandTypeMeasurement.ENERGYBURNED.getBandTypeMeasurement();
 				measurementsBetweenTimestamps = measurementService

@@ -26,6 +26,9 @@ public interface MeasurementDao extends CrudRepository<Measurement, Integer> {
 	Set<Measurement> findAllByNameAndUserDeviceUserDeviceIdAndStartDateBetween(String name, Integer userDeviceId,
 			Timestamp timestampStartDate, Timestamp timestampEndDate);
 
+	Set<Measurement> findAllByUserDeviceUserDeviceIdAndStartDateBetween(Integer userDeviceId,
+			Timestamp timestampStartDate, Timestamp timestampEndDate);
+
 	Optional<Measurement> findByName(String hkquantitytypeidentifierheight);
 
 	Set<Measurement> findAllByName(String scaleTypeMeasurement);

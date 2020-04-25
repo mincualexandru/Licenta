@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpErrorResponse, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpParams, HttpHeaders } from "@angular/common/http";
 import { catchError, tap } from "rxjs/operators";
 import { throwError, Subject, BehaviorSubject, Observable } from "rxjs";
 import { Router } from "@angular/router";
@@ -61,6 +61,7 @@ export class AuthService {
       );
   }
 
+  
   logout() {
     this.user.next(null);
     this.router.navigate(["/auth"]);

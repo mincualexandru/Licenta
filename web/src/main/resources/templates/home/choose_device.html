@@ -2,31 +2,302 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Sign up</title>
-<base href="/">
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-	crossorigin="anonymous">
-<script src="https://kit.fontawesome.com/8f58d13ed0.js"
-	crossorigin="anonymous"></script>
-<link rel="stylesheet" type="text/css" th:href="@{css/style.css}" />
+<title>Choose Device</title>
+<link th:href="@{css/font-face.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-4.7/css/font-awesome.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-5/css/fontawesome-all.min.css}"
+	rel="stylesheet" media="all">
+<link
+	th:href="@{vendor/mdi-font/css/material-design-iconic-font.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/animsition/animsition.min.css}" rel="stylesheet"
+	media="all">
+<link
+	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/wow/animate.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/css-hamburgers/hamburgers.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/slick/slick.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/select2/select2.min.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{css/theme.css}" rel="stylesheet" media="all">
 </head>
 <body>
-	<h5>In momentul in care contul tau a fost creat ti s-a adaugat implicit un dispozitiv</h5>
-	<h5>Doresti si alte dispozitive?</h5>
-	<div th:unless="${bandAlreadyBought}">
-		<form th:action="@{/add_device_to_shopping_cart}" method="post">
-		<input type="hidden" name="deviceName" value="Bratara"/>
-		<button type="submit">Alege Bratara</button>
-	</form>
-	</div>
-	<div th:unless="${scaleAlreadyBought}">
-		<form th:action="@{/add_device_to_shopping_cart}" method="post">
-		<input type="hidden" name="deviceName" value="Cantar Inteligent"/>
-		<button type="submit">Alege Cantar</button>
-	</form>
+	<div class="page-wrapper">
+		<header style="background-color: white;"
+			class="header-mobile d-block d-lg-none">
+			<div class="header-mobile__bar">
+				<div class="container-fluid">
+					<div class="header-mobile-inner">
+						<a class="logo" href="index.html"> <img
+							src="images/logo/Screenshot_18.png">
+						</a>
+						<button class="hamburger hamburger--slider" type="button">
+							<span class="hamburger-box"> <span class="hamburger-inner"></span>
+							</span>
+						</button>
+					</div>
+				</div>
+			</div>
+			<nav class="navbar-mobile">
+				<div class="container-fluid">
+					<ul class="navbar-mobile__list list-unstyled">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<aside style="background-color: white;"
+			class="menu-sidebar d-none d-lg-block">
+			<div class="logo">
+				<a href="#"> <img src="images/logo/Screenshot_18.png">
+				</a>
+			</div>
+			<div class="menu-sidebar__content js-scrollbar1">
+				<nav class="navbar-sidebar">
+					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</nav>
+			</div>
+		</aside>
+		<div class="page-container">
+			<div class="main-content">
+				<div class="section__content section__content--p30">
+					<div th:if="${account.userDevices.size() eq 3}" style="font-size: 90px; color: white; font-weight: 800; text-align: center; position: relative; top: 200px;">
+						Ai cumparat <br> maximul de dispozitive
+					</div>
+					<div th:unless="${account.userDevices.size() eq 3}">
+						<div
+							style="text-align: center; font-size: 60px; margin-top: -10px; margin-bottom: 30px; color: white; font-weight: 700;">
+							Alege Dispozitive</div>
+						<div th:unless="${bandAlreadyBought}">
+							<section class="product">
+								<div class="product__photo">
+									<div class="photo-container">
+										<div class="photo-main">
+											<img th:src="@{'images/devices/band/band.png'}"
+												alt="green apple slice">
+										</div>
+										<div class="photo-album">
+											<ul style="list-style: none;">
+												<li><img class="scale-img"
+													th:src="@{'images/devices/band/band1.jpg'}"
+													alt="half apple" style="height: 50px; margin-left: 10px;"></li>
+												<li><img class="scale-img"
+													th:src="@{'images/devices/band/band2.jpg'}"
+													alt="green apple"
+													style="height: 73px; position: relative; top: -18px; margin-left: 5px;"></li>
+												<li><img class="scale-img"
+													th:src="@{'images/devices/band/band3.jpg'}"
+													alt="green apple" style="height: 50px; margin-left: 20px;"></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="product__info">
+									<div class="title">
+										<h1 th:text="${band.name}"></h1>
+										<span th:text="${band.serialNumber}"></span>
+									</div>
+									<div class="price">
+										<span th:text="${band.price + ' LEI'}"></span>
+									</div>
+									<div class="description">
+										<h3>Tipuri Masuratori Oferite</h3>
+										<ul th:each="typeMeasurement : ${band.typeMeasurements}">
+											<th:block th:switch="${typeMeasurement.type}">
+												<div th:case="'HKQuantityTypeIdentifierHeartRate'">
+													<li>Puls Inima</li>
+												</div>
+												<div th:case="'HKQuantityTypeIdentifierStepCount'">
+													<li>Pasii Parcursi</li>
+												</div>
+												<div th:case="'HKCategoryValueSleepAnalysisAsleep'">
+													<li>Analiza Somn</li>
+												</div>
+												<div th:case="'HKQuantityTypeIdentifierActiveEnergyBurned'">
+													<li>Energie Activa Arsa</li>
+												</div>
+											</th:block>
+										</ul>
+									</div>
+									<form th:action="@{/add_device_to_shopping_cart}" method="post">
+										<input type="hidden" name="deviceName" value="Bratara" />
+										<button type="submit" class="buy--btn">ADAUGA IN COS</button>
+									</form>
+								</div>
+							</section>
+						</div>
+						<div th:unless="${scaleAlreadyBought}">
+							<section class="product">
+								<div class="product__photo">
+									<div class="photo-container">
+										<div class="photo-main">
+											<img
+												style="transform: rotate3d(0, 4, -1, 45deg); top: 8em; max-width: 165%; left: -11.5em;"
+												th:src="@{'images/devices/scale/scale.png'}"
+												alt="green apple slice">
+										</div>
+										<div class="photo-album">
+											<ul style="list-style: none;">
+												<li><img class="scale-img"
+													th:src="@{'images/devices/scale/scale1.jpg'}"
+													alt="half apple"
+													style="height: 65px; position: relative; top: -10px;"></li>
+												<li><img class="scale-img"
+													th:src="@{'images/devices/scale/scale2.jpg'}"
+													alt="green apple"
+													style="height: 65px; position: relative; top: -10px;"></li>
+												<li><img class="scale-img"
+													th:src="@{'images/devices/scale/scale3.jpg'}"
+													alt="green apple"
+													style="height: 65px; position: relative; top: -10px;"></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="product__info">
+									<div class="title">
+										<h1 th:text="${scale.name}"></h1>
+										<span th:text="${scale.serialNumber}"></span>
+									</div>
+									<div class="price">
+										<span th:text="${scale.price + ' LEI'}"></span>
+									</div>
+									<div class="description">
+										<h3>Tipuri Masuratori Oferite</h3>
+										<ul th:each="typeMeasurement : ${scale.typeMeasurements}">
+											<th:block th:switch="${typeMeasurement.type}">
+												<div th:case="'HKQuantityTypeIdentifierBodyMass'">
+													<li>Greutate Corporala</li>
+												</div>
+												<div th:case="'HKQuantityTypeIdentifierBodyMassIndex'">
+													<li>Indice Greutate Corporala</li>
+												</div>
+												<div th:case="'HKQuantityTypeIdentifierBodyFatPercentage'">
+													<li>Procent Grasime Corporala</li>
+												</div>
+												<div th:case="'HKQuantityTypeIdentifierLeanBodyMass'">
+													<li>Masa Corporala Slaba</li>
+												</div>
+											</th:block>
+										</ul>
+									</div>
+									<form th:action="@{/add_device_to_shopping_cart}" method="post">
+										<input type="hidden" name="deviceName"
+											value="Cantar Inteligent" />
+										<button type="submit" class="buy--btn">ADAUGA IN COS</button>
+									</form>
+								</div>
+							</section>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

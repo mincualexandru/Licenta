@@ -32,9 +32,11 @@
 										<tr>
 											<td th:text="${tp.helperPlan.name}"></td>
 											<td>
-												<form th:action="@{/exercises_training_plan}" method="post">
-													<input type="hidden" name="trainingPlanId" th:value="${tp.helperPlan.helperPlanId}"/>
-													<button type="submit" class="btn btn-success">Vezi
+												<form th:action="@{/plan_content}" method="post">
+													<input type="hidden" name="trainingPlanId"
+														th:value="${tp.helperPlan.helperPlanId}" />
+													<button type="submit"
+														style="padding: 10px 15px; letter-spacing: 0px; font-size: 15px; text-decoration: none; font-family: 'Montserrat', sans-serif; color: white; background: #7300e6; font-weight: bold; border-radius: 15px; margin: 0px !important;">Vezi
 														Exercitii</button>
 												</form>
 												<a th:href="@{/edit_training_plan/{id}(id=${tp.helperPlan.helperPlanId})}" class="btn btn-success">Editeaza Antrenamentul</a>

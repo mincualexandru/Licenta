@@ -1,16 +1,8 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="au theme template">
-<meta name="author" content="Hau Nguyen">
-<meta name="keywords" content="au theme template">
-
-<title>Dashboard</title>
-
+<title>Purchased Devices</title>
 <link th:href="@{css/font-face.css}" rel="stylesheet" media="all">
 <link th:href="@{vendor/font-awesome-4.7/css/font-awesome.min.css}"
 	rel="stylesheet" media="all">
@@ -36,96 +28,355 @@
 	media="all">
 <link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
 	rel="stylesheet" media="all">
-
 <link th:href="@{css/theme.css}" rel="stylesheet" media="all">
-
+<link th:href="@{css/cart.css}" rel="stylesheet" media="all">
+<link th:href="@{css/style.css}" rel="stylesheet" media="all">
 </head>
-
 <body>
-	<div th:unless="${#lists.size(userDevices)}">Se pare ca nu ai
-		niciun dispozitiv cumparat</div>
-	<div th:if="${#lists.size(userDevices)}">
-		<h3
-			style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Dispozitive</h3>
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="row">
-						<div class="col-md-10 mx-auto">
-							<table class="table table-striped">
-								<thead class="center-align">
-									<tr>
-										<th>Nume</th>
-										<th>Actiuni</th>
-									</tr>
-								</thead>
-								<tbody class="center-align">
-									<th:block th:each="userDevice, iterStat : ${userDevices}">
-										<tr>
-											<td th:text="${userDevice.device.name}"></td>
-											<td>
-												<form th:action="@{/view_measurements_for_device}"
-													method="post">
-													<input type="hidden" name="userDeviceId"
-														th:value="${userDevice.userDeviceId}" />
-													<button type="submit" class="btn btn-success">Vezi
-														Masuratori</button>
-												</form>
-												<div th:unless="${userDevice.device.name eq 'Fit Buddy'}">
-													<button data-toggle="modal" data-target="#modal-devices"
-														th:attr="data-target='#modal-devices'+${userDevice.userDeviceId}">Sterge
-														Dispozitiv</button>
-													<div class="modal modal-devices fade in"
-														th:id="modal-devices+${userDevice.userDeviceId}"
-														data-backdrop="false"
-														style="background: rgba(0, 0, 0, 0.5);">
-														<div class="modal-dialog">
-															<div class="modal-content">
-																<div class="modal-body">Esti sigur ca vrei sa
-																	stergi acest dispozitiv?</div>
-																<div class="modal-footer">
-																	<form th:action="@{/delete_device}" method="post">
-																		<input type="hidden" name="deviceId"
-																			th:value="${userDevice.device.deviceId}" />
-																		<button type="submit" class="btn btn-danger">Da</button>
-																	</form>
-																	<button type="button" class="btn btn-outline pull-left"
-																		data-dismiss="modal">Nu</button>
+	<div class="page-wrapper">
+		<header style="background-color: white;"
+			class="header-mobile d-block d-lg-none">
+			<div class="header-mobile__bar">
+				<div class="container-fluid">
+					<div class="header-mobile-inner">
+						<a class="logo" href="index.html"> <img
+							src="images/logo/Screenshot_18.png">
+						</a>
+						<button class="hamburger hamburger--slider" type="button">
+							<span class="hamburger-box"> <span class="hamburger-inner"></span>
+							</span>
+						</button>
+					</div>
+				</div>
+			</div>
+			<nav class="navbar-mobile">
+				<div class="container-fluid">
+					<ul class="navbar-mobile__list list-unstyled">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<aside style="background-color: white;"
+			class="menu-sidebar d-none d-lg-block">
+			<div class="logo">
+				<a href="#"> <img src="images/logo/Screenshot_18.png">
+				</a>
+			</div>
+			<div class="menu-sidebar__content js-scrollbar1">
+				<nav class="navbar-sidebar">
+					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</nav>
+			</div>
+		</aside>
+		<div class="page-container">
+			<div class="main-content">
+				<div class="section__content section__content--p30">
+					<div th:unless="${#lists.size(userDevices)}"
+						style="font-size: 90px; color: white; font-weight: 800; text-align: center; position: relative; top: 200px;">
+						Nu ai niciun dispozitiv</div>
+					<div th:if="${#lists.size(userDevices)}">
+						<h3
+							style="text-align: center; font-size: 60px; margin-top: 30px; margin-bottom: 70px; color: white; font-weight: 700;">Dispozitive
+							Cumparate</h3>
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-4" style="margin-bottom: 100px;"
+											th:each="userDevice, iterStat : ${userDevices}">
+											<div class="card-type-2" style="height: 590px;">
+												<th:block th:switch="${userDevice.device.name}">
+													<div th:case="'Fit Buddy'" class="img-c">
+														<img class="img" width="800" height="800"
+															th:src="@{'images/devices/fit_buddy/4e56fc0b-28d1-4bd4-98c6-697e5a8e4721_rw_1200.gif'}">
+													</div>
+													<div th:case="'Cantar Inteligent'" class="img-c">
+														<img class="img" width="800" height="800"
+															th:src="@{'images/devices/scale/scale.png'}">
+													</div>
+													<div th:case="'Bratara'" class="img-c">
+														<img class="img" width="800" height="800"
+															th:src="@{'images/devices/band/band.png'}">
+													</div>
+												</th:block>
+												<div class="device-info" style="margin-top: 10px;">
+													<h2
+														style="text-align: center; font-size: 30px; margin-bottom: 20px; margin-top: 30px;"
+														th:text="${userDevice.device.name}"></h2>
+													<span
+														style="text-align: center; font-size: 12px; color: gray; font-weight: 100; display: block; margin-top: -15px; margin-bottom: 10px; letter-spacing: 2px;"
+														th:text="${userDevice.device.company}"></span>
+													<h2
+														style="text-align: center; font-size: 25px; margin-bottom: 10px;">Tipuri
+														Masuratori Oferite</h2>
+													<th:block th:if="${userDevice.device.name eq 'Bratara'}">
+														<ul style="list-style: none;">
+															<li
+																style="text-align: center; font-size: 15px; color: gray; font-weight: 100; letter-spacing: 2px;">Ritm
+																Cardiac</li>
+															<li
+																style="text-align: center; font-size: 15px; color: gray; font-weight: 100; letter-spacing: 2px;">Calorii
+																Arse</li>
+															<li
+																style="text-align: center; font-size: 15px; color: gray; font-weight: 100; letter-spacing: 2px;">Analiza
+																Somn</li>
+															<li
+																style="text-align: center; font-size: 15px; color: gray; font-weight: 100; letter-spacing: 2px;">Pasi
+																Parcursi</li>
+														</ul>
+													</th:block>
+													<th:block
+														th:if="${userDevice.device.name eq 'Cantar Inteligent'}">
+														<ul style="list-style: none;">
+															<li
+																style="text-align: center; font-size: 15px; color: gray; font-weight: 100; letter-spacing: 2px;">Procentaj
+																Grasime</li>
+															<li
+																style="text-align: center; font-size: 15px; color: gray; font-weight: 100; letter-spacing: 2px;">Indice
+																Masa Corporala</li>
+															<li
+																style="text-align: center; font-size: 15px; color: gray; font-weight: 100; letter-spacing: 2px;">Masa
+																Corporala</li>
+															<li
+																style="text-align: center; font-size: 15px; color: gray; font-weight: 100; letter-spacing: 2px;">Masa
+																Corporala Slaba</li>
+														</ul>
+													</th:block>
+													<th:block th:if="${userDevice.device.name eq 'Fit Buddy'}">
+														<ul style="list-style: none;">
+															<li
+																style="text-align: center; font-size: 15px; color: gray; font-weight: 100; letter-spacing: 2px;">Inaltime</li>
+															<li
+																style="text-align: center; font-size: 15px; color: gray; font-weight: 100; letter-spacing: 2px;">Masa
+																Corporala</li>
+															<li
+																style="text-align: center; font-size: 15px; color: gray; font-weight: 100; letter-spacing: 2px;">Calorii
+																Arse</li>
+															<li
+																style="text-align: center; font-size: 15px; color: gray; font-weight: 100; letter-spacing: 2px;">Calorii
+																Acumulate</li>
+														</ul>
+													</th:block>
+													<div class="btn-group" style="margin-top: 30px;">
+														<form th:action="@{/view_measurements_for_device}"
+															method="post">
+															<input type="hidden" name="userDeviceId"
+																th:value="${userDevice.userDeviceId}" />
+															<button type="submit"
+																style="padding: 5px 10px; letter-spacing: 0px; font-size: 15px; text-decoration: none; font-family: 'Montserrat', sans-serif; color: white; background: #7300e6; font-weight: bold; margin: 0px !important; margin-bottom: 20px !important; margin-left: 30px !important; border-radius: 30px;">Masuratori</button>
+														</form>
+														<div th:unless="${userDevice.device.name eq 'Fit Buddy'}">
+															<button data-toggle="modal" data-target="#modal-devices"
+																th:attr="data-target='#modal-devices'+${userDevice.userDeviceId}"
+																style="padding: 5px 10px; letter-spacing: 0px; font-size: 15px; text-decoration: none; font-family: 'Montserrat', sans-serif; color: white; background: #7300e6; font-weight: bold; margin: 0px !important; margin-bottom: 20px !important; margin-left: 20px !important; border-radius: 30px;">Sterge
+																Dispozitiv</button>
+															<div class="modal modal-devices fade in"
+																th:id="modal-devices+${userDevice.userDeviceId}"
+																data-backdrop="false"
+																style="background: rgba(0, 0, 0, 0.5);">
+																<div class="modal-dialog">
+																	<div class="modal-content"
+																		style="top: 50px; left: 150px; height: 300px; border-radius: 30px;">
+																		<div class="modal-body">
+																			<div class="profile-card-form__container"
+																				style="margin-left: 30px; margin-right: 30px;">
+																				<div style="text-align: center; color: #7300e6;">
+																					<i class="fas fa-4x fa-trash-alt"
+																						aria-hidden="true" style="margin-bottom: 20px;"></i>
+																					<h2 style="margin-bottom: 20px; color: #7300e6;">Sterge
+																						Dispozitiv</h2>
+																				</div>
+																				<div class="form-group">
+																					<h5
+																						style="font-size: 20px; letter-spacing: 2px; font-weight: 100;">Dupa
+																						stergerea acestui dispozitiv toate datele
+																						colectate vor fi pierdute</h5>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="profile-card-form__bottom"
+																			style="position: relative; top: 20px;">
+																			<form th:action="@{/delete_device}" method="post">
+																				<input type="hidden" name="deviceId"
+																					th:value="${userDevice.device.deviceId}" />
+																				<button type="submit"
+																					class="profile-card__button button--blue">Sterge</button>
+																			</form>
+																			<button
+																				class="profile-card__button button--gray js-message-close"
+																				data-dismiss="modal">Nu, multumesc</button>
+																		</div>
+																	</div>
 																</div>
 															</div>
 														</div>
 													</div>
 												</div>
-											</td>
-										</tr>
-									</th:block>
-								</tbody>
-							</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<script>
+	document.querySelectorAll(".button").forEach(button =>
+	  button.addEventListener("click", e => {
+	    if (!button.classList.contains("delete")) {
+	      button.classList.add("delete");
+
+	      setTimeout(() => button.classList.remove("delete"), 2200);
+	    }
+	    e.preventDefault();
+	  })
+	);
+
+	</script>
 	<script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
 	<script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
 	<script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
 	<script th:src="@{/vendor/slick/slick.min.js}">
-    </script>
+			
+		</script>
 	<script th:src="@{/vendor/wow/wow.min.js}"></script>
 	<script th:src="@{/vendor/animsition/animsition.min.js}"></script>
 	<script
 		th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
-    </script>
+			
+		</script>
 	<script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
 	<script th:src="@{/vendor/counter-up/jquery.counterup.min.js}">
-    </script>
+			
+		</script>
 	<script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
 	<script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
 	<script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
 	<script th:src="@{/vendor/select2/select2.min.js}">
-    </script>
+			
+		</script>
 
 	<script th:src="@{/js/main.js}"></script>
+	<script>
+	<script>
+	var messageBox = document.querySelector('.js-message');
+	var btn = document.querySelector('.js-message-btn');
+	var card = document.querySelector('.js-profile-card');
+	var closeBtn = document.querySelectorAll('.js-message-close');
+
+	btn.addEventListener('click', function(e) {
+		e.preventDefault();
+		card.classList.add('active');
+	});
+
+	closeBtn.forEach(function(element, index) {
+		console.log(element);
+		element.addEventListener('click', function(e) {
+			e.preventDefault();
+			card.classList.remove('active');
+		});
+	});
+</script>
+	</script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.web.dao;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.Set;
 
@@ -17,5 +18,8 @@ public interface ExerciseDoneDao extends CrudRepository<ExerciseDone, Integer> {
 	Set<ExerciseDone> findAllByUserAccountId(Integer accountId);
 
 	Optional<ExerciseDone> findTopByUserAccountIdOrderByDateOfExecutionDesc(Integer accountId);
+
+	Set<ExerciseDone> findAllByUserAccountIdAndDateOfExecutionBetween(Integer accountId, Timestamp timestampStartDate,
+			Timestamp timestampEndDate);
 
 }

@@ -311,7 +311,7 @@ a, a:hover {
 
 .profile-card-ctr {
 	display: flex;
-	justify-content: center;
+	    justify-content: space-around;
 	align-items: center;
 	margin-top: 40px;
 }
@@ -612,6 +612,33 @@ supports (scroll-snap-type ) { .slider > a { display:none;
 	background-color: #ffffff;
 }
 
+:before {
+	text-decoration: inherit;
+    vertical-align: inherit;
+}
+
+.product-info:before {
+    background: transparent url(/images/gray-arch.svg) no-repeat 0 0;
+       content: '';
+    position: absolute;
+    z-index: 1;
+    top: -23.375rem;
+    right: -27.875rem;
+    height: 39.4375rem;
+    width: 43.4375rem;
+}
+
+.product-info:after {
+    background: transparent url(/images/gray-arch.svg) no-repeat 0 0;
+   content: '';
+    position: absolute;
+    z-index: 1;
+    top: -26.375rem;
+    right: -26.875rem;
+    height: 54.4375rem;
+    width: 54.4375rem;
+}
+
 .product-text {
 	height: 300px;
 	width: 327px;
@@ -660,6 +687,25 @@ supports (scroll-snap-type ) { .slider > a { display:none;
 	font-weight: lighter;
 	color: #474747;
 	margin: 0px;
+}
+
+.product-price-btn a {
+	float: right;
+	display: inline-block;
+	height: 50px;
+	width: 176px;
+	margin: 0 40px 0 16px;
+	box-sizing: border-box;
+	border: transparent;
+	border-radius: 60px;
+	font-size: 14px;
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.2em;
+	color: #ffffff;
+	background-color: #9cebd5;
+	cursor: pointer;
+	outline: none;
 }
 
 .product-price-btn button {

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Home</title>
+<link th:href="@{../css/font-face.css}" rel="stylesheet" media="all">
+<link th:href="@{../vendor/font-awesome-4.7/css/font-awesome.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{../vendor/font-awesome-5/css/fontawesome-all.min.css}"
+	rel="stylesheet" media="all">
+<link
+	th:href="@{../vendor/mdi-font/css/material-design-iconic-font.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{../vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{../vendor/animsition/animsition.min.css}"
+	rel="stylesheet" media="all">
+<link
+	th:href="@{../vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{../vendor/wow/animate.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{../vendor/css-hamburgers/hamburgers.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{../vendor/slick/slick.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{../vendor/select2/select2.min.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{../vendor/perfect-scrollbar/perfect-scrollbar.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{../css/theme.css}" rel="stylesheet" media="all">
+<link th:href="@{../css/cart.css}" rel="stylesheet" media="all">
+</head>
+<body>
+	<div class="page-wrapper">
+		<header style="background-color: white;"
+			class="header-mobile d-block d-lg-none">
+			<div class="header-mobile__bar">
+				<div class="container-fluid">
+					<div class="header-mobile-inner">
+						<a class="logo" href="index.html"> <img
+							src="images/logo/Screenshot_18.png">
+						</a>
+						<button class="hamburger hamburger--slider" type="button">
+							<span class="hamburger-box"> <span class="hamburger-inner"></span>
+							</span>
+						</button>
+					</div>
+				</div>
+			</div>
+			<nav class="navbar-mobile">
+				<div class="container-fluid">
+					<ul class="navbar-mobile__list list-unstyled">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<aside style="background-color: white;"
+			class="menu-sidebar d-none d-lg-block">
+			<div class="logo">
+				<a href="#"> <img src="images/logo/Screenshot_18.png">
+				</a>
+			</div>
+			<div class="menu-sidebar__content js-scrollbar1">
+				<nav class="navbar-sidebar">
+					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</nav>
+			</div>
+		</aside>
+		<div class="page-container">
+			<div class="main-content">
+				<div class="section__content section__content--p30">
+					<audio id="pause" muted>
+						<source src="../audio/pause.mp3" type="audio/mpeg">
+					</audio>
+					<audio id="execute" muted>
+						<source src="../audio/execute.mp3" type="audio/mpeg">
+					</audio>
+					<div class="main">
+						<div>
+							<h1
+								style="text-align: center; font-size: 60px; color: white; font-weight: 800;"
+								th:text="${exercise.name}"></h1>
+							<h2
+								style="text-align: center; font-size: 40px; color: white; font-weight: 800;"
+								th:text="${'Numar Serii: ' + exercise.numberOfSeries}"></h2>
+							<h2
+								style="text-align: center; font-size: 40px; color: white; font-weight: 800;"
+								th:text="${'Numar Repetari: ' + exercise.numberOfReps}"></h2>
+						</div>
+						<div class="col-md-4 mx-auto">
+							<th:block th:if="${account.gender.getGender() eq 'Barbat'}">
+								<div id="executeExercisePhoto" style="display: none;">
+									<img src="../images/logo/execute-man.gif"
+										style="height: 300px; width: 400px; position: relative; top: 50px;">
+								</div>
+								<div id="pauseExercisePhoto" style="display: none;">
+									<img src="../images/logo/pause-man.jpg"
+										style="height: 300px; width: 400px; position: relative; top: 50px;">
+								</div>
+							</th:block>
+							<th:block th:if="${account.gender.getGender() eq 'Femeie'}">
+								<div id="executeExercisePhoto" style="display: none;">
+									<img src="../images/logo/execute-woman.gif"
+										style="height: 300px; width: 400px; position: relative; top: 50px;">
+								</div>
+								<div id="pauseExercisePhoto" style="display: none;">
+									<img src="../images/logo/pause-woman.jpg"
+										style="height: 300px; width: 400px; position: relative; top: 50px;">
+								</div>
+							</th:block>
+						</div>
+						<div style="position: relative; top: 50px;">
+							<div id="title"
+								style="text-align: center; font-size: 40px; color: white; margin-bottom: 20px; font-weight: 800;">
+								Pregateste-te! Exercitiul incepe curand
+							</div>
+							<div th:id="executionTimeProgress1"
+								style="filter: drop-shadow(black 20px 10px 10px); display: none; width: 90%; margin: 10px auto; height: 50px; background-color: white;">
+								<div
+									style="height: 100%; text-align: right; padding: 0 10px; line-height: 22px; width: 0; background-color: #ff8080; box-sizing: border-box;"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<script type="text/javascript" th:src="@{/js/validationcv.js}"></script>
+	<script>
+	
+		function perfomThisExercise() {
+			var form = $(document.createElement('form'));
+		    $(form).attr("action", "perfom_this_exercise_save");
+		    $(form).attr("method", "POST");
+		    $(form).css("display", "none");
+
+		    var account = $("<input>")
+		    .attr("type", "hidden")
+		    .attr("name", "accountId")
+		    .val(accountId);
+		    $(form).append($(account));
+
+
+		    var exercise = $("<input>")
+		    .attr("type", "hidden")
+		    .attr("name", "exerciseId")
+		    .val(exerciseId);
+		    $(form).append($(exercise));
+
+		    form.appendTo( document.body );
+		    $(form).submit();
+		}
+	
+		function execution(timeleft, timetotal, $executionTimeProgress, index) {
+			var progressBarWidth = timeleft * $executionTimeProgress.width() / timetotal;
+			$executionTimeProgress.find('div').animate({
+				width : progressBarWidth
+			}, timeleft == timetotal ? 0 : 1000, 'linear');
+			if (timeleft > 0) {
+					execution(timeleft - 1, timetotal, $executionTimeProgress, index);
+			}
+			if(timeleft == 0){
+				if(index == totalNumber) {
+					document.getElementById('title').innerHTML = 'Ai terminat exercitiul';
+					document.getElementById($executionTimeProgress.attr("id")).style.display = 'none';
+					perfomThisExercise();
+				}
+				else if(index % 2 == 0) {
+					document.getElementById('title').innerHTML = 'Odihneste-te! Urmatoarea serie incepe curand';
+					document.getElementById('executeExercisePhoto').style.display = 'none';
+					document.getElementById('pauseExercisePhoto').style.display = 'block';
+					pause.play();	
+					pause.muted = false;
+				} else if(index % 2 == 1) {
+					document.getElementById('title').innerHTML = 'Fiecare repetare conteaza';
+					document.getElementById('executeExercisePhoto').style.display = 'block';
+					document.getElementById('pauseExercisePhoto').style.display = 'none';
+					execute.play();	
+					execute.muted = false;
+				}
+			}
+		};
+		
+		let execute = document.getElementById("execute"); 
+		let pause = document.getElementById("pause"); 
+		let accountId = [[${account.accountId}]];
+		let exerciseId = [[${exercise.exerciseId}]];
+		let numberOfSeries = [[${exercise.numberOfSeries}]];
+		let totalNumber = numberOfSeries * 2;
+		for(let index = 1; index <= totalNumber; index++) {
+			setTimeout(function(){
+				document.getElementById('executionTimeProgress1').style.display = 'block';
+				execution(10, 10, $('#executionTimeProgress1'), index)
+			}, 10000 * (index + 1));
+		}
+		
+	</script>
+</body>
+</html>

@@ -1,7 +1,37 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
+<title>Home</title>
+<link th:href="@{../css/font-face.css}" rel="stylesheet" media="all">
+<link th:href="@{../vendor/font-awesome-4.7/css/font-awesome.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{../vendor/font-awesome-5/css/fontawesome-all.min.css}"
+	rel="stylesheet" media="all">
+<link
+	th:href="@{../vendor/mdi-font/css/material-design-iconic-font.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{../vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{../vendor/animsition/animsition.min.css}"
+	rel="stylesheet" media="all">
+<link
+	th:href="@{../vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{../vendor/wow/animate.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{../vendor/css-hamburgers/hamburgers.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{../vendor/slick/slick.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{../vendor/select2/select2.min.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{../vendor/perfect-scrollbar/perfect-scrollbar.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{../css/theme.css}" rel="stylesheet" media="all">
+<link th:href="@{../css/cart.css}" rel="stylesheet" media="all">
 <style>
 	.rating .stars {
   margin-right: 15px;
@@ -143,108 +173,271 @@
   color: #f8ce0b;
 }
 </style>
-<link th:href="@{css/font-face.css}" rel="stylesheet" media="all">
-<link th:href="@{vendor/font-awesome-4.7/css/font-awesome.min.css}"
-	rel="stylesheet" media="all">
-<link th:href="@{vendor/font-awesome-5/css/fontawesome-all.min.css}"
-	rel="stylesheet" media="all">
-<link
-	th:href="@{vendor/mdi-font/css/material-design-iconic-font.min.css}"
-	rel="stylesheet" media="all">
-
-<link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
-	rel="stylesheet" media="all">
-
-<link th:href="@{vendor/animsition/animsition.min.css}" rel="stylesheet"
-	media="all">
-<link
-	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
-	rel="stylesheet" media="all">
-<link th:href="@{vendor/wow/animate.css}" rel="stylesheet" media="all">
-<link th:href="@{vendor/css-hamburgers/hamburgers.min.css}"
-	rel="stylesheet" media="all">
-<link th:href="@{vendor/slick/slick.css}" rel="stylesheet" media="all">
-<link th:href="@{vendor/select2/select2.min.css}" rel="stylesheet"
-	media="all">
-<link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
-	rel="stylesheet" media="all">
-
-<link th:href="@{css/theme.css}" rel="stylesheet" media="all">
 </head>
 <body>
-	<div th:if="${error}">
-		A aparut o eroare neasteptata
-	</div>
-	<div th:unless="${error}">
-			<div th:if="${success}">
-		<div
-			class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-			<span class="badge badge-pill badge-danger">Success</span> You
-			successfully read this important alert.
-			<button type="button" class="close" data-dismiss="alert"
-				aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			</button>
+	<div class="page-wrapper">
+		<header style="background-color: white;"
+			class="header-mobile d-block d-lg-none">
+			<div class="header-mobile__bar">
+				<div class="container-fluid">
+					<div class="header-mobile-inner">
+						<a class="logo" href="index.html"> <img
+							src="images/logo/Screenshot_18.png">
+						</a>
+						<button class="hamburger hamburger--slider" type="button">
+							<span class="hamburger-box"> <span class="hamburger-inner"></span>
+							</span>
+						</button>
+					</div>
+				</div>
+			</div>
+			<nav class="navbar-mobile">
+				<div class="container-fluid">
+					<ul class="navbar-mobile__list list-unstyled">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<aside style="background-color: white;"
+			class="menu-sidebar d-none d-lg-block">
+			<div class="logo">
+				<a href="#"> <img src="images/logo/Screenshot_18.png">
+				</a>
+			</div>
+			<div class="menu-sidebar__content js-scrollbar1">
+				<nav class="navbar-sidebar">
+					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</nav>
+			</div>
+		</aside>
+		<div class="page-container">
+			<div class="main-content">
+				<div class="section__content section__content--p30">
+					<div th:if="${error}" style="text-align: center; font-size: 60px; color: white; font-weight: 700; position: relative; top:250px;">A aparut o eroare neasteptata <br> Intoarce-te la <a style="color: black;" th:href="@{/home}">pagina</a> principala</div>
+					<div th:unless="${error}">
+						<div class="alert" th:if="${success}" id="calories">
+							<div
+								style="float: left; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 250px;">
+								<h5 style="font-weight: 900; font-size: 20px;">Felicitari</h5>
+								<p style="font-size: 15px; width: 180px; margin-top: 5px;">Alimentul
+									a fost consumat</p>
+							</div>
+							<div style="float: right;">
+								<span class="closebtn"
+									onclick="document.getElementById('calories').style.display = 'none';">&times;</span>
+							</div>
+						</div>
+						<h3
+							style="text-align: center; font-size: 60px; margin-top: 30px; color: white; font-weight: 700; margin-bottom: 100px;">Feedback
+							Aliment</h3>
+						<div class="row">
+							<div class="col-md-9 mx-auto">
+								<form id="ratingForm" th:action="@{/offers_feedback_save}"
+									style="border-radius: 30px; filter: drop-shadow(5px -5px 5px black) drop-shadow(-5px 0px 5px black) drop-shadow(0px 5px 5px black); background-color: white;
+    padding: 50px;
+    height: 550px;" method="post">
+									<input type="hidden" name="foodId" th:value="${foodId}" />
+									<h3 style="text-align: center; font-size: 40px; color: black;">
+										Ofera <span style="font-size: 60px; color: #7300e6;">feedback</span>
+									</h3>
+									<div class="parent" style="position: relative;
+    top: 50px;
+    display: flex;">
+										<div style="    float: left;
+    height: 300px;">
+										<img style="width: 350px;
+    height: 300px;" src="../images/logo/positive-vote.png">
+									</div>
+									<div style="width: 400px;
+    position: relative;
+    left: 70px;">
+										<label
+											style="color: #7300e6; font-weight: 600; font-size: 20px;">Mesaj</label>
+										<textarea class="form-control validation input-edit2" style="resize: none; border: 3px solid #7300e6;" name="messageReview" placeholder="Spuneti parerea aici..." rows="5" cols="40"></textarea> <input
+											type="hidden" id="number" name="number" value="">
+										<div id="status"></div>
+										<fieldset class="rating">
+											<legend style="font-weight: 600; font-size: 19px; color: #7300e6;">Nota
+												Aliment</legend>
+											<input type="radio" id="star5" name="rating" value="5">
+											<label for="star5" title="Rocks!">5 stars</label> <input
+												type="radio" id="star4" name="rating" value="4"> <label
+												for="star4" title="Pretty good">4 stars</label> <input
+												type="radio" id="star3" name="rating" value="3"> <label
+												for="star3" title="Meh">3 stars</label> <input type="radio"
+												id="star2" name="rating" value="2"> <label
+												for="star2" title="Kinda bad">2 stars</label> <input
+												type="radio" id="star1" name="rating" value="1"> <label
+												for="star1" title="Sucks big time">1 star</label>
+										</fieldset>
+										<div class="btn-group">
+											<button style="    margin-right: 40px;
+    padding-left: 25px;
+    padding-right: 25px;" type="submit" class="btnn2">Trimite</button>
+    <a th:href="@{/home}" style="    margin-right: 40px;
+    padding-left: 25px;
+    padding-right: 25px;
+    margin: 20px 0;" type="submit" class="btnn2 no-thanks">Nu Trimite</a>
+										</div>
+									</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-	</div>
-	<form id="ratingForm" th:action="@{/offers_feedback_save}" method="post">
-		<input type="hidden" name="foodId" th:value="${foodId}"/>
-		<h3>Ofera FEEDBACK</h3>
-		<label>Mesaj</label> 
-		<input type="text" name="messageReview" />
-		<input type="hidden" id="number" name="number" value="">
-		<div id="status"></div> 
-		<fieldset class="rating">
-			<legend style="font-weight: 600; font-size: 19px;">Nota Aliment</legend>
-			<input type="radio" id="star5" name="rating" value="5">
-			<label for="star5" title="Rocks!">5 stars</label> 
-			<input type="radio"id="star4" name="rating" value="4">
-			<label for="star4" title="Pretty good">4 stars</label> 
-			<input type="radio" id="star3" name="rating" value="3">
-			<label for="star3" title="Meh">3 stars</label> 
-			<input type="radio" id="star2" name="rating" value="2">
-			<label for="star2" title="Kinda bad">2 stars</label> 
-			<input type="radio" id="star1" name="rating" value="1">
-			<label for="star1" title="Sucks big time">1 star</label>
-		</fieldset>
-		<button type="submit">Trimite</button>
-	</form>
 	</div>
 	<script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
 	<script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
 	<script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
 	<script th:src="@{/vendor/slick/slick.min.js}">
-    </script>
+		
+	</script>
 	<script th:src="@{/vendor/wow/wow.min.js}"></script>
 	<script th:src="@{/vendor/animsition/animsition.min.js}"></script>
 	<script
 		th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
-    </script>
+		
+	</script>
 	<script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
 	<script th:src="@{/vendor/counter-up/jquery.counterup.min.js}">
-    </script>
+		
+	</script>
 	<script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
 	<script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
 	<script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
 	<script th:src="@{/vendor/select2/select2.min.js}">
-    </script>
+		
+	</script>
 
 	<script th:src="@{/js/main.js}"></script>
 	<script type="text/javascript" th:src="@{/js/validationcv.js}"></script>
 	<script>
-	$(document).ready(function() {
-	    $("form#ratingForm").submit(function(e) 
-	    {
-	        if ($("#ratingForm :radio:checked").length == 0) {
-	            $('#status').html("nothing checked");
-	            return false;
-	        } else {
-	        	$('#number').val($('input:radio[name=rating]:checked').val());
-	            $('#status').html( 'You picked ' + $('input:radio[name=rating]:checked').val() );
-	        }
-	        return true;
-	    });
-	});
+		$(document)
+				.ready(
+						function() {
+							$("form#ratingForm")
+									.submit(
+											function(e) {
+												if ($("#ratingForm :radio:checked").length == 0) {
+													$('#status').html(
+															"nothing checked");
+													return false;
+												} else {
+													$('#number')
+															.val(
+																	$(
+																			'input:radio[name=rating]:checked')
+																			.val());
+													$('#status')
+															.html(
+																	'You picked '
+																			+ $(
+																					'input:radio[name=rating]:checked')
+																					.val());
+												}
+												return true;
+											});
+						});
 	</script>
 </body>
 </html>

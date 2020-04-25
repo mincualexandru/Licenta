@@ -1,62 +1,282 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Admin</title>
+<title>Home</title>
+<link th:href="@{css/font-face.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-4.7/css/font-awesome.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-5/css/fontawesome-all.min.css}"
+	rel="stylesheet" media="all">
 <link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-	rel="stylesheet" id="bootstrap-css">
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	th:href="@{vendor/mdi-font/css/material-design-iconic-font.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/animsition/animsition.min.css}" rel="stylesheet"
+	media="all">
+<link
+	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/wow/animate.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/css-hamburgers/hamburgers.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/slick/slick.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/select2/select2.min.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{css/theme.css}" rel="stylesheet" media="all">
 </head>
 <body>
-	<h3
-		style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Planurile
-		Cumparate</h3>
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="row">
-					<div class="col-md-10 mx-auto">
-						<table class="table table-striped">
-							<thead class="center-align">
-								<tr>
-									<th>Nume</th>
-									<th>Actiuni</th>
-								</tr>
-							</thead>
-							<tbody class="center-align">
-								<th:block th:each="plan, iterStat : ${user.userPlans}">
-									<tr>
-										<td th:text="${plan.helperPlan.name}"></td>
-										<td>
-											<div th:if="${plan.helperPlan.typeOfPlan == 'Antrenament'}">
-												<form th:action="@{/plan_content}" method="post">
-													<input type="hidden" name="trainingPlanId"
-														th:value="${plan.helperPlan.helperPlanId}" />
-													<button type="submit" class="btn btn-success">Vezi
-														Exercitii</button>
-												</form>
+	<div class="page-wrapper">
+		<header style="background-color: white;"
+			class="header-mobile d-block d-lg-none">
+			<div class="header-mobile__bar">
+				<div class="container-fluid">
+					<div class="header-mobile-inner">
+						<a class="logo" href="index.html"> <img
+							src="images/logo/Screenshot_18.png">
+						</a>
+						<button class="hamburger hamburger--slider" type="button">
+							<span class="hamburger-box"> <span class="hamburger-inner"></span>
+							</span>
+						</button>
+					</div>
+				</div>
+			</div>
+			<nav class="navbar-mobile">
+				<div class="container-fluid">
+					<ul class="navbar-mobile__list list-unstyled">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<aside style="background-color: white;"
+			class="menu-sidebar d-none d-lg-block">
+			<div class="logo">
+				<a href="#"> <img src="images/logo/Screenshot_18.png">
+				</a>
+			</div>
+			<div class="menu-sidebar__content js-scrollbar1">
+				<nav class="navbar-sidebar">
+					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</nav>
+			</div>
+		</aside>
+		<div class="page-container">
+			<div class="main-content">
+				<div class="section__content section__content--p30">
+					<div
+						style="position: relative; overflow-y: scroll; height: 700px; margin-bottom: 100px; width: 1250px;">
+						<div
+							style="text-align: center; font-size: 70px; margin-bottom: 30px; color: white; font-weight: 700;">
+							Planuri Cumparate</div>
+						<div
+							style="color: white; text-align: left; margin-left: 100px; margin-bottom: 50px;">
+							<h1 style="color: white; margin-bottom: 5px;">Contul va fi reactivat daca:</h1>
+							<ul style="    list-style: hangul-consonant;">
+								<li>Consumi Aliment</li>
+								<li>Executi Exercitiu</li>
+							</ul>
+						</div>
+						<section
+							style="height: 395px; width: 580px; display: inline-grid; grid-template-columns: 0.7fr 1fr; margin: 0 auto; padding: 2.5em 0; background-color: white; border-radius: 20px; margin-bottom: 80px; margin-left: 20px;"
+							th:each="plan, iterStat : ${user.userPlans}">
+							<th:block th:if="${plan.helperPlan.typeOfPlan eq 'Dieta'}">
+								<img
+									th:src="@{'images/plans/diets/diet'+${iterStat.index+1}+'.jpg'}"
+									onerror="if (this.src != 'images/plans/diets/default-diet.jpg') this.src = 'images/plans/diets/default-diet.jpg';"
+									style="position: absolute; left: 27%; top: 50%; transform: translate(-50%, -50%); width: 250px; height: 250px;"
+									alt="green apple slice">
+							</th:block>
+							<th:block
+								th:if="${plan.helperPlan.typeOfPlan eq 'Antrenament' and user.gender.getGender() eq 'Barbat'}">
+								<img
+									th:src="@{'images/plans/trainings/man/man_training'+${iterStat.index+1}+'.jpg'}"
+									onerror="if (this.src != 'images/plans/trainings/man/default_training.jpg') this.src = 'images/plans/trainings/man/default_training.jpg';"
+									style="position: absolute; left: 27%; top: 50%; transform: translate(-50%, -50%); width: 250px; height: 250px;"
+									alt="green apple slice">
+							</th:block>
+							<th:block
+								th:if="${plan.helperPlan.typeOfPlan eq 'Antrenament' and user.gender.getGender() eq 'Femeie'}">
+								<img
+									th:src="@{'images/plans/trainings/woman/woman_training'+${iterStat.index+1}+'.jpg'}"
+									onerror="if (this.src != 'images/plans/trainings/woman/default_training.jpg') this.src = ''images/plans/trainings/woman/default_training.jpg'';"
+									style="position: absolute; left: 27%; top: 50%; transform: translate(-50%, -50%); width: 250px; height: 250px;"
+									alt="green apple slice">
+							</th:block>
+							<div class="product__info"
+								style="position: relative; top: 1em; left: 19em; text-align: center; width: 245px;">
+								<div class="title">
+									<h1 th:text="${plan.helperPlan.name}" style="font-size: 17px;"></h1>
+									<span th:text="${'Gen: ' + plan.helperPlan.forWho}"></span>
+								</div>
+								<div class="price" style="margin: 0px;">
+									<th:block th:each="exercise: ${plan.helperPlan.exercises}">
+										<input type="hidden" th:value="${exercise.caloriesBurned}" />
+									</th:block>
+									<th:block th:each="food: ${plan.helperPlan.foods}">
+										<input type="hidden" th:value="${food.calories}" />
+									</th:block>
+									<th:block
+										th:if="${plan.helperPlan.typeOfPlan == 'Antrenament'}">
+										<h1 style="font-size: 17px;">
+											Exercitii: <span style="color: #7300e6;"
+												th:text="${plan.helperPlan.exercises.size()}"></span>
+										</h1>
+										<h1 style="font-size: 17px; margin-top: 10px;">
+											Continut Calorii:
+											<div style="float: left; width: -webkit-fill-available;">
+												<span style="display: inline; color: #7300e6;"
+													th:text="${#aggregates.sum(plan.helperPlan.exercises.![caloriesBurned])}"></span>
+												<span
+													style="display: inline; color: black; font-size: 15px;">Kcal</span>
 											</div>
-											<div th:if="${plan.helperPlan.typeOfPlan == 'Dieta'}">
-												<form th:action="@{/plan_content}" method="post">
-													<input type="hidden" name="dietPlanId"
-														th:value="${plan.helperPlan.helperPlanId}" />
-													<button type="submit" class="btn btn-success">Vezi
-														Alimente</button>
-												</form>
+										</h1>
+									</th:block>
+									<th:block th:if="${plan.helperPlan.typeOfPlan == 'Dieta'}">
+										<h1 style="font-size: 17px;">
+											Alimente: <span style="color: #7300e6;"
+												th:text="${plan.helperPlan.foods.size()}"></span>
+										</h1>
+										<h1 style="font-size: 17px; margin-top: 10px;">
+											Continut Calorii:
+											<div style="float: left; width: -webkit-fill-available;">
+												<span style="display: inline; color: #7300e6;"
+													th:text="${#aggregates.sum(plan.helperPlan.foods.![calories])}"></span>
+												<span
+													style="display: inline; color: black; font-size: 15px;">Kcal</span>
 											</div>
-										</td>
-									</tr>
-								</th:block>
-							</tbody>
-						</table>
+										</h1>
+									</th:block>
+								</div>
+								<div class="btn-group" style="margin-top: 25px;">
+									<th:block
+										th:if="${plan.helperPlan.typeOfPlan == 'Antrenament'}">
+										<form th:action="@{/plan_content}" method="post">
+											<input type="hidden" name="trainingPlanId"
+												th:value="${plan.helperPlan.helperPlanId}" />
+											<button type="submit" class="buy--btn"
+												style="width: 200px; padding: 10px 10px; font-size: 12px; letter-spacing: 0px; background-color: #7300e6">VEZI
+												EXERCITII</button>
+										</form>
+									</th:block>
+									<th:block th:if="${plan.helperPlan.typeOfPlan == 'Dieta'}">
+										<form th:action="@{/plan_content}" method="post">
+											<input type="hidden" name="dietPlanId"
+												th:value="${plan.helperPlan.helperPlanId}" />
+											<button type="submit" class="buy--btn"
+												style="width: 200px; padding: 10px 10px; font-size: 12px; letter-spacing: 0px; background-color: #7300e6">VEZI
+												ALIMENTE</button>
+										</form>
+									</th:block>
+								</div>
+							</div>
+						</section>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
 		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="

@@ -1,5 +1,6 @@
 package com.web.service;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.Set;
 
@@ -20,4 +21,7 @@ public interface ExerciseDoneService {
 	Set<ExerciseDone> findAllByUserAccountId(Integer accountId);
 
 	Optional<ExerciseDone> findTopByUserAccountIdOrderByDateOfExecutionDesc(Integer accountId);
+
+	Set<ExerciseDone> findAllByUserAccountIdAndDateOfExecutionBetween(Integer accountId, Timestamp timestampStartDate,
+			Timestamp timestampEndDate);
 }

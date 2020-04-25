@@ -57,4 +57,7 @@ public interface MeasurementService {
 	Optional<Measurement> findTopByOrderByStartDateDesc();
 
 	void deleteByUserDeviceUserDeviceIdAndMeasurementId(Integer userDeviceId, Integer measurementId);
+
+	Set<Measurement> findAllByUserDeviceUserDeviceIdAndStartDateBetween(Integer userDeviceId,
+			Timestamp timestampStartDate, Timestamp timestampEndDate);
 }

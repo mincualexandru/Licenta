@@ -25,6 +25,8 @@ public interface HelperPlanService {
 
 	Set<HelperPlan> findAllDietPlansByHelperPlanNotAssociated(Integer helperId, Integer userId);
 
+	Set<HelperPlan> findAllPlansByHelperIdAndUserIdNotAssociated(Integer helperId, Integer userId);
+
 	Optional<HelperPlan> findByHelperPlanIdAndTypeOfPlan(int parseInt, String string);
 
 }

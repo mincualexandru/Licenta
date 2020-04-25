@@ -1,11 +1,62 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
+
 <head>
+<title>Home</title>
+<link th:href="@{../../css/font-face.css}" rel="stylesheet" media="all">
+<link
+	th:href="@{../../vendor/font-awesome-4.7/css/font-awesome.min.css}"
+	rel="stylesheet" media="all">
+<link
+	th:href="@{../../vendor/font-awesome-5/css/fontawesome-all.min.css}"
+	rel="stylesheet" media="all">
+<link
+	th:href="@{../../vendor/mdi-font/css/material-design-iconic-font.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{../../vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{../../vendor/animsition/animsition.min.css}"
+	rel="stylesheet" media="all">
+<link
+	th:href="@{../../vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{../../vendor/wow/animate.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{../../vendor/css-hamburgers/hamburgers.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{../../vendor/slick/slick.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{../../vendor/select2/select2.min.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{../../vendor/perfect-scrollbar/perfect-scrollbar.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{../../css/theme.css}" rel="stylesheet" media="all">
+<link th:href="@{../../css/cart.css}" rel="stylesheet" media="all">
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
+	rel="stylesheet">
+<script
+	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <style>
 #aditional-information {
-	color: red;
-	visibility: hidden;
+	display: none;
+	background: linear-gradient(to bottom, #9733EE, #DA22FF);
+	color: white;
+	padding: 5px 40px;
+	border-radius: 30px;
+	margin-top: 20px;
 }
 
 .bar-step {
@@ -31,200 +82,1063 @@
 	float: right;
 	margin-left: 5px;
 }
+
+.table-hover>tbody>tr:hover {
+	background-color: #e6ccff;
+}
+
+.table-responsive {
+	height: 485px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	background-color: white;
+}
+
+thead tr:nth-child(1) th {
+	background: white;
+	position: sticky;
+	top: 0;
+	z-index: 10;
+}
+
+.bg-measure {
+	font-size: 14px;
+	color: gray;
+	background: #f2f2f2;
+	border-radius: 2px;
+	line-height: 30px;
+	padding: 0 14px;
+}
+
+.change-content {
+	cursor: pointer;
+	position: absolute;
+	top: -30px;
+	right: 30px;
+	width: 180px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background-color: white;
+	color: #7300e6;
+	text-align: center;
+	font-size: 25px;
+	border-radius: 20px;
+	font-weight: 700;
+	transition: all .5s;
+}
+
+.change-content:hover {
+	letter-spacing: 2px;
+	color: #ff3f40;
+}
+
+.bootstrap-datetimepicker-widget table td.active,
+	.bootstrap-datetimepicker-widget table td.active:hover {
+	background-color: #7300e6;
+}
 </style>
-<title>Admin</title>
-<link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-	rel="stylesheet" id="bootstrap-css">
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-<link
-	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
-	rel="stylesheet" id="bootstrap-css">
-<script
-	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-<p style="text-align:center; font-weight:bold; font-style:italic;">
-<a href="javascript:SwapDivsWithClick('swapper-first','swapper-other', 'principal')" id="principal">Tabel</a>
-</p>
-<div th:if="${inexistentValue}">Ai introdus o valoare care nu exista</div>
-<div th:unless="${inexistentValue}">
-	<div th:unless="${#lists.size(chosenMeasurements)}">
-	<div th:unless="${measurementsBetweenTimestamps}">
-		Nu exista masuratori
-	</div>
-</div>
-<div id="swapper-first" style="display:block;">
-	<div th:if="${#lists.size(chosenMeasurements)}">
-		<div th:unless="${measurementsBetweenTimestamps}">
-							<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="row">
-					<div class="col-md-10 mx-auto">
-						<table class="table table-striped">
-							<thead class="center-align">
-								<tr>
-									<th>Nume</th>
-									<th>Data Inceput</th>
-									<th>Data Sfarsit</th>
-									<th>Valoare</th>
-									<th>Unitate de Masura</th>
-								</tr>
-							</thead>
-							<tbody class="center-align">
-								<th:block th:each="measure, iterStat : ${chosenMeasurements}">
-									<tr>
-										<td th:text="${measure.name}"></td>
-										<td th:text="${measure.startDate}"></td>
-										<td th:text="${measure.endDate}"></td>
-										<td th:text="${measure.value}"></td>
-										<td th:text="${measure.unitOfMeasurement}"></td>
-									</tr>
-								</th:block>
-							</tbody>
-						</table>
+	<div class="page-wrapper">
+		<header style="background-color: white;"
+			class="header-mobile d-block d-lg-none">
+			<div class="header-mobile__bar">
+				<div class="container-fluid">
+					<div class="header-mobile-inner">
+						<a class="logo" href="index.html"> <img
+							src="images/logo/Screenshot_18.png">
+						</a>
+						<button class="hamburger hamburger--slider" type="button">
+							<span class="hamburger-box"> <span class="hamburger-inner"></span>
+							</span>
+						</button>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-		</div>
-	</div>
-		<div th:if="${measurementsBetweenTimestamps}">
-							<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="row">
-					<div class="col-md-10 mx-auto">
-						<table class="table table-striped">
-							<thead class="center-align">
-								<tr>
-									<th>Nume</th>
-									<th>Data</th>
-									<th>Valoare</th>
-									<th>Unitate de Masura</th>
-								</tr>
-							</thead>
-							<tbody class="center-align">
-								<th:block th:each="measure, iterStat : ${measurementsBetweenTimestamps}">
-									<tr>
-										<td th:text="${measure.name}"></td>
-										<td th:text="${measure.startDate}"></td>
-										<td th:text="${measure.value}"></td>
-										<td th:text="${measure.unitOfMeasurement}"></td>
-									</tr>
-								</th:block>
-							</tbody>
-						</table>
-					</div>
+			<nav class="navbar-mobile">
+				<div class="container-fluid">
+					<ul class="navbar-mobile__list list-unstyled">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
 				</div>
+			</nav>
+		</header>
+		<aside style="background-color: white;"
+			class="menu-sidebar d-none d-lg-block">
+			<div class="logo">
+				<a href="#"> <img src="images/logo/Screenshot_18.png">
+				</a>
 			</div>
-		</div>
-	</div>
-		</div>
-</div>
-<div id="swapper-other" style="display:none;">
-<div th:if="${#lists.size(chosenMeasurements)} or ${measurementsBetweenTimestamps}">
-	<div th:unless="${#lists.size(chartMap.values())}">Nu exista masuratori intre datele pe care le-ai selectat
-	<h6>Incearca din nou</h6>
-	<form id="chart" style="display: inline;"
-		th:action="@{/view_charts_between_dates}" method="post">
-		<input type="hidden" name="chartOption" th:value="${chartOption}" />
-		<input type="hidden" name="userDeviceId" th:value="${userDeviceId}" />
-		<label>Start</label> <input type="date" id="startDateInput" name="startDateInput">
-		<label>End</label> <input type="date" id="endDateInput" name="endDateInput">
-		<div id="errorStartDateInput"></div>
-		<div id="errorEndDateInput"></div>
-		<button>Search</button>
-	</form>
-	</div>
-	<div th:if="${#lists.size(chartMap.values())}" class="container-fluid">
-	<h6>Valoarea minima este <span th:text="${minimValue}"></span></h6>
-	<h6>Valoarea maxima este <span th:text="${maximValue}"></span></h6>
-		<div th:if="${#lists.size(goalMeasurements)}" class="container-fluid">
-			<div th:if="${datesAreEquals}">
-				<h3 style="text-align:center;">Masuratori Obiectiv Implinit Pe <span th:text="${minimumDate}"></span></h3>
+			<div class="menu-sidebar__content js-scrollbar1">
+				<nav class="navbar-sidebar">
+					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</nav>
 			</div>
-			<div th:unless="${datesAreEquals}">
-				<h3 style="text-align:center;">Masuratori Obiectiv Implinit Intre <span th:text="${minimumDate + ' - ' + maximumDate}"></span></h3>
-			</div>
-			<div class="row">
-				<div class="col-md-12">
-					<div class="row">
-						<div class="col-md-10 mx-auto">
-							<table class="table table-striped">
-								<thead class="center-align">
-									<tr>
-										<th>Nume Exercitiu</th>
-										<th>Nume Antrenament</th>
-										<th>Nume Antrenor</th>
-									</tr>
-								</thead>
-								<tbody class="center-align">
-									<th:block
-										th:each="measure, iterStat : ${goalMeasurements}">
-										<tr>
-											<td th:text="${measure.name}"></td>
-											<td th:text="${measure.value}"></td>
-											<td th:text="${measure.date}"></td>
-										</tr>
-									</th:block>
-								</tbody>
-							</table>
+		</aside>
+		<div class="page-container">
+			<div class="main-content">
+				<div class="section__content section__content--p30">
+					<div th:if="${inexistentValue}"
+						style="font-size: 90px; color: white; font-weight: 800; text-align: center; position: relative; top: 200px;">Ai
+						introdus o valoare care nu exista</div>
+					<div th:unless="${inexistentValue}">
+						<div th:unless="${#lists.size(chosenMeasurements)}">
+							<div th:unless="${measurementsBetweenTimestamps}"
+								style="font-size: 90px; color: white; font-weight: 800; text-align: center; position: relative; top: 200px;">Nu
+								exista masuratori</div>
 						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<form id="chart" style="display: inline;"
-		th:action="@{/view_charts_between_dates}" method="post">
-		<input type="hidden" name="chartOption" th:value="${chartOption}" />
-		<input type="hidden" name="userDeviceId" th:value="${userDeviceId}" />
-		<label>Start</label> <input type="date" id="startDateInput" name="startDateInput">
-		<label>End</label> <input type="date" id="endDateInput" name="endDateInput">
-		<button>Search</button>
-			<div class="row">
-				<div class="col-md-10 mx-auto">
-					<div th:id="${chartOption}"></div>
-					<div id="aditional-information">
-						<h1>Informatii Aditionale</h1>
-						<h3 th:text="${chartOption + ' ' }"></h3>
-						<h3>Data Masuratorii</h3>
-						<h6 id="dateOfMeasurement"></h6>
-						<h3>Valoarea Masuratorii</h3>
-						<h6 id="valueOfMeasurement"></h6>
-						<h3>Rezultatul Masuratorii</h3>
-						<h6 id="resultOfMeasurement"></h6>
-						<div class="container">
-							<div class="row">
-								<br>
-								<div class="col-xs-12">
-									<div class="progress">
-										<div class="bar-step" style="left: 10%">
-											<div class="label-txt">Minimum</div>
-											<input type="hidden" id="minimum" value="360"></input>
-											<div class="label-line"></div>
+						<div th:if="${#lists.size(chosenMeasurements)} or ${measurementsBetweenTimestamps}" class="change-content">
+							<div style="cursor: pointer;"
+								onclick="javascript:SwapDivsWithClick('swapper-first','swapper-other', 'principal')"
+								id="principal">Grafic</div>
+						</div>
+						<div id="swapper-first" style="display: block;">
+							<div th:if="${#lists.size(chosenMeasurements)}">
+								<div th:unless="${measurementsBetweenTimestamps}">
+									<div class="container-fluid">
+										<div class="row">
+											<div class="col-md-12">
+												<div class="row">
+													<div class="col-md-10 mx-auto">
+														<th:block th:switch="${chartOption}">
+															<div th:case="'heartRate'">
+																<h3
+																	style="text-align: center; font-size: 60px; color: white; font-weight: 700;">Ritm
+																	Cardiac</h3>
+															</div>
+															<div th:case="'stepCount'">
+																<h3
+																	style="text-align: center; font-size: 60px; color: white; font-weight: 700;">Pasi
+																	Parcursi</h3>
+															</div>
+															<div th:case="'sleepAnalysis'">
+																<h3
+																	style="text-align: center; font-size: 60px; color: white; font-weight: 700;">Analiza
+																	Somn</h3>
+															</div>
+															<div th:case="'activeEnergyBurned'">
+																<h3
+																	style="text-align: center; font-size: 60px; color: white; font-weight: 700;">Energie
+																	Activa Arsa</h3>
+															</div>
+															<div th:case="'bodyFatPercentage'">
+																<h3
+																	style="text-align: center; font-size: 60px; color: white; font-weight: 700;">Procentaj
+																	Grasime</h3>
+															</div>
+															<div th:case="'bodyMassIndex'">
+																<h3
+																	style="text-align: center; font-size: 60px; color: white; font-weight: 700;">Indice
+																	Masa Corporala</h3>
+															</div>
+															<div th:case="'bodyMass'">
+																<h3
+																	style="text-align: center; font-size: 60px; color: white; font-weight: 700;">Masa
+																	Corporala</h3>
+															</div>
+															<div th:case="'leanBodyMass'">
+																<h3
+																	style="text-align: center; font-size: 60px; color: white; font-weight: 700;">Masa
+																	Corporala Slaba</h3>
+															</div>
+															<div th:case="'activeEnergyBurnedBuddy'">
+																<h3
+																	style="text-align: center; font-size: 60px; color: white; font-weight: 700;">Energie
+																	Activa Arsa</h3>
+															</div>
+															<div th:case="'activeEnergyAccumulated'">
+																<h3
+																	style="text-align: center; font-size: 60px; color: white; font-weight: 700;">Calorii
+																	Acumulate</h3>
+															</div>
+														</th:block>
+														<div class="table-responsive"
+															style="position: relative; top: 50px;"
+															th:if="${chosenMeasurements.size() > 0 }">
+															<table class="table table-hover">
+																<thead>
+																	<tr class="text-center"
+																		style="font-size: 25px; color: #7300e6;">
+																		<th
+																			style="text-align: center; padding: 15px; border-bottom: 5px solid #7300e6;">Nume
+																			Masuratoare</th>
+																		<th
+																			style="text-align: center; padding: 15px; border-bottom: 5px solid #7300e6;">Data
+																			Calculare</th>
+																		<th
+																			style="text-align: center; padding: 15px; border-bottom: 5px solid #7300e6;">Valoare</th>
+																		<th
+																			style="text-align: center; padding: 15px; border-bottom: 5px solid #7300e6;">Unitate
+																			de Masura</th>
+																	</tr>
+																</thead>
+																<tbody class="text-center tableBody"
+																	style="color: black;">
+																	<th:block
+																		th:each="measure, iterStat : ${chosenMeasurements}">
+																		<tr>
+																			<th:block th:switch="${chartOption}">
+																				<div th:case="'heartRate'">
+																					<td
+																						style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;">Puls
+																						Inima</td>
+																				</div>
+																				<div th:case="'stepCount'">
+																					<td
+																						style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;">Pasi
+																						Parcursi</td>
+																				</div>
+																				<div th:case="'sleepAnalysis'">
+																					<td
+																						style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;">Analiza
+																						Somn</td>
+																				</div>
+																				<div th:case="'activeEnergyBurned'">
+																					<td
+																						style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;">Energie
+																						Activa Arsa</td>
+																				</div>
+																				<div th:case="'bodyFatPercentage'">
+																					<td
+																						style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;">Procentaj
+																						Grasime Corporala</td>
+																				</div>
+																				<div th:case="'bodyMassIndex'">
+																					<td
+																						style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;">Indice
+																						Masa Corporala</td>
+																				</div>
+																				<div th:case="'bodyMass'">
+																					<td
+																						style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;">Greutate
+																						Corporala</td>
+																				</div>
+																				<div th:case="'leanBodyMass'">
+																					<td
+																						style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;">Masa
+																						Corporala Slaba</td>
+																				</div>
+																				<div th:case="'activeEnergyBurnedBuddy'">
+																					<td
+																						style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;">Energie
+																						Activa Arsa</td>
+																				</div>
+																				<div th:case="'activeEnergyAccumulated'">
+																					<td
+																						style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;">Calorii
+																						Acumulate</td>
+																				</div>
+																			</th:block>
+																			<td
+																				style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;"
+																				th:text="${measure.startDate}"></td>
+																			<td
+																				style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;"
+																				th:text="${measure.value}"></td>
+																			<td
+																				style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;"
+																				th:text="${measure.unitOfMeasurement}"></td>
+																		</tr>
+																	</th:block>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+											</div>
 										</div>
-										<div class="bar-step" style="left: 35%">
-											<div class="label-txt">Middle</div>
-											<input type="hidden" id="middle" value="480"></input>
-											<div class="label-line"></div>
+									</div>
+								</div>
+							</div>
+							<div th:if="${measurementsBetweenTimestamps}">
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="row">
+												<div class="col-md-10 mx-auto">
+													<th:block th:switch="${chartOption}"
+														th:if="${measurementsBetweenTimestamps.size() > 0 }">
+														<div th:case="'heartRate'">
+															<h3
+																style="text-align: center; font-size: 60px; color: white; font-weight: 700;">Ritm
+																Cardiac</h3>
+														</div>
+														<div th:case="'stepCount'">
+															<h3
+																style="text-align: center; font-size: 60px; color: white; font-weight: 700;">Pasi
+																Parcursi</h3>
+														</div>
+														<div th:case="'sleepAnalysis'">
+															<h3
+																style="text-align: center; font-size: 60px; color: white; font-weight: 700;">Analiza
+																Somn</h3>
+														</div>
+														<div th:case="'activeEnergyBurned'">
+															<h3
+																style="text-align: center; font-size: 60px; color: white; font-weight: 700;">Energie
+																Activa Arsa</h3>
+														</div>
+														<div th:case="'bodyFatPercentage'">
+															<h3
+																style="text-align: center; font-size: 60px; color: white; font-weight: 700;">Procentaj
+																Grasime</h3>
+														</div>
+														<div th:case="'bodyMassIndex'">
+															<h3
+																style="text-align: center; font-size: 60px; color: white; font-weight: 700;">Indice
+																Masa Corporala</h3>
+														</div>
+														<div th:case="'bodyMass'">
+															<h3
+																style="text-align: center; font-size: 60px; color: white; font-weight: 700;">Masa
+																Corporala</h3>
+														</div>
+														<div th:case="'leanBodyMass'">
+															<h3
+																style="text-align: center; font-size: 60px; color: white; font-weight: 700;">Masa
+																Corporala Slaba</h3>
+														</div>
+														<div th:case="'activeEnergyBurnedBuddy'">
+															<h3
+																style="text-align: center; font-size: 60px; color: white; font-weight: 700;">Energie
+																Activa Arsa</h3>
+														</div>
+														<div th:case="'activeEnergyAccumulated'">
+															<h3
+																style="text-align: center; font-size: 60px; color: white; font-weight: 700;">Calorii
+																Acumulate</h3>
+														</div>
+													</th:block>
+													<div class="table-responsive"
+														style="position: relative; top: 50px;"
+														th:if="${measurementsBetweenTimestamps.size() > 0}">
+														<table class="table table-hover">
+															<thead>
+																<tr class="text-center"
+																	style="font-size: 25px; color: #7300e6;">
+																	<th
+																		style="text-align: center; padding: 15px; border-bottom: 5px solid #7300e6;">Nume
+																		Masuratoare</th>
+																	<th
+																		style="text-align: center; padding: 15px; border-bottom: 5px solid #7300e6;">Data
+																		Calculare</th>
+																	<th
+																		style="text-align: center; padding: 15px; border-bottom: 5px solid #7300e6;">Valoare</th>
+																	<th
+																		style="text-align: center; padding: 15px; border-bottom: 5px solid #7300e6;">Unitate
+																		de Masura</th>
+																</tr>
+															</thead>
+															<tbody class="text-center tableBody"
+																style="color: black;">
+																<th:block
+																	th:each="measure, iterStat : ${measurementsBetweenTimestamps}">
+																	<tr>
+																		<th:block th:switch="${chartOption}">
+																			<th:block th:case="'heartRate'">
+																				<td
+																					style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;">Puls
+																					Inima</td>
+																			</th:block>
+																			<th:block th:case="'stepCount'">
+																				<td
+																					style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;">Pasi
+																					Parcursi</td>
+																			</th:block>
+																			<th:block th:case="'sleepAnalysis'">
+																				<td
+																					style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;">Analiza
+																					Somn</td>
+																			</th:block>
+																			<th:block th:case="'activeEnergyBurned'">
+																				<td
+																					style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;">Energie
+																					Activa Arsa</td>
+																			</th:block>
+																			<th:block th:case="'bodyFatPercentage'">
+																				<td
+																					style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;">Procentaj
+																					Grasime Corporala</td>
+																			</th:block>
+																			<th:block th:case="'bodyMassIndex'">
+																				<td
+																					style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;">Indice
+																					Masa Corporala</td>
+																			</th:block>
+																			<th:block th:case="'bodyMass'">
+																				<td
+																					style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;">Greutate
+																					Corporala</td>
+																			</th:block>
+																			<th:block th:case="'leanBodyMass'">
+																				<td
+																					style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;">Masa
+																					Corporala Slaba</td>
+																			</th:block>
+																			<th:block th:case="'activeEnergyBurnedBuddy'">
+																				<td
+																					style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;">Energie
+																					Activa Arsa</td>
+																			</th:block>
+																			<th:block th:case="'activeEnergyAccumulated'">
+																				<td
+																					style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;">Calorii
+																					Acumulate</td>
+																			</th:block>
+																		</th:block>
+																		<td
+																			style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;"
+																			th:text="${measure.startDate}"></td>
+																		<td
+																			style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;"
+																			th:text="${measure.value}"></td>
+																		<td
+																			style="font-size: 18px; border-bottom: 5px solid #7300e6; padding: 15px;"
+																			th:text="${measure.unitOfMeasurement}"></td>
+																	</tr>
+																</th:block>
+															</tbody>
+														</table>
+													</div>
+													<div th:if="${measurementsBetweenTimestamps.size() eq 0 }">
+														<div
+															style="margin-top: 40px; margin-bottom: 40px; font-weight: 700; text-align: center; font-size: 50px; color: white;">
+															Intre datele <br> selectate nu exista masuratori
+														</div>
+														<div class="row">
+															<div class="col-md-6"
+																style="background-color: white; border-radius: 25px;">
+																<form id="chart" style="display: inline;"
+																	th:action="@{/view_charts_between_dates}" method="post">
+																	<input type="hidden" name="chartOption"
+																		th:value="${chartOption}" /> <input type="hidden"
+																		name="userDeviceId" th:value="${userDeviceId}" />
+																	<h1 style="font-weight: 700; margin-bottom: 30px;">Masuratori</h1>
+																	<label>Start</label>
+																	<div style="margin-bottom: 20px;"
+																		class='input-group date' id='datetimepicker1'>
+																		<input type='text'
+																			style="border: 2px solid #7300e6; background-color: white;"
+																			id="startDateInput" name="startDateInput"
+																			class="form-control input-lg" /> <span
+																			class="input-group-addon input-lg"
+																			style="background-color: #7300e6; color: white; border: 2px solid #7300e6;"><span
+																			class="glyphicon glyphicon-calendar"></span></span>
+																	</div>
+																	<label>End</label>
+																	<div style="margin-bottom: 30px;"
+																		class='input-group date' id='datetimepicker2'>
+																		<input type='text'
+																			style="border: 2px solid #7300e6; background-color: white;"
+																			id="endDateInput" name="endDateInput"
+																			class="form-control input-lg" /> <span
+																			class="input-group-addon input-lg"
+																			style="background-color: #7300e6; color: white; border: 2px solid #7300e6;"><span
+																			class="glyphicon glyphicon-calendar"></span></span>
+																	</div>
+																	<button style="float: left; margin-bottom: 30px;"
+																		type="submit" class="btnn2">Cauta din Nou</button>
+																</form>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
 										</div>
-										<div class="bar-step" style="left: 55%">
-											<div class="label-txt">Middle2</div>
-											<input type="hidden" id="middle2" value="540"></input>
-											<div class="label-line"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="swapper-other" style="display: none;">
+							<div
+								th:if="${#lists.size(chosenMeasurements)} or ${measurementsBetweenTimestamps}">
+								<div th:unless="${#lists.size(chartMap.values())}"
+									class="col-md-12">
+									<div class="row">
+										<div class="col-md-10 mx-auto">
+											<div
+												style="margin-top: 40px; margin-bottom: 40px; font-weight: 700; text-align: center; font-size: 50px; color: white;">
+												Intre datele <br> selectate nu exista masuratori
+											</div>
+											<div class="row">
+												<div class="col-md-6"
+													style="background-color: white; border-radius: 25px;">
+													<form id="chart" style="display: inline;"
+														th:action="@{/view_charts_between_dates}" method="post">
+														<input type="hidden" name="chartOption"
+															th:value="${chartOption}" /> <input type="hidden"
+															name="userDeviceId" th:value="${userDeviceId}" />
+														<h1 style="font-weight: 700; margin-bottom: 30px;">Masuratori</h1>
+														<label>Start</label>
+														<div style="margin-bottom: 20px;" class='input-group date'
+															id='datetimepicker1'>
+															<input type='text'
+																style="border: 2px solid #7300e6; background-color: white;"
+																id="startDateInput" name="startDateInput"
+																class="form-control input-lg" /> <span
+																class="input-group-addon input-lg"
+																style="background-color: #7300e6; color: white; border: 2px solid #7300e6;"><span
+																class="glyphicon glyphicon-calendar"></span></span>
+														</div>
+														<label>End</label>
+														<div style="margin-bottom: 30px;" class='input-group date'
+															id='datetimepicker2'>
+															<input type='text'
+																style="border: 2px solid #7300e6; background-color: white;"
+																id="endDateInput" name="endDateInput"
+																class="form-control input-lg" /> <span
+																class="input-group-addon input-lg"
+																style="background-color: #7300e6; color: white; border: 2px solid #7300e6;"><span
+																class="glyphicon glyphicon-calendar"></span></span>
+														</div>
+														<button style="float: left; margin-bottom: 30px;"
+															type="submit" class="btnn2">Cauta din Nou</button>
+													</form>
+												</div>
+											</div>
 										</div>
-										<div class="bar-step" style="left: 75%">
-											<div class="label-txt">Maximum</div>
-											<input type="hidden" id="maximum" value="600"></input>
-											<div class="label-line"></div>
+									</div>
+								</div>
+								<div th:if="${#lists.size(chartMap.values())}"
+									class="container-fluid">
+									<div class="row">
+										<div
+											style="margin: 0 auto; width: 1000px; background: white; border-radius: 30px; padding: 30px; margin-bottom: 60px; margin-top: 50px;">
+											<th:block th:switch="${chartOption}">
+												<th:block th:case="'heartRate'">
+													<h3
+														style="text-align: center; font-size: 60px; font-weight: 700; color: #7300e6; margin-bottom: 30px;">Puls
+														Inima</h3>
+												</th:block>
+												<th:block th:case="'stepCount'">
+													<h3
+														style="text-align: center; font-size: 60px; font-weight: 700; color: #7300e6; margin-bottom: 30px;">Pasi
+														Parcursi</h3>
+												</th:block>
+												<th:block th:case="'sleepAnalysis'">
+													<h3
+														style="text-align: center; font-size: 60px; font-weight: 700; color: #7300e6; margin-bottom: 30px;">Analiza
+														Somn</h3>
+												</th:block>
+												<th:block th:case="'activeEnergyBurned'">
+													<h3
+														style="text-align: center; font-size: 60px; font-weight: 700; color: #7300e6; margin-bottom: 30px;">Energie
+														Activa Arsa</h3>
+												</th:block>
+												<th:block th:case="'bodyFatPercentage'">
+													<h3
+														style="text-align: center; font-size: 60px; font-weight: 700; color: #7300e6; margin-bottom: 30px;">Procentaj
+														Grasime Corporala</h3>
+												</th:block>
+												<th:block th:case="'bodyMassIndex'">
+													<h3
+														style="text-align: center; font-size: 60px; font-weight: 700; color: #7300e6; margin-bottom: 30px;">Indice
+														Masa Corporala</h3>
+												</th:block>
+												<th:block th:case="'bodyMass'">
+													<h3
+														style="text-align: center; font-size: 60px; font-weight: 700; color: #7300e6; margin-bottom: 30px;">Greutate
+														Corporala</h3>
+												</th:block>
+												<th:block th:case="'leanBodyMass'">
+													<h3
+														style="text-align: center; font-size: 60px; font-weight: 700; color: #7300e6; margin-bottom: 30px;">Masa
+														Corporala Slaba</h3>
+												</th:block>
+												<th:block th:case="'activeEnergyBurnedBuddy'">
+													<h3
+														style="text-align: center; font-size: 60px; font-weight: 700; color: #7300e6; margin-bottom: 30px;">Energie
+														Activa Arsa</h3>
+												</th:block>
+												<th:block th:case="'activeEnergyAccumulated'">
+													<h3
+														style="text-align: center; font-size: 60px; font-weight: 700; color: #7300e6; margin-bottom: 30px;">Calorii
+														Acumulate</h3>
+												</th:block>
+											</th:block>
+											<div class="row">
+												<div class="col-md-10 mx-auto">
+													<div th:if="${#lists.size(goalMeasurements)}"
+														class="container-fluid">
+														<div th:if="${datesAreEquals}">
+															<h3 style="text-align: center;">
+																Obiectiv Indeplinit Pe <br> <span
+																	th:text="${minimumDate}"></span>
+															</h3>
+														</div>
+														<div th:unless="${datesAreEquals}">
+															<h3 style="text-align: center;">
+																Obiectiv Indeplinit Intre <br> <span
+																	style="font-size: 25px; font-weight: 600;"
+																	th:text="${minimumDate + ' si ' + maximumDate}"></span>
+															</h3>
+														</div>
+														<div class="table-responsive"
+															style="height: auto; margin-bottom: 50px;">
+															<table class="table table-hover"
+																style="border: 2px solid #7300e6; background-color: rgba(0, 0, 0, .001);">
+																<thead>
+																	<tr class="text-center"
+																		style="font-size: 18px; color: #7300e6;">
+																		<th
+																			style="background-color: rgba(0, 0, 0, .01); text-align: center; padding: 15px; border-bottom: 3px solid #7300e6;">Nume
+																			Masuratoare</th>
+																		<th
+																			style="background-color: rgba(0, 0, 0, .01); text-align: center; padding: 15px; border-bottom: 3px solid #7300e6;">Data
+																			Calculare</th>
+																		<th
+																			style="background-color: rgba(0, 0, 0, .01); text-align: center; padding: 15px; border-bottom: 3px solid #7300e6;">Valoare</th>
+																		<th
+																			style="background-color: rgba(0, 0, 0, .01); text-align: center; padding: 15px; border-bottom: 3px solid #7300e6;">Unitate
+																			de Masura</th>
+																	</tr>
+																</thead>
+																<tbody class="text-center tableBody"
+																	style="color: black;">
+																	<th:block
+																		th:each="measure, iterStat : ${goalMeasurements}">
+																		<tr>
+																			<th:block th:switch="${chartOption}">
+																				<th:block th:case="'heartRate'">
+																					<td
+																						style="font-size: 15px; border-bottom: 3px solid #7300e6; padding: 15px;">Puls
+																						Inima</td>
+																				</th:block>
+																				<th:block th:case="'stepCount'">
+																					<td
+																						style="font-size: 15px; border-bottom: 3px solid #7300e6; padding: 15px;">Pasi
+																						Parcursi</td>
+																				</th:block>
+																				<th:block th:case="'sleepAnalysis'">
+																					<td
+																						style="font-size: 15px; border-bottom: 3px solid #7300e6; padding: 15px;">Analiza
+																						Somn</td>
+																				</th:block>
+																				<th:block th:case="'activeEnergyBurned'">
+																					<td
+																						style="font-size: 15px; border-bottom: 3px solid #7300e6; padding: 15px;">Energie
+																						Activa Arsa</td>
+																				</th:block>
+																				<th:block th:case="'bodyFatPercentage'">
+																					<td
+																						style="font-size: 15px; border-bottom: 3px solid #7300e6; padding: 15px;">Procentaj
+																						Grasime Corporala</td>
+																				</th:block>
+																				<th:block th:case="'bodyMassIndex'">
+																					<td
+																						style="font-size: 15px; border-bottom: 3px solid #7300e6; padding: 15px;">Indice
+																						Masa Corporala</td>
+																				</th:block>
+																				<th:block th:case="'bodyMass'">
+																					<td
+																						style="font-size: 15px; border-bottom: 3px solid #7300e6; padding: 15px;">Greutate
+																						Corporala</td>
+																				</th:block>
+																				<th:block th:case="'leanBodyMass'">
+																					<td
+																						style="font-size: 15px; border-bottom: 3px solid #7300e6; padding: 15px;">Masa
+																						Corporala Slaba</td>
+																				</th:block>
+																				<th:block th:case="'activeEnergyBurnedBuddy'">
+																					<td
+																						style="font-size: 15px; border-bottom: 3px solid #7300e6; padding: 15px;">Energie
+																						Activa Arsa</td>
+																				</th:block>
+																				<th:block th:case="'activeEnergyAccumulated'">
+																					<td
+																						style="font-size: 15px; border-bottom: 3px solid #7300e6; padding: 15px;">Calorii
+																						Acumulate</td>
+																				</th:block>
+																			</th:block>
+																			<td
+																				style="font-size: 15px; border-bottom: 3px solid #7300e6; padding: 15px;"
+																				th:text="${measure.date}"></td>
+																			<td
+																				style="font-size: 15px; border-bottom: 3px solid #7300e6; padding: 15px;"
+																				th:text="${measure.value}"></td>
+																			<th:block
+																				th:if="${#lists.size(chosenMeasurements)} and ${measurementsBetweenTimestamps eq null}">
+																				<td
+																					style="font-size: 15px; border-bottom: 3px solid #7300e6; padding: 15px;"
+																					th:text="${chosenMeasurements[0].unitOfMeasurement}"></td>
+																			</th:block>
+																			<th:block th:if="${measurementsBetweenTimestamps}">
+																				<td
+																					style="font-size: 15px; border-bottom: 3px solid #7300e6; padding: 15px;"
+																					th:text="${measurementsBetweenTimestamps[0].unitOfMeasurement}"></td>
+																			</th:block>
+																		</tr>
+																	</th:block>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+											</div>
+											<form id="chart" style="display: inline;"
+												th:action="@{/view_charts_between_dates}" method="post">
+												<input type="hidden" name="chartOption"
+													th:value="${chartOption}" /> <input type="hidden"
+													name="userDeviceId" th:value="${userDeviceId}" />
+												<div class="row" style="margin-bottom: 30px;">
+													<div class="col-md-6"
+														style="position: relative; top: 70px; left: 50px; height: fit-content;">
+														<th:block
+															th:if="${#lists.size(chosenMeasurements)} and ${measurementsBetweenTimestamps eq null}">
+															<div style="font-size: 15px; font-weight: 600;">
+																Valoare Minima: <span
+																	style="display: block; font-size: 45px; color: #7300e6; font-weight: 600;"
+																	th:text="${minimValue + ' ' + chosenMeasurements[0].unitOfMeasurement}"></span>
+															</div>
+															<div style="font-size: 15px; font-weight: 600;">
+																Valoare Maxima: <span
+																	style="display: block; font-size: 45px; color: #7300e6; font-weight: 600;"
+																	th:text="${maximValue + ' ' + chosenMeasurements[0].unitOfMeasurement}"></span>
+															</div>
+														</th:block>
+														<th:block th:if="${measurementsBetweenTimestamps}">
+															<div style="font-size: 15px; font-weight: 600;">
+																Valoare Minima: <span
+																	style="display: block; font-size: 45px; color: #7300e6; font-weight: 600;"
+																	th:text="${minimValue + ' ' + measurementsBetweenTimestamps[0].unitOfMeasurement}"></span>
+															</div>
+															<div style="font-size: 15px; font-weight: 600;">
+																Valoare Maxima: <span
+																	style="display: block; font-size: 45px; color: #7300e6; font-weight: 600;"
+																	th:text="${maximValue + ' ' + measurementsBetweenTimestamps[0].unitOfMeasurement}"></span>
+															</div>
+														</th:block>
+													</div>
+													<div class="col-md-6"
+														style="position: relative; right: 50px; background-color: rgba(0, 0, 0, .04); border-radius: 25px;">
+														<h1 style="font-weight: 700; margin-bottom: 30px;">Masuratori</h1>
+														<label>Start</label>
+														<div style="margin-bottom: 20px;" class='input-group date'
+															id='datetimepicker1'>
+															<input type='text'
+																style="border: 2px solid #7300e6; background-color: rgba(0, 0, 0, .04);"
+																id="startDateInput" name="startDateInput"
+																class="form-control input-lg" /> <span
+																class="input-group-addon input-lg"
+																style="background-color: #7300e6; color: white; border: 2px solid #7300e6;"><span
+																class="glyphicon glyphicon-calendar"></span></span>
+														</div>
+														<label>End</label>
+														<div style="margin-bottom: 30px;" class='input-group date'
+															id='datetimepicker2'>
+															<input type='text'
+																style="border: 2px solid #7300e6; background-color: rgba(0, 0, 0, .04);"
+																id="endDateInput" name="endDateInput"
+																class="form-control input-lg" /> <span
+																class="input-group-addon input-lg"
+																style="background-color: #7300e6; color: white; border: 2px solid #7300e6;"><span
+																class="glyphicon glyphicon-calendar"></span></span>
+														</div>
+														<button style="float: left; margin-bottom: 30px;"
+															type="submit" class="btnn2">Cauta</button>
+													</div>
+												</div>
+												<div class="row" style="margin-left: -40px;">
+													<div class="col-md-12" th:id="${chartOption}"></div>
+												</div>
+												<div class="row">
+													<div class="col-md-7">
+														<div id="aditional-information">
+															<th:block th:switch="${chartOption}">
+																<th:block th:case="'heartRate'">
+																	<h3 style="text-align: center;">Puls Inima</h3>
+																</th:block>
+																<th:block th:case="'stepCount'">
+																	<h3 style="text-align: center;">Pasi Parcursi</h3>
+																</th:block>
+																<th:block th:case="'sleepAnalysis'">
+																	<h3 style="text-align: center;">Analiza Somn</h3>
+																</th:block>
+																<th:block th:case="'activeEnergyBurned'">
+																	<h3 style="text-align: center;">Energie Activa
+																		Arsa</h3>
+																</th:block>
+																<th:block th:case="'bodyFatPercentage'">
+																	<h3 style="text-align: center;">Procentaj Grasime
+																		Corporala</h3>
+																</th:block>
+																<th:block th:case="'bodyMassIndex'">
+																	<h3 style="text-align: center;">Indice Masa
+																		Corporala</h3>
+																</th:block>
+																<th:block th:case="'bodyMass'">
+																	<h3 style="text-align: center;">Greutate Corporala</h3>
+																</th:block>
+																<th:block th:case="'leanBodyMass'">
+																	<h3 style="text-align: center;">Masa Corporala
+																		Slaba</h3>
+																</th:block>
+																<th:block th:case="'activeEnergyBurnedBuddy'">
+																	<h3 style="text-align: center;">Energie Activa
+																		Arsa</h3>
+																</th:block>
+																<th:block th:case="'activeEnergyAccumulated'">
+																	<h3 style="text-align: center;">Calorii Acumulate</h3>
+																</th:block>
+															</th:block>
+															<div
+																style="font-size: 15px; text-align: center; margin-top: -5px;"
+																id="dateOfMeasurement"></div>
+															<div style="font-size: 20px;">
+																Valoare : <span id="valueOfMeasurement"
+																	style="font-size: 40px; font-weight: 600;"></span>
+															</div>
+															<h6 id="resultOfMeasurement"
+																style="font-size: 15px; margin-bottom: 20px;"></h6>
+															<div class="progress"
+																style="height: 40px; margin-bottom: 20px; overflow: hidden; background-color: white; border-radius: 30px;">
+																<th:block th:switch="${chartOption}">
+																	<th:block th:case="'heartRate'">
+																		<div class="bar-step" style="left: 10%">
+																			<input type="hidden" id="minimum" value="40"></input>
+																		</div>
+																		<div class="bar-step" style="left: 35%">
+																			<input type="hidden" id="middle" value="60"></input>
+																		</div>
+																		<div class="bar-step" style="left: 55%">
+																			<input type="hidden" id="middle2" value="80"></input>
+																		</div>
+																		<div class="bar-step" style="left: 75%">
+																			<input type="hidden" id="maximum" value="100"></input>
+																		</div>
+																	</th:block>
+																	<th:block th:case="'stepCount'">
+																		<div class="bar-step" style="left: 10%">
+																			<input type="hidden" id="minimum" value="700"></input>
+																		</div>
+																		<div class="bar-step" style="left: 35%">
+																			<input type="hidden" id="middle" value="2000"></input>
+																		</div>
+																		<div class="bar-step" style="left: 55%">
+																			<input type="hidden" id="middle2" value="5000"></input>
+																		</div>
+																		<div class="bar-step" style="left: 75%">
+																			<input type="hidden" id="maximum" value="8000"></input>
+																		</div>
+																	</th:block>
+																	<th:block th:case="'sleepAnalysis'">
+																		<div class="bar-step" style="left: 10%">
+																			<input type="hidden" id="minimum" value="360"></input>
+																		</div>
+																		<div class="bar-step" style="left: 35%">
+																			<input type="hidden" id="middle" value="480"></input>
+																		</div>
+																		<div class="bar-step" style="left: 55%">
+																			<input type="hidden" id="middle2" value="540"></input>
+																		</div>
+																		<div class="bar-step" style="left: 75%">
+																			<input type="hidden" id="maximum" value="600"></input>
+																		</div>
+																	</th:block>
+																	<th:block th:case="'activeEnergyBurned'">
+																		<div class="bar-step" style="left: 10%">
+																			<input type="hidden" id="minimum" value="25"></input>
+																		</div>
+																		<div class="bar-step" style="left: 35%">
+																			<input type="hidden" id="middle" value="60"></input>
+																		</div>
+																		<div class="bar-step" style="left: 55%">
+																			<input type="hidden" id="middle2" value="150"></input>
+																		</div>
+																		<div class="bar-step" style="left: 75%">
+																			<input type="hidden" id="maximum" value="300"></input>
+																		</div>
+																	</th:block>
+																	<th:block th:case="'bodyFatPercentage'">
+																		<div class="bar-step" style="left: 10%">
+																			<input type="hidden" id="minimum" value="0.18" step="0.01"></input>
+																		</div>
+																		<div class="bar-step" style="left: 35%">
+																			<input type="hidden" id="middle" value="0.25" step="0.01"></input>
+																		</div>
+																		<div class="bar-step" style="left: 55%">
+																			<input type="hidden" id="middle2" value="0.28" step="0.01"></input>
+																		</div>
+																		<div class="bar-step" style="left: 75%">
+																			<input type="hidden" id="maximum" value="0.32" step="0.01"></input>
+																		</div>
+																	</th:block>
+																	<th:block th:case="'bodyMassIndex'">
+																		<div class="bar-step" style="left: 10%">
+																			<input type="hidden" id="minimum" value="22"></input>
+																		</div>
+																		<div class="bar-step" style="left: 35%">
+																			<input type="hidden" id="middle" value="24"></input>
+																		</div>
+																		<div class="bar-step" style="left: 55%">
+																			<input type="hidden" id="middle2" value="26"></input>
+																		</div>
+																		<div class="bar-step" style="left: 75%">
+																			<input type="hidden" id="maximum" value="28"></input>
+																		</div>
+																	</th:block>
+																	<th:block th:case="'bodyMass'">
+																		<div class="bar-step" style="left: 10%">
+																			<input type="hidden" id="minimum" value="60"></input>
+																		</div>
+																		<div class="bar-step" style="left: 35%">
+																			<input type="hidden" id="middle" value="65"></input>
+																		</div>
+																		<div class="bar-step" style="left: 55%">
+																			<input type="hidden" id="middle2" value="75"></input>
+																		</div>
+																		<div class="bar-step" style="left: 75%">
+																			<input type="hidden" id="maximum" value="90"></input>
+																		</div>
+																	</th:block>
+																	<th:block th:case="'leanBodyMass'">
+																		<div class="bar-step" style="left: 10%">
+																			<input type="hidden" id="minimum" value="40"></input>
+																		</div>
+																		<div class="bar-step" style="left: 35%">
+																			<input type="hidden" id="middle" value="50"></input>
+																		</div>
+																		<div class="bar-step" style="left: 55%">
+																			<input type="hidden" id="middle2" value="60"></input>
+																		</div>
+																		<div class="bar-step" style="left: 75%">
+																			<input type="hidden" id="maximum" value="75"></input>
+																		</div>
+																	</th:block>
+																	<th:block th:case="'activeEnergyBurnedBuddy'">
+																		<div class="bar-step" style="left: 10%">
+																			<input type="hidden" id="minimum" value="25"></input>
+																		</div>
+																		<div class="bar-step" style="left: 35%">
+																			<input type="hidden" id="middle" value="60"></input>
+																		</div>
+																		<div class="bar-step" style="left: 55%">
+																			<input type="hidden" id="middle2" value="150"></input>
+																		</div>
+																		<div class="bar-step" style="left: 75%">
+																			<input type="hidden" id="maximum" value="300"></input>
+																		</div>
+																	</th:block>
+																	<th:block th:case="'activeEnergyAccumulated'">
+																		<div class="bar-step" style="left: 10%">
+																			<input type="hidden" id="minimum" value="1800"></input>
+																		</div>
+																		<div class="bar-step" style="left: 35%">
+																			<input type="hidden" id="middle" value="2000"></input>
+																		</div>
+																		<div class="bar-step" style="left: 55%">
+																			<input type="hidden" id="middle2" value="2400"></input>
+																		</div>
+																		<div class="bar-step" style="left: 75%">
+																			<input type="hidden" id="maximum" value="2800"></input>
+																		</div>
+																	</th:block>
+																</th:block>
+																<div id="success"
+																	class="progress-bar progress-bar-success"
+																	style="width: 1%; background-color: red; color: white; font-size: 15px; font-weight: 600;">46%</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</form>
 										</div>
-										<div id="success" class="progress-bar progress-bar-success"
-											style="width: 1%;">46%</div>
 									</div>
 								</div>
 							</div>
@@ -232,11 +1146,8 @@
 					</div>
 				</div>
 			</div>
-	</form>
 		</div>
 	</div>
-</div>
-</div>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
 		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
 		crossorigin="anonymous"></script>
@@ -246,771 +1157,1413 @@
 	<script src="https://code.highcharts.com/modules/exporting.js"></script>
 	<script src="https://code.highcharts.com/modules/export-data.js"></script>
 	<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+	<script
+		src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js
+	"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 	<script th:inline="javascript">
 
-	function SwapDivsWithClick(div1,div2,div3)
-	{
-	   d1 = document.getElementById(div1);
-	   d2 = document.getElementById(div2);
-	   d3 = document.getElementById(div3);
-	   if( d2.style.display == "none" )
-	   {
-	      d1.style.display = "none";
-	      d2.style.display = "block";
-	      d3.innerHTML = "Grafic";
-	   }
-	   else
-	   {
-	      d1.style.display = "block";
-	      d2.style.display = "none";
-	      d3.innerHTML = "Tabel";
-	   }
-	}
+        $(function () {
+            var bindDatePicker = function () {
+                $(".date").datetimepicker({
+                    format: 'YYYY-MM-DD',
+                    icons: {
+                        time: "fa fa-clock-o",
+                        date: "fa fa-calendar",
+                        up: "fa fa-arrow-up",
+                        down: "fa fa-arrow-down"
+                    }
+                }).find('input:first').on("blur", function () {
+                    // check if the date is correct. We can accept dd-mm-yyyy and yyyy-mm-dd.
+                    // update the format if it's yyyy-mm-dd
+                    var date = parseDate($(this).val());
 
-	let results = [
-		{
-			result: "Scazut",
-			heartRateRecommendation: "Valoarea pulsului este Scazut",
-			stepCountRecommendation: "Valoarea numarului de pasi este Scazut",
-			sleepAnalysisRecommendation: "Valoarea duratei somnului este Scazut",
-			activeEnergyBurnedRecommendation: "Valoarea caloriilor arse este Scazut",
-			activeEnergyAccumulatedRecommendation: "Valoarea caloriilor acumulate este Scazut",
-			bodyFatPercentageRecommendation: "Valoarea procentului de grasime este Scazut",
-			bodyMassIndexRecommendation: "Un risc ridicat de sănătate dacă nu alegi o dietă sănătoasă, bogată în nutrienţi. Poţi consulta un nutriţionist pentru sfaturi legate de mâncare, fără să fie nevoie să te îngraşi.",
-			bodyMassRecommendation: "Valoarea greutatii corporale este Scazut",
-			leanBodyMassRecommendation: "Valoarea greutatii corporale slabe este Scazut"
-		},
-		{
-			result: "Normal",
-			activeEnergyAccumulatedRecommendation: "Valoarea caloriilor acumulate este Normal",
-			heartRateRecommendation: "Valoarea pulsului este Normal",
-			stepCountRecommendation: "Valoarea numarului de pasi este Normal",
-			sleepAnalysisRecommendation: "Valoarea duratei somnului este Normal",
-			activeEnergyBurnedRecommendation: "Valoarea caloriilor arse este Normal",
-			bodyFatPercentageRecommendation: "Valoarea procentului de grasime este Normal",
-			bodyMassIndexRecommendation: "Un risc mic pentru sănătate. O dietă echilibrată te va ajuta să te bucuri de nutrienţi.",
-			bodyMassRecommendation: "Valoarea greutatii corporale este Normal",
-			leanBodyMassRecommendation: "Valoarea greutatii corporale slabe este Normal"
-		},
-		{
-			result: "Normal-Crescut",
-			activeEnergyAccumulatedRecommendation: "Valoarea caloriilor acumulate arse este Normal-Crescut",
-			heartRateRecommendation: "Valoarea pulsului este Normal-Crescut",
-			stepCountRecommendation: "Valoarea numarului de pasi este Normal-Crescut",
-			sleepAnalysisRecommendation: "Valoarea duratei somnului este Normal-Crescut",
-			activeEnergyBurnedRecommendation: "Valoarea caloriilor arse este Normal-Crescut",
-			bodyFatPercentageRecommendation: "Valoarea procentului de grasime este Normal-Crescut",
-			bodyMassIndexRecommendation: "Îţi recomandăm să elimini dulciurile şi alimentele nesănătoase din dietă.",
-			bodyMassRecommendation: "Valoarea greutatii corporale este Normal-Crescut",
-			leanBodyMassRecommendation: "Valoarea greutatii corporale slabe este Normal-Crescut"
-		},
-		{
-			result: "Crescut",
-			activeEnergyAccumulatedRecommendation: "Valoarea caloriilor acumulate arse este Crescut",
-			heartRateRecommendation: "Valoarea pulsului este Crescut",
-			stepCountRecommendation: "Valoarea numarului de pasi este Crescut",
-			sleepAnalysisRecommendation: "Valoarea duratei somnului este Crescut",
-			activeEnergyBurnedRecommendation: "Valoarea caloriilor arse este Crescut",
-			bodyFatPercentageRecommendation: "Valoarea procentului de grasime este Crescut",
-			bodyMassIndexRecommendation: "Acest rezultant arată că greutatea îţi afectează sănătatea. Vorbeşte cu un nutriţionist şi găseşte o cale să elimini kg în plus.",
-			bodyMassRecommendation: "Valoarea greutatii corporale este Crescut",
-			leanBodyMassRecommendation: "Valoarea greutatii corporale slabe este Crescut"
-		}
-	];
-	
-	let minimum = document.getElementById("minimum").value;
-	let middle = document.getElementById("middle").value;
-	let middle2 = document.getElementById("middle2").value;
-	let maximum = document.getElementById("maximum").value;
-	let minimWidth = 14;
-	let middleWidth = 38;
-	let middle2Width = 60;
-	let maximumWidth = 100;
-	let chartOption = [[${chartOption}]];
-	let inexistentValue = [[${inexistentValue}]];
-		$(function() {
-			
-			$('#sleepAnalysis').highcharts({
-				chart: {
-		            zoomType: 'x'
-		        },
-		        title: {
-		        	text: [[${chartOption}]]
-		        },
-		        xAxis: {
-		        	categories: [[${chartMap.keySet()}]]
-		        },
-		        yAxis: {
-		            title: {
-		                text: 'Valori'
-		            }
-		        },
-		        tooltip: {
-		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-		            '<td style="padding:0"><b>{point.y:.1f} Minute</b></td></tr>',
-		            footerFormat: '</table>',
-		            shared: true,
-		            useHTML: true
-		        },
-		        legend: {
-		            enabled: false
-		        },
-		        plotOptions: {
-		            area: {
-		                fillColor: {
-		                    linearGradient: {
-		                        x1: 0,
-		                        y1: 0,
-		                        x2: 0,
-		                        y2: 1
-		                    },
-		                    stops: [
-		                        [0, Highcharts.getOptions().colors[0]],
-		                        [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-		                    ]
-		                },
-		                marker: {
-		                    radius: 2
-		                },
-		                lineWidth: 1,
-		                states: {
-		                    hover: {
-		                        lineWidth: 1
-		                    }
-		                },
-		                threshold: null
-		            },
-		            series: {
-		                cursor: 'pointer',
-		                point: {
-		                    events: {
-		                        click: function () {
-		                        	let chartMap = [[${chartMap}]];
-		                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
-		                        	let hours = (valueOfMeasurement / 60);
-		                        	let rhours = Math.floor(hours);
-		                        	let minutes = (hours - rhours) * 60;
-		                        	let rminutes = Math.round(minutes);
-		                        	document.getElementById("aditional-information").style.visibility = "visible";
-		                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
-		                        	document.getElementById("valueOfMeasurement").innerHTML = rhours + " " + rminutes;
-		                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
-		                        }
-		                    }
-		                }
-		            }
-		        },
+                    if (!isValidDate(date)) {
+                        //create date based on momentjs (we have that)
+                        date = moment().format('YYYY-MM-DD');
+                    }
 
-		        series: [{
-		            type: 'area',
-		            name: 'Timp',
-		            data: [[${chartMap.values()}]]
-		        }]
-		    });
-			
-			
-			$('#stepCount').highcharts({
-				chart: {
-		            zoomType: 'x'
-		        },
-		        title: {
-		        	text: [[${chartOption}]]
-		        },
-		        scrollbar: {
-		            enabled: true
-		        },
-		        xAxis: {
-		        	categories: [[${chartMap.keySet()}]],
-		        	crosshair: true,
-	 	            min: 0,
-					max: 10
-		        },
-		        yAxis: {
-		            title: {
-		                text: 'Valori'
-		            }
-		        },
-		        tooltip: {
-		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-		            '<td style="padding:0"><b>{point.y:.1f} Pasi</b></td></tr>',
-		            footerFormat: '</table>',
-		            shared: true,
-		            useHTML: true
-		        },
-		        legend: {
-		            enabled: false
-		        },
-		        plotOptions: {
-		            area: {
-		                fillColor: {
-		                    linearGradient: {
-		                        x1: 0,
-		                        y1: 0,
-		                        x2: 0,
-		                        y2: 1
-		                    },
-		                    stops: [
-		                        [0, Highcharts.getOptions().colors[0]],
-		                        [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-		                    ]
-		                },
-		                marker: {
-		                    radius: 2
-		                },
-		                lineWidth: 1,
-		                states: {
-		                    hover: {
-		                        lineWidth: 1
-		                    }
-		                },
-		                threshold: null
-		            },
-		            series: {
-		                cursor: 'pointer',
-		                point: {
-		                	events: {
-		                        click: function () {
-		                        	let chartMap = [[${chartMap}]];
-		                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
-		                        	document.getElementById("aditional-information").style.visibility = "visible";
-		                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
-		                        	document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
-		                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
-		                        }
-		                    }
-		                }
-		            }
-		        },
+                    $(this).val(date);
+                });
+            }
 
-		        series: [{
-		            type: 'area',
-		            name: 'Timp',
-		            data: [[${chartMap.values()}]]
-		        }]
-		    });
-			
-			$('#heartRate').highcharts({
-		        chart: {
-		            type: 'column'
-		        },
-		        title: {
-		            text: [[${chartOption}]]
-		        },
-		        scrollbar: {
-		            enabled: true
-		        },
-		        xAxis: {
-		            categories: [[${chartMap.keySet()}]],
-		            crosshair: true,
-		            min: 0,
-		            max: 10,
-		        },
-		        yAxis: {
-		        },
-		        tooltip: {
-		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-		            '<td style="padding:0"><b>{point.y:.1f} BPM</b></td></tr>',
-		            footerFormat: '</table>',
-		            shared: true,
-		            useHTML: true
-		        },
-		        plotOptions: {
-		            column: {
-		                pointPadding: 0.2,
-		                borderWidth: 0,
-		                cropThreshold: 1000
-		            }
-		        },
-		        series: [{
-		            name: 'Valoare',
-		            data: [[${chartMap.values()}]],
-		            point: {
-	                    events: {
-	                        click: function () {
-	                        	let chartMap = [[${chartMap}]];
-	                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
-	                        	document.getElementById("aditional-information").style.visibility = "visible";
-	                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
-	                        	document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
-	                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
-	                        }
-	                    }
-	                }
+            var isValidDate = function (value, format) {
+                format = format || false;
+                // lets parse the date to the best of our knowledge
+                if (format) {
+                    value = parseDate(value);
+                }
 
-		        }]
-		    });
-			
-			$('#activeEnergyBurnedBuddy').highcharts({
-		        chart: {
-		            type: 'column'
-		        },
-		        title: {
-		            text: [[${chartOption}]]
-		        },
-		        scrollbar: {
-		            enabled: true
-		        },
-		        xAxis: {
-		            categories: [[${chartMap.keySet()}]],
-		            crosshair: true,
-		            min: 0,
-		            max: 10,
-		        },
-		        yAxis: {
-		        },
-		        tooltip: {
-		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-		            '<td style="padding:0"><b>{point.y:.1f} Kcal</b></td></tr>',
-		            footerFormat: '</table>',
-		            shared: true,
-		            useHTML: true
-		        },
-		        plotOptions: {
-		            column: {
-		                pointPadding: 0.2,
-		                borderWidth: 0,
-		                cropThreshold: 1000
-		            }
-		        },
-		        series: [{
-		            name: 'Valoare',
-		            data: [[${chartMap.values()}]],
-		            point: {
-	                    events: {
-	                        click: function () {
-	                        	let chartMap = [[${chartMap}]];
-	                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
-	                        	document.getElementById("aditional-information").style.visibility = "visible";
-	                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
-	                        	document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
-	                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
-	                        }
-	                    }
-	                }
+                var timestamp = Date.parse(value);
 
-		        }]
-		    });
-			
-			$('#activeEnergyAccumulated').highcharts({
-		        chart: {
-		            type: 'column'
-		        },
-		        title: {
-		            text: [[${chartOption}]]
-		        },
-		        scrollbar: {
-		            enabled: true
-		        },
-		        xAxis: {
-		            categories: [[${chartMap.keySet()}]],
-		            crosshair: true,
-		            min: 0,
-		            max: 10,
-		        },
-		        yAxis: {
-		        },
-		        tooltip: {
-		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-		            '<td style="padding:0"><b>{point.y:.1f} Kcal</b></td></tr>',
-		            footerFormat: '</table>',
-		            shared: true,
-		            useHTML: true
-		        },
-		        plotOptions: {
-		            column: {
-		                pointPadding: 0.2,
-		                borderWidth: 0,
-		                cropThreshold: 1000
-		            }
-		        },
-		        series: [{
-		            name: 'Valoare',
-		            data: [[${chartMap.values()}]],
-		            point: {
-	                    events: {
-	                        click: function () {
-	                        	let chartMap = [[${chartMap}]];
-	                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
-	                        	document.getElementById("aditional-information").style.visibility = "visible";
-	                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
-	                        	document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
-	                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
-	                        }
-	                    }
-	                }
+                return isNaN(timestamp) == false;
+            }
 
-		        }]
-		    });
-			
-			$('#activeEnergyBurned').highcharts({
-		        chart: {
-		            type: 'column'
-		        },
-		        title: {
-		            text: [[${chartOption}]]
-		        },
-		        scrollbar: {
-		            enabled: true
-		        },
-		        xAxis: {
-		            categories: [[${chartMap.keySet()}]],
-		            crosshair: true,
-		            min: 0,
-		            max: 10,
-		        },
-		        yAxis: {
-		        },
-		        tooltip: {
-		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-		            '<td style="padding:0"><b>{point.y:.1f} Kcal</b></td></tr>',
-		            footerFormat: '</table>',
-		            shared: true,
-		            useHTML: true
-		        },
-		        plotOptions: {
-		            column: {
-		                pointPadding: 0.2,
-		                borderWidth: 0,
-		                cropThreshold: 1000
-		            }
-		        },
-		        series: [{
-		            name: 'Valoare',
-		            data: [[${chartMap.values()}]],
-		            point: {
-	                    events: {
-	                        click: function () {
-	                        	let chartMap = [[${chartMap}]];
-	                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
-	                        	document.getElementById("aditional-information").style.visibility = "visible";
-	                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
-	                        	document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
-	                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
-	                        }
-	                    }
-	                }
+            var parseDate = function (value) {
+                var m = value.match(/^(\d{1,2})(\/|-)?(\d{1,2})(\/|-)?(\d{4})$/);
+                if (m)
+                    value = m[5] + '-' + ("00" + m[3]).slice(-2) + '-' + ("00" + m[1]).slice(-2);
 
-		        }]
-		    });
-			
-			$('#bodyFatPercentage').highcharts({
-		        chart: {
-		            type: 'column'
-		        },
-		        title: {
-		            text: [[${chartOption}]]
-		        },
-		        scrollbar: {
-		            enabled: true
-		        },
-		        xAxis: {
-		            categories: [[${chartMap.keySet()}]],
-		            crosshair: true,
-		            min: 0,
-		            max: 10,
-		        },
-		        yAxis: {
-		        },
-		        tooltip: {
-		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-		            '<td style="padding:0"><b>{point.y:.1f} BPM</b></td></tr>',
-		            footerFormat: '</table>',
-		            shared: true,
-		            useHTML: true
-		        },
-		        plotOptions: {
-		            column: {
-		                pointPadding: 0.2,
-		                borderWidth: 0,
-		                cropThreshold: 1000
-		            }
-		        },
-		        series: [{
-		            name: 'Valoare',
-		            data: [[${chartMap.values()}]],
-		            point: {
-	                    events: {
-	                        click: function () {
-	                        	let chartMap = [[${chartMap}]];
-	                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
-	                        	document.getElementById("aditional-information").style.visibility = "visible";
-	                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
-	                        	document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
-	                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
-	                        }
-	                    }
-	                }
+                return value;
+            }
 
-		        }]
-		    });
-			
-			$('#bodyMassIndex').highcharts({
-		        chart: {
-		            type: 'column'
-		        },
-		        title: {
-		            text: [[${chartOption}]]
-		        },
-		        scrollbar: {
-		            enabled: true
-		        },
-		        xAxis: {
-		            categories: [[${chartMap.keySet()}]],
-		            crosshair: true,
-		            min: 0,
-		            max: 10,
-		        },
-		        yAxis: {
-		        },
-		        tooltip: {
-		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-		            '<td style="padding:0"><b>{point.y:.1f} BPM</b></td></tr>',
-		            footerFormat: '</table>',
-		            shared: true,
-		            useHTML: true
-		        },
-		        plotOptions: {
-		            column: {
-		                pointPadding: 0.2,
-		                borderWidth: 0,
-		                cropThreshold: 1000
-		            }
-		        },
-		        series: [{
-		            name: 'Valoare',
-		            data: [[${chartMap.values()}]],
-		            point: {
-	                    events: {
-	                        click: function () {
-	                        	let chartMap = [[${chartMap}]];
-	                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
-	                        	document.getElementById("aditional-information").style.visibility = "visible";
-	                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
-	                        	document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
-	                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
-	                        }
-	                    }
-	                }
+            bindDatePicker();
+        });
 
-		        }]
-		    });
-			
-			$('#bodyMass').highcharts({
-		        chart: {
-		            type: 'column'
-		        },
-		        title: {
-		            text: [[${chartOption}]]
-		        },
-		        scrollbar: {
-		            enabled: true
-		        },
-		        xAxis: {
-		            categories: [[${chartMap.keySet()}]],
-		            crosshair: true,
-		            min: 0,
-		            max: 10,
-		        },
-		        yAxis: {
-		        },
-		        tooltip: {
-		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-		            '<td style="padding:0"><b>{point.y:.1f} BPM</b></td></tr>',
-		            footerFormat: '</table>',
-		            shared: true,
-		            useHTML: true
-		        },
-		        plotOptions: {
-		            column: {
-		                pointPadding: 0.2,
-		                borderWidth: 0,
-		                cropThreshold: 1000
-		            }
-		        },
-		        series: [{
-		            name: 'Valoare',
-		            data: [[${chartMap.values()}]],
-		            point: {
-	                    events: {
-	                        click: function () {
-	                        	let chartMap = [[${chartMap}]];
-	                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
-	                        	document.getElementById("aditional-information").style.visibility = "visible";
-	                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
-	                        	document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
-	                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
-	                        }
-	                    }
-	                }
+        function SwapDivsWithClick(div1, div2, div3) {
+            d1 = document.getElementById(div1);
+            d2 = document.getElementById(div2);
+            d3 = document.getElementById(div3);
+            if (d2.style.display == "none") {
+                d1.style.display = "none";
+                d2.style.display = "block";
+                d3.innerHTML = "Tabel";
+            }
+            else {
+                d1.style.display = "block";
+                d2.style.display = "none";
+                d3.innerHTML = "Grafic";
+            }
+        }
 
-		        }]
-		    });
-			
-			$('#leanBodyMass').highcharts({
-		        chart: {
-		            type: 'column'
-		        },
-		        title: {
-		            text: [[${chartOption}]]
-		        },
-		        scrollbar: {
-		            enabled: true
-		        },
-		        xAxis: {
-		            categories: [[${chartMap.keySet()}]],
-		            crosshair: true,
-		            min: 0,
-		            max: 10,
-		        },
-		        yAxis: {
-		        },
-		        tooltip: {
-		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-		            '<td style="padding:0"><b>{point.y:.1f} BPM</b></td></tr>',
-		            footerFormat: '</table>',
-		            shared: true,
-		            useHTML: true
-		        },
-		        plotOptions: {
-		            column: {
-		                pointPadding: 0.2,
-		                borderWidth: 0,
-		                cropThreshold: 1000
-		            }
-		        },
-		        series: [{
-		            name: 'Valoare',
-		            data: [[${chartMap.values()}]],
-		            point: {
-	                    events: {
-	                        click: function () {
-	                        	let chartMap = [[${chartMap}]];
-	                        	let valueOfMeasurement = Object.values(chartMap)[this.index];
-	                        	document.getElementById("aditional-information").style.visibility = "visible";
-	                        	document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
-	                        	document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
-	                        	progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement);
-	                        }
-	                    }
-	                }
+        let results = [
+            {
+                result: "Scazut",
+                heartRateRecommendation: "Valoarea pulsului este scazuta",
+                stepCountRecommendation: "Valoarea numarului de pasi parcursi este scazuta",
+                sleepAnalysisRecommendation: "Valoarea duratei somnului este scazuta",
+                activeEnergyBurnedRecommendation: "Valoarea caloriilor arse este scazuta",
+                activeEnergyBurnedBuddyRecommendation: "Valoarea energiei active arse este scazuta",
+                activeEnergyAccumulatedRecommendation: "Valoarea energiei active arse este scazuta",
+                bodyFatPercentageRecommendation: "Valoarea procentului de grasime este scazuta",
+                bodyMassIndexRecommendation: "Valoarea indexului masei corporale este scazuta",
+                bodyMassRecommendation: "Valoarea greutatii corporale este scazuta",
+                leanBodyMassRecommendation: "Valoarea greutatii corporale slabe este scazuta"
+            },
+            {
+                result: "Normal",
+                activeEnergyAccumulatedRecommendation: "Valoarea caloriilor acumulate este normala",
+                heartRateRecommendation: "Valoarea pulsului este normala",
+                stepCountRecommendation: "Valoarea numarului de pasi parcursi este normala",
+                sleepAnalysisRecommendation: "Valoarea duratei somnului este normala",
+                activeEnergyBurnedRecommendation: "Valoarea energiei active arse este normala",
+                activeEnergyBurnedBuddyRecommendation: "Valoarea energiei active arse este normala",
+                bodyFatPercentageRecommendation: "Valoarea procentului de grasime este normala",
+                bodyMassIndexRecommendation: "Valoarea indexului masei corporale este normala",
+                bodyMassRecommendation: "Valoarea greutatii corporale este normala",
+                leanBodyMassRecommendation: "Valoarea greutatii corporale slabe este normala"
+            },
+            {
+                result: "Normal-Crescut",
+                activeEnergyAccumulatedRecommendation: "Valoarea caloriilor acumulate arse este normala-crescuta",
+                heartRateRecommendation: "Valoarea pulsului este normala-crescuta",
+                stepCountRecommendation: "Valoarea numarului de pasi parcursi este normala-crescuta",
+                sleepAnalysisRecommendation: "Valoarea duratei somnului este normala-crescuta",
+                activeEnergyBurnedRecommendation: "Valoarea energiei active arse este normala-crescuta",
+                activeEnergyBurnedBuddyRecommendation: "Valoarea energiei active arse este normala-crescuta",
+                bodyFatPercentageRecommendation: "Valoarea procentului de grasime este normala-crescuta",
+                bodyMassIndexRecommendation: "Valoarea indexului masei corporale este normala-crescuta",
+                bodyMassRecommendation: "Valoarea greutatii corporale este normala-crescuta",
+                leanBodyMassRecommendation: "Valoarea greutatii corporale slabe este normala-crescuta"
+            },
+            {
+                result: "Crescut",
+                activeEnergyAccumulatedRecommendation: "Valoarea caloriilor acumulate arse este crescuta",
+                heartRateRecommendation: "Valoarea pulsului este crescuta",
+                stepCountRecommendation: "Valoarea numarului de pasi parcursi este crescuta",
+                sleepAnalysisRecommendation: "Valoarea duratei somnului este crescuta",
+                activeEnergyBurnedRecommendation: "Valoarea energiei active arse este crescuta",
+                activeEnergyBurnedBuddyRecommendation: "Valoarea energiei active arse este crescuta",
+                bodyFatPercentageRecommendation: "Valoarea procentului de grasime este crescuta",
+                bodyMassIndexRecommendation: "Valoarea indexului masei corporale este crescuta",
+                bodyMassRecommendation: "Valoarea greutatii corporale este crescuta",
+                leanBodyMassRecommendation: "Valoarea greutatii corporale slabe este crescuta"
+            }
+        ];
 
-		        }]
-		    });
-		});	
-	
-	function progressBarIndicator(minimum,middle,middle2,maximum,minimWidth,middleWidth,middle2Width,maximumWidth,valueOfMeasurement) {
-		let ok = false;
-		let result;
-		let lowObj;
-		if(minimum > valueOfMeasurement) {
-			ok = true;
-			result = "Scazut";
-			$('#success').css('background-color', "red");
-			if(0 < valueOfMeasurement && parseInt(minimum/2,10) > valueOfMeasurement) {
-				$('#success').css('width', minimWidth - (minimWidth/2) + "%");
-			}
-			else if(parseInt(minimum/2,10) < valueOfMeasurement && parseInt(minimum,10) > valueOfMeasurement) {
-				$('#success').css('width', minimWidth + "%");
-			}
-			lowObj = results.find(element => element.result === result);
-			document.getElementById("success").innerHTML = lowObj.result;
-		}
-		if(minimum < valueOfMeasurement && middle > valueOfMeasurement) {
-			ok = true;
-			result = "Normal"
-			$('#success').css('background-color', "purple");
-			if((parseInt(minimum), 10) < valueOfMeasurement && (parseInt(minimum,10) + parseInt(middle,10))/2 > valueOfMeasurement) {
-				$('#success').css('width', middleWidth - 13 + "%");
-			} else if((parseInt(minimum,10) + parseInt(middle,10))/2 < valueOfMeasurement && parseInt(middle,10) > valueOfMeasurement) {
-				$('#success').css('width', middleWidth + "%");
-			}
-			ok = true;
-			lowObj = results.find(element => element.result === result);
-			document.getElementById("success").innerHTML = lowObj.result;
-		}
-		if(middle < valueOfMeasurement && middle2 > valueOfMeasurement) {
-			ok = true;
-			result = "Normal-Crescut";
-			$('#success').css('background-color', "black");
-			if((parseInt(middle), 10) < valueOfMeasurement && (parseInt(middle,10) + parseInt(middle2,10))/2 > valueOfMeasurement) {
-				console.log("1500-1800");
-				$('#success').css('width', middle2Width - 13 + "%");
-			}
-			else if((parseInt(middle,10) + parseInt(middle2,10))/2 < valueOfMeasurement && parseInt(middle2,10) > valueOfMeasurement) {
-				console.log("1800-2400");
-				$('#success').css('width', middle2Width + "%");
-			}
-			lowObj = results.find(element => element.result === result);
-			document.getElementById("success").innerHTML = lowObj.result;
-		}
-		if(middle2 < valueOfMeasurement && maximum > valueOfMeasurement || maximum < valueOfMeasurement) {
-			ok = true;
-			result = "Crescut";
-			$('#success').css('background-color', "green");
-			if(parseInt(maximum,10) < valueOfMeasurement && parseInt(maximum,10) + parseInt((maximum/2),10) > valueOfMeasurement) {
-				console.log("intre");
-				$('#success').css('width', maximumWidth - 4 + "%");
-			}
-			else if((parseInt(middle2), 10) < valueOfMeasurement && (parseInt(middle2,10) + parseInt(maximum,10))/2 > valueOfMeasurement) {
-				console.log("3000-3500");
-				$('#success').css('width', maximumWidth - 10 + "%");
-			}
-			else if((parseInt(middle2,10) + parseInt(middle2,10))/2 < valueOfMeasurement && parseInt(maximum,10) > valueOfMeasurement) {
-				console.log("3500-4000");
-				$('#success').css('width', maximumWidth - 7 + "%");
-			} else if(parseInt(maximum,10) < valueOfMeasurement) {
-				console.log("4000 in sus");
-				$('#success').css('width', maximumWidth + "%");
-			}
-			lowObj = results.find(element => element.result === result);
-			document.getElementById("success").innerHTML = lowObj.result;
-		}
-		if(ok) {
-			if(chartOption === 'heartRate') {
-				selectRecommendationByResult(result,chartOption,lowObj);
-			} else if(chartOption === 'stepCount') {
-				selectRecommendationByResult(result,chartOption,lowObj);
-			} else if(chartOption === 'sleepAnalysis') {
-				selectRecommendationByResult(result,chartOption,lowObj);
-			} else if(chartOption === 'activeEnergyBurned') {
-				selectRecommendationByResult(result,chartOption,lowObj);
-			} else if(chartOption === 'bodyFatPercentage') {
-				selectRecommendationByResult(result,chartOption,lowObj);
-			} else if(chartOption === 'bodyMassIndex') {
-				selectRecommendationByResult(result,chartOption,lowObj);
-			} else if(chartOption === 'bodyMass') {
-				selectRecommendationByResult(result,chartOption,lowObj);
-			} else if(chartOption === 'leanBodyMass') {
-				selectRecommendationByResult(result,chartOption,lowObj);
-			} else if(chartOption === 'activeEnergyAccumulated') {
-				selectRecommendationByResult(result,chartOption,lowObj);
-			} 
-		}
-	}
-	
-	function selectRecommendationByResult(result,chartOption,lowObj) {
-		let chart = chartOption;
-		let recommendation = 'Recommendation';
-		if(result === 'Scazut') {
-			document.getElementById("resultOfMeasurement").innerHTML = lowObj[chart+recommendation];
-		} else if(result === 'Normal') {
-			document.getElementById("resultOfMeasurement").innerHTML = lowObj[chart+recommendation];
-		} else if(result === 'Normal-Crescut') {
-			document.getElementById("resultOfMeasurement").innerHTML = lowObj[chart+recommendation];
-		} else if(result === 'Crescut') {
-			document.getElementById("resultOfMeasurement").innerHTML = lowObj[chart+recommendation];
-		}
-	}
-</script>
+        let minimum = document.getElementById("minimum").value;
+        let middle = document.getElementById("middle").value;
+        let middle2 = document.getElementById("middle2").value;
+        let maximum = document.getElementById("maximum").value;
+        let minimWidth = 14;
+        let middleWidth = 38;
+        let middle2Width = 60;
+        let maximumWidth = 100;
+        let chartOption = [[${ chartOption }]];
+        let inexistentValue = [[${ inexistentValue }]];
+        $(function () {
+
+            $(function () {
+                'use strict';
+                (function (factory) {
+                    if (typeof module === 'object' && module.exports) {
+                        module.exports = factory;
+                    } else {
+                        factory(Highcharts);
+                    }
+                }(function (Highcharts) {
+                    (function (H) {
+                        H.wrap(H.seriesTypes.column.prototype, 'translate', function (proceed) {
+                            const options = this.options;
+                            const topMargin = options.topMargin || 0;
+                            const bottomMargin = options.bottomMargin || 0;
+
+                            proceed.call(this);
+
+                            H.each(this.points, function (point) {
+                                if (options.borderRadiusTopLeft || options.borderRadiusTopRight || options.borderRadiusBottomRight || options.borderRadiusBottomLeft) {
+                                    const w = point.shapeArgs.width;
+                                    const h = point.shapeArgs.height;
+                                    const x = point.shapeArgs.x;
+                                    const y = point.shapeArgs.y;
+
+                                    let radiusTopLeft = H.relativeLength(options.borderRadiusTopLeft || 0, w);
+                                    let radiusTopRight = H.relativeLength(options.borderRadiusTopRight || 0, w);
+                                    let radiusBottomRight = H.relativeLength(options.borderRadiusBottomRight || 0, w);
+                                    let radiusBottomLeft = H.relativeLength(options.borderRadiusBottomLeft || 0, w);
+
+                                    const maxR = Math.min(w, h) / 2
+
+                                    radiusTopLeft = radiusTopLeft > maxR ? maxR : radiusTopLeft;
+                                    radiusTopRight = radiusTopRight > maxR ? maxR : radiusTopRight;
+                                    radiusBottomRight = radiusBottomRight > maxR ? maxR : radiusBottomRight;
+                                    radiusBottomLeft = radiusBottomLeft > maxR ? maxR : radiusBottomLeft;
+
+                                    point.dlBox = point.shapeArgs;
+
+                                    point.shapeType = 'path';
+                                    point.shapeArgs = {
+                                        d: [
+                                            'M', x + radiusTopLeft, y + topMargin,
+                                            'L', x + w - radiusTopRight, y + topMargin,
+                                            'C', x + w - radiusTopRight / 2, y, x + w, y + radiusTopRight / 2, x + w, y + radiusTopRight,
+                                            'L', x + w, y + h - radiusBottomRight,
+                                            'C', x + w, y + h - radiusBottomRight / 2, x + w - radiusBottomRight / 2, y + h, x + w - radiusBottomRight, y + h + bottomMargin,
+                                            'L', x + radiusBottomLeft, y + h + bottomMargin,
+                                            'C', x + radiusBottomLeft / 2, y + h, x, y + h - radiusBottomLeft / 2, x, y + h - radiusBottomLeft,
+                                            'L', x, y + radiusTopLeft,
+                                            'C', x, y + radiusTopLeft / 2, x + radiusTopLeft / 2, y, x + radiusTopLeft, y,
+                                            'Z'
+                                        ]
+                                    };
+                                }
+
+                            });
+                        });
+                    }(Highcharts));
+                }));
+
+
+                $('#activeEnergyBurnedBuddy').highcharts({
+                    colors: ['#7300e6'],
+                    title: {
+                    	text: 'Grafic Energie Activa Arsa',
+                        style: {
+                            fontSize: '60px',
+                            fontWeight: '700',
+                        	color: '#7300e6',
+                        	fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif'
+                        }
+                    },subtitle: {
+                        text: 'Sursa: Fit Buddy',
+                        style: {
+                        	fontSize: '20px',
+                            fontWeight: '700',
+                        	color: '#7300e6',
+                        	fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif'
+                        }
+                    },
+                    scrollbar: {
+                        enabled: true,
+                        barBackgroundColor: '#7300e6',
+                        barBorderRadius: 7,
+                        barBorderWidth: 0,
+                        buttonBackgroundColor: '#7300e6',
+                        buttonBorderWidth: 0,
+                        buttonArrowColor: 'white',
+                        buttonBorderRadius: 7,
+                        rifleColor: 'white',
+                        trackBackgroundColor: 'white',
+                        trackBorderWidth: 1,
+                        trackBorderColor: 'silver',
+                        trackBorderRadius: 7
+                    },
+                    xAxis: {
+                        categories: [[${ chartMap.keySet() }]],
+                        labels: {
+                            style: {
+                                color: 'black',
+                                font: '11px Arial, sans-serif'
+                            }
+                        },
+                        crosshair: true,
+                        min: 0,
+                        max: 9
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Valori'
+                        },
+                        min: 0
+                    },
+                    tooltip: {
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                            '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                        area: {
+                            fillColor: {
+                                linearGradient: {
+                                    x1: 0,
+                                    y1: 0,
+                                    x2: 0,
+                                    y2: 1
+                                },
+                                stops: [
+                                    [0, '#DA22FF'],
+                                    [1, '#9733EE']
+                                ]
+                            },
+                            marker: {
+                                radius: 2
+                            },
+                            lineWidth: 1,
+                            states: {
+                                hover: {
+                                    lineWidth: 1
+                                }
+                            },
+                            threshold: null
+                        },
+                        series: {
+                            cursor: 'pointer',
+                            point: {
+                                events: {
+                                    click: function () {
+                                    	let chartMap = [[${ chartMap }]];
+                                        let valueOfMeasurement = Object.values(chartMap)[this.index];
+                                        var element = document.getElementById('aditional-information');
+                                        if ($("#aditional-information").is(":hidden")) {
+                                            $("#aditional-information").slideDown("slow");
+                                            $('html, body').animate({ scrollTop: $("#aditional-information").offset().top }, 2000);
+                                        }
+                                        document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
+                                        document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
+                                        progressBarIndicator(minimum, middle, middle2, maximum, minimWidth, middleWidth, middle2Width, maximumWidth, valueOfMeasurement);
+                                    }
+                                }
+                            }
+                        }
+                    },
+
+                    series: [{
+                        type: 'area',
+                        name: 'Numar Calorii',
+                        data: [[${ chartMap.values() }]]
+                    }]
+                });
+
+                $('#activeEnergyAccumulated').highcharts({
+                	colors: ['#7300e6'],
+                    title: {
+                    	text: 'Grafic Calorii Acumulate',
+                        style: {
+                            fontSize: '60px',
+                            fontWeight: '700',
+                        	color: '#7300e6',
+                        	fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif'
+                        }
+                    },subtitle: {
+                        text: 'Sursa: Fit Buddy',
+                        style: {
+                        	fontSize: '20px',
+                            fontWeight: '700',
+                        	color: '#7300e6',
+                        	fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif'
+                        }
+                    },
+                    scrollbar: {
+                        enabled: true,
+                        barBackgroundColor: '#7300e6',
+                        barBorderRadius: 7,
+                        barBorderWidth: 0,
+                        buttonBackgroundColor: '#7300e6',
+                        buttonBorderWidth: 0,
+                        buttonArrowColor: 'white',
+                        buttonBorderRadius: 7,
+                        rifleColor: 'white',
+                        trackBackgroundColor: 'white',
+                        trackBorderWidth: 1,
+                        trackBorderColor: 'silver',
+                        trackBorderRadius: 7
+                    },
+                    xAxis: {
+                        categories: [[${ chartMap.keySet() }]],
+                        labels: {
+                            style: {
+                                color: 'black',
+                                font: '11px Arial, sans-serif'
+                            }
+                        },
+                        crosshair: true,
+                        min: 0,
+                        max: 9
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Valori'
+                        },
+                        min: 0
+                    },
+                    tooltip: {
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                            '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                        area: {
+                            fillColor: {
+                                linearGradient: {
+                                    x1: 0,
+                                    y1: 0,
+                                    x2: 0,
+                                    y2: 1
+                                },
+                                stops: [
+                                    [0, '#DA22FF'],
+                                    [1, '#9733EE']
+                                ]
+                            },
+                            marker: {
+                                radius: 2
+                            },
+                            lineWidth: 1,
+                            states: {
+                                hover: {
+                                    lineWidth: 1
+                                }
+                            },
+                            threshold: null
+                        },
+                        series: {
+                            cursor: 'pointer',
+                            point: {
+                                events: {
+                                    click: function () {
+                                    	let chartMap = [[${ chartMap }]];
+                                        let valueOfMeasurement = Object.values(chartMap)[this.index];
+                                        var element = document.getElementById('aditional-information');
+                                        if ($("#aditional-information").is(":hidden")) {
+                                            $("#aditional-information").slideDown("slow");
+                                            $('html, body').animate({ scrollTop: $("#aditional-information").offset().top }, 2000);
+                                        }
+                                        document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
+                                        document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
+                                        progressBarIndicator(minimum, middle, middle2, maximum, minimWidth, middleWidth, middle2Width, maximumWidth, valueOfMeasurement);
+                                    }
+                                }
+                            }
+                        }
+                    },
+
+                    series: [{
+                        type: 'area',
+                        name: 'Numar Calorii',
+                        data: [[${ chartMap.values() }]]
+                    }]
+                });
+
+                $('#activeEnergyBurned').highcharts({
+                	colors: ['#7300e6'],
+                    title: {
+                    	text: 'Grafic Energie Activa Arsa',
+                        style: {
+                            fontSize: '60px',
+                            fontWeight: '700',
+                        	color: '#7300e6',
+                        	fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif'
+                        }
+                    },subtitle: {
+                        text: 'Sursa: Mobile Data Transfer',
+                        style: {
+                        	fontSize: '20px',
+                            fontWeight: '700',
+                        	color: '#7300e6',
+                        	fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif'
+                        }
+                    },
+                    scrollbar: {
+                        enabled: true,
+                        barBackgroundColor: '#7300e6',
+                        barBorderRadius: 7,
+                        barBorderWidth: 0,
+                        buttonBackgroundColor: '#7300e6',
+                        buttonBorderWidth: 0,
+                        buttonArrowColor: 'white',
+                        buttonBorderRadius: 7,
+                        rifleColor: 'white',
+                        trackBackgroundColor: 'white',
+                        trackBorderWidth: 1,
+                        trackBorderColor: 'silver',
+                        trackBorderRadius: 7
+                    },
+                    xAxis: {
+                        categories: [[${ chartMap.keySet() }]],
+                        labels: {
+                            style: {
+                                color: 'black',
+                                font: '11px Arial, sans-serif'
+                            }
+                        },
+                        crosshair: true,
+                        min: 0,
+                        max: 9
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Valori'
+                        },
+                        min: 0
+                    },
+                    tooltip: {
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                            '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                        area: {
+                            fillColor: {
+                                linearGradient: {
+                                    x1: 0,
+                                    y1: 0,
+                                    x2: 0,
+                                    y2: 1
+                                },
+                                stops: [
+                                    [0, '#DA22FF'],
+                                    [1, '#9733EE']
+                                ]
+                            },
+                            marker: {
+                                radius: 2
+                            },
+                            lineWidth: 1,
+                            states: {
+                                hover: {
+                                    lineWidth: 1
+                                }
+                            },
+                            threshold: null
+                        },
+                        series: {
+                            cursor: 'pointer',
+                            point: {
+                                events: {
+                                    click: function () {
+                                    	let chartMap = [[${ chartMap }]];
+                                        let valueOfMeasurement = Object.values(chartMap)[this.index];
+                                        var element = document.getElementById('aditional-information');
+                                        if ($("#aditional-information").is(":hidden")) {
+                                            $("#aditional-information").slideDown("slow");
+                                            $('html, body').animate({ scrollTop: $("#aditional-information").offset().top }, 2000);
+                                        }
+                                        document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
+                                        document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
+                                        progressBarIndicator(minimum, middle, middle2, maximum, minimWidth, middleWidth, middle2Width, maximumWidth, valueOfMeasurement);
+                                    }
+                                }
+                            }
+                        }
+                    },
+
+                    series: [{
+                        type: 'area',
+                        name: 'Numar Calorii',
+                        data: [[${ chartMap.values() }]]
+                    }]
+                });
+
+                $('#bodyFatPercentage').highcharts({
+                	 colors: ['#7300e6'],
+                     chart: {
+                         type: 'column'
+                     },
+                     title: {
+                    	 text: 'Grafic Procentaj Grasime',
+                         style: {
+                             fontSize: '60px',
+                             fontWeight: '700',
+                         	color: '#7300e6',
+                         	fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif'
+                         }
+                     },subtitle: {
+                         text: 'Sursa: Mobile Data Transfer',
+                         style: {
+                         	fontSize: '20px',
+                             fontWeight: '700',
+                         	color: '#7300e6',
+                         	fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif'
+                         }
+                     },
+                     scrollbar: {
+                         enabled: true,
+                         barBackgroundColor: '#7300e6',
+                         barBorderRadius: 7,
+                         barBorderWidth: 0,
+                         buttonBackgroundColor: '#7300e6',
+                         buttonBorderWidth: 0,
+                         buttonArrowColor: 'white',
+                         buttonBorderRadius: 7,
+                         rifleColor: 'white',
+                         trackBackgroundColor: 'white',
+                         trackBorderWidth: 1,
+                         trackBorderColor: 'silver',
+                         trackBorderRadius: 7
+                     },
+                     xAxis: {
+                         categories: [[${ chartMap.keySet() }]],
+                         labels: {
+                             style: {
+                                 color: 'black',
+                                 font: '11px Arial, sans-serif'
+                             }
+                         },
+                         crosshair: true,
+                         min: 0,
+                         max: 5
+                     },
+                     yAxis: {
+                         title: {
+                             text: 'Valori'
+                         },
+                         gridLineColor: 'transparent'
+                     },
+                     tooltip: {
+                         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                             '<td style="padding:0"><b>{point.y:.1f} %</b></td></tr>',
+                         footerFormat: '</table>',
+                         shared: true,
+                         useHTML: true
+                     },
+                     plotOptions: {
+                         column: {
+                             pointPadding: 0.2,
+                             borderWidth: 0,
+                             cropThreshold: 1000,
+                             borderRadiusTopLeft: 10,
+                             borderRadiusTopRight: 10,
+                             states: {
+                                 hover: {
+                                     color: '#000000'
+                                 }
+                             }
+                         }
+                     },
+                     series: [{
+                         name: 'Valoare',
+                         data: [[${ chartMap.values() }]],
+                         events: {
+                             legendItemClick: function (e) {
+                                 e.preventDefault()
+                             }
+                         }
+                     }]
+                });
+
+                $('#bodyMassIndex').highcharts({
+                	 colors: ['#7300e6'],
+                     chart: {
+                         type: 'column'
+                     },
+                     title: {
+                    	 text: 'Grafic Indice Masa Corporala',
+                         style: {
+                             fontSize: '60px',
+                             fontWeight: '700',
+                         	color: '#7300e6',
+                         	fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif'
+                         }
+                     },subtitle: {
+                         text: 'Sursa: Mobile Data Transfer',
+                         style: {
+                         	fontSize: '20px',
+                             fontWeight: '700',
+                         	color: '#7300e6',
+                         	fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif'
+                         }
+                     },
+                     scrollbar: {
+                         enabled: true,
+                         barBackgroundColor: '#7300e6',
+                         barBorderRadius: 7,
+                         barBorderWidth: 0,
+                         buttonBackgroundColor: '#7300e6',
+                         buttonBorderWidth: 0,
+                         buttonArrowColor: 'white',
+                         buttonBorderRadius: 7,
+                         rifleColor: 'white',
+                         trackBackgroundColor: 'white',
+                         trackBorderWidth: 1,
+                         trackBorderColor: 'silver',
+                         trackBorderRadius: 7
+                     },
+                     xAxis: {
+                         categories: [[${ chartMap.keySet() }]],
+                         labels: {
+                             style: {
+                                 color: 'black',
+                                 font: '11px Arial, sans-serif'
+                             }
+                         },
+                         crosshair: true,
+                         min: 0,
+                         max: 5
+                     },
+                     yAxis: {
+                         title: {
+                             text: 'Valori'
+                         },
+                         gridLineColor: 'transparent'
+                     },
+                     tooltip: {
+                         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                             '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                         footerFormat: '</table>',
+                         shared: true,
+                         useHTML: true
+                     },
+                     plotOptions: {
+                         column: {
+                             pointPadding: 0.2,
+                             borderWidth: 0,
+                             cropThreshold: 1000,
+                             borderRadiusTopLeft: 10,
+                             borderRadiusTopRight: 10,
+                             states: {
+                                 hover: {
+                                     color: '#000000'
+                                 }
+                             }
+                         }
+                     },
+                     series: [{
+                         name: 'Valoare',
+                         data: [[${ chartMap.values() }]],
+                         events: {
+                             legendItemClick: function (e) {
+                                 e.preventDefault()
+                             }
+                         },
+                         point: {
+                             events: {
+                                 click: function () {
+                                     let chartMap = [[${ chartMap }]];
+                                     let valueOfMeasurement = Object.values(chartMap)[this.index];
+                                     var element = document.getElementById('aditional-information');
+                                     if ($("#aditional-information").is(":hidden")) {
+                                         $("#aditional-information").slideDown("slow");
+                                         $('html, body').animate({ scrollTop: $("#aditional-information").offset().top }, 2000);
+                                     }
+                                     document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
+                                     document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
+                                     progressBarIndicator(minimum, middle, middle2, maximum, minimWidth, middleWidth, middle2Width, maximumWidth, valueOfMeasurement);
+                                 }
+                             }
+                         }
+
+                     }]
+                });
+
+                $('#bodyMass').highcharts({
+                	 colors: ['#7300e6'],
+                     chart: {
+                         type: 'column'
+                     },
+                     title: {
+                    	 text: 'Grafic Masa Corporala',
+                         style: {
+                             fontSize: '60px',
+                             fontWeight: '700',
+                         	color: '#7300e6',
+                         	fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif'
+                         }
+                     },subtitle: {
+                         text: 'Sursa: Mobile Data Transfer',
+                         style: {
+                         	fontSize: '20px',
+                             fontWeight: '700',
+                         	color: '#7300e6',
+                         	fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif'
+                         }
+                     },
+                     scrollbar: {
+                         enabled: true,
+                         barBackgroundColor: '#7300e6',
+                         barBorderRadius: 7,
+                         barBorderWidth: 0,
+                         buttonBackgroundColor: '#7300e6',
+                         buttonBorderWidth: 0,
+                         buttonArrowColor: 'white',
+                         buttonBorderRadius: 7,
+                         rifleColor: 'white',
+                         trackBackgroundColor: 'white',
+                         trackBorderWidth: 1,
+                         trackBorderColor: 'silver',
+                         trackBorderRadius: 7
+                     },
+                     xAxis: {
+                         categories: [[${ chartMap.keySet() }]],
+                         labels: {
+                             style: {
+                                 color: 'black',
+                                 font: '11px Arial, sans-serif'
+                             }
+                         },
+                         crosshair: true,
+                         min: 0,
+                         max: 5
+                     },
+                     yAxis: {
+                         title: {
+                             text: 'Valori'
+                         },
+                         gridLineColor: 'transparent'
+                     },
+                     tooltip: {
+                         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                             '<td style="padding:0"><b>{point.y:.1f} kg</b></td></tr>',
+                         footerFormat: '</table>',
+                         shared: true,
+                         useHTML: true
+                     },
+                     plotOptions: {
+                         column: {
+                             pointPadding: 0.2,
+                             borderWidth: 0,
+                             cropThreshold: 1000,
+                             borderRadiusTopLeft: 10,
+                             borderRadiusTopRight: 10,
+                             states: {
+                                 hover: {
+                                     color: '#000000'
+                                 }
+                             }
+                         }
+                     },
+                     series: [{
+                         name: 'Valoare',
+                         data: [[${ chartMap.values() }]],
+                         events: {
+                             legendItemClick: function (e) {
+                                 e.preventDefault()
+                             }
+                         },
+                         point: {
+                             events: {
+                                 click: function () {
+                                     let chartMap = [[${ chartMap }]];
+                                     let valueOfMeasurement = Object.values(chartMap)[this.index];
+                                     var element = document.getElementById('aditional-information');
+                                     if ($("#aditional-information").is(":hidden")) {
+                                         $("#aditional-information").slideDown("slow");
+                                         $('html, body').animate({ scrollTop: $("#aditional-information").offset().top }, 2000);
+                                     }
+                                     document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
+                                     document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
+                                     progressBarIndicator(minimum, middle, middle2, maximum, minimWidth, middleWidth, middle2Width, maximumWidth, valueOfMeasurement);
+                                 }
+                             }
+                         }
+
+                     }]
+                });
+
+                $('#leanBodyMass').highcharts({
+                	 colors: ['#7300e6'],
+                     chart: {
+                         type: 'column'
+                     },
+                     title: {
+                    	 text: 'Grafic Masa Corporala Slaba',
+                         style: {
+                             fontSize: '60px',
+                             fontWeight: '700',
+                         	color: '#7300e6',
+                         	fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif'
+                         }
+                     },subtitle: {
+                         text: 'Sursa: Mobile Data Transfer',
+                         style: {
+                         	fontSize: '20px',
+                             fontWeight: '700',
+                         	color: '#7300e6',
+                         	fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif'
+                         }
+                     },
+                     scrollbar: {
+                         enabled: true,
+                         barBackgroundColor: '#7300e6',
+                         barBorderRadius: 7,
+                         barBorderWidth: 0,
+                         buttonBackgroundColor: '#7300e6',
+                         buttonBorderWidth: 0,
+                         buttonArrowColor: 'white',
+                         buttonBorderRadius: 7,
+                         rifleColor: 'white',
+                         trackBackgroundColor: 'white',
+                         trackBorderWidth: 1,
+                         trackBorderColor: 'silver',
+                         trackBorderRadius: 7
+                     },
+                     xAxis: {
+                         categories: [[${ chartMap.keySet() }]],
+                         labels: {
+                             style: {
+                                 color: 'black',
+                                 font: '11px Arial, sans-serif'
+                             }
+                         },
+                         crosshair: true,
+                         min: 0,
+                         max: 5
+                     },
+                     yAxis: {
+                         title: {
+                             text: 'Valori'
+                         },
+                         gridLineColor: 'transparent'
+                     },
+                     tooltip: {
+                         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                             '<td style="padding:0"><b>{point.y:.1f} kg</b></td></tr>',
+                         footerFormat: '</table>',
+                         shared: true,
+                         useHTML: true
+                     },
+                     plotOptions: {
+                         column: {
+                             pointPadding: 0.2,
+                             borderWidth: 0,
+                             cropThreshold: 1000,
+                             borderRadiusTopLeft: 10,
+                             borderRadiusTopRight: 10,
+                             states: {
+                                 hover: {
+                                     color: '#000000'
+                                 }
+                             }
+                         }
+                     },
+                     series: [{
+                         name: 'Valoare',
+                         data: [[${ chartMap.values() }]],
+                         events: {
+                             legendItemClick: function (e) {
+                                 e.preventDefault()
+                             }
+                         },
+                         point: {
+                             events: {
+                                 click: function () {
+                                     let chartMap = [[${ chartMap }]];
+                                     let valueOfMeasurement = Object.values(chartMap)[this.index];
+                                     var element = document.getElementById('aditional-information');
+                                     if ($("#aditional-information").is(":hidden")) {
+                                         $("#aditional-information").slideDown("slow");
+                                         $('html, body').animate({ scrollTop: $("#aditional-information").offset().top }, 2000);
+                                     }
+                                     document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
+                                     document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
+                                     progressBarIndicator(minimum, middle, middle2, maximum, minimWidth, middleWidth, middle2Width, maximumWidth, valueOfMeasurement);
+                                 }
+                             }
+                         }
+
+                     }]
+                });
+
+                $('#sleepAnalysis').highcharts({
+                	 colors: ['#7300e6'],
+                    title: {
+                    	text: 'Grafic Analiza Somn',
+                        style: {
+                            fontSize: '60px',
+                            fontWeight: '700',
+                        	color: '#7300e6',
+                        	fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif'
+                        }
+                    },subtitle: {
+                        text: 'Sursa: Mobile Data Transfer',
+                        style: {
+                        	fontSize: '20px',
+                            fontWeight: '700',
+                        	color: '#7300e6',
+                        	fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif'
+                        }
+                    },
+                    scrollbar: {
+                        enabled: true,
+                        barBackgroundColor: '#7300e6',
+                        barBorderRadius: 7,
+                        barBorderWidth: 0,
+                        buttonBackgroundColor: '#7300e6',
+                        buttonBorderWidth: 0,
+                        buttonArrowColor: 'white',
+                        buttonBorderRadius: 7,
+                        rifleColor: 'white',
+                        trackBackgroundColor: 'white',
+                        trackBorderWidth: 1,
+                        trackBorderColor: 'silver',
+                        trackBorderRadius: 7
+                    },
+                    xAxis: {
+                        categories: [[${ chartMap.keySet() }]],
+                        labels: {
+                            style: {
+                                color: 'black',
+                                font: '11px Arial, sans-serif'
+                            }
+                        },
+                        crosshair: true,
+                        min: 0,
+                        max: 9
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Valori'
+                        },
+                        min: 0
+                    },
+                    tooltip: {
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                            '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                        area: {
+                            fillColor: {
+                                linearGradient: {
+                                    x1: 0,
+                                    y1: 0,
+                                    x2: 0,
+                                    y2: 1
+                                },
+                                stops: [
+                                    [0, '#DA22FF'],
+                                    [1, '#9733EE']
+                                ]
+                            },
+                            marker: {
+                                radius: 2
+                            },
+                            lineWidth: 1,
+                            states: {
+                                hover: {
+                                    lineWidth: 1
+                                }
+                            },
+                            threshold: null
+                        },
+                        series: {
+                            cursor: 'pointer',
+                            point: {
+                                events: {
+                                    click: function () {
+                                    	console.log(this.index);
+                                        let chartMap = [[${ chartMap }]];
+                                        let valueOfMeasurement = Object.values(chartMap)[this.index];
+                                        let hours = (valueOfMeasurement / 60);
+                                        let rhours = Math.floor(hours);
+                                        let minutes = (hours - rhours) * 60;
+                                        let rminutes = Math.round(minutes);
+                                        var element = document.getElementById('aditional-information');
+                                        if ($("#aditional-information").is(":hidden")) {
+                                            $("#aditional-information").slideDown("slow");
+                                            $('html, body').animate({ scrollTop: $("#aditional-information").offset().top }, 2000);
+                                        }
+                                        document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
+                                        document.getElementById("valueOfMeasurement").innerHTML = rhours + " h " + rminutes + " m ";
+                                        progressBarIndicator(minimum, middle, middle2, maximum, minimWidth, middleWidth, middle2Width, maximumWidth, valueOfMeasurement);
+                                    }
+                                }
+                            }
+                        }
+                    },
+
+                    series: [{
+                        type: 'area',
+                        name: 'Timp',
+                        data: [[${ chartMap.values() }]]
+                    }]
+                });
+
+
+                $('#stepCount').highcharts({
+                	 colors: ['#7300e6'],
+                     title: {
+                     	text: 'Grafic Pasi Parcursi',
+                         style: {
+                             fontSize: '60px',
+                             fontWeight: '700',
+                         	color: '#7300e6',
+                         	fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif'
+                         }
+                     },subtitle: {
+                         text: 'Sursa: Mobile Data Transfer',
+                         style: {
+                         	fontSize: '20px',
+                             fontWeight: '700',
+                         	color: '#7300e6',
+                         	fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif'
+                         }
+                     },
+                     scrollbar: {
+                         enabled: true,
+                         barBackgroundColor: '#7300e6',
+                         barBorderRadius: 7,
+                         barBorderWidth: 0,
+                         buttonBackgroundColor: '#7300e6',
+                         buttonBorderWidth: 0,
+                         buttonArrowColor: 'white',
+                         buttonBorderRadius: 7,
+                         rifleColor: 'white',
+                         trackBackgroundColor: 'white',
+                         trackBorderWidth: 1,
+                         trackBorderColor: 'silver',
+                         trackBorderRadius: 7
+                     },
+                     xAxis: {
+                         categories: [[${ chartMap.keySet() }]],
+                         labels: {
+                             style: {
+                                 color: 'black',
+                                 font: '11px Arial, sans-serif'
+                             }
+                         },
+                         crosshair: true,
+                         min: 0,
+                         max: 9
+                     },
+                     yAxis: {
+                         title: {
+                             text: 'Valori'
+                         },
+                         min: 0
+                     },
+                     tooltip: {
+                         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                             '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                         footerFormat: '</table>',
+                         shared: true,
+                         useHTML: true
+                     },
+                     legend: {
+                         enabled: false
+                     },
+                     plotOptions: {
+                         area: {
+                             fillColor: {
+                                 linearGradient: {
+                                     x1: 0,
+                                     y1: 0,
+                                     x2: 0,
+                                     y2: 1
+                                 },
+                                 stops: [
+                                     [0, '#DA22FF'],
+                                     [1, '#9733EE']
+                                 ]
+                             },
+                             marker: {
+                                 radius: 2
+                             },
+                             lineWidth: 1,
+                             states: {
+                                 hover: {
+                                     lineWidth: 1
+                                 }
+                             },
+                             threshold: null
+                         },
+                         series: {
+                             cursor: 'pointer',
+                             point: {
+                                 events: {
+                                     click: function () {
+                                    	 let chartMap = [[${ chartMap }]];
+                                         let valueOfMeasurement = Object.values(chartMap)[this.index];
+                                         document.getElementById("aditional-information").style.visibility = "visible";
+                                         var element = document.getElementById('aditional-information');
+                                         if ($("#aditional-information").is(":hidden")) {
+                                             $("#aditional-information").slideDown("slow");
+                                             $('html, body').animate({ scrollTop: $("#aditional-information").offset().top }, 2000);
+                                         }
+                                         document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
+                                         document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
+                                         progressBarIndicator(minimum, middle, middle2, maximum, minimWidth, middleWidth, middle2Width, maximumWidth, valueOfMeasurement);
+                                     }
+                                 }
+                             }
+                         }
+                     },
+
+                     series: [{
+                         type: 'area',
+                         name: 'Pasi Parcursi',
+                         data: [[${ chartMap.values() }]]
+                     }]
+                });
+
+                $('#heartRate').highcharts({
+                	 colors: ['#7300e6'],
+                     chart: {
+                         type: 'column'
+                     },
+                     title: {
+                    	 text: 'Grafic Ritm Cardiac',
+                         style: {
+                             fontSize: '60px',
+                             fontWeight: '700',
+                         	color: '#7300e6',
+                         	fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif'
+                         }
+                     },subtitle: {
+                         text: 'Sursa: Mobile Data Transfer',
+                         style: {
+                         	fontSize: '20px',
+                             fontWeight: '700',
+                         	color: '#7300e6',
+                         	fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif'
+                         }
+                     },
+                     scrollbar: {
+                         enabled: true,
+                         barBackgroundColor: '#7300e6',
+                         barBorderRadius: 7,
+                         barBorderWidth: 0,
+                         buttonBackgroundColor: '#7300e6',
+                         buttonBorderWidth: 0,
+                         buttonArrowColor: 'white',
+                         buttonBorderRadius: 7,
+                         rifleColor: 'white',
+                         trackBackgroundColor: 'white',
+                         trackBorderWidth: 1,
+                         trackBorderColor: 'silver',
+                         trackBorderRadius: 7
+                     },
+                     xAxis: {
+                         categories: [[${ chartMap.keySet() }]],
+                         labels: {
+                             style: {
+                                 color: 'black',
+                                 font: '11px Arial, sans-serif'
+                             }
+                         },
+                         crosshair: true,
+                         min: 0,
+                         max: 5
+                     },
+                     yAxis: {
+                         title: {
+                             text: 'Valori'
+                         },
+                         gridLineColor: 'transparent'
+                     },
+                     tooltip: {
+                         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                             '<td style="padding:0"><b>{point.y:.1f} BPM</b></td></tr>',
+                         footerFormat: '</table>',
+                         shared: true,
+                         useHTML: true
+                     },
+                     plotOptions: {
+                         column: {
+                             pointPadding: 0.2,
+                             borderWidth: 0,
+                             cropThreshold: 1000,
+                             borderRadiusTopLeft: 10,
+                             borderRadiusTopRight: 10,
+                             states: {
+                                 hover: {
+                                     color: '#000000'
+                                 }
+                             }
+                         }
+                     },
+                     series: [{
+                         name: 'Valoare',
+                         data: [[${ chartMap.values() }]],
+                         events: {
+                             legendItemClick: function (e) {
+                                 e.preventDefault()
+                             }
+                         },
+                         point: {
+                             events: {
+                                 click: function () {
+                                     let chartMap = [[${ chartMap }]];
+                                     let valueOfMeasurement = Object.values(chartMap)[this.index];
+                                     var element = document.getElementById('aditional-information');
+                                     if ($("#aditional-information").is(":hidden")) {
+                                         $("#aditional-information").slideDown("slow");
+                                         $('html, body').animate({ scrollTop: $("#aditional-information").offset().top }, 2000);
+                                     }
+                                     document.getElementById("dateOfMeasurement").innerHTML = Object.keys(chartMap)[this.index];
+                                     document.getElementById("valueOfMeasurement").innerHTML = Object.values(chartMap)[this.index];
+                                     progressBarIndicator(minimum, middle, middle2, maximum, minimWidth, middleWidth, middle2Width, maximumWidth, valueOfMeasurement);
+                                 }
+                             }
+                         }
+
+                     }]
+                });
+            });
+
+        });
+
+        function progressBarIndicator(minimum, middle, middle2, maximum, minimWidth, middleWidth, middle2Width, maximumWidth, valueOfMeasurement) {
+            let ok = false;
+            let result;
+            let lowObj;
+            if (minimum > valueOfMeasurement) {
+                ok = true;
+                result = "Scazut";
+                $('#success').css('background-color', "red");
+                if (0 < valueOfMeasurement && parseInt(minimum / 2, 10) > valueOfMeasurement) {
+                    $('#success').css('width', minimWidth - (minimWidth / 2) + "%");
+                    document.getElementById("success").innerHTML = minimWidth - (minimWidth / 2) + "%";
+                }
+                else if (parseInt(minimum / 2, 10) < valueOfMeasurement && parseInt(minimum, 10) > valueOfMeasurement) {
+                    $('#success').css('width', minimWidth + "%");
+                    document.getElementById("success").innerHTML = minimWidth + "%";
+                }
+                lowObj = results.find(element => element.result === result);
+            }
+            if (minimum < valueOfMeasurement && middle > valueOfMeasurement) {
+                ok = true;
+                result = "Normal"
+                $('#success').css('background-color', "purple");
+                if ((parseInt(minimum), 10) < valueOfMeasurement && (parseInt(minimum, 10) + parseInt(middle, 10)) / 2 > valueOfMeasurement) {
+                    $('#success').css('width', middleWidth - 13 + "%");
+                    document.getElementById("success").innerHTML = middleWidth - 13 + "%";
+                } else if ((parseInt(minimum, 10) + parseInt(middle, 10)) / 2 < valueOfMeasurement && parseInt(middle, 10) > valueOfMeasurement) {
+                    $('#success').css('width', middleWidth + "%");
+                    document.getElementById("success").innerHTML = middleWidth + "%";
+                }
+                ok = true;
+                lowObj = results.find(element => element.result === result);
+            }
+            if (middle < valueOfMeasurement && middle2 > valueOfMeasurement) {
+                ok = true;
+                result = "Normal-Crescut";
+                $('#success').css('background-color', "black");
+                if ((parseInt(middle), 10) < valueOfMeasurement && (parseInt(middle, 10) + parseInt(middle2, 10)) / 2 > valueOfMeasurement) {
+                    console.log("1500-1800");
+                    $('#success').css('width', middle2Width - 13 + "%");
+                    document.getElementById("success").innerHTML = middle2Width - 13 + "%";
+                }
+                else if ((parseInt(middle, 10) + parseInt(middle2, 10)) / 2 < valueOfMeasurement && parseInt(middle2, 10) > valueOfMeasurement) {
+                    console.log("1800-2400");
+                    $('#success').css('width', middle2Width + "%");
+                    document.getElementById("success").innerHTML = middle2Width + "%";
+                }
+                lowObj = results.find(element => element.result === result);
+            }
+            if (middle2 < valueOfMeasurement && maximum > valueOfMeasurement || maximum < valueOfMeasurement) {
+                ok = true;
+                result = "Crescut";
+                $('#success').css('background-color', "green");
+                if (parseInt(maximum, 10) < valueOfMeasurement && parseInt(maximum, 10) + parseInt((maximum / 2), 10) > valueOfMeasurement) {
+                    console.log("intre");
+                    $('#success').css('width', maximumWidth - 4 + "%");
+                    document.getElementById("success").innerHTML = maximumWidth - 4 + "%";
+                }
+                else if ((parseInt(middle2), 10) < valueOfMeasurement && (parseInt(middle2, 10) + parseInt(maximum, 10)) / 2 > valueOfMeasurement) {
+                    console.log("3000-3500");
+                    $('#success').css('width', maximumWidth - 10 + "%");
+                    document.getElementById("success").innerHTML = maximumWidth - 10 + "%";
+                }
+                else if ((parseInt(middle2, 10) + parseInt(middle2, 10)) / 2 < valueOfMeasurement && parseInt(maximum, 10) > valueOfMeasurement) {
+                    console.log("3500-4000");
+                    $('#success').css('width', maximumWidth - 7 + "%");
+                    document.getElementById("success").innerHTML = maximumWidth - 7 + "%";
+                } else if (parseInt(maximum, 10) < valueOfMeasurement) {
+                    console.log("4000 in sus");
+                    $('#success').css('width', maximumWidth + "%");
+                    document.getElementById("success").innerHTML = maximumWidth+ "%";
+                }
+                lowObj = results.find(element => element.result === result);
+            }
+            if (ok) {
+                if (chartOption === 'heartRate') {
+                    selectRecommendationByResult(result, chartOption, lowObj);
+                } else if (chartOption === 'stepCount') {
+                    selectRecommendationByResult(result, chartOption, lowObj);
+                } else if (chartOption === 'sleepAnalysis') {
+                    selectRecommendationByResult(result, chartOption, lowObj);
+                } else if (chartOption === 'activeEnergyBurned') {
+                    selectRecommendationByResult(result, chartOption, lowObj);
+                } else if (chartOption === 'bodyFatPercentage') {
+                    selectRecommendationByResult(result, chartOption, lowObj);
+                } else if (chartOption === 'bodyMassIndex') {
+                    selectRecommendationByResult(result, chartOption, lowObj);
+                } else if (chartOption === 'bodyMass') {
+                    selectRecommendationByResult(result, chartOption, lowObj);
+                } else if (chartOption === 'leanBodyMass') {
+                    selectRecommendationByResult(result, chartOption, lowObj);
+                } else if (chartOption === 'activeEnergyAccumulated') {
+                    selectRecommendationByResult(result, chartOption, lowObj);
+                } else if (chartOption === 'activeEnergyBurnedBuddy') {
+                    selectRecommendationByResult(result, chartOption, lowObj);
+                }
+            }
+        }
+
+        function selectRecommendationByResult(result, chartOption, lowObj) {
+            let chart = chartOption;
+            let recommendation = 'Recommendation';
+            if (result === 'Scazut') {
+                document.getElementById("resultOfMeasurement").innerHTML = lowObj[chart + recommendation];
+            } else if (result === 'Normal') {
+                document.getElementById("resultOfMeasurement").innerHTML = lowObj[chart + recommendation];
+            } else if (result === 'Normal-Crescut') {
+                document.getElementById("resultOfMeasurement").innerHTML = lowObj[chart + recommendation];
+            } else if (result === 'Crescut') {
+                document.getElementById("resultOfMeasurement").innerHTML = lowObj[chart + recommendation];
+            }
+        }
+    </script>
 </body>
 </html>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Purchased Training Plans</title>
+<link th:href="@{css/font-face.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-4.7/css/font-awesome.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-5/css/fontawesome-all.min.css}"
+	rel="stylesheet" media="all">
+<link
+	th:href="@{vendor/mdi-font/css/material-design-iconic-font.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/animsition/animsition.min.css}" rel="stylesheet"
+	media="all">
+<link
+	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/wow/animate.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/css-hamburgers/hamburgers.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/slick/slick.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/select2/select2.min.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{css/theme.css}" rel="stylesheet" media="all">
+<link th:href="@{css/cart.css}" rel="stylesheet" media="all">
+<link th:href="@{css/style.css}" rel="stylesheet" media="all">
+</head>
+<body>
+	<div class="page-wrapper">
+		<header style="background-color: white;"
+			class="header-mobile d-block d-lg-none">
+			<div class="header-mobile__bar">
+				<div class="container-fluid">
+					<div class="header-mobile-inner">
+						<a class="logo" href="index.html"> <img
+							src="images/logo/Screenshot_18.png">
+						</a>
+						<button class="hamburger hamburger--slider" type="button">
+							<span class="hamburger-box"> <span class="hamburger-inner"></span>
+							</span>
+						</button>
+					</div>
+				</div>
+			</div>
+			<nav class="navbar-mobile">
+				<div class="container-fluid">
+					<ul class="navbar-mobile__list list-unstyled">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<aside style="background-color: white;"
+			class="menu-sidebar d-none d-lg-block">
+			<div class="logo">
+				<a href="#"> <img src="images/logo/Screenshot_18.png">
+				</a>
+			</div>
+			<div class="menu-sidebar__content js-scrollbar1">
+				<nav class="navbar-sidebar">
+					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</nav>
+			</div>
+		</aside>
+		<div class="page-container">
+			<div class="main-content">
+				<div class="section__content section__content--p30">
+					<div th:unless="${#lists.size(plans)}"
+						style="font-size: 90px; color: white; font-weight: 800; text-align: center; position: relative; top: 200px;">
+						Nu ai achizitionat niciun plan</div>
+					<div th:if="${#lists.size(plans)}">
+						<h3
+							style="text-align: center; font-size: 60px; margin-top: 30px; margin-bottom: 30px; color: white; font-weight: 700;">Planuri
+							Achizitionate</h3>
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="row">
+										<th:block th:if="${plans.size() >= 3}">
+											<div class="col-md-4" style="margin-bottom: 100px;"
+												th:each="plan, iterStat : ${plans}">
+												<div class="card-type-2"
+													style="border-radius: 30px;">
+													<th:block
+														th:if="${plan.helperPlan.typeOfPlan eq 'Antrenament' and user.gender.getGender() eq 'Barbat'}">
+														<div class="img-c"
+															style="height: 300px; margin-top: -20px;">
+															<img
+																th:src="@{'images/plans/trainings/man/man_training'+${iterStat.index+1}+'.jpg'}"
+																onerror="if (this.src != 'images/di.png') this.src = ''images/di.png'';"
+																class="img scale-img" width="800" height="800"
+																style="height: 80%; width: 90%" alt="green apple slice">
+														</div>
+													</th:block>
+													<th:block
+														th:if="${plan.helperPlan.typeOfPlan eq 'Antrenament' and user.gender.getGender() eq 'Femeie'}">
+														<div class="img-c"
+															style="height: 300px; margin-top: -20px;">
+															<img
+																th:src="@{'images/plans/trainings/woman/woman_training'+${iterStat.index+1}+'.jpg'}"
+																onerror="if (this.src != 'images/di.png') this.src = ''images/di.png'';"
+																class="img scale-img" width="800" height="800"
+																style="height: 80%; width: 90%" alt="green apple slice">
+														</div>
+													</th:block>
+													<th:block
+														th:if="${plan.helperPlan.typeOfPlan eq 'Dieta'}">
+														<div class="img-c"
+															style="height: 300px; margin-top: -20px;">
+															<img
+																th:src="@{'images/plans/diets/diet'+${iterStat.index+1}+'.jpg'}"
+																onerror="if (this.src != 'images/di.png') this.src = ''images/di.png'';"
+																class="img scale-img" width="800" height="800"
+																style="height: 80%; width: 90%" alt="green apple slice">
+														</div>
+													</th:block>
+													<div class="device-info" style="margin-top: 0px;">
+														<h2
+															style="text-align: center; font-size: 25px; margin-bottom: 20px;"
+															th:text="${plan.helperPlan.name}"></h2>
+														<h3
+															style="font-size: 20px; margin-bottom: 10px; font-weight: 100;"
+															th:text="${'Expert: ' + plan.helperPlan.helper.username}"></h3>
+														<h6
+															style="font-size: 15px; margin-bottom: 25px; font-weight: 100;"
+															th:text="${'Data Achizitionarii: ' + plan.dateOfPurchase}"></h6>
+														<div class="btn-group">
+															<form th:action="@{/plan_content}" method="post">
+																<th:block
+																	th:if="${plan.helperPlan.typeOfPlan eq 'Antrenament'}">
+																	<input type="hidden" name="trainingPlanId"
+																		th:value="${plan.helperPlan.helperPlanId}" />
+																	<button type="submit"
+																		style="padding: 10px 15px; letter-spacing: 0px; font-size: 15px; text-decoration: none; font-family: 'Montserrat', sans-serif; color: white; background: #7300e6; font-weight: bold; border-radius: 15px; margin: 0px !important;">Vezi
+																		Exercitii</button>
+																</th:block>
+																<th:block
+																	th:if="${plan.helperPlan.typeOfPlan eq 'Dieta'}">
+																	<input type="hidden" name="dietPlanId"
+																		th:value="${plan.helperPlan.helperPlanId}" />
+																	<button type="submit"
+																		style="padding: 10px 15px; letter-spacing: 0px; font-size: 15px; text-decoration: none; font-family: 'Montserrat', sans-serif; color: white; background: #7300e6; font-weight: bold; border-radius: 15px; margin: 0px !important;">Vezi
+																		Alimente</button>
+																</th:block>
+															</form>
+														</div>
+													</div>
+												</div>
+											</div>
+										</th:block>
+										<th:block th:if="${plans.size() eq 2}">
+											<div class="col-md-4"
+												style="margin-bottom: 100px; margin-left: 155px; margin-right: -50px;"
+												th:each="plan, iterStat : ${plans}">
+												<div class="card-type-2"
+													style="border-radius: 0px; filter: drop-shadow(5px 5px 5px black);">
+													<th:block
+														th:if="${plan.helperPlan.typeOfPlan eq 'Antrenament' and user.gender.getGender() eq 'Barbat'}">
+														<div class="img-c"
+															style="height: 300px; margin-top: -20px;">
+															<img
+																th:src="@{'images/plans/trainings/man/man_training'+${iterStat.index+1}+'.jpg'}"
+																onerror="if (this.src != 'images/di.png') this.src = ''images/di.png'';"
+																class="img scale-img" width="800" height="800"
+																style="height: 80%; width: 90%" alt="green apple slice">
+														</div>
+													</th:block>
+													<th:block
+														th:if="${plan.helperPlan.typeOfPlan eq 'Antrenament' and user.gender.getGender() eq 'Femeie'}">
+														<div class="img-c"
+															style="height: 300px; margin-top: -20px;">
+															<img
+																th:src="@{'images/plans/trainings/woman/woman_training'+${iterStat.index+1}+'.jpg'}"
+																onerror="if (this.src != 'images/di.png') this.src = ''images/di.png'';"
+																class="img scale-img" width="800" height="800"
+																style="height: 80%; width: 90%" alt="green apple slice">
+														</div>
+													</th:block>
+													<th:block
+														th:if="${plan.helperPlan.typeOfPlan eq 'Dieta'}">
+														<div class="img-c"
+															style="height: 300px; margin-top: -20px;">
+															<img
+																th:src="@{'images/plans/diets/diet'+${iterStat.index+1}+'.jpg'}"
+																onerror="if (this.src != 'images/di.png') this.src = ''images/di.png'';"
+																class="img scale-img" width="800" height="800"
+																style="height: 80%; width: 90%" alt="green apple slice">
+														</div>
+													</th:block>
+													<div class="device-info" style="margin-top: 0px;">
+														<h2
+															style="text-align: center; font-size: 25px; margin-bottom: 20px;"
+															th:text="${plan.helperPlan.name}"></h2>
+														<h3
+															style="font-size: 20px; margin-bottom: 10px; font-weight: 100;"
+															th:text="${'Expert: ' + plan.helperPlan.helper.username}"></h3>
+														<h6
+															style="font-size: 15px; margin-bottom: 25px; font-weight: 100;"
+															th:text="${'Data Achizitionarii: ' + plan.dateOfPurchase}"></h6>
+														<div class="btn-group">
+															<form th:action="@{/plan_content}" method="post">
+																<th:block
+																	th:if="${plan.helperPlan.typeOfPlan eq 'Antrenament'}">
+																	<input type="hidden" name="trainingPlanId"
+																		th:value="${plan.helperPlan.helperPlanId}" />
+																	<button type="submit"
+																		style="padding: 10px 15px; letter-spacing: 0px; font-size: 15px; text-decoration: none; font-family: 'Montserrat', sans-serif; color: white; background: #7300e6; font-weight: bold; border-radius: 15px; margin: 0px !important;">Vezi
+																		Exercitii</button>
+																</th:block>
+																<th:block
+																	th:if="${plan.helperPlan.typeOfPlan eq 'Dieta'}">
+																	<input type="hidden" name="dietPlanId"
+																		th:value="${plan.helperPlan.helperPlanId}" />
+																	<button type="submit"
+																		style="padding: 10px 15px; letter-spacing: 0px; font-size: 15px; text-decoration: none; font-family: 'Montserrat', sans-serif; color: white; background: #7300e6; font-weight: bold; border-radius: 15px; margin: 0px !important;">Vezi
+																		Alimente</button>
+																</th:block>
+															</form>
+														</div>
+													</div>
+												</div>
+											</div>
+										</th:block>
+										<th:block th:if="${plans.size() eq 1}">
+											<div class="col-md-4 mx-auto"
+												style="margin-bottom: 100px; margin-left: 155px; margin-right: -50px;"
+												th:each="plan, iterStat : ${plans}">
+												<div class="card-type-2"
+													style="border-radius: 0px; filter: drop-shadow(5px 5px 5px black);">
+													<th:block
+														th:if="${plan.helperPlan.typeOfPlan eq 'Antrenament' and user.gender.getGender() eq 'Barbat'}">
+														<div class="img-c"
+															style="height: 300px; margin-top: -20px;">
+															<img
+																th:src="@{'images/plans/trainings/man/man_training'+${iterStat.index+1}+'.jpg'}"
+																onerror="if (this.src != 'images/di.png') this.src = ''images/di.png'';"
+																class="img scale-img" width="800" height="800"
+																style="height: 80%; width: 90%" alt="green apple slice">
+														</div>
+													</th:block>
+													<th:block
+														th:if="${plan.helperPlan.typeOfPlan eq 'Antrenament' and user.gender.getGender() eq 'Femeie'}">
+														<div class="img-c"
+															style="height: 300px; margin-top: -20px;">
+															<img
+																th:src="@{'images/plans/trainings/woman/woman_training'+${iterStat.index+1}+'.jpg'}"
+																onerror="if (this.src != 'images/di.png') this.src = ''images/di.png'';"
+																class="img scale-img" width="800" height="800"
+																style="height: 80%; width: 90%" alt="green apple slice">
+														</div>
+													</th:block>
+													<th:block
+														th:if="${plan.helperPlan.typeOfPlan eq 'Dieta'}">
+														<div class="img-c"
+															style="height: 300px; margin-top: -20px;">
+															<img
+																th:src="@{'images/plans/diets/diet'+${iterStat.index+1}+'.jpg'}"
+																onerror="if (this.src != 'images/di.png') this.src = ''images/di.png'';"
+																class="img scale-img" width="800" height="800"
+																style="height: 80%; width: 90%" alt="green apple slice">
+														</div>
+													</th:block>
+													<div class="device-info" style="margin-top: 0px;">
+														<h2
+															style="text-align: center; font-size: 25px; margin-bottom: 20px;"
+															th:text="${plan.helperPlan.name}"></h2>
+														<h3
+															style="font-size: 20px; margin-bottom: 10px; font-weight: 100;"
+															th:text="${'Expert: ' + plan.helperPlan.helper.username}"></h3>
+														<h6
+															style="font-size: 15px; margin-bottom: 25px; font-weight: 100;"
+															th:text="${'Data Achizitionarii: ' + plan.dateOfPurchase}"></h6>
+														<div class="btn-group">
+															<form th:action="@{/plan_content}" method="post">
+																<th:block
+																	th:if="${plan.helperPlan.typeOfPlan eq 'Antrenament'}">
+																	<input type="hidden" name="trainingPlanId"
+																		th:value="${plan.helperPlan.helperPlanId}" />
+																	<button type="submit"
+																		style="padding: 10px 15px; letter-spacing: 0px; font-size: 15px; text-decoration: none; font-family: 'Montserrat', sans-serif; color: white; background: #7300e6; font-weight: bold; border-radius: 15px; margin: 0px !important;">Vezi
+																		Exercitii</button>
+																</th:block>
+																<th:block
+																	th:if="${plan.helperPlan.typeOfPlan eq 'Dieta'}">
+																	<input type="hidden" name="dietPlanId"
+																		th:value="${plan.helperPlan.helperPlanId}" />
+																	<button type="submit"
+																		style="padding: 10px 15px; letter-spacing: 0px; font-size: 15px; text-decoration: none; font-family: 'Montserrat', sans-serif; color: white; background: #7300e6; font-weight: bold; border-radius: 15px; margin: 0px !important;">Vezi
+																		Alimente</button>
+																</th:block>
+															</form>
+														</div>
+													</div>
+												</div>
+											</div>
+										</th:block>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</body>
+</html>

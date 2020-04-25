@@ -15,13 +15,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Range;
 
 @Entity
 @Table(name = "foods")
-public class Food {
+public class Food implements Comparable<Food> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,36 +35,35 @@ public class Food {
 
 	@Column(name = "name", nullable = false)
 	@NotEmpty(message = "Campul este obligatoriu !")
-	@Range(min = 0, message = "Valorile negative nu sunt permise")
 	private String name;
 
 	@Column(name = "calories", nullable = true)
-	@NotEmpty(message = "Campul este obligatoriu !")
+	@NotNull(message = "Campul este obligatoriu !")
 	@Range(min = 0, message = "Valorile negative nu sunt permise")
 	private float calories;
 
 	@Column(name = "protein", nullable = true)
-	@NotEmpty(message = "Campul este obligatoriu !")
+	@NotNull(message = "Campul este obligatoriu !")
 	@Range(min = 0, message = "Valorile negative nu sunt permise")
 	private float protein;
 
 	@Column(name = "lipids", nullable = true)
-	@NotEmpty(message = "Campul este obligatoriu !")
+	@NotNull(message = "Campul este obligatoriu !")
 	@Range(min = 0, message = "Valorile negative nu sunt permise")
 	private float lipids;
 
 	@Column(name = "carbohydrates", nullable = true)
-	@NotEmpty(message = "Campul este obligatoriu !")
+	@NotNull(message = "Campul este obligatoriu !")
 	@Range(min = 0, message = "Valorile negative nu sunt permise")
 	private float carbohydrates;
 
 	@Column(name = "fiber", nullable = true)
-	@NotEmpty(message = "Campul este obligatoriu !")
+	@NotNull(message = "Campul este obligatoriu !")
 	@Range(min = 0, message = "Valorile negative nu sunt permise")
 	private float fiber;
 
 	@Column(name = "weight", nullable = true)
-	@NotEmpty(message = "Campul este obligatoriu !")
+	@NotNull(message = "Campul este obligatoriu !")
 	@Range(min = 0, message = "Valorile negative nu sunt permise")
 	private float weight;
 
@@ -211,5 +211,10 @@ public class Food {
 
 	public void setFoodsFeedbacks(Set<FoodFeedback> foodsFeedbacks) {
 		this.foodsFeedbacks = foodsFeedbacks;
+	}
+
+	@Override
+	public int compareTo(Food o) {
+		return (int) (this.foodId - o.getFoodId());
 	}
 }
