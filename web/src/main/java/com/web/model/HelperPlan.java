@@ -38,11 +38,11 @@ public class HelperPlan implements Comparable<HelperPlan> {
 	private Account helper;
 
 	@Column(name = "name")
-	@NotEmpty(message = "Campul este obligatoriu !")
+	@NotEmpty(message = "**Campul este obligatoriu")
 	private String name;
 
 	@Column(name = "description")
-	@NotEmpty(message = "Campul este obligatoriu !")
+	@NotEmpty(message = "**Campul este obligatoriu")
 	private String description;
 
 	@Column(name = "for_who")
@@ -50,11 +50,12 @@ public class HelperPlan implements Comparable<HelperPlan> {
 	private Gender forWho;
 
 	@Column(name = "type_of_plan")
+	@NotEmpty(message = "**Campul este obligatoriu")
 	private String typeOfPlan;
 
 	@Column(name = "price")
 	@Range(min = 0, message = "Valorile negative nu sunt permise")
-	@NotNull(message = "Campul este obligatoriu !")
+	@NotNull(message = "**Campul este obligatoriu")
 	private Integer price;
 
 	@Column(name = "creation_date")

@@ -35,11 +35,12 @@ public class CurriculumVitaeController {
 	@GetMapping(path = { "/curriculum-vitae" })
 	public String curriculumVitae(Model model) {
 		Account account = accountService.getAccountConnected();
-		boolean roleNutritionist = false;
-		if (account.getRoles().stream().map(element -> element.getName().equals("ROLE_NUTRITIONIST")) != null) {
-			roleNutritionist = true;
+		Role selectedRole = new Role();
+		for (Role role : account.getRoles()) {
+			selectedRole = role;
+			break;
 		}
-		if (account.isActive()) {
+		if (!account.isActive()) {
 			if (!model.containsAttribute("curriculumVitae")) {
 				AccountInformation curriculumVitae = new AccountInformation();
 				curriculumVitae.setSkills(new ArrayList<Skill>());
@@ -49,7 +50,7 @@ public class CurriculumVitaeController {
 			}
 			model.addAttribute("account", account);
 			return "common/curriculum-vitae";
-		} else if (roleNutritionist) {
+		} else if (selectedRole.getName().equals("ROLE_NUTRITIONIST")) {
 			return "redirect:/nutritionist";
 		} else {
 			return "redirect:/trainer";
@@ -97,10 +98,10 @@ public class CurriculumVitaeController {
 
 			for (Role role : currentAccount.getRoles()) {
 				if (role.getName().equals("ROLE_TRAINER")) {
-					attr.addFlashAttribute("message", "Felicitari ! Cv-ul tau a fost trimis cu succes !");
+					attr.addFlashAttribute("message", "Cv-ul tau a fost trimis cu succes !");
 					return "redirect:/trainer";
 				} else if (role.getName().equals("ROLE_NUTRITIONIST")) {
-					attr.addFlashAttribute("message", "Felicitari ! Cv-ul tau a fost trimis cu succes !");
+					attr.addFlashAttribute("message", "Cv-ul tau a fost trimis cu succes !");
 					return "redirect:/nutritionist";
 				}
 			}

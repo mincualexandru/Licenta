@@ -22,18 +22,19 @@ public class Education {
 	private Integer educationId;
 
 	@Column(name = "start")
-	@Pattern(regexp = "^(194[5-9]|19[5-9]\\d|200\\d|201[0-9])$", message = "Anul trebuie sa fie cuprins intre 1945 - 2019")
+	@Pattern(regexp = "^(194[5-9]|19[5-9]\\d|200\\d|201[0-9])$", message = "**Anul de inceput trebuie sa fie cuprins intre 1945 - 2019")
 	private String start;
 
 	@Column(name = "end")
-	@Pattern(regexp = "^(194[5-9]|19[5-9]\\d|200\\d|201[0-9]|2020)$", message = "Anul trebuie sa fie cuprins intre 1945 - 2020")
+	@Pattern(regexp = "^(194[5-9]|19[5-9]\\d|200\\d|201[0-9]|2020)$", message = "**Anul de sfarsit trebuie sa fie cuprins intre 1945 - 2020")
 	private String end;
 
 	@Column(name = "name")
-	@Size(min = 3, message = "Valoarea minima a dimensiunii campului este de 3 caractere")
+	@Size(min = 3, message = "**Valoarea minima a dimensiunii campului 'Nume' este de 3 caractere")
 	private String name;
 
 	@Column(name = "city")
+	@Size(min = 3, message = "**Valoarea minima a dimensiunii campului 'Oras' este de 3 caractere")
 	private String city;
 
 	@ManyToOne

@@ -9,6 +9,7 @@
 	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
 	rel="stylesheet" media="all">
 <link th:href="@{css/theme.css}" rel="stylesheet" media="all">
+<link th:href="@{css/cart.css}" rel="stylesheet" media="all">
 <style>
 .table tbody td, .table tbody th {
 	border: 0;
@@ -214,14 +215,41 @@ table {
 											unul dintre antrenorii tai</li>
 									</th:block>
 								</ul>
-								<div style="color: white; font-size: 25px; letter-spacing: 2px;">Pentru activare intra <a class="activate" th:href="@{/action_activate_account}">aici</a></div>
+								<div style="color: white; font-size: 25px; letter-spacing: 2px;">
+									Pentru activare intra <a class="activate"
+										th:href="@{/action_activate_account}">aici</a>
+								</div>
 							</div>
 						</div>
-						<div style="text-align: center; font-size: 70px; margin-bottom: 60px; color: white; font-weight: 700;" th:unless="${passedTenDaysFoodEaten and passedTenDaysExerciseDone}">
-							Cont Dezactivat
-						</div>
+						<div
+							style="text-align: center; font-size: 70px; margin-bottom: 60px; color: white; font-weight: 700;"
+							th:unless="${passedTenDaysFoodEaten and passedTenDaysExerciseDone}">
+							Cont Dezactivat</div>
 					</div>
 					<div th:if="${user.active == true}">
+						<th:block th:each="ex: ${exercisesDoneToday}">
+							<input type="hidden" th:value="${ex.exercise.caloriesBurned}" />
+						</th:block>
+						<th:block th:each="fd: ${foodsEatenToday}">
+							<input type="hidden" th:value="${fd.food.calories}" />
+						</th:block>
+						<div class="alert" id="attentionToCalories"
+							th:if="${#aggregates.sum(foodsEatenToday.![food.calories]) > #aggregates.sum(exercisesDoneToday.![exercise.caloriesBurned])}">
+							<div
+								style="float: left; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 250px;">
+								<h5
+									style="font-weight: 900; font-size: 20px; margin-bottom: 5px; color: red;">ATENTIE</h5>
+								<p style="font-size: 13px; width: 270px; letter-spacing: 0.2px;">Astazi numarul
+									caloriilor acumulate este <br> mai mare decat cel al caloriilor
+									arse!</p>
+							</div>
+							<div style="float: right;">
+								<span
+									style="position: relative; top: -15px; right: -15px; font-size: 40px;"
+									class="closebtn"
+									onclick="document.getElementById('attentionToCalories').style.display = 'none';">&times;</span>
+							</div>
+						</div>
 						<div
 							style="text-align: center; font-size: 70px; margin-bottom: 60px; color: white; font-weight: 700;"
 							th:text="${user.username}"></div>
@@ -306,13 +334,6 @@ table {
 										style="position: relative; width: auto; height: 350px;">
 										<div class="product-text"
 											style="z-index: 2; color: black; text-align: center; font-size: 15px; position: relative;">
-											<th:block th:each="ex: ${exercisesDoneToday}">
-												<input type="hidden"
-													th:value="${ex.exercise.caloriesBurned}" />
-											</th:block>
-											<th:block th:each="fd: ${foodsEatenToday}">
-												<input type="hidden" th:value="${fd.food.calories}" />
-											</th:block>
 											<div
 												style="display: inline-flex; align-items: baseline; font-size: 20px;">
 												Calorii Arse:
@@ -348,9 +369,117 @@ table {
 											<div
 												style="display: inline-flex; align-items: baseline; font-size: 20px;">
 												Exercitii Efectuate:
-												<div
-													style="color: #7300e6; margin-left: 5px; margin-right: 10px; font-size: 60px; font-weight: 900;"
-													th:text="${exercisesDoneToday.size()}"></div>
+												<button data-toggle="modal"
+													data-target="#modal-exercises-done-today"
+													th:attr="data-target='#modal-exercises-done-today'"
+													class="view-ex-or-food"
+													th:text="${exercisesDoneToday.size()}"
+													style="margin-left: 5px; margin-right: 10px; font-size: 60px; font-weight: 900;"></button>
+												<div class="modal modal-exercises-done-today fade in"
+													th:id="modal-exercises-done-today">
+													<div class="modal-dialog"
+														style="overflow-y: initial !important;">
+														<div class="modal-content"
+															style="box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6); border-radius: 12px; width: 950px; position: relative; left: -50px;">
+															<div class="modal-body"
+																style="height: 680px; overflow-y: auto; overflow-x: hidden;">
+																<div style="text-align: center; color: #7300e6;">
+																	<h2
+																		style="color: #7300e6; font-size: 45px; margin-bottom: 40px; margin-top: 20px;">Exercitii
+																		Efectuate Astazi</h2>
+																</div>
+																<div class="row" style="position: relative; left: 65px;">
+																	<div class="col-md-5"
+																		th:each="ex, iterStat : ${exercisesDoneToday}">
+																		<div class="card-type-2"
+																			style="position: relative; height: 450px; background-color: #f6f6f6; border-radius: 30px; border: 0; margin-bottom: 25px;">
+																			<div class="img-c"
+																				style="padding-top: 100%; top: -50px; position: relative; height: 500px;">
+																				<th:block
+																					th:if="${ex.exercise.exerciseImages.size() > 0 and ex.exercise.trainingPlan.forWho.getGender() eq 'Barbat'}">
+																					<img style="height: 300px;" class="img" width="800"
+																						height="800"
+																						th:src="@{'images/plans/trainings/man/exercise/'+${ex.exercise.exerciseImages[0].fileName}}">
+																				</th:block>
+																				<th:block
+																					th:if="${ex.exercise.exerciseImages.size() > 0 and ex.exercise.trainingPlan.forWho.getGender() eq 'Femeie'}">
+																					<img style="height: 300px;" class="img" width="800"
+																						height="800"
+																						th:src="@{'images/plans/trainings/woman/exercise/'+${ex.exercise.exerciseImages[0].fileName}}">
+																				</th:block>
+																				<th:block
+																					th:if="${ex.exercise.exerciseImages.size() eq 0}">
+																					<img style="height: 300px;" class="img" width="800"
+																						height="800" th:src="@{'images/di.png'}">
+																				</th:block>
+																			</div>
+																			<div class="overlay-food"
+																				style="background-color: #f6f6f6;">
+																				<div class="text" style="left: 47%;">
+																					<div
+																						style="font-size: 45px; color: #7300e6; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;"
+																						th:text="${ex.exercise.name}"></div>
+																					<span
+																						style="font-size: 15px; color: black; font-weight: 600; display: block;">Data
+																						Executiei</span> <span
+																						style="font-size: 15px; color: gray; font-weight: 100;"
+																						th:text="${ex.dateOfExecution}"></span>
+																					<div class="posts" style="margin-top: 10px;">
+																						<div class="one" style="font-weight: 100;">
+																							<span style="display: block;">Calorii Arse</span>
+																							<span
+																								style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																								th:text="${ex.exercise.caloriesBurned}"></span>
+																							<img
+																								style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																								src="/images/logo/burning.png">
+																						</div>
+																						<div class="two" style="font-weight: 100;">
+																							<span style="display: block;">Numar Serii</span>
+																							<span
+																								style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																								th:text="${ex.exercise.numberOfSeries}"></span>
+																							<img
+																								style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																								src="/images/logo/gym.png">
+																						</div>
+																						<div class="two" style="font-weight: 100;">
+																							<span style="display: block;">Numar
+																								Repetari</span> <span
+																								style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																								th:text="${ex.exercise.numberOfReps}"></span> <img
+																								style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																								src="/images/logo/muscle.png">
+																						</div>
+																					</div>
+																					<div class="posts" style="margin-top: 10px;">
+																						<div class="one" style="font-weight: 100;">
+																							<span style="display: block;">Grupa Muschi</span>
+																							<span
+																								style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																								th:text="${ex.exercise.trainedMuscleGroup.getMuscleGroup()}"></span>
+																							<img
+																								style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																								src="/images/logo/treadmill.png">
+																						</div>
+																						<div class="two" style="font-weight: 100;">
+																							<span style="display: block;">Categorie</span> <span
+																								style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																								th:text="${ex.exercise.exerciseCategory}"></span>
+																							<img
+																								style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																								src="/images/logo/ssss.png">
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
 												<img style="width: 40px; height: 40px;"
 													src="/images/logo/ssss.png">
 											</div>
@@ -358,18 +487,288 @@ table {
 											<div
 												style="display: inline-flex; align-items: baseline; font-size: 20px;">
 												Alimente Consumate:
-												<div
-													style="color: #7300e6; margin-left: 5px; margin-right: 10px; font-size: 60px; font-weight: 900;"
-													th:text="${foodsEatenToday.size()}"></div>
+												<button data-toggle="modal"
+													data-target="#modal-foods-eaten-today"
+													th:attr="data-target='#modal-foods-eaten-today'"
+													class="view-ex-or-food" th:text="${foodsEatenToday.size()}"
+													style="margin-left: 5px; margin-right: 10px; font-size: 60px; font-weight: 900;"></button>
+												<div class="modal modal-foods-eaten-today fade in"
+													th:id="modal-foods-eaten-today">
+													<div class="modal-dialog"
+														style="overflow-y: initial !important;">
+														<div class="modal-content"
+															style="box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6); border-radius: 12px; width: 950px; position: relative; left: -50px;">
+															<div class="modal-body"
+																style="height: 680px; overflow-y: auto; overflow-x: hidden;">
+																<div style="text-align: center; color: #7300e6;">
+																	<h2
+																		style="color: #7300e6; font-size: 45px; margin-bottom: 40px; margin-top: 20px;">Alimente
+																		Consumate Astazi</h2>
+																</div>
+																<div class="row" style="position: relative; left: 65px;">
+																	<div class="col-md-5"
+																		th:each="fe, iterStat : ${foodsEatenToday}">
+																		<div class="card-type-2"
+																			style="position: relative; height: 450px; background-color: #f6f6f6; border-radius: 30px; border: 0; margin-bottom: 25px;">
+																			<div class="img-c"
+																				style="padding-top: 100%; top: -50px; position: relative; height: 500px;">
+																				<th:block th:if="${fe.food.images.size() > 0}">
+																					<img style="height: 300px;" class="img" width="800"
+																						height="800"
+																						th:src="@{'images/plans/diets/'+${fe.food.images[0].fileName}}">
+																				</th:block>
+																				<th:block th:if="${fe.food.images.size() eq 0}">
+																					<img style="height: 300px;" class="img" width="800"
+																						height="800" th:src="@{'images/di.png'}">
+																				</th:block>
+																			</div>
+																			<div class="overlay-food"
+																				style="background-color: #f6f6f6;">
+																				<div class="text" style="left: 47%;">
+																					<div
+																						style="font-size: 45px; color: #7300e6; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;"
+																						th:text="${fe.food.name}"></div>
+																					<span
+																						style="font-size: 15px; color: black; font-weight: 600; display: block;">Data
+																						Consumarii</span> <span
+																						style="font-size: 15px; color: gray; font-weight: 100;"
+																						th:text="${fe.dateOfExecution}"></span>
+																					<div class="posts" style="margin-top: 10px;">
+																						<div class="one" style="font-weight: 100;">
+																							<span style="display: block;">Calorii</span> <span
+																								style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																								th:text="${fe.food.calories}"></span> <img
+																								style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																								src="/images/logo/meal.png">
+																						</div>
+																						<div class="two" style="font-weight: 100;">
+																							<span style="display: block;">Proteine</span> <span
+																								style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																								th:text="${fe.food.protein}"></span> <img
+																								style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																								src="/images/logo/proteins.png">
+																						</div>
+																						<div class="two" style="font-weight: 100;">
+																							<span style="display: block;">Gramaj</span> <span
+																								style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																								th:text="${fe.food.weight}"></span> <img
+																								style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																								src="/images/logo/scale.png">
+																						</div>
+																					</div>
+																					<div class="posts" style="margin-top: 10px;">
+																						<div class="one" style="font-weight: 100;">
+																							<span style="display: block;">Fibre</span> <span
+																								style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																								th:text="${fe.food.fiber}"></span> <img
+																								style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																								src="/images/logo/vegetable.png">
+																						</div>
+																						<div class="two" style="font-weight: 100;">
+																							<span style="display: block;">Carbohidrati</span>
+																							<span
+																								style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																								th:text="${fe.food.carbohydrates}"></span> <img
+																								style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																								src="/images/logo/potato.png">
+																						</div>
+																						<div class="one" style="font-weight: 100;">
+																							<span style="display: block;">Lipide</span> <span
+																								style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																								th:text="${fe.food.lipids}"></span> <img
+																								style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																								src="/images/logo/trans-fat.png">
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
 												<img style="width: 40px; height: 40px;"
 													src="/images/logo/vegetable.png">
 											</div>
 											<div
 												style="display: inline-flex; align-items: baseline; font-size: 20px;">
 												Masuratori Calculate:
-												<div
-													style="color: #7300e6; margin-left: 5px; margin-right: 10px; font-size: 60px; font-weight: 900;"
-													th:text="${measurementsToday.size()}"></div>
+												<button data-toggle="modal"
+													data-target="#modal-foods-eaten-today"
+													th:attr="data-target='#modal-measurements-today'"
+													class="view-ex-or-food"
+													th:text="${measurementsToday.size()}"
+													style="margin-left: 5px; margin-right: 10px; font-size: 60px; font-weight: 900;"></button>
+												<div class="modal modal-measurements-today fade in"
+													th:id="modal-measurements-today">
+													<div class="modal-dialog"
+														style="overflow-y: initial !important;">
+														<div class="modal-content"
+															style="box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6); border-radius: 12px; width: 950px; position: relative; left: -50px;">
+															<div class="modal-body"
+																style="height: 680px; overflow-y: auto; overflow-x: hidden;">
+																<div style="text-align: center; color: #7300e6;">
+																	<h2
+																		style="color: #7300e6; font-size: 45px; margin-bottom: 40px; margin-top: 20px;">Masuratori
+																		Calculate Astazi</h2>
+																</div>
+																<div class="row" style="position: relative; left: 75px;">
+																	<div class="col-md-5"
+																		th:each="measure: ${measurementsToday}"
+																		style="margin-bottom: 25px;">
+																		<div class="card-type-2"
+																			style="height: 265px; border-radius: 37px; position: relative; float: left; padding: 30px; background-color: #7300e6;">
+																			<th:block th:switch="${measure.name}">
+																				<th:block
+																					th:case="'HKQuantityTypeIdentifierActiveEnergyAccumulated'">
+																					<img
+																						style="height: 60px; width: 60px; position: relative; left: -125px; top: -15px;"
+																						width="800" height="800"
+																						th:src="@{'images/logo/kcalaccumulated.png'}">
+																				</th:block>
+																				<th:block
+																					th:case="'HKQuantityTypeIdentifierActiveEnergyBurned'">
+																					<img
+																						style="height: 60px; width: 60px; position: relative; left: -125px; top: -15px;"
+																						width="800" height="800"
+																						th:src="@{'images/logo/burn.png'}">
+																				</th:block>
+																				<th:block
+																					th:case="'HKQuantityTypeIdentifierHeartRate'">
+																					<img
+																						style="height: 60px; width: 60px; position: relative; left: -125px; top: -15px;"
+																						width="800" height="800"
+																						th:src="@{'images/logo/heart.png'}">
+																				</th:block>
+																				<th:block
+																					th:case="'HKCategoryValueSleepAnalysisAsleep'">
+																					<img
+																						style="height: 60px; width: 60px; position: relative; left: -125px; top: -15px;"
+																						width="800" height="800"
+																						th:src="@{'images/logo/sleep.png'}">
+																				</th:block>
+																				<th:block
+																					th:case="'HKQuantityTypeIdentifierStepCount'">
+																					<img
+																						style="height: 60px; width: 60px; position: relative; left: -125px; top: -15px;"
+																						width="800" height="800"
+																						th:src="@{'images/logo/runner.png'}">
+																				</th:block>
+																				<th:block th:case="'HKQuantityTypeIdentifierHeight'">
+																					<img
+																						style="height: 60px; width: 60px; position: relative; left: -125px; top: -15px;"
+																						width="800" height="800"
+																						th:src="@{'images/logo/height.png'}">
+																				</th:block>
+																				<th:block
+																					th:case="'HKQuantityTypeIdentifierBodyFatPercentage'">
+																					<img
+																						style="height: 60px; width: 60px; position: relative; left: -125px; top: -15px;"
+																						width="800" height="800"
+																						th:src="@{'images/logo/body-mass.png'}">
+																				</th:block>
+																				<th:block
+																					th:case="'HKQuantityTypeIdentifierLeanBodyMass'">
+																					<img
+																						style="height: 60px; width: 60px; position: relative; left: -125px; top: -15px;"
+																						width="800" height="800"
+																						th:src="@{'images/logo/liposuction.png'}">
+																				</th:block>
+																				<th:block
+																					th:case="'HKQuantityTypeIdentifierBodyMassIndex'">
+																					<img
+																						style="height: 60px; width: 60px; position: relative; left: -125px; top: -15px;"
+																						width="800" height="800"
+																						th:src="@{'images/logo/bathroom-scale.png'}">
+																				</th:block>
+																				<th:block
+																					th:case="'HKQuantityTypeIdentifierBodyMass'">
+																					<img
+																						style="height: 60px; width: 60px; position: relative; left: -125px; top: -15px;"
+																						width="800" height="800"
+																						th:src="@{'images/logo/body.png'}">
+																				</th:block>
+																			</th:block>
+																			<div
+																				style="position: relative; top: -5px; justify-content: center; align-items: center; font-weight: 700; color: black; font-size: 20px; text-align: center; width: 300px;">
+																				<th:block th:switch="${measure.name}">
+																					<th:block
+																						th:case="'HKQuantityTypeIdentifierActiveEnergyAccumulated'">
+																						<div
+																							style="margin-bottom: 15px; font-size: 25px; color: white; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;">Calorii
+																							Acumulate</div>
+																					</th:block>
+																					<th:block
+																						th:case="'HKQuantityTypeIdentifierActiveEnergyBurned'">
+																						<div
+																							style="margin-bottom: 15px; font-size: 25px; color: white; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;">Calorii
+																							Arse</div>
+																					</th:block>
+																					<th:block
+																						th:case="'HKQuantityTypeIdentifierHeartRate'">
+																						<div
+																							style="margin-bottom: 15px; font-size: 25px; color: white; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;">Ritm
+																							Cardiac</div>
+																					</th:block>
+																					<th:block
+																						th:case="'HKCategoryValueSleepAnalysisAsleep'">
+																						<div
+																							style="margin-bottom: 15px; font-size: 25px; color: white; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;">Analiza
+																							Somn</div>
+																					</th:block>
+																					<th:block
+																						th:case="'HKQuantityTypeIdentifierStepCount'">
+																						<div
+																							style="margin-bottom: 15px; font-size: 25px; color: white; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;">Pasi
+																							Parcursi</div>
+																					</th:block>
+																					<th:block
+																						th:case="'HKQuantityTypeIdentifierHeight'">
+																						<div
+																							style="margin-bottom: 15px; font-size: 25px; color: white; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;">Inaltime</div>
+																					</th:block>
+																					<th:block
+																						th:case="'HKQuantityTypeIdentifierBodyFatPercentage'">
+																						<div
+																							style="margin-bottom: 15px; font-size: 25px; color: white; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;">Procentaj
+																							Grasime Corporala</div>
+																					</th:block>
+																					<th:block
+																						th:case="'HKQuantityTypeIdentifierLeanBodyMass'">
+																						<div
+																							style="margin-bottom: 15px; font-size: 25px; color: white; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;">Masa
+																							Corporala Slaba</div>
+																					</th:block>
+																					<th:block
+																						th:case="'HKQuantityTypeIdentifierBodyMassIndex'">
+																						<div
+																							style="margin-bottom: 15px; font-size: 25px; color: white; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;">Index
+																							Masa Corporala</div>
+																					</th:block>
+																					<th:block
+																						th:case="'HKQuantityTypeIdentifierBodyMass'">
+																						<div
+																							style="margin-bottom: 15px; font-size: 25px; color: white; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;">Masa
+																							Corporala</div>
+																					</th:block>
+																				</th:block>
+																				<span
+																					th:text="${'Data Calculare: ' + measure.startDate}"
+																					style="font-size: 12px; color: white; font-weight: 100; display: block; margin-top: -15px; margin-bottom: 10px; letter-spacing: 2px;"></span>
+																				<span th:text="${measure.value}"
+																					style="font-size: 45px; color: white; font-weight: 700; display: inline-block; margin-top: -15px; margin-bottom: 10px; letter-spacing: 2px;"></span>
+																				<span th:text="${measure.unitOfMeasurement}"
+																					style="font-size: 20px; color: white; font-weight: 100; display: inline-block; margin-top: -15px; margin-bottom: 10px; letter-spacing: 2px;"></span>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
 												<img style="width: 40px; height: 40px;"
 													src="/images/logo/smartwatch.png">
 											</div>

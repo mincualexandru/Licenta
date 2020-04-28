@@ -143,6 +143,8 @@ public class UserController {
 				}
 			}
 
+			// masuratorile cu caloriile arse sa fie adaugate cumva la numarul de calorii
+			// arse din interfata
 			Set<ExerciseDone> exercisesDoneToday = exerciseDoneService.findAllByUserAccountIdAndDateOfExecutionBetween(
 					account.getAccountId(), timestampStartDate, timestampEndDate);
 			Set<FoodEaten> foodsEatenToday = foodEatenService.findAllByUserAccountIdAndDateOfExecutionBetween(

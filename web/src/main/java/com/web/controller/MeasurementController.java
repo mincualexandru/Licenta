@@ -145,7 +145,7 @@ public class MeasurementController {
 								previousValue = value;
 							}
 							sum += measurement.getValue();
-							chartMap.put("Data: " + localDate + " Ora: " + hour, sum);
+							chartMap.put("Data: " + localDate + " Ora: " + String.format("%02d", hour), sum);
 						}
 					} else {
 						chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(
@@ -162,7 +162,7 @@ public class MeasurementController {
 								previousValue = value;
 							}
 							sum += measurement.getValue();
-							chartMap.put("Data: " + localDate + " Ora: " + hour, sum);
+							chartMap.put("Data: " + localDate + " Ora: " + String.format("%02d", hour), sum);
 						}
 					}
 					break;
@@ -216,7 +216,7 @@ public class MeasurementController {
 								previousValue = value;
 							}
 							sum += measurement.getValue();
-							chartMap.put(localDate + " " + String.format("%02d", hour), sum);
+							chartMap.put("Data: " + localDate + " Ora: " + String.format("%02d", hour), sum);
 						}
 					} else {
 						chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(
@@ -233,7 +233,7 @@ public class MeasurementController {
 								previousValue = value;
 							}
 							sum += measurement.getValue();
-							chartMap.put(localDate + " " + String.format("%02d", hour), sum);
+							chartMap.put("Data: " + localDate + " Ora: " + String.format("%02d", hour), sum);
 						}
 					}
 					break;
@@ -299,7 +299,7 @@ public class MeasurementController {
 								previousValue = value;
 							}
 							sum += measurement.getValue();
-							chartMap.put(localDate + " " + String.format("%02d", hour), sum);
+							chartMap.put("Data: " + localDate + " Ora: " + String.format("%02d", hour), sum);
 						}
 					} else {
 						chosenMeasurements = measurementService.findAllByNameAndUserDeviceUserDeviceId(stepCount,
@@ -315,7 +315,7 @@ public class MeasurementController {
 								previousValue = value;
 							}
 							sum += measurement.getValue();
-							chartMap.put(localDate + " " + String.format("%02d", hour), sum);
+							chartMap.put("Data: " + localDate + " Ora: " + String.format("%02d", hour), sum);
 						}
 					}
 					break;

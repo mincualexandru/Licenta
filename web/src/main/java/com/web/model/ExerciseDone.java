@@ -15,7 +15,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "exercises_done")
-public class ExerciseDone {
+public class ExerciseDone implements Comparable<ExerciseDone> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -81,5 +81,10 @@ public class ExerciseDone {
 	public String toString() {
 		return "ExerciseDone [exerciseDoneId=" + exerciseDoneId + ", user=" + user + ", exercise=" + exercise
 				+ ", dateOfExecution=" + dateOfExecution + "]";
+	}
+
+	@Override
+	public int compareTo(ExerciseDone o) {
+		return (int) (this.exerciseDoneId - o.getExerciseDoneId());
 	}
 }

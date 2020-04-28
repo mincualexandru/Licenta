@@ -95,12 +95,8 @@ public class HelperController {
 	public String viewFeedbacks(Model model) {
 		Account account = accountService.getAccountConnected();
 		boolean roleNutritionist = false;
-		boolean roleTrainer = false;
 		if (account.getRoles().contains(roleService.findByName("ROLE_NUTRITIONIST").get())) {
 			roleNutritionist = true;
-		}
-		if (account.getRoles().contains(roleService.findByName("ROLE_TRAINER").get())) {
-			roleTrainer = true;
 		}
 		if (account.isActive()) {
 			Set<Integer> learnersIds = accountService.findAllLearnersByHelperId(account.getAccountId());
@@ -115,6 +111,11 @@ public class HelperController {
 						foodFeedbacks.addAll(foodFeedbackService.findAllByUserAccountId(integer));
 						model.addAttribute("foodFeedbacks", foodFeedbacks);
 					}
+				}
+			}
+			if (learnersIds.size() == 0) {
+				if (exerciseFeedbacks.size() == 0) {
+					model.addAttribute("emptyList", true);
 				}
 			}
 			model.addAttribute("account", account);

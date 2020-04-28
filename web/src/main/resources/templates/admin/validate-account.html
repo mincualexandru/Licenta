@@ -18,6 +18,7 @@
 	<div th:unless="${account.accountInformation}">
 		<div th:text="${'Momentan ' + account.username + ' nu a completat cv-ul'}">
 	</div>
+	</div>
 	<div th:if="${account.accountInformation}">
 			<div class="container">
 		<form class="form-horizontal" role="form" th:action="@{/validate-account-save}" method="POST">

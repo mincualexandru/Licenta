@@ -144,7 +144,7 @@ public class CommonController {
 		if (helper.getRoles().contains(roleService.findByName("ROLE_NUTRITIONIST").get())) {
 			roleNutritionist = true;
 		}
-		if (!helper.isActive()) {
+		if (helper.isActive()) {
 			LocalDate date = LocalDate.now();
 			LocalDateTime startDateTime = date.atStartOfDay();
 			LocalDateTime endDateTime = date.atStartOfDay().plusDays(1).minusSeconds(1);
@@ -154,9 +154,9 @@ public class CommonController {
 					timestampStartDate, timestampEndDate).isPresent()) {
 				redirectAttributes.addFlashAttribute("feedbackWasProvided", true);
 				if (helper.getRoles().contains(roleService.findByName("ROLE_TRAINER").get())) {
-					return "redirect:/view_progress/" + helper.getAccountId();
+					return "redirect:/view_progress/" + learnerId;
 				} else if (helper.getRoles().contains(roleService.findByName("ROLE_NUTRITIONIST").get())) {
-					return "redirect:/view_progress_nutritionist/" + helper.getAccountId();
+					return "redirect:/view_progress_nutritionist/" + learnerId;
 				}
 
 			}

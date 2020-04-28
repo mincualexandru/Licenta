@@ -5,173 +5,569 @@
 <title>Sign up</title>
 <base href="/">
 <link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
 	rel="stylesheet" id="bootstrap-css">
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" th:href="@{css/style.css}"/>
+<link th:href="@{css/font-face.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-4.7/css/font-awesome.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-5/css/fontawesome-all.min.css}"
+	rel="stylesheet" media="all">
+<link
+	th:href="@{vendor/mdi-font/css/material-design-iconic-font.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/animsition/animsition.min.css}" rel="stylesheet"
+	media="all">
+<link
+	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/wow/animate.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/css-hamburgers/hamburgers.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/slick/slick.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/select2/select2.min.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{css/theme.css}" rel="stylesheet" media="all">
+<link rel="stylesheet" type="text/css" th:href="@{css/style.css}" />
 </head>
 <body>
-	<div class="container">
-		<form class="form-horizontal" role="form" method="POST"
-			th:action="@{/curriculumVitaeSave}" th:object="${curriculumVitae}">
-			<input type="hidden" name="accountId" th:value="${account.accountId}"/>
-			<div style="position: relative; top: 110px; left: 250px;">
-				<h3>Curriculum Vitae</h3>
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<label>Descriere</label>
-							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-								<textarea rows="4" cols="50" th:field="*{description}"
-									class="form-control validation" id="description" placeholder="Descriere"
-									autofocus></textarea>
-							</div>
-							<div th:unless="${#fields.hasErrors('description')}">
-								<p class="errorMessage"></p>
-							</div>
-							<div th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+	<div th:each="role, iterStat : ${account.roles}">
+		<div class="page-wrapper">
+			<header style="background-color: white;"
+				class="header-mobile d-block d-lg-none">
+				<div class="header-mobile__bar">
+					<div class="container-fluid">
+						<div class="header-mobile-inner">
+							<a class="logo" href="index.html"> <img
+								src="/images/logo/Screenshot_18.png">
+							</a>
+							<button class="hamburger hamburger--slider" type="button">
+								<span class="hamburger-box"> <span
+									class="hamburger-inner"></span>
+								</span>
+							</button>
 						</div>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<label>Obiectivul Job-ului</label>
-							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-								<textarea rows="4" cols="50" th:field="*{jobObiective}"
-									class="form-control validation" id="jobObiective" placeholder="Obiectivul Job-ului"
-									autofocus></textarea>
-							</div>
-							<div th:unless="${#fields.hasErrors('jobObiective')}">
-								<p class="errorMessage"></p>
-							</div>
-							<div th:if="${#fields.hasErrors('jobObiective')}" th:errors="*{jobObiective}"></div>
-						</div>
+				<nav class="navbar-mobile">
+					<div class="container-fluid">
+						<ul class="navbar-mobile__list list-unstyled">
+							<th:block th:if="${role.name eq 'ROLE_USER'}">
+								<li><a href="/home" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/home.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+								<li><a href="/choose_helper" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/trainer.jpg"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+											Experti</span></a></li>
+								<li><a href="/choose_plan" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/strategy.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+											Planuri</span></a></li>
+								<li><a href="/choose_device" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/smartwatch2.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+											Dispozitive</span></a></li>
+								<li><a href="/shopping_cart" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/supermarket.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+											Cumparaturi</span></a></li>
+								<li><a href="/view_user_plans" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/fitness-plan.jpg"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+											Cumparate</span></a></li>
+								<li><a href="/view_user_devices" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/smartwatch3.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+											Cumparate</span></a></li>
+								<li><a href="/foods_eaten" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/popsicle.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+											Consumate</span></a></li>
+								<li><a href="/exercises_done" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/exercise.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+											Efectuate</span></a></li>
+								<li><a href="/logout" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/logout.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+							</th:block>
+							<th:block th:if="${role.name eq 'ROLE_TRAINER'}">
+								<li><a href="/trainer" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/home.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+								<li><a href="/view_learners" class="links" style=""><img
+										style="height: 40px; width: 40px; background-color: #4A7AFF; border-radius: 30px; border: 3px solid #4A7AFF;"
+										width="800" height="800" src="/images/avatar/man.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cursanti</span></a></li>
+								<li><a href="/training_plans" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/exercise.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Antrenamente</span></a></li>
+								<li><a href="/create_training_plan" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/diet.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Creeaza
+											Antrenament</span></a></li>
+								<li><a href="/purchased_training_plans" class="links"
+									style=""><img style="height: 40px; width: 40px;"
+										width="800" height="800" src="/images/logo/gym-ex.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Antrenamente
+											Vandute</span></a></li>
+								<li><a href="/view_feedbacks" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/positive-vote.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Feedback-uri
+											Cursanti</span></a></li>
+								<li><a href="/logout" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/logout.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+							</th:block>
+						</ul>
 					</div>
+				</nav>
+			</header>
+			<aside style="background-color: white;"
+				class="menu-sidebar d-none d-lg-block">
+				<div class="logo">
+					<a href="#"> <img src="/images/logo/Screenshot_18.png">
+					</a>
 				</div>
-				<div class="row">
-					<div class="col-md-6" id="skillList">
-						<div style="background-color: gray;">
- 							<h2>Abilitate</h2>
- 							<input type="button" onclick="addSkill()" value="Adauga" />
+				<div class="menu-sidebar__content js-scrollbar1">
+					<nav class="navbar-sidebar">
+						<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+							<th:block th:if="${role.name eq 'ROLE_USER'}">
+								<li><a href="/home" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/home.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+								<li><a href="/choose_helper" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/trainer.jpg"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+											Experti</span></a></li>
+								<li><a href="/choose_plan" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/strategy.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+											Planuri</span></a></li>
+								<li><a href="/choose_device" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/smartwatch2.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+											Dispozitive</span></a></li>
+								<li><a href="/shopping_cart" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/supermarket.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+											Cumparaturi</span></a></li>
+								<li><a href="/view_user_plans" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/fitness-plan.jpg"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+											Cumparate</span></a></li>
+								<li><a href="/view_user_devices" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/smartwatch3.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+											Cumparate</span></a></li>
+								<li><a href="/foods_eaten" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/popsicle.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+											Consumate</span></a></li>
+								<li><a href="/exercises_done" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/exercise.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+											Efectuate</span></a></li>
+								<li><a href="/logout" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/logout.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+							</th:block>
+							<th:block th:if="${role.name eq 'ROLE_TRAINER'}">
+								<li><a href="/trainer" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/home.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+								<li><a href="/view_learners" class="links" style=""><img
+										style="height: 40px; width: 40px; background-color: #4A7AFF; border-radius: 30px; border: 3px solid #4A7AFF;"
+										width="800" height="800" src="/images/avatar/man.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cursanti</span></a></li>
+								<li><a href="/training_plans" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/exercise.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Antrenamente</span></a></li>
+								<li><a href="/create_training_plan" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/diet.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Creeaza
+											Antrenament</span></a></li>
+								<li><a href="/purchased_training_plans" class="links"
+									style=""><img style="height: 40px; width: 40px;"
+										width="800" height="800" src="/images/logo/gym-ex.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Antrenamente
+											Vandute</span></a></li>
+								<li><a href="/view_feedbacks" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/positive-vote.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Feedback-uri
+											Cursanti</span></a></li>
+								<li><a href="/logout" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/logout.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+							</th:block>
+						</ul>
+					</nav>
+				</div>
+			</aside>
+			<div class="page-container">
+				<div class="main-content">
+					<div class="section__content section__content--p30">
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-md-12">
+									<form class="form-horizontal" role="form" method="POST"
+										th:action="@{/curriculumVitaeSave}"
+										th:object="${curriculumVitae}">
+										<div
+											style="text-align: center; font-size: 70px; color: white; font-weight: 700;">Curriculum
+											Vitae</div>
+										<input type="hidden" name="accountId"
+											th:value="${account.accountId}" />
+										<div class="col-md-10 mx-auto">
+											<div class="row" style="position: relative; left: 85px;">
+												<div class="col-lg-5" style="margin-bottom: 50px;">
+													<label
+														style="font-size: 35px; color: white; font-weight: 600;">Descriere</label>
+													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+														<textarea rows="3" cols="20" th:field="*{description}"
+															class="form-control validation"
+															style="resize: none; border-radius: 15px; border: none; padding: 20px;"
+															id="description"
+															placeholder="Descrie-te in cateva randuri..." autofocus></textarea>
+													</div>
+													<div th:unless="${#fields.hasErrors('description')}">
+														<p
+															style="color: white; font-size: 12px; margin-top: 10px;"
+															class="errorMessage"></p>
+													</div>
+													<div
+														style="color: white; font-size: 12px; margin-top: 10px;"
+														th:if="${#fields.hasErrors('description')}"
+														th:errors="*{description}"></div>
+												</div>
+												<div class="col-lg-5" style="margin-bottom: 50px;">
+													<label
+														style="font-size: 35px; color: white; font-weight: 600;">Obiectivul
+														Job-ului</label>
+													<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+														<textarea rows="3" cols="20" th:field="*{jobObiective}"
+															class="form-control validation"
+															style="resize: none; border-radius: 15px; border: none; padding: 20px;"
+															id="jobObiective" placeholder="De ce vrei acest job?"
+															autofocus></textarea>
+													</div>
+													<div th:unless="${#fields.hasErrors('jobObiective')}">
+														<p
+															style="color: white; font-size: 12px; margin-top: 10px;"
+															class="errorMessage"></p>
+													</div>
+													<div
+														style="color: white; font-size: 12px; margin-top: 10px;"
+														th:if="${#fields.hasErrors('jobObiective')}"
+														th:errors="*{jobObiective}"></div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-lg-10 mx-auto" style="margin-bottom: 50px;">
+													<div class="au-card" style="min-height: 100%;">
+														<div class="au-card-inner">
+															<div class="education"
+																style="display: flex; justify-content: center; align-items: center;">
+																<h1
+																	style="font-size: 45px; float: left; color: #7300e6;">Educatie</h1>
+																<button onclick="addEducation()"
+																	style="float: right; margin: 0px !important; position: absolute; right: 50px; top: 50px;"
+																	type="button" data-toggle="modal"
+																	data-target="#addEducation" data-backdrop="static"
+																	data-keyboard="false">
+																	<i class="fas fa-plus edit-about"></i>
+																</button>
+															</div>
+															<div id="educationList">
+																<div class="content" style="left: -25px;">
+																	<div class="left-content">
+																		<th:block
+																			th:each="edu, status : ${curriculumVitae.education}">
+																			<th:block th:if="${edu}">
+																				<div class="row item" style="width: 750px;">
+																					<div class="col">
+																						<label class="labels">Nume</label> <input
+																							th:field="*{education[__${status.index}__].name}"
+																							type="text" class="form-control input-border"
+																							th:classappend="${#fields.hasErrors('education[__${status.index}__].name')} ? red-border">
+																					</div>
+																					<div class="col">
+																						<label class="labels">Oras</label> <input
+																							th:field="*{education[__${status.index}__].city}"
+																							type="text" class="form-control input-border"
+																							th:classappend="${#fields.hasErrors('education[__${status.index}__].city')} ? red-border">
+																					</div>
+																					<div class="col">
+																						<label class="labels">Start</label> <input
+																							th:field="*{education[__${status.index}__].start}"
+																							type="text" class="form-control input-border"
+																							th:classappend="${#fields.hasErrors('education[__${status.index}__].start')} ? red-border">
+																					</div>
+																					<div class="col">
+																						<label class="labels">Sfarsit</label> <input
+																							th:field="*{education[__${status.index}__].end}"
+																							type="text" class="form-control input-border"
+																							th:classappend="${#fields.hasErrors('education[__${status.index}__].end')} ? red-border">
+																					</div>
+																				</div>
+																			</th:block>
+																			<th:block th:unless="${edu}">
+																				<div class="row item">
+																					<div class="col wid">
+																						<input
+																							th:field="*{education[__${status.index}__].name}"
+																							type="text" class="form-control">
+																					</div>
+																					<div class="col wid">
+																						<input
+																							th:field="*{education[__${status.index}__].city}"
+																							type="text" class="form-control">
+																					</div>
+																					<div class="col wid">
+																						<input
+																							th:field="*{education[__${status.index}__].start}"
+																							type="text" class="form-control">
+																					</div>
+																					<div class="col wid">
+																						<input
+																							th:field="*{education[__${status.index}__].end}"
+																							type="text" class="form-control">
+																					</div>
+																				</div>
+																			</th:block>
+																			<div class="row" style="margin-top: 20px;">
+																				<div class="alert alert-danger alert-customize"
+																					th:if="${#fields.hasErrors('education[__${status.index}__].name')}"
+																					th:errors="*{education[__${status.index}__].name}"></div>
+																			</div>
+																			<div class="row">
+																				<div class="alert alert-danger alert-customize"
+																					th:if="${#fields.hasErrors('education[__${status.index}__].city')}"
+																					th:errors="*{education[__${status.index}__].city}"></div>
+																			</div>
+																			<div class="row">
+																				<div class="alert alert-danger alert-customize"
+																					th:if="${#fields.hasErrors('education[__${status.index}__].start')}"
+																					th:errors="*{education[__${status.index}__].start}">
+																				</div>
+																			</div>
+																			<div class="row">
+																				<div class="alert alert-danger alert-customize"
+																					th:if="${#fields.hasErrors('education[__${status.index}__].end')}"
+																					th:errors="*{education[__${status.index}__].end}"></div>
+																			</div>
+																		</th:block>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-lg-10 mx-auto" style="margin-bottom: 50px;">
+													<div class="au-card" style="min-height: 100%;">
+														<div class="au-card-inner">
+															<div class="education"
+																style="display: flex; justify-content: center; align-items: center;">
+																<h1
+																	style="font-size: 45px; float: left; color: #7300e6;">Experienta</h1>
+																<button onclick="addExperience()"
+																	style="float: right; margin: 0px !important; position: absolute; right: 50px; top: 50px;"
+																	type="button" data-toggle="modal"
+																	data-target="#addEducation" data-backdrop="static"
+																	data-keyboard="false">
+																	<i class="fas fa-plus edit-about"></i>
+																</button>
+															</div>
+															<div id="experienceList">
+																<div class="content" style="left: -25px;">
+																	<div class="left-content">
+																		<th:block
+																			th:each="exp, status : ${curriculumVitae.experiences}">
+																			<th:block th:if="${exp}">
+																				<div class="row item" style="width: 750px;">
+																					<div class="col">
+																						<label class="labels">Nume</label> <input
+																							th:field="*{experiences[__${status.index}__].name}"
+																							type="text" class="form-control input-border"
+																							th:classappend="${#fields.hasErrors('experiences[__${status.index}__].name')} ? red-border">
+																					</div>
+																					<div class="col">
+																						<label class="labels">Oras</label> <input
+																							th:field="*{experiences[__${status.index}__].city}"
+																							type="text" class="form-control input-border"
+																							th:classappend="${#fields.hasErrors('experiences[__${status.index}__].city')} ? red-border">
+																					</div>
+																					<div class="col">
+																						<label class="labels">Start</label> <input
+																							th:field="*{experiences[__${status.index}__].start}"
+																							type="text" class="form-control input-border"
+																							th:classappend="${#fields.hasErrors('experiences[__${status.index}__].start')} ? red-border">
+																					</div>
+																					<div class="col">
+																						<label class="labels">Sfarsit</label> <input
+																							th:field="*{experiences[__${status.index}__].end}"
+																							type="text" class="form-control input-border"
+																							th:classappend="${#fields.hasErrors('experiences[__${status.index}__].end')} ? red-border">
+																					</div>
+																				</div>
+																			</th:block>
+																			<th:block th:unless="${exp}">
+																				<div class="row item">
+																					<div class="col wid">
+																						<input
+																							th:field="*{experiences[__${status.index}__].name}"
+																							type="text" class="form-control">
+																					</div>
+																					<div class="col wid">
+																						<input
+																							th:field="*{experiences[__${status.index}__].city}"
+																							type="text" class="form-control">
+																					</div>
+																					<div class="col wid">
+																						<input
+																							th:field="*{experiences[__${status.index}__].start}"
+																							type="text" class="form-control">
+																					</div>
+																					<div class="col wid">
+																						<input
+																							th:field="*{experiences[__${status.index}__].end}"
+																							type="text" class="form-control">
+																					</div>
+																				</div>
+																			</th:block>
+																			<div class="row" style="margin-top: 20px;">
+																				<div class="alert alert-danger alert-customize"
+																					th:if="${#fields.hasErrors('experiences[__${status.index}__].name')}"
+																					th:errors="*{experiences[__${status.index}__].name}"></div>
+																			</div>
+																			<div class="row">
+																				<div class="alert alert-danger alert-customize"
+																					th:if="${#fields.hasErrors('experiences[__${status.index}__].city')}"
+																					th:errors="*{experiences[__${status.index}__].city}"></div>
+																			</div>
+																			<div class="row">
+																				<div class="alert alert-danger alert-customize"
+																					th:if="${#fields.hasErrors('experiences[__${status.index}__].start')}"
+																					th:errors="*{experiences[__${status.index}__].start}">
+																				</div>
+																			</div>
+																			<div class="row">
+																				<div class="alert alert-danger alert-customize"
+																					th:if="${#fields.hasErrors('experiences[__${status.index}__].end')}"
+																					th:errors="*{experiences[__${status.index}__].end}"></div>
+																			</div>
+																		</th:block>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-lg-10 mx-auto" style="margin-bottom: 50px;">
+													<div class="au-card" style="min-height: 100%;">
+														<div class="au-card-inner">
+															<div
+																style="display: flex; justify-content: center; align-items: center;">
+																<h1
+																	style="font-size: 45px; float: left; color: #7300e6;">Abilitate</h1>
+																<button onclick="addSkill()"
+																	style="float: right; margin: 0px !important; position: absolute; right: 50px; top: 50px;"
+																	type="button" data-toggle="modal"
+																	data-target="#addEducation" data-backdrop="static"
+																	data-keyboard="false">
+																	<i class="fas fa-plus edit-about"></i>
+																</button>
+															</div>
+															<div id="skillList">
+																<div class="content" style="left: -25px;">
+																	<div class="left-content">
+																		<th:block
+																			th:each="skill, status : ${curriculumVitae.skills}">
+																			<th:block th:if="${skill}">
+																				<div class="row item" style="width: 750px;">
+																					<div class="col">
+																						<label class="labels">Descriere</label> <input
+																							th:field="*{skills[__${status.index}__].description}"
+																							type="text" class="form-control input-border"
+																							th:classappend="${#fields.hasErrors('experiences[__${status.index}__].name')} ? red-border">
+																					</div>
+																				</div>
+																			</th:block>
+																			<th:block th:unless="${skill}">
+																				<div class="row item">
+																					<div class="col wid">
+																						<input
+																							th:field="*{skills[__${status.index}__].description}"
+																							type="text" class="form-control">
+																					</div>
+																				</div>
+																			</th:block>
+																			<div class="row" style="margin-top: 20px;">
+																				<div class="alert alert-danger alert-customize"
+																					th:if="${#fields.hasErrors('skills[__${status.index}__].description')}"
+																					th:errors="*{skills[__${status.index}__].description}"></div>
+																			</div>
+																		</th:block>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<button type="submit" class="btnn2"
+											style="position: relative; left: -100px; color: #7300e6; background-color: white; font-size: 25px; margin-bottom: 50px !important;">Trimite</button>
+									</form>
+								</div>
+							</div>
 						</div>
-						<div class="row">
-                        	<div class="col form-group">Descriere</div>
-                    	</div>
-                    <div class="row item" th:each="skill, status : ${curriculumVitae.skills}">
-                        <div class="col form-group input-group mb-2 mr-sm-2 mb-sm-0">
-                            <input th:field="*{skills[__${status.index}__].description}" type="text" class="form-control">
-                        </div>
-                        <div 
-                        th:if="${#fields.hasErrors('skills[__${status.index}__].description')}"  
-                        th:errors="*{skills[__${status.index}__].description}">
-    					</div>
-                    </div>
-                    </div>
-               </div>
-               <div class="row">
-                    <div class="col-md-6" id="educationList">
-						<div style="background-color: gray;">
- 							<h2>Educație</h2>
- 							<input type="button" onclick="addEducation()" value="Adauga" />
-						</div> 
-						<div class="row">
-                        	<div class="col form-group">Institutie</div>
-                        	<div class="col form-group">Oras</div>
-                        	<div class="col form-group">Inceput</div>
-                        	<div class="col form-group">Sfarsit</div>
-                    	</div>
-                    <div class="row item" th:each="edu, status : ${curriculumVitae.education}">
-                        <div class="col form-group input-group mb-2 mr-sm-2 mb-sm-0">
-                            <input th:field="*{education[__${status.index}__].name}" type="text" class="form-control">
-                        </div>
-                        <div class="col form-group input-group mb-2 mr-sm-2 mb-sm-0">
-                            <input th:field="*{education[__${status.index}__].city}" type="text" class="form-control">
-                        </div>
-                        <div class="col form-group input-group mb-2 mr-sm-2 mb-sm-0">
-                            <input th:field="*{education[__${status.index}__].start}" type="text" class="form-control">
-                        </div>
-                        <div class="col form-group input-group mb-2 mr-sm-2 mb-sm-0">
-                            <input th:field="*{education[__${status.index}__].end}" type="text" class="form-control">
-                        </div>
-                        <div 
-                        th:if="${#fields.hasErrors('education[__${status.index}__].name')}"  
-                        th:errors="*{education[__${status.index}__].name}">
-    					</div>
-    					<div 
-                        th:if="${#fields.hasErrors('education[__${status.index}__].city')}"  
-                        th:errors="*{education[__${status.index}__].city}">
-    					</div>
-    					<div 
-                        th:if="${#fields.hasErrors('education[__${status.index}__].start')}"  
-                        th:errors="*{education[__${status.index}__].start}">
-    					</div>
-    					<div 
-                        th:if="${#fields.hasErrors('education[__${status.index}__].end')}"  
-                        th:errors="*{education[__${status.index}__].end}">
-    					</div>
-                        </div>
-                    </div>
-				</div>
-				<div class="row">
-                    <div class="col-md-6" id="experienceList">
-						<div style="background-color: gray;">
- 							<h2>Experienta</h2>
- 							<input type="button" onclick="addExperience()" value="Adauga" />
-						</div> 
-						<div class="row">
-                        	<div class="col form-group d-none">id</div>
-                        	<div class="col form-group">Post</div>
-                        	<div class="col form-group">Oras</div>
-                        	<div class="col form-group">Inceput</div>
-                        	<div class="col form-group">Sfarsit</div>
-                    	</div>
-                    <div class="row item" th:each="exp, status : ${curriculumVitae.experiences}">
-                        <div class="col form-group input-group mb-2 mr-sm-2 mb-sm-0">
-                            <input th:field="*{experiences[__${status.index}__].name}" type="text" class="form-control">
-                        </div>
-                        <div class="col form-group input-group mb-2 mr-sm-2 mb-sm-0">
-                            <input th:field="*{experiences[__${status.index}__].city}" type="text" class="form-control">
-                        </div>
-                        <div class="col form-group input-group mb-2 mr-sm-2 mb-sm-0">
-                            <input th:field="*{experiences[__${status.index}__].start}" type="text" class="form-control">
-                        </div>
-                        <div class="col form-group input-group mb-2 mr-sm-2 mb-sm-0">
-                            <input th:field="*{experiences[__${status.index}__].end}" type="text" class="form-control">
-                        </div>
-                        <div 
-                        th:if="${#fields.hasErrors('experiences[__${status.index}__].name')}"  
-                        th:errors="*{experiences[__${status.index}__].name}">
-    					</div>
-    					<div 
-                        th:if="${#fields.hasErrors('experiences[__${status.index}__].city')}"  
-                        th:errors="*{experiences[__${status.index}__].city}">
-    					</div>
-    					<div 
-                        th:if="${#fields.hasErrors('experiences[__${status.index}__].start')}"  
-                        th:errors="*{experiences[__${status.index}__].start}">
-    					</div>
-    					<div 
-                        th:if="${#fields.hasErrors('experiences[__${status.index}__].end')}"  
-                        th:errors="*{experiences[__${status.index}__].end}">
-    					</div>
-                        </div>
-                    </div>
-				</div>
-				<div class="row">
-					<div class="col-md-3"></div>
-					<div class="col-md-6">
-						<button type="submit" class="btn btn-success">
-							<i class="fa fa-user-plus"></i> Trimite
-						</button>
 					</div>
 				</div>
 			</div>
-		</form>
+		</div>
 	</div>
 	<script th:inline="javascript">
 	let addSkill = function () {
@@ -186,12 +582,17 @@
             let col = document.createElement('div');
             col.classList.add('col', 'form-group');
 
+            let label = document.createElement('label');
+            label.classList.add('labels');
+            label.innerHTML = 'Descriere';
+            
             let input = document.createElement('input');
             input.type = 'text';
-            input.classList.add('form-control');
+            input.classList.add('form-control', 'input-border');
             input.id = listName + rowIndex + '.' + fieldName;
             input.setAttribute('name', listName + '[' + rowIndex + '].' + fieldName);
 
+            col.appendChild(label);
             col.appendChild(input);
             row.appendChild(col);
         });
@@ -200,7 +601,6 @@
 };
 
 let addEducation = function () {
-	console.log("A intrat aici 2");
     let listName = 'education'; //list name in Catalog.class
     let fieldsNames = ['name', 'city', 'start', 'end']; //field names from Movie.class
     let rowIndex = document.querySelectorAll('.item').length; //we can add mock class to each movie-row
@@ -210,17 +610,32 @@ let addEducation = function () {
 
     fieldsNames.forEach((fieldName) => {
         let col = document.createElement('div');
-        col.classList.add('col', 'form-group');
+        col.classList.add('col', 'wid');
         if (fieldName === 'id') {
             col.classList.add('d-none'); //field with id - hidden
         }
-
+        
+        let label = document.createElement('label');
+        label.classList.add('labels');
+        
+		if(fieldName === 'name') {
+			label.innerHTML = 'Nume';
+		} else if(fieldName === 'city') {
+			label.innerHTML = 'Oras';
+		} else if(fieldName === 'start') {
+			label.innerHTML = 'Inceput';
+		} else if(fieldName === 'end') {
+			label.innerHTML = 'Sfarsit';
+		}
+		
+		
         let input = document.createElement('input');
         input.type = 'text';
-        input.classList.add('form-control');
+        input.classList.add('form-control', 'input-border');
         input.id = listName + rowIndex + '.' + fieldName;
         input.setAttribute('name', listName + '[' + rowIndex + '].' + fieldName);
 
+        col.appendChild(label);
         col.appendChild(input);
         row.appendChild(col);
     });
@@ -239,17 +654,31 @@ let addExperience = function () {
 
     fieldsNames2.forEach((fieldName) => {
         let col = document.createElement('div');
-        col.classList.add('col', 'form-group');
+        col.classList.add('col', 'wid');
         if (fieldName === 'id') {
             col.classList.add('d-none'); //field with id - hidden
         }
+        
+        let label = document.createElement('label');
+        label.classList.add('labels');
+        
+        if(fieldName === 'name') {
+			label.innerHTML = 'Nume';
+		} else if(fieldName === 'city') {
+			label.innerHTML = 'Oras';
+		} else if(fieldName === 'start') {
+			label.innerHTML = 'Inceput';
+		} else if(fieldName === 'end') {
+			label.innerHTML = 'Sfarsit';
+		}
 
         let input = document.createElement('input');
         input.type = 'text';
-        input.classList.add('form-control');
+        input.classList.add('form-control', 'input-border');
         input.id = listName + rowIndex + '.' + fieldName;
         input.setAttribute('name', listName + '[' + rowIndex + '].' + fieldName);
 
+        col.appendChild(label);
         col.appendChild(input);
         row.appendChild(col);
     });
@@ -258,6 +687,5 @@ let addExperience = function () {
 };
 
 	</script>
-<!-- 	<script type="text/javascript" th:src="@{/js/signup.js}"></script> -->
 </body>
 </html>

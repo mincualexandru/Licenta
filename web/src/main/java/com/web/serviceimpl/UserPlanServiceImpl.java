@@ -1,5 +1,6 @@
 package com.web.serviceimpl;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.Set;
 
@@ -75,5 +76,12 @@ public class UserPlanServiceImpl implements UserPlanService {
 	@Override
 	public Optional<UserPlan> findTopByOrderByDateOfPurchaseDesc() {
 		return userPlanDao.findTopByOrderByDateOfPurchaseDesc();
+	}
+
+	@Override
+	public Set<UserPlan> findAllByHelperPlanHelperAccountIdAndDateOfPurchaseBetween(Integer accountId,
+			Timestamp timestampStartDate, Timestamp timestampEndDate) {
+		return userPlanDao.findAllByHelperPlanHelperAccountIdAndDateOfPurchaseBetween(accountId, timestampStartDate,
+				timestampEndDate);
 	}
 }

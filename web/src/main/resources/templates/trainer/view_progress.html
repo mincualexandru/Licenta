@@ -1,320 +1,659 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
+<title>Purchased Training Plans</title>
+<link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
+<link th:href="@{/vendor/font-awesome-4.7/css/font-awesome.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{/vendor/font-awesome-5/css/fontawesome-all.min.css}"
+	rel="stylesheet" media="all">
+<link
+	th:href="@{/vendor/mdi-font/css/material-design-iconic-font.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{/vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{/vendor/animsition/animsition.min.css}"
+	rel="stylesheet" media="all">
+<link
+	th:href="@{/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{/vendor/wow/animate.css}" rel="stylesheet" media="all">
+<link th:href="@{/vendor/css-hamburgers/hamburgers.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{/vendor/slick/slick.css}" rel="stylesheet" media="all">
+<link th:href="@{/vendor/select2/select2.min.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{/vendor/perfect-scrollbar/perfect-scrollbar.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{/css/theme.css}" rel="stylesheet" media="all">
+<link th:href="@{/css/cart.css}" rel="stylesheet" media="all">
 <style>
-.highcharts-figure, .highcharts-data-table table {
-	min-width: 320px;
-	max-width: 800px;
-	margin: 1em auto;
+.modal-backdrop {
+	display: none;
 }
 
-.highcharts-data-table table {
-	font-family: Verdana, sans-serif;
-	border-collapse: collapse;
-	border: 1px solid #EBEBEB;
-	margin: 10px auto;
-	text-align: center;
-	width: 100%;
-	max-width: 500px;
-}
-
-.highcharts-data-table caption {
-	padding: 1em 0;
-	font-size: 1.2em;
-	color: #555;
-}
-
-.highcharts-data-table th {
-	font-weight: 600;
-	padding: 0.5em;
-}
-
-.highcharts-data-table td, .highcharts-data-table th,
-	.highcharts-data-table caption {
-	padding: 0.5em;
-}
-
-.highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even)
-	{
-	background: #f8f8f8;
-}
-
-.highcharts-data-table tr:hover {
-	background: #f1f7ff;
-}
-
-input[type="number"] {
-	min-width: 50px;
+.modal {
+	background: rgba(0, 0, 0, 0.5);
 }
 </style>
-<title>Admin</title>
-<link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-	rel="stylesheet" id="bootstrap-css">
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 <body>
-	<div th:if="${inexistentValue}">
-		Ai introdus o valoare inexistenta
-	</div>
-	<div th:unless="${inexistentValue}">
-	<h3
-		style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">
-		Progres pentru <span th:text="${learner.username}"></span>
-	</h3>
+	<div class="page-wrapper">
+		<header style="background-color: white;"
+			class="header-mobile d-block d-lg-none">
+			<div class="header-mobile__bar">
 				<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-10 mx-auto">
-				<div class="row">
-					<div class="col-md-7">
-						<figure class="highcharts-figure">
-							<div id="container"></div>
-						</figure>
+					<div class="header-mobile-inner">
+						<a class="logo" href="index.html"> <img
+							src="/images/logo/Screenshot_18.png">
+						</a>
+						<button class="hamburger hamburger--slider" type="button">
+							<span class="hamburger-box"> <span class="hamburger-inner"></span>
+							</span>
+						</button>
 					</div>
-					<div class="col-md-5">
+				</div>
+			</div>
+			<nav class="navbar-mobile">
+				<div class="container-fluid">
+					<ul class="navbar-mobile__list list-unstyled">
+						<li><a href="/trainer" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/view_learners" class="links" style=""><img
+								style="height: 40px; width: 40px; background-color: #4A7AFF; border-radius: 30px; border: 3px solid #4A7AFF;"
+								width="800" height="800" src="/images/avatar/man.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cursanti</span></a></li>
+						<li><a href="/training_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Antrenamente</span></a></li>
+						<li><a href="/create_training_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/diet.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Creeaza
+									Antrenament</span></a></li>
+						<li><a href="/purchased_training_plans" class="links"
+							style=""><img style="height: 40px; width: 40px;" width="800"
+								height="800" src="/images/logo/gym-ex.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Antrenamente
+									Vandute</span></a></li>
+						<li><a href="/view_feedbacks" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/positive-vote.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Feedback-uri
+									Cursanti</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<aside style="background-color: white;"
+			class="menu-sidebar d-none d-lg-block">
+			<div class="logo">
+				<a href="#"> <img src="/images/logo/Screenshot_18.png">
+				</a>
+			</div>
+			<div class="menu-sidebar__content js-scrollbar1">
+				<nav class="navbar-sidebar">
+					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+						<li><a href="/trainer" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/view_learners" class="links" style=""><img
+								style="height: 40px; width: 40px; background-color: #4A7AFF; border-radius: 30px; border: 3px solid #4A7AFF;"
+								width="800" height="800" src="/images/avatar/man.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cursanti</span></a></li>
+						<li><a href="/training_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Antrenamente</span></a></li>
+						<li><a href="/create_training_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/diet.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Creeaza
+									Antrenament</span></a></li>
+						<li><a href="/purchased_training_plans" class="links"
+							style=""><img style="height: 40px; width: 40px;" width="800"
+								height="800" src="/images/logo/gym-ex.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Antrenamente
+									Vandute</span></a></li>
+						<li><a href="/view_feedbacks" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/positive-vote.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Feedback-uri
+									Cursanti</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</nav>
+			</div>
+		</aside>
+		<div class="page-container">
+			<div class="main-content">
+				<div class="section__content section__content--p30">
+					<div th:if="${inexistentValue}"
+						style="position: relative; top: 230px; text-align: center; font-size: 70px; margin-bottom: 100px; color: white; font-weight: 700;">
+						Ai introdus <br> o valoare inexistenta
+					</div>
+					<div th:unless="${inexistentValue}">
+						<h3
+							style="text-align: center; font-size: 70px; margin-bottom: 100px; color: white; font-weight: 700;">
+							Progres <span th:text="${learner.username}"></span>
+						</h3>
 						<div class="row">
-							<div class="col-md-5">
-								<h3>Informatii</h3>
-								<p th:text="${learner.gender}"></p>
-								<p>
-									Exercitii Efectuate:
-									<button type="button" class="btn btn-primary"
-										data-toggle="modal" th:text="${numberOfExercisesDone}"
-										data-target="#exampleModal"></button>
-								<div class="modal fade" id="exampleModal" tabindex="-1"
-									role="dialog" aria-labelledby="exampleModalLabel"
-									aria-hidden="true">
-									<div class="modal-dialog" role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h5 class="modal-title" id="exampleModalLabel">Exercitiile
-													Efectuate</h5>
-												<button type="button" class="close" data-dismiss="modal"
-													aria-label="Close">
-													<span aria-hidden="true">&times;</span>
-												</button>
+							<div class="col-md-6 mx-auto"
+								style="border-radius: 30px; padding: 50px; margin-bottom: 60px; height: auto; background-color: white; margin-top: 50px;">
+								<div class="avatarr"
+									style="position: absolute; width: 180px; height: 180px; background-color: white; top: -100px; left: 220px; border-radius: 50%; box-shadow: 0px 0px 0px 7px black; display: flex; justify-content: center; align-items: center;">
+									<th:block
+										th:if="${weight >= 50 and weight <= 60 and learner.gender.getGender() == 'Barbat'}">
+										<img style="width: 60px; height: 140px;"
+											src="/images/logo/male-ectomorph.png">
+									</th:block>
+									<th:block
+										th:if="${weight >= 60 and weight <= 70 and learner.gender.getGender() == 'Barbat'}">
+										<img style="width: 60px; height: 140px;"
+											src="/images/logo/male-mesomorph.png">
+									</th:block>
+									<th:block
+										th:if="${weight >= 80 and learner.gender.getGender() == 'Barbat'}">
+										<img style="width: 60px; height: 140px;"
+											src="/images/logo/male-endomorph.png">
+									</th:block>
+									<th:block
+										th:if="${weight >= 40 and weight <= 50 and learner.gender.getGender() == 'Femeie'}">
+										<img style="width: 60px; height: 140px;"
+											src="/images/logo/female-ectomorph.png">
+									</th:block>
+									<th:block
+										th:if="${weight >= 50 and weight <= 60 and learner.gender.getGender() == 'Femeie'}">
+										<img style="width: 60px; height: 140px;"
+											src="/images/logo/female-mesomorph.png">
+									</th:block>
+									<th:block
+										th:if="${weight >= 60 and learner.gender.getGender() == 'Femeie'}">
+										<img style="width: 60px; height: 140px;"
+											src="/images/logo/female-endomorph.png">
+									</th:block>
+									<th:block th:unless="${weight}">
+										<img style="width: 140px; height: 140px; border-radius: 60px;"
+											src="/images/di.png">
+									</th:block>
+								</div>
+								<h3
+									style="text-align: center; font-size: 60px; margin-top: 60px; color: #7300e6; font-weight: 700;">Informatii
+									Cursant</h3>
+								<div style="float: left">
+									<div class="product-info"
+										style="position: relative; width: auto; height: 350px;">
+										<div class="product-text"
+											style="z-index: 2; color: black; text-align: center; font-size: 15px; position: relative;">
+											<div
+												style="display: inline-flex; align-items: baseline; font-size: 20px;">
+												Sex:
+												<div
+													style="color: #7300e6; margin-left: 5px; margin-right: 10px; font-size: 60px; font-weight: 900;"
+													th:text="${learner.gender.getGender()}"></div>
 											</div>
-											<div class="modal-body">
-												<ul
-													th:each="exercise, iterStat : ${exercisesDoneForLearner}">
-													<li th:text="${exercise.exercise.name}"></li>
-													<li th:text="${exercise.exercise.caloriesBurned}"></li>
-													<li th:text="${exercise.exercise.numberOfSeries}"></li>
-													<li th:text="${exercise.exercise.numberOfReps}"></li>
-													<li th:text="${exercise.exercise.execution}"></li>
-													<li th:text="${exercise.exercise.trainedMuscleGroup}"></li>
-												</ul>
+											<div
+												style="display: block; align-items: baseline; font-size: 20px;">
+												Exercitii Efectuate:
+												<button data-toggle="modal"
+													data-target="#modal-exercises-done-today"
+													th:attr="data-target='#modal-exercises-done-today'"
+													class="view-ex-or-food" th:text="${numberOfExercisesDone}"
+													style="margin-left: 5px; margin-right: 10px; font-size: 60px; font-weight: 900;"></button>
+												<div class="modal modal-exercises-done-today fade in"
+													th:id="modal-exercises-done-today">
+													<div class="modal-dialog"
+														style="overflow-y: initial !important;">
+														<div class="modal-content"
+															style="box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6); border-radius: 12px; width: 950px; position: relative; left: -50px;">
+															<div class="modal-body"
+																style="height: 680px; overflow-y: auto; overflow-x: hidden;">
+																<div style="text-align: center; color: #7300e6;">
+																	<h2
+																		style="color: #7300e6; font-size: 45px; margin-bottom: 40px; margin-top: 20px;">Exercitii
+																		Efectuate Astazi</h2>
+																</div>
+																<div class="row" style="position: relative; left: 65px;">
+																	<div class="col-md-5"
+																		th:each="ex, iterStat : ${exercisesDoneForLearner}">
+																		<div class="card-type-2"
+																			style="position: relative; height: 450px; background-color: #f6f6f6; border-radius: 30px; border: 0; margin-bottom: 25px;">
+																			<div class="img-c"
+																				style="padding-top: 100%; top: -50px; position: relative; height: 500px;">
+																				<th:block
+																					th:if="${ex.exercise.exerciseImages.size() > 0 and ex.exercise.trainingPlan.forWho.getGender() eq 'Barbat'}">
+																					<img style="height: 300px;" class="img" width="800"
+																						height="800"
+																						th:src="@{'/images/plans/trainings/man/exercise/'+${ex.exercise.exerciseImages[0].fileName}}">
+																				</th:block>
+																				<th:block
+																					th:if="${ex.exercise.exerciseImages.size() > 0 and ex.exercise.trainingPlan.forWho.getGender() eq 'Femeie'}">
+																					<img style="height: 300px;" class="img" width="800"
+																						height="800"
+																						th:src="@{'/images/plans/trainings/woman/exercise/'+${ex.exercise.exerciseImages[0].fileName}}">
+																				</th:block>
+																				<th:block
+																					th:if="${ex.exercise.exerciseImages.size() eq 0}">
+																					<img style="height: 300px;" class="img" width="800"
+																						height="800" th:src="@{'/images/di.png'}">
+																				</th:block>
+																			</div>
+																			<div class="overlay-food"
+																				style="background-color: #f6f6f6;">
+																				<div class="text" style="left: 47%;">
+																					<div
+																						style="font-size: 45px; color: #7300e6; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;"
+																						th:text="${ex.exercise.name}"></div>
+																					<span
+																						style="font-size: 15px; color: black; font-weight: 600; display: block;">Data
+																						Executiei</span> <span
+																						style="font-size: 15px; color: gray; font-weight: 100;"
+																						th:text="${ex.dateOfExecution}"></span>
+																					<div class="posts" style="margin-top: 10px;">
+																						<div class="one" style="font-weight: 100;">
+																							<span style="display: block;">Calorii Arse</span>
+																							<span
+																								style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																								th:text="${ex.exercise.caloriesBurned}"></span>
+																							<img
+																								style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																								src="/images/logo/burning.png">
+																						</div>
+																						<div class="two" style="font-weight: 100;">
+																							<span style="display: block;">Numar Serii</span>
+																							<span
+																								style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																								th:text="${ex.exercise.numberOfSeries}"></span>
+																							<img
+																								style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																								src="/images/logo/gym.png">
+																						</div>
+																						<div class="two" style="font-weight: 100;">
+																							<span style="display: block;">Numar
+																								Repetari</span> <span
+																								style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																								th:text="${ex.exercise.numberOfReps}"></span> <img
+																								style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																								src="/images/logo/muscle.png">
+																						</div>
+																					</div>
+																					<div class="posts" style="margin-top: 10px;">
+																						<div class="one" style="font-weight: 100;">
+																							<span style="display: block;">Grupa Muschi</span>
+																							<span
+																								style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																								th:text="${ex.exercise.trainedMuscleGroup.getMuscleGroup()}"></span>
+																							<img
+																								style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																								src="/images/logo/treadmill.png">
+																						</div>
+																						<div class="two" style="font-weight: 100;">
+																							<span style="display: block;">Categorie</span> <span
+																								style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																								th:text="${ex.exercise.exerciseCategory}"></span>
+																							<img
+																								style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																								src="/images/logo/ssss.png">
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
 											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-secondary"
-													data-dismiss="modal">Close</button>
-												<button type="button" class="btn btn-primary">Save
-													changes</button>
-											</div>
+											<th:block th:if="${weight}">
+												<div
+													style="display: inline-flex; align-items: baseline; font-size: 20px;">
+													Greutate:
+													<div
+														style="color: #7300e6; margin-left: 5px; margin-right: 10px; font-size: 60px; font-weight: 900;"
+														th:text="${weight + ' KG'}"></div>
+													<img style="width: 50px; height: 50px;"
+														src="/images/logo/weight.png">
+												</div>
+											</th:block>
+											<th:block th:if="${height}">
+												<div
+													style="display: inline-flex; align-items: baseline; font-size: 20px;">
+													Inaltime:
+													<div
+														style="color: #7300e6; margin-left: 5px; margin-right: 10px; font-size: 60px; font-weight: 900;"
+														th:text="${height + ' CM'}"></div>
+													<img style="width: 50px; height: 50px;"
+														src="/images/logo/height.png">
+												</div>
+											</th:block>
 										</div>
 									</div>
 								</div>
-								</p>
-								<div th:if="${height}">
-									<p th:text="${height + ' CM'}"></p>
-								</div>
-								<div th:if="${weight}">
-									<p th:text="${weight + ' KG'}"></p>
-								</div>
 							</div>
-							<div class="col-md-7">
-								<div
-									th:if="${weight > 50 and weight < 60 and learner.gender.getGender() == 'Barbat'}">
-									<img th:src="@{${'/images/male-ectomorph.png'}}"
-										alt="Cinque Terre" width="50" height="213">
-								</div>
-								<div
-									th:if="${weight > 60 and weight < 70 and learner.gender.getGender() == 'Barbat'}">
-									<img th:src="@{${'/images/male-mesomorph.png'}}"
-										alt="Cinque Terre" width="50" height="213">
-								</div>
-								<div
-									th:if="${weight > 80 and learner.gender.getGender() == 'Barbat'}">
-									<img th:src="@{${'/images/male-endomorph.png'}}"
-										alt="Cinque Terre" width="50" height="213">
-								</div>
-
-								<div
-									th:if="${weight > 40 and weight < 50 and learner.gender.getGender() == 'Femeie'}">
-									<img th:src="@{${'/images/female-ectomorph.png'}}"
-										alt="Cinque Terre" width="50" height="213">
-								</div>
-								<div
-									th:if="${weight > 50 and weight < 60 and learner.gender.getGender() == 'Femeie'}">
-									<img th:src="@{${'/images/female-mesomorph.png'}}"
-										alt="Cinque Terre" width="50" height="213">
-								</div>
-								<div
-									th:if="${weight > 60 and learner.gender.getGender() == 'Femeie'}">
-									<img th:src="@{${'/images/female-endomorph.png'}}"
-										alt="Cinque Terre" width="50" height="213">
+						</div>
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-md-10 mx-auto">
+									<div class="container-fluid">
+										<div class="row">
+											<div class="col-md-11 mx-auto"
+												style="position: relative; top: 50px; background-color: white; border-radius: 30px; padding: 15px; margin-bottom: 100px;">
+												<div
+													style="font-size: 50px; font-weight: 600; text-align: center; color: #7300e6;">Suma
+													Caloriilor Arse</div>
+												<div class="row">
+													<div class="col-md-12">
+														<div id="chartBurnedCalories"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="container-fluid">
+										<div class="row">
+											<div class="col-md-11 mx-auto"
+												style="position: relative; top: 50px; background-color: white; border-radius: 30px; padding: 15px; margin-bottom: 100px;">
+												<div
+													style="font-size: 50px; font-weight: 600; text-align: center; color: #7300e6;">Numar
+													Exercitii Efectuate</div>
+												<div class="row">
+													<div class="col-md-12">
+														<div id="chartExercisesDone"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<div th:if="${feedbackWasProvided}"
+												style="text-align: center; font-size: 70px; margin-bottom: 100px; color: white; font-weight: 700;">Azi
+												ai oferit deja un feedback acestui utilizator</div>
+											<form th:action="@{/helper_offers_feedback}" method="post">
+												<input type="hidden" name="learnerId"
+													th:value="${learner.accountId}" />
+												<button type="submit" class="btnn2"
+													style="color: #7300e6; background-color: white; font-size: 25px; margin-top: 50px !important; margin-bottom: 50px !important;">
+													Ofera Feedback</button>
+											</form>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<div id="chartBurnedCalories" style="height: 300px;"></div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<div id="chartExercisesDone" style="height: 300px;"></div>
-					</div>
-				</div>
-				<div>
-				<div th:if="${feedbackWasProvided}">Azi ai oferit deja un feedback acestui utilizator</div>
-						<form th:action="@{/helper_offers_feedback}" method="post">
-							<input type="hidden" name="learnerId"
-								th:value="${learner.accountId}" />
-							<button type="submit">Ofera Feedback</button>
-						</form>
-					</div>
 			</div>
 		</div>
-	</div>
-	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
-		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-		crossorigin="anonymous"></script>
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-	<script src="https://code.highcharts.com/highcharts.js"></script>
-	<script src="https://code.highcharts.com/modules/exporting.js"></script>
-	<script src="https://code.highcharts.com/modules/export-data.js"></script>
-	<script src="https://code.highcharts.com/modules/accessibility.js"></script>
-	<script th:inline="javascript">
-		Highcharts.chart('container', {
-			chart : {
-				type : 'pie',
-				options3d : {
-					enabled : true,
-					alpha : 50,
-					beta : 0
-				}
-			},
-			title : {
-				text : 'Exercitii Efectuate VS Exercitii Neefectuate'
-			},
-			tooltip : {
-				pointFormat : '{series.name}: <b>{point.percentage:.1f}%</b>'
-			},
-			plotOptions : {
-				pie : {
-					allowPointSelect : true,
-					cursor : 'pointer',
-					depth : 35,
-					dataLabels : {
-						enabled : true,
-						format : '{point.name}'
-					}
-				}
-			},
-			series : [ {
-				type : 'pie',
-				name : 'Procent Exercitii',
-				data : [ [ 'Neefectuat', [[${numberOfExercisesUnDone}]] ], [ 'Efectuat', [[${numberOfExercisesDone}]] ]  ]
-			} ]
-		});
-		
-		$('#chartBurnedCalories').highcharts({
-	        chart: {
-	            type: 'column'
-	        },
-	        title: {
-	        	text: 'Suma Caloriilor Arse'
-	        },
-	        scrollbar: {
-	            enabled: true
-	        },
-	        xAxis: {
-	            categories: [[${chartBurnedCalories.keySet()}]],
-	            crosshair: true,
-	            min: 0,
-	            max: 10,
-	        },
-	        yAxis: {
-	        },
-	        tooltip: {
-	            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-	            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-	            '<td style="padding:0"><b>{point.y:.1f} Kcal</b></td></tr>',
-	            footerFormat: '</table>',
-	            shared: true,
-	            useHTML: true
-	        },
-	        plotOptions: {
-	            column: {
-	                pointPadding: 0.2,
-	                borderWidth: 0,
-	                cropThreshold: 1000
-	            }
-	        },
-	        series: [{
-	            name: 'Valoare',
-	            data: [[${chartBurnedCalories.values()}]],
-	            zones: [{
-                    value: 50,
-                    color: 'blue'
-                },{
-                    value: 100,
-                    color: 'orange'
-                },{
-                    color: 'red'
-                }]
-	        }]
-	    });
-		
-		$('#chartExercisesDone').highcharts({
-	        chart: {
-	            type: 'column'
-	        },
-	        title: {
-	            text: 'Numar Exercitii Efectuate'
-	        },
-	        scrollbar: {
-	            enabled: true
-	        },
-	        xAxis: {
-	            categories: [[${chartExercisesDone.keySet()}]],
-	            crosshair: true,
-	            min: 0,
-	            max: 10,
-	        },
-	        yAxis: {
-	        },
-	        tooltip: {
-	            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-	            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-	            '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
-	            footerFormat: '</table>',
-	            shared: true,
-	            useHTML: true
-	        },
-	        plotOptions: {
-	            column: {
-	                pointPadding: 0.2,
-	                borderWidth: 0,
-	                cropThreshold: 1000
-	            }
-	        },
-	        series: [{
-	            name: 'Valoare',
-	            data: [[${chartExercisesDone.values()}]]
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+			integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+			crossorigin="anonymous"></script>
+		<script
+			src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+		<script src="https://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/modules/exporting.js"></script>
+		<script src="https://code.highcharts.com/modules/export-data.js"></script>
+		<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+		<script th:inline="javascript">
+		 $(function () {
 
-	        }]
-	    });
+	            $(function () {
+	                'use strict';
+		(function (factory) {
+            if (typeof module === 'object' && module.exports) {
+                module.exports = factory;
+            } else {
+                factory(Highcharts);
+            }
+        }(function (Highcharts) {
+            (function (H) {
+                H.wrap(H.seriesTypes.column.prototype, 'translate', function (proceed) {
+                    const options = this.options;
+                    const topMargin = options.topMargin || 0;
+                    const bottomMargin = options.bottomMargin || 0;
+
+                    proceed.call(this);
+
+                    H.each(this.points, function (point) {
+                        if (options.borderRadiusTopLeft || options.borderRadiusTopRight || options.borderRadiusBottomRight || options.borderRadiusBottomLeft) {
+                            const w = point.shapeArgs.width;
+                            const h = point.shapeArgs.height;
+                            const x = point.shapeArgs.x;
+                            const y = point.shapeArgs.y;
+
+                            let radiusTopLeft = H.relativeLength(options.borderRadiusTopLeft || 0, w);
+                            let radiusTopRight = H.relativeLength(options.borderRadiusTopRight || 0, w);
+                            let radiusBottomRight = H.relativeLength(options.borderRadiusBottomRight || 0, w);
+                            let radiusBottomLeft = H.relativeLength(options.borderRadiusBottomLeft || 0, w);
+
+                            const maxR = Math.min(w, h) / 2
+
+                            radiusTopLeft = radiusTopLeft > maxR ? maxR : radiusTopLeft;
+                            radiusTopRight = radiusTopRight > maxR ? maxR : radiusTopRight;
+                            radiusBottomRight = radiusBottomRight > maxR ? maxR : radiusBottomRight;
+                            radiusBottomLeft = radiusBottomLeft > maxR ? maxR : radiusBottomLeft;
+
+                            point.dlBox = point.shapeArgs;
+
+                            point.shapeType = 'path';
+                            point.shapeArgs = {
+                                d: [
+                                    'M', x + radiusTopLeft, y + topMargin,
+                                    'L', x + w - radiusTopRight, y + topMargin,
+                                    'C', x + w - radiusTopRight / 2, y, x + w, y + radiusTopRight / 2, x + w, y + radiusTopRight,
+                                    'L', x + w, y + h - radiusBottomRight,
+                                    'C', x + w, y + h - radiusBottomRight / 2, x + w - radiusBottomRight / 2, y + h, x + w - radiusBottomRight, y + h + bottomMargin,
+                                    'L', x + radiusBottomLeft, y + h + bottomMargin,
+                                    'C', x + radiusBottomLeft / 2, y + h, x, y + h - radiusBottomLeft / 2, x, y + h - radiusBottomLeft,
+                                    'L', x, y + radiusTopLeft,
+                                    'C', x, y + radiusTopLeft / 2, x + radiusTopLeft / 2, y, x + radiusTopLeft, y,
+                                    'Z'
+                                ]
+                            };
+                        }
+
+                    });
+                });
+            }(Highcharts));
+        }));
 		
+		  Highcharts.setOptions({
+			    colors: ['#ff3f40', '#7300e6']
+			  });
+			  $('#chartBurnedCalories').highcharts({
+				  colors: ['#7300e6'],
+	              chart: {
+	                  type: 'column'
+	              },
+	              title:{ text: null},
+	              scrollbar: {
+	                  enabled: true,
+	                  barBackgroundColor: '#7300e6',
+	                  barBorderRadius: 7,
+	                  barBorderWidth: 0,
+	                  buttonBackgroundColor: '#7300e6',
+	                  buttonBorderWidth: 0,
+	                  buttonArrowColor: 'white',
+	                  buttonBorderRadius: 7,
+	                  rifleColor: 'white',
+	                  trackBackgroundColor: 'white',
+	                  trackBorderWidth: 1,
+	                  trackBorderColor: 'silver',
+	                  trackBorderRadius: 7
+	              },
+	              xAxis: {
+	            	  type: 'datetime',
+				      categories: [[${chartBurnedCalories.keySet()}]],
+				      labels: {
+			              style: {
+			                  color: 'black',
+			                  font: '13px Arial, sans-serif',
+			                  fontWeight: '600'
+			              }
+			          },
+			          crosshair: true,
+			          min: 0,
+			          max: 5
+	              },
+	              yAxis: {
+	            	  title: {
+			                text: 'Valori',
+			                    style: {
+			                        color: 'black',
+			                        font: '22px Arial, sans-serif',
+			                        fontWeight: '600'
+			                    }
+			            },
+			            gridLineColor: 'transparent',
+			            labels: {
+			                style: {
+			                    color: 'black',
+			                    font: '13px Arial, sans-serif',
+			                    fontWeight: '600'
+			                }
+			            }
+	              },
+	              tooltip: {
+	                  headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+	                  pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+	                      '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+	                  footerFormat: '</table>',
+	                  shared: true,
+	                  useHTML: true
+	              },
+	              plotOptions: {
+	                  column: {
+	                      pointPadding: 0.2,
+	                      borderWidth: 0,
+	                      cropThreshold: 1000,
+	                      borderRadiusTopLeft: 10,
+	                      borderRadiusTopRight: 10,
+	                      states: {
+	                          hover: {
+	                              color: '#000000'
+	                          }
+	                      }
+	                  }
+	              },
+	              series: [{
+	            	  name: 'Calorii Arse',
+	  		        data: [[${chartBurnedCalories.values()}]],
+	                  events: {
+	                      legendItemClick: function (e) {
+	                          e.preventDefault()
+	                      }
+	                  }
+	              }]
+			  });
+		  
+		  Highcharts.setOptions({
+			    colors: ['#ff3f40', '#7300e6']
+			  });
+			  $('#chartExercisesDone').highcharts({
+				  colors: ['#7300e6'],
+	              chart: {
+	                  type: 'column'
+	              },
+	              title:{ text: null},
+	              scrollbar: {
+	                  enabled: true,
+	                  barBackgroundColor: '#7300e6',
+	                  barBorderRadius: 7,
+	                  barBorderWidth: 0,
+	                  buttonBackgroundColor: '#7300e6',
+	                  buttonBorderWidth: 0,
+	                  buttonArrowColor: 'white',
+	                  buttonBorderRadius: 7,
+	                  rifleColor: 'white',
+	                  trackBackgroundColor: 'white',
+	                  trackBorderWidth: 1,
+	                  trackBorderColor: 'silver',
+	                  trackBorderRadius: 7
+	              },
+	              xAxis: {
+	            	  type: 'datetime',
+				      categories: [[${chartExercisesDone.keySet()}]],
+				      labels: {
+			              style: {
+			                  color: 'black',
+			                  font: '13px Arial, sans-serif',
+			                  fontWeight: '600'
+			              }
+			          },
+			          crosshair: true,
+			          min: 0,
+			          max: 5
+	              },
+	              yAxis: {
+	            	  title: {
+			                text: 'Valori',
+			                    style: {
+			                        color: 'black',
+			                        font: '22px Arial, sans-serif',
+			                        fontWeight: '600'
+			                    }
+			            },
+			            gridLineColor: 'transparent',
+			            labels: {
+			                style: {
+			                    color: 'black',
+			                    font: '13px Arial, sans-serif',
+			                    fontWeight: '600'
+			                }
+			            }
+	              },
+	              tooltip: {
+	                  headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+	                  pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+	                      '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+	                  footerFormat: '</table>',
+	                  shared: true,
+	                  useHTML: true
+	              },
+	              plotOptions: {
+	                  column: {
+	                      pointPadding: 0.2,
+	                      borderWidth: 0,
+	                      cropThreshold: 1000,
+	                      borderRadiusTopLeft: 10,
+	                      borderRadiusTopRight: 10,
+	                      states: {
+	                          hover: {
+	                              color: '#000000'
+	                          }
+	                      }
+	                  }
+	              },
+	              series: [{
+	            	  name: 'Valoare',
+			            data: [[${chartExercisesDone.values()}]],
+	                  events: {
+	                      legendItemClick: function (e) {
+	                          e.preventDefault()
+	                      }
+	                  }
+	              }]
+			  });
+	            });
+
+	        });
 	</script>
 	</div>
-	
 </body>
 </html>

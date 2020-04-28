@@ -1,5 +1,6 @@
 package com.web.dao;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.Set;
 
@@ -33,4 +34,7 @@ public interface UserPlanDao extends CrudRepository<UserPlan, Integer> {
 	Set<UserPlan> findAllByBoughtAndUserAccountId(boolean b, Integer accountId);
 
 	Optional<UserPlan> findTopByOrderByDateOfPurchaseDesc();
+
+	Set<UserPlan> findAllByHelperPlanHelperAccountIdAndDateOfPurchaseBetween(Integer accountId,
+			Timestamp timestampStartDate, Timestamp timestampEndDate);
 }

@@ -1,5 +1,6 @@
 package com.web.dao;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.Set;
 
@@ -31,4 +32,7 @@ public interface HelperPlanDao extends CrudRepository<HelperPlan, Integer> {
 	Set<HelperPlan> findAllPlansByHelperIdAndUserIdNotAssociated(Integer helperId, Integer userId);
 
 	Optional<HelperPlan> findByHelperPlanIdAndTypeOfPlan(int parseInt, String string);
+
+	Set<HelperPlan> findAllByHelperAccountIdAndDateOfCreationBetween(Integer accountId, Timestamp timestampStartDate,
+			Timestamp timestampEndDate);
 }

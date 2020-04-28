@@ -2,6 +2,7 @@ package com.web.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,27 +26,27 @@ public class AccountInformation {
 	private Integer accountInformationId;
 
 	@Column(name = "description")
-	@Size(min = 3, message = "Valoarea minima a dimensiunii campului este de 3 caractere")
+	@Size(min = 3, message = "**Valoarea minima a dimensiunii campului este de 3 caractere")
 	private String description;
 
 	@Column(name = "job_obiective")
-	@Size(min = 3, message = "Valoarea minima a dimensiunii campului este de 3 caractere")
+	@Size(min = 3, message = "**Valoarea minima a dimensiunii campului este de 3 caractere")
 	private String jobObiective;
-	
+
 	@OneToOne(optional = false)
-    @JoinColumn(name = "account_id", nullable = false)
-    private Account account;
+	@JoinColumn(name = "account_id", nullable = false)
+	private Account account;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "accountInformation", orphanRemoval = true)
-	@Valid 
+	@Valid
 	private List<Skill> skills = new ArrayList<>();
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "accountInformation", orphanRemoval = true)
-	@Valid 
+	@Valid
 	private List<Experience> experiences = new ArrayList<>();
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "accountInformation", orphanRemoval = true)
-	@Valid 
+	@Valid
 	private List<Education> education = new ArrayList<>();
 
 	public AccountInformation() {
@@ -63,7 +64,7 @@ public class AccountInformation {
 		this.experiences = experiences;
 		this.education = education;
 	}
-	
+
 	public Integer getAccountInformationId() {
 		return accountInformationId;
 	}
@@ -87,7 +88,7 @@ public class AccountInformation {
 	public void setJobObiective(String jobObiective) {
 		this.jobObiective = jobObiective;
 	}
-	
+
 	public Account getAccount() {
 		return account;
 	}

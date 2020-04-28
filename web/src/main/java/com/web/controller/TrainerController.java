@@ -4,8 +4,12 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -85,25 +89,69 @@ public class TrainerController {
 	@GetMapping(path = { "/trainer" })
 	public String trainer(Model model, RedirectAttributes redirectAttributes) {
 		Account account = accountService.getAccountConnected();
+		LocalDate date = LocalDate.now();
+		LocalDateTime startDateTime = date.atStartOfDay();
+		LocalDateTime endDateTime = date.atStartOfDay().plusDays(1).minusSeconds(1);
+		Timestamp timestampStartDate = Timestamp.valueOf(startDateTime);
+		Timestamp timestampEndDate = Timestamp.valueOf(endDateTime);
+		Set<HelperPlan> plansCreatedToday = helperPlanService.findAllByHelperAccountIdAndDateOfCreationBetween(
+				account.getAccountId(), timestampStartDate, timestampEndDate);
+		Set<UserPlan> userPlansToday = userPlanService.findAllByHelperPlanHelperAccountIdAndDateOfPurchaseBetween(
+				account.getAccountId(), timestampStartDate, timestampEndDate);
+		Set<Integer> learnersIds = accountService.findAllLearnersByHelperId(account.getAccountId());
+		Set<Account> learners = new HashSet<>();
+		for (Integer integer : learnersIds) {
+			Account learner = accountService.findById(integer).get();
+			learners.add(learner);
+		}
+		Set<ExerciseDone> exercisesDoneToday = new HashSet<>();
+		learners.forEach(element -> exercisesDoneToday
+				.addAll(exerciseDoneService.findAllByUserAccountIdAndDateOfExecutionBetween(element.getAccountId(),
+						timestampStartDate, timestampEndDate)));
+		Set<ExerciseDone> allExercises = new HashSet<>();
+		learners.forEach(element -> allExercises.addAll(element.getExerciseDone()));
+		Map<Exercise, Long> favoriteExercises = allExercises.stream().map(element -> element.getExercise())
+				.collect(Collectors.groupingBy(e -> e, Collectors.counting()));
+		Map<Exercise, Long> favoriteExercisesDesc = sortExercises(favoriteExercises, false);
 		model.addAttribute("account", account);
+		model.addAttribute("learners", learners);
+		model.addAttribute("plansCreatedToday", plansCreatedToday);
+		model.addAttribute("exercisesDoneToday", exercisesDoneToday);
+		model.addAttribute("userPlansToday", userPlansToday);
+		model.addAttribute("favoriteExercisesDesc", favoriteExercisesDesc);
 		return "trainer/trainer";
+	}
+
+	private static Map<Exercise, Long> sortExercises(Map<Exercise, Long> unsortMap, final boolean order) {
+		List<Entry<Exercise, Long>> list = new LinkedList<>(unsortMap.entrySet());
+		list.sort((o1, o2) -> order
+				? o1.getValue().compareTo(o2.getValue()) == 0 ? o1.getKey().compareTo(o2.getKey())
+						: o1.getValue().compareTo(o2.getValue())
+				: o2.getValue().compareTo(o1.getValue()) == 0 ? o2.getKey().compareTo(o1.getKey())
+						: o2.getValue().compareTo(o1.getValue()));
+		return list.stream().collect(Collectors.toMap(Entry::getKey, Entry::getValue, (a, b) -> b, LinkedHashMap::new));
+
 	}
 
 	@GetMapping(path = { "/view_progress/{id}" })
 	public String viewProgress(Model model, @PathVariable("id") String learnerId) {
 		Account helper = accountService.getAccountConnected();
+		Map<String, Integer> chartExercisesDone = new TreeMap<>();
+		Map<String, Integer> chartBurnedCalories = new TreeMap<>();
+		Integer numberOfExercisesUnDone = 0;
+		Integer numberOfExercisesDone = 0;
+		Set<ExerciseDone> exercisesDoneForLearner = new HashSet<>();
+		String previousValue = null;
+		Integer numberOfExercisesDoneByDay = 0;
+		Integer numberOfCaloriesPerExerciseDay = 0;
+		boolean noFeedbackWasProvided = true;
+		Timestamp timestampStart = Timestamp.valueOf(LocalDate.now().atStartOfDay());
+		Timestamp timestampEnd = Timestamp.valueOf(LocalDate.now().atStartOfDay().plusDays(1).minusSeconds(1));
+		Account learner = new Account();
 		if (helper.isActive()) {
 			if (checkId(learnerId) && accountService.findById(Integer.parseInt(learnerId)).isPresent()) {
-				Account learner = accountService.findById(Integer.parseInt(learnerId)).get();
-				Map<String, Integer> chartExercisesDone = new TreeMap<>();
-				Map<String, Integer> chartBurnedCalories = new TreeMap<>();
-				Integer numberOfExercisesUnDone = 0;
-				Integer numberOfExercisesDone = 0;
-				Set<ExerciseDone> exercisesDoneForLearner = exerciseDoneService
-						.findAllByUserAccountId(learner.getAccountId());
-				String previousValue = null;
-				Integer numberOfExercisesDoneByDay = 0;
-				Integer numberOfCaloriesPerExerciseDay = 0;
+				learner = accountService.findById(Integer.parseInt(learnerId)).get();
+				exercisesDoneForLearner = exerciseDoneService.findAllByUserAccountId(learner.getAccountId());
 				for (ExerciseDone exerciseDone : exercisesDoneForLearner) {
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 					LocalDateTime startDateTime = exerciseDone.getDateOfExecution().toLocalDateTime();
@@ -121,9 +169,7 @@ public class TrainerController {
 					chartBurnedCalories.put(value, numberOfCaloriesPerExerciseDay);
 				}
 				numberOfExercisesDone = exercisesDoneForLearner.size();
-				boolean noFeedbackWasProvided = true;
-				Timestamp timestampStart = Timestamp.valueOf(LocalDate.now().atStartOfDay());
-				Timestamp timestampEnd = Timestamp.valueOf(LocalDate.now().atStartOfDay().plusDays(1).minusSeconds(1));
+
 				if (helperFeedbackService.findFirstByHelperAccountIdAndDateOfFeedbackProviedBetween(
 						learner.getAccountId(), timestampStart, timestampEnd).isPresent()) {
 					noFeedbackWasProvided = false;
@@ -131,18 +177,17 @@ public class TrainerController {
 				for (UserDevice userDevice : learner.getUserDevices()) {
 					userDeviceService.getHeightAndWeight(model, userDevice);
 				}
-				model.addAttribute("account", helper);
-				model.addAttribute("learner", learner);
-				model.addAttribute("noFeedbackWasProvided", noFeedbackWasProvided);
-				model.addAttribute("numberOfExercisesUnDone", numberOfExercisesUnDone);
-				model.addAttribute("numberOfExercisesDone", numberOfExercisesDone);
-				model.addAttribute("chartBurnedCalories", chartBurnedCalories);
-				model.addAttribute("chartExercisesDone", chartExercisesDone);
-				model.addAttribute("exercisesDoneForLearner", exercisesDoneForLearner);
 			} else {
 				model.addAttribute("inexistentValue", true);
 			}
-
+			model.addAttribute("account", helper);
+			model.addAttribute("learner", learner);
+			model.addAttribute("noFeedbackWasProvided", noFeedbackWasProvided);
+			model.addAttribute("numberOfExercisesUnDone", numberOfExercisesUnDone);
+			model.addAttribute("numberOfExercisesDone", numberOfExercisesDone);
+			model.addAttribute("chartBurnedCalories", chartBurnedCalories);
+			model.addAttribute("chartExercisesDone", chartExercisesDone);
+			model.addAttribute("exercisesDoneForLearner", exercisesDoneForLearner);
 			return "trainer/view_progress";
 		} else {
 			return "redirect:/trainer";
@@ -156,6 +201,7 @@ public class TrainerController {
 		if (account.isActive()) {
 			model.addAttribute("trainingPlans",
 					helperPlanService.findAllTrainingPlansByHelperPlanNotAssociated(account.getAccountId()));
+			model.addAttribute("user", account);
 			return "trainer/training_plans";
 		} else {
 			return "redirect:/trainer";
@@ -171,6 +217,7 @@ public class TrainerController {
 			userTrainings.removeIf(
 					element -> !element.getHelperPlan().getHelper().getAccountId().equals(account.getAccountId()));
 			model.addAttribute("trainingPlans", userTrainings);
+			model.addAttribute("account", account);
 			return "trainer/purchased_training_plans";
 		} else {
 			return "redirect:/trainer";
@@ -195,16 +242,17 @@ public class TrainerController {
 
 	@PostMapping(path = { "/create_training_plan_save" })
 	public String createTrainingPlanSave(Model model, @Valid @ModelAttribute("trainingPlan") HelperPlan trainingPlan,
-			BindingResult bindingResult, RedirectAttributes attr) {
+			@RequestParam String typeOfPlan, BindingResult bindingResult, RedirectAttributes attr) {
 		Account trainer = accountService.getAccountConnected();
 		if (trainer.isActive()) {
 			if (bindingResult.hasErrors()) {
+				bindingResult.getAllErrors().forEach(element -> System.out.println(element));
 				attr.addFlashAttribute("org.springframework.validation.BindingResult.trainingPlan", bindingResult);
 				attr.addFlashAttribute("trainingPlan", trainingPlan);
 				return "redirect:/create_training_plan";
 			} else {
+				trainingPlan.setTypeOfPlan(typeOfPlan);
 				trainingPlan.setHelper(trainer);
-				trainingPlan.setTypeOfPlan("Antrenament");
 				helperPlanService.save(trainingPlan);
 				return "redirect:/training_plans";
 			}
@@ -238,18 +286,22 @@ public class TrainerController {
 
 	@PostMapping(path = { "/edit_training_plan_save" })
 	public String editTrainingPlanSave(@Valid @ModelAttribute("trainingPlan") HelperPlan trainingPlan,
-			BindingResult bindingResult, RedirectAttributes attr, Model model, @RequestParam Integer trainingPlanId) {
+			BindingResult bindingResult, RedirectAttributes attr, Model model, @RequestParam Integer trainingPlanId,
+			@RequestParam String typeOfPlan) {
 		Account account = accountService.getAccountConnected();
 		if (account.isActive()) {
 			if (bindingResult.hasErrors()) {
+				bindingResult.getAllErrors().forEach(element -> System.out.println(element));
 				attr.addFlashAttribute("org.springframework.validation.BindingResult.trainingPlan", bindingResult);
 				attr.addFlashAttribute("trainingPlan", trainingPlan);
 				return "redirect:/edit_training_plan/" + trainingPlanId;
 			} else {
 				HelperPlan oldTrainingPlan = helperPlanService.findById(trainingPlanId).get();
+				oldTrainingPlan.setTypeOfPlan(typeOfPlan);
 				oldTrainingPlan.setForWho(trainingPlan.getForWho());
 				oldTrainingPlan.setName(trainingPlan.getName());
 				oldTrainingPlan.setPrice(trainingPlan.getPrice());
+				oldTrainingPlan.setDescription(trainingPlan.getDescription());
 				oldTrainingPlan.setDateOfCreation(oldTrainingPlan.getDateOfCreation());
 				oldTrainingPlan.setHelper(oldTrainingPlan.getHelper());
 				helperPlanService.save(oldTrainingPlan);

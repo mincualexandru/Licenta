@@ -1,5 +1,6 @@
 package com.web.serviceimpl;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.Set;
 
@@ -69,6 +70,13 @@ public class HelperPlanServiceImpl implements HelperPlanService {
 	@Override
 	public Set<HelperPlan> findAllPlansByHelperIdAndUserIdNotAssociated(Integer helperId, Integer userId) {
 		return helperPlanDao.findAllPlansByHelperIdAndUserIdNotAssociated(helperId, userId);
+	}
+
+	@Override
+	public Set<HelperPlan> findAllByHelperAccountIdAndDateOfCreationBetween(Integer accountId,
+			Timestamp timestampStartDate, Timestamp timestampEndDate) {
+		return helperPlanDao.findAllByHelperAccountIdAndDateOfCreationBetween(accountId, timestampStartDate,
+				timestampEndDate);
 	}
 
 }

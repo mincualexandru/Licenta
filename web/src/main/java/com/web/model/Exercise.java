@@ -43,26 +43,26 @@ public class Exercise implements Comparable<Exercise> {
 	private ExerciseCategory exerciseCategory;
 
 	@Column(name = "name")
-	@NotEmpty(message = "Campul este obligatoriu !")
+	@NotEmpty(message = "**Campul este obligatoriu")
 	private String name;
 
 	@Column(name = "calories_burned")
-	@Range(min = 0, message = "Valorile negative nu sunt permise")
-	@NotNull(message = "Campul este obligatoriu !")
+	@Range(min = 0, message = "**Valorile negative nu sunt permise")
+	@NotNull(message = "**Campul este obligatoriu")
 	private Integer caloriesBurned;
 
 	@Column(name = "number_of_series")
-	@Range(min = 0, message = "Valorile negative nu sunt permise")
-	@NotNull(message = "Campul este obligatoriu !")
+	@Range(min = 0, message = "**Valorile negative nu sunt permise")
+	@NotNull(message = "**Campul este obligatoriu")
 	private Integer numberOfSeries;
 
 	@Column(name = "number_of_reps")
-	@Range(min = 0, message = "Valorile negative nu sunt permise")
-	@NotNull(message = "Campul este obligatoriu !")
+	@Range(min = 0, message = "**Valorile negative nu sunt permise")
+	@NotNull(message = "**Campul este obligatoriu")
 	private Integer numberOfReps;
 
 	@Column(name = "execution")
-	@NotEmpty(message = "Campul este obligatoriu !")
+	@NotEmpty(message = "**Campul este obligatoriu")
 	private String execution;
 
 	@Column(name = "trainedMuscleGroup")

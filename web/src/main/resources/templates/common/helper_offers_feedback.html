@@ -2,147 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
-<style>
-	.rating .stars {
-  margin-right: 15px;
-}
-
-.rating .stars .star {
-  float: left;
-  padding: 5px 2px;
-  cursor: pointer;
-}
-
-.rating .stars .star:before {
-  font-family: 'FontAwesome';
-  content: '\f005';
-  color: #d0e8f0;
-  font-size: 3em;
-}
-
-.rating .stars .star:hover:before,
-.rating .stars .star.to_rate:before,
-.rating .stars .star.rated:before {
-  color: #80c1d5;
-}
-
-.rating .stars .star.no_to_rate:before {
-  color: #d0e8f0;
-}
-.rating {
-    float:left;
-}
-
-/* :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
-   follow these rules. Every browser that supports :checked also supports :not(), so
-   it doesn’t make the test unnecessarily selective */
-.rating:not(:checked) > input {
-    position:absolute;
-    top:-9999px;
-    clip:rect(0,0,0,0);
-}
-
-.rating:not(:checked) > label {
-    float:right;
-    width:1em;
-    padding:0 .1em;
-    overflow:hidden;
-    white-space:nowrap;
-    cursor:pointer;
-    font-size:200%;
-    line-height:1.2;
-    color:#ddd;
-    text-shadow:1px 1px #bbb, 2px 2px #666, .1em .1em .2em rgba(0,0,0,.5);
-}
-
-
-
-.rating > input:checked ~ label {
-    color: #f70;
-    text-shadow:1px 1px #c60, 2px 2px #940, .1em .1em .2em rgba(0,0,0,.5);
-}
-
-.rating:not(:checked) > label:hover,
-.rating:not(:checked) > label:hover ~ label {
-    color: gold;
-    text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
-}
-
-.rating > input:checked + label:hover,
-.rating > input:checked + label:hover ~ label,
-.rating > input:checked ~ label:hover,
-.rating > input:checked ~ label:hover ~ label,
-.rating > label:hover ~ input:checked ~ label {
-    color: #ea0;
-    text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
-}
-
-.rating > label:active {
-    position:relative;
-    top:2px;
-    left:2px;
-}
-
-/* end of Lea's code */
-
-/*
- * Clearfix from html5 boilerplate
- */
-
-.clearfix:before,
-.clearfix:after {
-    content: " "; /* 1 */
-    display: table; /* 2 */
-}
-
-.clearfix:after {
-    clear: both;
-}
-
-/*
- * For IE 6/7 only
- * Include this rule to trigger hasLayout and contain floats.
- */
-
-.clearfix {
-    *zoom: 1;
-}
-
-/* my stuff */
-#status, button {
-    margin: 20px 0;
-}
-.rating:not(:checked) > label:before {
-    content: '★ ';
-}
-.stars-outer {
-  position: relative;
-  display: inline-block;
-}
-
-.stars-inner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 0;
-}
-
-.stars-outer::before {
-  content: '★ ★★★★';
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
-  color: #ccc;
-}
-
-.stars-inner::before {
-  content: '★★★★★ ';
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
-  color: #f8ce0b;
-}
-</style>
 <title>Admin</title>
 <link
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -150,18 +9,197 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<link th:href="@{../css/theme.css}" rel="stylesheet" media="all">
+<link th:href="@{../css/cart.css}" rel="stylesheet" media="all">
 </head>
 <body>
-	<form th:action="@{/helper_offers_feedback_save}" method="post">
-		<input type="hidden" name="learnerId" th:value="${learnerId}"/>
-		<label>Calificativ</label>
-		<select name="qualifying">
-			<option th:each="qualifying : ${qualifyings}" th:text="${qualifying.getQualifying()}" th:value="${qualifying}"></option>
-		</select>
-		<label>Motivul</label>
-		<input type="text" name="reason"/>
-		<button type="submit">Trimite</button>
-	</form>
+	<div class="page-wrapper">
+		<header style="background-color: white;"
+			class="header-mobile d-block d-lg-none">
+			<div class="header-mobile__bar">
+				<div class="container-fluid">
+					<div class="header-mobile-inner">
+						<a class="logo" href="index.html"> <img
+							src="images/logo/Screenshot_18.png">
+						</a>
+						<button class="hamburger hamburger--slider" type="button">
+							<span class="hamburger-box"> <span class="hamburger-inner"></span>
+							</span>
+						</button>
+					</div>
+				</div>
+			</div>
+			<nav class="navbar-mobile">
+				<div class="container-fluid">
+					<ul class="navbar-mobile__list list-unstyled">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<aside style="background-color: white;"
+			class="menu-sidebar d-none d-lg-block">
+			<div class="logo">
+				<a href="#"> <img src="images/logo/Screenshot_18.png">
+				</a>
+			</div>
+			<div class="menu-sidebar__content js-scrollbar1">
+				<nav class="navbar-sidebar">
+					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+						<li><a href="/home" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/choose_helper" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Experti</span></a></li>
+						<li><a href="/choose_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/strategy.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Planuri</span></a></li>
+						<li><a href="/choose_device" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch2.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+									Dispozitive</span></a></li>
+						<li><a href="/shopping_cart" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/supermarket.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+									Cumparaturi</span></a></li>
+						<li><a href="/view_user_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/fitness-plan.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+									Cumparate</span></a></li>
+						<li><a href="/view_user_devices" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/smartwatch3.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+									Cumparate</span></a></li>
+						<li><a href="/foods_eaten" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+									Consumate</span></a></li>
+						<li><a href="/exercises_done" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+									Efectuate</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</nav>
+			</div>
+		</aside>
+		<div class="page-container">
+			<div class="main-content">
+				<div class="section__content section__content--p30">
+					<h3
+						style="text-align: center; font-size: 60px; margin-top: 30px; color: white; font-weight: 700; margin-bottom: 100px;">Feedback
+						Cursant</h3>
+					<div class="row" style="margin-bottom: 100px;">
+						<div class="col-md-9 mx-auto">
+							<form
+								style="border-radius: 30px; filter: drop-shadow(5px -5px 5px black) drop-shadow(-5px 0px 5px black) drop-shadow(0px 5px 5px black); background-color: white; padding: 50px; height: 550px;"
+								id="ratingForm" th:action="@{/helper_offers_feedback_save}"
+								method="post">
+								<input type="hidden" name="learnerId" th:value="${learnerId}" />
+								<h3 style="text-align: center; font-size: 40px; color: black;">
+									Ofera <span style="font-size: 60px; color: #7300e6;">feedback</span>
+								</h3>
+								<div class="parent"
+									style="position: relative; top: 50px; display: flex;">
+									<div style="float: left; height: 300px;">
+										<img style="width: 350px; height: 300px;"
+											src="../images/logo/positive-vote.png">
+									</div>
+									<div style="width: 400px; position: relative; left: 70px;">
+										<div class="form-group" style="width: 245px;">
+											<label
+												style="color: #7300e6; font-weight: 600; font-size: 20px;">Calificativ</label>
+											<select class="form-control" style="display: block;"
+												name="qualifying">
+												<option th:each="qualifying : ${qualifyings}"
+													th:text="${qualifying.getQualifying()}"
+													th:value="${qualifying}"></option>
+											</select>
+										</div>
+										<div class="form-group"
+											style="margin-top: 20px; margin-bottom: 40px;">
+											<label style="color: #7300e6; font-weight: 600; font-size: 20px;">Motivul</label> <input type="text" name="reason"
+												class="form-control validation input-edit2" />
+										</div>
+										<div class="btn-group">
+											<button
+												style="position: relative; top: 20px; margin-right: 40px; padding-left: 25px; padding-right: 25px; height: 44px;"
+												type="submit" class="btnn2">Trimite</button>
+											<a th:href="@{/trainer}"
+												style="margin-right: 40px; padding-left: 25px; padding-right: 25px; margin: 20px 0;"
+												type="submit" class="btnn2 no-thanks">Nu Trimite</a>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
 		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
 		crossorigin="anonymous"></script>

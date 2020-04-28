@@ -33,143 +33,214 @@
 <link th:href="@{css/style.css}" rel="stylesheet" media="all">
 </head>
 <body>
-	<div class="page-wrapper">
-		<header style="background-color: white;"
-			class="header-mobile d-block d-lg-none">
-			<div class="header-mobile__bar">
-				<div class="container-fluid">
-					<div class="header-mobile-inner">
-						<a class="logo" href="index.html"> <img
-							src="images/logo/Screenshot_18.png">
-						</a>
-						<button class="hamburger hamburger--slider" type="button">
-							<span class="hamburger-box"> <span class="hamburger-inner"></span>
-							</span>
-						</button>
+	<div th:each="role, iterStat : ${account.roles}">
+		<div class="page-wrapper">
+			<header style="background-color: white;"
+				class="header-mobile d-block d-lg-none">
+				<div class="header-mobile__bar">
+					<div class="container-fluid">
+						<div class="header-mobile-inner">
+							<a class="logo" href="index.html"> <img
+								src="images/logo/Screenshot_18.png">
+							</a>
+							<button class="hamburger hamburger--slider" type="button">
+								<span class="hamburger-box"> <span
+									class="hamburger-inner"></span>
+								</span>
+							</button>
+						</div>
 					</div>
 				</div>
-			</div>
-			<nav class="navbar-mobile">
-				<div class="container-fluid">
-					<ul class="navbar-mobile__list list-unstyled">
-						<li><a href="/home" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/home.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
-						<li><a href="/choose_helper" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/trainer.jpg"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
-									Experti</span></a></li>
-						<li><a href="/choose_plan" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/strategy.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
-									Planuri</span></a></li>
-						<li><a href="/choose_device" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/smartwatch2.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
-									Dispozitive</span></a></li>
-						<li><a href="/shopping_cart" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/supermarket.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
-									Cumparaturi</span></a></li>
-						<li><a href="/view_user_plans" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/fitness-plan.jpg"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
-									Cumparate</span></a></li>
-						<li><a href="/view_user_devices" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/smartwatch3.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
-									Cumparate</span></a></li>
-						<li><a href="/foods_eaten" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/popsicle.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
-									Consumate</span></a></li>
-						<li><a href="/exercises_done" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/exercise.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
-									Efectuate</span></a></li>
-						<li><a href="/logout" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/logout.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
-					</ul>
-				</div>
-			</nav>
-		</header>
-		<aside style="background-color: white;"
-			class="menu-sidebar d-none d-lg-block">
-			<div class="logo">
-				<a href="#"> <img src="images/logo/Screenshot_18.png">
-				</a>
-			</div>
-			<div class="menu-sidebar__content js-scrollbar1">
-				<nav class="navbar-sidebar">
-					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
-						<li><a href="/home" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/home.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
-						<li><a href="/choose_helper" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/trainer.jpg"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
-									Experti</span></a></li>
-						<li><a href="/choose_plan" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/strategy.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
-									Planuri</span></a></li>
-						<li><a href="/choose_device" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/smartwatch2.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
-									Dispozitive</span></a></li>
-						<li><a href="/shopping_cart" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/supermarket.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
-									Cumparaturi</span></a></li>
-						<li><a href="/view_user_plans" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/fitness-plan.jpg"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
-									Cumparate</span></a></li>
-						<li><a href="/view_user_devices" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/smartwatch3.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
-									Cumparate</span></a></li>
-						<li><a href="/foods_eaten" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/popsicle.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
-									Consumate</span></a></li>
-						<li><a href="/exercises_done" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/exercise.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
-									Efectuate</span></a></li>
-						<li><a href="/logout" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/logout.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
-					</ul>
+				<nav class="navbar-mobile">
+					<div class="container-fluid">
+						<ul class="navbar-mobile__list list-unstyled">
+							<th:block th:if="${role.name eq 'ROLE_USER'}">
+								<li><a href="/home" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/home.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+								<li><a href="/choose_helper" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/trainer.jpg"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+											Experti</span></a></li>
+								<li><a href="/choose_plan" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/strategy.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+											Planuri</span></a></li>
+								<li><a href="/choose_device" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/smartwatch2.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+											Dispozitive</span></a></li>
+								<li><a href="/shopping_cart" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/supermarket.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+											Cumparaturi</span></a></li>
+								<li><a href="/view_user_plans" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/fitness-plan.jpg"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+											Cumparate</span></a></li>
+								<li><a href="/view_user_devices" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/smartwatch3.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+											Cumparate</span></a></li>
+								<li><a href="/foods_eaten" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/popsicle.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+											Consumate</span></a></li>
+								<li><a href="/exercises_done" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/exercise.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+											Efectuate</span></a></li>
+								<li><a href="/logout" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/logout.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+							</th:block>
+							<th:block th:if="${role.name eq 'ROLE_TRAINER'}">
+								<li><a href="/trainer" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/home.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+								<li><a href="/view_learners" class="links" style=""><img
+										style="height: 40px; width: 40px; background-color: #4A7AFF; border-radius: 30px; border: 3px solid #4A7AFF;"
+										width="800" height="800" src="images/avatar/man.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cursanti</span></a></li>
+								<li><a href="/training_plans" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/exercise.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Antrenamente</span></a></li>
+								<li><a href="/create_training_plan" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/diet.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Creeaza
+											Antrenament</span></a></li>
+								<li><a href="/purchased_training_plans" class="links"
+									style=""><img style="height: 40px; width: 40px;"
+										width="800" height="800" src="images/logo/gym-ex.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Antrenamente
+											Vandute</span></a></li>
+								<li><a href="/view_feedbacks" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/positive-vote.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Feedback-uri
+											Cursanti</span></a></li>
+								<li><a href="/logout" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/logout.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+							</th:block>
+						</ul>
+					</div>
 				</nav>
-			</div>
-		</aside>
-		<div class="page-container">
-			<div class="main-content">
-				<div class="section__content section__content--p30">
-					<div th:if="${trainingPlanId}">
-						<div th:each="role, iterStat : ${account.roles}">
+			</header>
+			<aside style="background-color: white;"
+				class="menu-sidebar d-none d-lg-block">
+				<div class="logo">
+					<a href="#"> <img src="images/logo/Screenshot_18.png">
+					</a>
+				</div>
+				<div class="menu-sidebar__content js-scrollbar1">
+					<nav class="navbar-sidebar">
+						<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+							<th:block th:if="${role.name eq 'ROLE_USER'}">
+								<li><a href="/home" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/home.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+								<li><a href="/choose_helper" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/trainer.jpg"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+											Experti</span></a></li>
+								<li><a href="/choose_plan" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/strategy.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+											Planuri</span></a></li>
+								<li><a href="/choose_device" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/smartwatch2.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
+											Dispozitive</span></a></li>
+								<li><a href="/shopping_cart" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/supermarket.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
+											Cumparaturi</span></a></li>
+								<li><a href="/view_user_plans" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/fitness-plan.jpg"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
+											Cumparate</span></a></li>
+								<li><a href="/view_user_devices" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/smartwatch3.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
+											Cumparate</span></a></li>
+								<li><a href="/foods_eaten" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/popsicle.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
+											Consumate</span></a></li>
+								<li><a href="/exercises_done" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/exercise.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
+											Efectuate</span></a></li>
+								<li><a href="/logout" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/logout.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+							</th:block>
+							<th:block th:if="${role.name eq 'ROLE_TRAINER'}">
+								<li><a href="/trainer" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/home.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+								<li><a href="/view_learners" class="links" style=""><img
+										style="height: 40px; width: 40px; background-color: #4A7AFF; border-radius: 30px; border: 3px solid #4A7AFF;"
+										width="800" height="800" src="images/avatar/man.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cursanti</span></a></li>
+								<li><a href="/training_plans" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/exercise.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Antrenamente</span></a></li>
+								<li><a href="/create_training_plan" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/diet.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Creeaza
+											Antrenament</span></a></li>
+								<li><a href="/purchased_training_plans" class="links"
+									style=""><img style="height: 40px; width: 40px;"
+										width="800" height="800" src="images/logo/gym-ex.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Antrenamente
+											Vandute</span></a></li>
+								<li><a href="/view_feedbacks" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/positive-vote.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Feedback-uri
+											Cursanti</span></a></li>
+								<li><a href="/logout" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="images/logo/logout.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+							</th:block>
+						</ul>
+					</nav>
+				</div>
+			</aside>
+			<div class="page-container">
+				<div class="main-content">
+					<div class="section__content section__content--p30">
+						<div th:if="${trainingPlanId}">
 							<div th:if="${role.name == 'ROLE_USER'}">
 								<div th:unless="${#lists.size(notPerformedExercises)}"
 									style="font-size: 90px; color: white; font-weight: 800; text-align: center; position: relative; top: 200px;">Ai
@@ -435,129 +506,135 @@
 								</div>
 							</div>
 						</div>
-					</div>
-					<div th:if="${dietPlanId}">
-						<div th:each="role, iterStat : ${account.roles}">
-							<div th:if="${role.name == 'ROLE_USER'}">
-								<div th:unless="${#lists.size(notEatenFoods)}"
-									style="font-size: 90px; color: white; font-weight: 800; text-align: center; position: relative; top: 130px;">Ai
-									consumat toate alimentele</div>
-								<div th:if="${#lists.size(notEatenFoods)}">
-									<h3 th:text="${selectedDietPlan.name}"
-										style="text-align: center; font-size: 60px; margin-top: 30px; margin-bottom: 30px; color: white; font-weight: 700;"></h3>
-									<th:block th:each="food: ${notEatenFoods}">
-										<input type="hidden" th:value="${food.calories}" />
-										<input type="hidden" th:value="${food.protein}" />
-										<input type="hidden" th:value="${food.carbohydrates}" />
-									</th:block>
-									<div class="container-fluid">
-										<div class="row">
-											<div class="col-md-12">
-												<div class="row">
-													<div class="col-md-10 mx-auto">
-														<div class="slider">
-															<div
-																style="background-color: white; padding: 50px; border-radius: 30px; height: auto;">
-																<div class="options"
-																	style="overflow: hidden; z-index: 1; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25)">
-																	<div
-																		style="color: black; font-size: 40px; display: block; margin-right: 20px; font-weight: 600; margin-top: 30px;">Detalii
-																		Aferente</div>
-																	<div class="aditional-information"
-																		style="color: black; margin-bottom: 20px; font-size: 18px; font-weight: 100; display: flex; justify-content: center; align-items: baseline;">
-																		Total Calorii:
+						<div th:if="${dietPlanId}">
+							<div th:each="role, iterStat : ${account.roles}">
+								<div th:if="${role.name == 'ROLE_USER'}">
+									<div th:unless="${#lists.size(notEatenFoods)}"
+										style="font-size: 90px; color: white; font-weight: 800; text-align: center; position: relative; top: 130px;">Ai
+										consumat toate alimentele</div>
+									<div th:if="${#lists.size(notEatenFoods)}">
+										<h3 th:text="${selectedDietPlan.name}"
+											style="text-align: center; font-size: 60px; margin-top: 30px; margin-bottom: 30px; color: white; font-weight: 700;"></h3>
+										<th:block th:each="food: ${notEatenFoods}">
+											<input type="hidden" th:value="${food.calories}" />
+											<input type="hidden" th:value="${food.protein}" />
+											<input type="hidden" th:value="${food.carbohydrates}" />
+										</th:block>
+										<div class="container-fluid">
+											<div class="row">
+												<div class="col-md-12">
+													<div class="row">
+														<div class="col-md-10 mx-auto">
+															<div class="slider">
+																<div
+																	style="background-color: white; padding: 50px; border-radius: 30px; height: auto;">
+																	<div class="options"
+																		style="overflow: hidden; z-index: 1; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25)">
 																		<div
-																			style="margin-top: -15px; color: #7300e6; margin-right: 10px; margin-left: 5px; font-weight: 900; font-size: 40px;"
-																			th:text="${#aggregates.sum(notEatenFoods.![calories])}"></div>
-																		Total Proteine:
+																			style="color: black; font-size: 40px; display: block; margin-right: 20px; font-weight: 600; margin-top: 30px;">Detalii
+																			Aferente</div>
+																		<div class="aditional-information"
+																			style="color: black; margin-bottom: 20px; font-size: 18px; font-weight: 100; display: flex; justify-content: center; align-items: baseline;">
+																			Total Calorii:
+																			<div
+																				style="margin-top: -15px; color: #7300e6; margin-right: 10px; margin-left: 5px; font-weight: 900; font-size: 40px;"
+																				th:text="${#aggregates.sum(notEatenFoods.![calories])}"></div>
+																			Total Proteine:
+																			<div
+																				style="margin-top: -15px; color: #7300e6; margin-right: 10px; margin-left: 5px; font-weight: 900; font-size: 40px;"
+																				th:text="${#aggregates.sum(notEatenFoods.![protein])}"></div>
+																			Total Carbohidrati:
+																			<div
+																				style="margin-top: -15px; color: #7300e6; margin-right: 10px; margin-left: 5px; font-weight: 900; font-size: 40px;"
+																				th:text="${#aggregates.sum(notEatenFoods.![T(Math).floor(carbohydrates)])}"></div>
+																		</div>
 																		<div
-																			style="margin-top: -15px; color: #7300e6; margin-right: 10px; margin-left: 5px; font-weight: 900; font-size: 40px;"
-																			th:text="${#aggregates.sum(notEatenFoods.![protein])}"></div>
-																		Total Carbohidrati:
-																		<div
-																			style="margin-top: -15px; color: #7300e6; margin-right: 10px; margin-left: 5px; font-weight: 900; font-size: 40px;"
-																			th:text="${#aggregates.sum(notEatenFoods.![T(Math).floor(carbohydrates)])}"></div>
+																			style="color: black; font-size: 40px; display: block; margin-right: 20px; font-weight: 600; margin-top: -20px;">Alimente:</div>
+																		<a
+																			style="margin-bottom: 20px !important; background: #7300e6; font-weight: 700; padding: 15px; border: none; border-radius: 60px; width: auto; font-size: 15px; height: 40px; display: inline-flex; text-decoration: none; align-items: center; justify-content: center; margin: 0 10px 0.5rem 0; position: relative; color: white;"
+																			th:each="food, iter : ${notEatenFoods}"
+																			th:href="${'#slide-'+ food.foodId}"
+																			th:id="${'slide'+ iter.index}" th:text="${food.name}"></a>
 																	</div>
-																	<div
-																		style="color: black; font-size: 40px; display: block; margin-right: 20px; font-weight: 600; margin-top: -20px;">Alimente:</div>
-																	<a
-																		style="margin-bottom: 20px !important; background: #7300e6; font-weight: 700; padding: 15px; border: none; border-radius: 60px; width: auto; font-size: 15px; height: 40px; display: inline-flex; text-decoration: none; align-items: center; justify-content: center; margin: 0 10px 0.5rem 0; position: relative; color: white;"
-																		th:each="food, iter : ${notEatenFoods}"
-																		th:href="${'#slide-'+ food.foodId}"
-																		th:id="${'slide'+ iter.index}" th:text="${food.name}"></a>
 																</div>
-															</div>
-															<div class="slides" style="margin-top: 40px;">
-																<div th:each="food, iter : ${notEatenFoods}"
-																	style="border-radius: 30px; overflow: hidden;">
-																	<div th:id="${'slide-'+ food.foodId}" style="">
-																		<div class="wrapper-slider">
-																			<div class="product-img" style="width: 380px;">
-																				<th:block th:if="${food.images.size() > 0}">
-																					<img
-																						style="padding: 30px; display: block; position: absolute; top: 50%; left: 50%; min-height: 100%; min-width: 100%; transform: translate(-50%, -50%);"
-																						th:src="@{'images/plans/diets/'+${food.images[0].fileName}}">
-																				</th:block>
-																				<th:block th:if="${food.images.size() eq 0}">
-																					<img
-																						style="padding: 30px; display: block; position: absolute; top: 50%; left: 50%; min-height: 100%; min-width: 100%; transform: translate(-50%, -50%);"
-																						onerror="if (this.src != 'images/di.png') this.src = 'images/di.png';"
-																						th:src="@{'images/plans/diets/'+${iter.index+1}+'.jpg'}">
-																				</th:block>
-																			</div>
-																			<div class="product-info"
-																				style="position: relative; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); border-top-right-radius: 30px; border-bottom-right-radius: 30px; width: 400px;">
-																				<div class="product-text"
-																					style="z-index: 2; color: black; text-align: left; margin-left: 20px; font-size: 15px; position: relative; top: 30px;">
-																					<div
-																						style="margin-top: 45px; font-size: 50px; font-weight: 600; color: black; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;"
-																						th:text="${food.name}"></div>
-																					<div class="left"
-																						style="float: left; width: 155px;">
-																						<div style="display: flex; align-items: baseline;">
-																							Calorii:
+																<div class="slides" style="margin-top: 40px;">
+																	<div th:each="food, iter : ${notEatenFoods}"
+																		style="border-radius: 30px; overflow: hidden;">
+																		<div th:id="${'slide-'+ food.foodId}" style="">
+																			<div class="wrapper-slider">
+																				<div class="product-img" style="width: 380px;">
+																					<th:block th:if="${food.images.size() > 0}">
+																						<img
+																							style="padding: 30px; display: block; position: absolute; top: 50%; left: 50%; min-height: 100%; min-width: 100%; transform: translate(-50%, -50%);"
+																							th:src="@{'images/plans/diets/'+${food.images[0].fileName}}">
+																					</th:block>
+																					<th:block th:if="${food.images.size() eq 0}">
+																						<img
+																							style="padding: 30px; display: block; position: absolute; top: 50%; left: 50%; min-height: 100%; min-width: 100%; transform: translate(-50%, -50%);"
+																							onerror="if (this.src != 'images/di.png') this.src = 'images/di.png';"
+																							th:src="@{'images/plans/diets/'+${iter.index+1}+'.jpg'}">
+																					</th:block>
+																				</div>
+																				<div class="product-info"
+																					style="position: relative; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); border-top-right-radius: 30px; border-bottom-right-radius: 30px; width: 400px;">
+																					<div class="product-text"
+																						style="z-index: 2; color: black; text-align: left; margin-left: 20px; font-size: 15px; position: relative; top: 30px;">
+																						<div
+																							style="margin-top: 45px; font-size: 50px; font-weight: 600; color: black; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;"
+																							th:text="${food.name}"></div>
+																						<div class="left"
+																							style="float: left; width: 155px;">
 																							<div
-																								style="margin-bottom: -7px; margin-left: 10px; font-size: 30px; font-weight: 900;"
-																								th:text="${food.calories}"></div>
-																						</div>
-																						<div style="display: flex; align-items: baseline;">
-																							Proteine:
+																								style="display: flex; align-items: baseline;">
+																								Calorii:
+																								<div
+																									style="margin-bottom: -7px; margin-left: 10px; font-size: 30px; font-weight: 900;"
+																									th:text="${food.calories}"></div>
+																							</div>
 																							<div
-																								style="margin-bottom: -7px; font-size: 30px; font-weight: 900;"
-																								th:text="${food.calories}"></div>
-																						</div>
-																						<div style="display: flex; align-items: baseline;">
-																							Lipide:
+																								style="display: flex; align-items: baseline;">
+																								Proteine:
+																								<div
+																									style="margin-bottom: -7px; font-size: 30px; font-weight: 900;"
+																									th:text="${food.calories}"></div>
+																							</div>
 																							<div
-																								style="margin-bottom: -7px; margin-left: 10px; font-size: 30px; font-weight: 900;"
-																								th:text="${food.lipids}"></div>
+																								style="display: flex; align-items: baseline;">
+																								Lipide:
+																								<div
+																									style="margin-bottom: -7px; margin-left: 10px; font-size: 30px; font-weight: 900;"
+																									th:text="${food.lipids}"></div>
+																							</div>
 																						</div>
-																					</div>
-																					<div class="right"
-																						style="float: right; width: 155px;">
-																						<div style="display: flex; align-items: baseline;">
-																							Carbohidrati:
+																						<div class="right"
+																							style="float: right; width: 155px;">
 																							<div
-																								style="margin-bottom: -7px; margin-left: 10px; font-size: 30px; font-weight: 900;"
-																								th:text="${food.carbohydrates}"></div>
-																						</div>
-																						<div style="display: flex; align-items: baseline;">
-																							Fibre:
+																								style="display: flex; align-items: baseline;">
+																								Carbohidrati:
+																								<div
+																									style="margin-bottom: -7px; margin-left: 10px; font-size: 30px; font-weight: 900;"
+																									th:text="${food.carbohydrates}"></div>
+																							</div>
 																							<div
-																								style="margin-bottom: -7px; margin-left: 10px; font-size: 30px; font-weight: 900;"
-																								th:text="${food.fiber}"></div>
-																						</div>
-																						<div style="display: flex; align-items: baseline;">
-																							Gramaj:
+																								style="display: flex; align-items: baseline;">
+																								Fibre:
+																								<div
+																									style="margin-bottom: -7px; margin-left: 10px; font-size: 30px; font-weight: 900;"
+																									th:text="${food.fiber}"></div>
+																							</div>
 																							<div
-																								style="margin-bottom: -7px; margin-left: 10px; font-size: 30px; font-weight: 900;"
-																								th:text="${food.weight}"></div>
+																								style="display: flex; align-items: baseline;">
+																								Gramaj:
+																								<div
+																									style="margin-bottom: -7px; margin-left: 10px; font-size: 30px; font-weight: 900;"
+																									th:text="${food.weight}"></div>
+																							</div>
 																						</div>
-																					</div>
-																					<div class="product-price-btn">
-																						<a
-																							style="margin-right: 95 !important; background-color: #7300e6; font-weight: 600; font-size: 20px; margin-top: 20px !important; line-height: 9px; padding: 20px; text-align: center;"
-																							th:href="@{/view_food/{id}(id = ${food.foodId})}">DETALII</a>
+																						<div class="product-price-btn">
+																							<a
+																								style="margin-right: 95 !important; background-color: #7300e6; font-weight: 600; font-size: 20px; margin-top: 20px !important; line-height: 9px; padding: 20px; text-align: center;"
+																								th:href="@{/view_food/{id}(id = ${food.foodId})}">DETALII</a>
+																						</div>
 																					</div>
 																				</div>
 																			</div>
@@ -572,127 +649,133 @@
 										</div>
 									</div>
 								</div>
-							</div>
-							<div th:if="${role.name == 'ROLE_NUTRITIONIST'}">
-								<div th:unless="${#lists.size(foods)}"
-									style="font-size: 90px; color: white; font-weight: 800; text-align: center; position: relative; top: 200px;">Nu
-									exista alimente pentru aceasta dieta</div>
-								<div th:if="${#lists.size(foods)}">
-									<h3 th:text="${selectedDietPlan.name}"
-										style="text-align: center; font-size: 60px; margin-top: 30px; margin-bottom: 30px; color: white; font-weight: 700;"></h3>
-									<th:block th:each="food: ${foods}">
-										<input type="hidden" th:value="${food.calories}" />
-										<input type="hidden" th:value="${food.protein}" />
-										<input type="hidden" th:value="${food.carbohydrates}" />
-									</th:block>
-									<div class="container-fluid">
-										<div class="row">
-											<div class="col-md-12">
-												<div class="row">
-													<div class="col-md-10 mx-auto">
-														<div class="slider">
-															<div
-																style="background-color: white; padding: 50px; border-radius: 30px; height: auto;">
-																<div class="options"
-																	style="overflow: hidden; z-index: 1; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25)">
-																	<div
-																		style="color: black; font-size: 40px; display: block; margin-right: 20px; font-weight: 600; margin-top: 30px;">Detalii
-																		Aferente</div>
-																	<div class="aditional-information"
-																		style="color: black; margin-bottom: 20px; font-size: 18px; font-weight: 100; display: flex; justify-content: center; align-items: baseline;">
-																		Total Calorii:
+								<div th:if="${role.name == 'ROLE_NUTRITIONIST'}">
+									<div th:unless="${#lists.size(foods)}"
+										style="font-size: 90px; color: white; font-weight: 800; text-align: center; position: relative; top: 200px;">Nu
+										exista alimente pentru aceasta dieta</div>
+									<div th:if="${#lists.size(foods)}">
+										<h3 th:text="${selectedDietPlan.name}"
+											style="text-align: center; font-size: 60px; margin-top: 30px; margin-bottom: 30px; color: white; font-weight: 700;"></h3>
+										<th:block th:each="food: ${foods}">
+											<input type="hidden" th:value="${food.calories}" />
+											<input type="hidden" th:value="${food.protein}" />
+											<input type="hidden" th:value="${food.carbohydrates}" />
+										</th:block>
+										<div class="container-fluid">
+											<div class="row">
+												<div class="col-md-12">
+													<div class="row">
+														<div class="col-md-10 mx-auto">
+															<div class="slider">
+																<div
+																	style="background-color: white; padding: 50px; border-radius: 30px; height: auto;">
+																	<div class="options"
+																		style="overflow: hidden; z-index: 1; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25)">
 																		<div
-																			style="margin-top: -15px; color: #7300e6; margin-right: 10px; margin-left: 5px; font-weight: 900; font-size: 40px;"
-																			th:text="${#aggregates.sum(foods.![calories])}"></div>
-																		Total Proteine:
+																			style="color: black; font-size: 40px; display: block; margin-right: 20px; font-weight: 600; margin-top: 30px;">Detalii
+																			Aferente</div>
+																		<div class="aditional-information"
+																			style="color: black; margin-bottom: 20px; font-size: 18px; font-weight: 100; display: flex; justify-content: center; align-items: baseline;">
+																			Total Calorii:
+																			<div
+																				style="margin-top: -15px; color: #7300e6; margin-right: 10px; margin-left: 5px; font-weight: 900; font-size: 40px;"
+																				th:text="${#aggregates.sum(foods.![calories])}"></div>
+																			Total Proteine:
+																			<div
+																				style="margin-top: -15px; color: #7300e6; margin-right: 10px; margin-left: 5px; font-weight: 900; font-size: 40px;"
+																				th:text="${#aggregates.sum(foods.![protein])}"></div>
+																			Total Carbohidrati:
+																			<div
+																				style="margin-top: -15px; color: #7300e6; margin-right: 10px; margin-left: 5px; font-weight: 900; font-size: 40px;"
+																				th:text="${#aggregates.sum(foods.![T(Math).floor(carbohydrates)])}"></div>
+																		</div>
 																		<div
-																			style="margin-top: -15px; color: #7300e6; margin-right: 10px; margin-left: 5px; font-weight: 900; font-size: 40px;"
-																			th:text="${#aggregates.sum(foods.![protein])}"></div>
-																		Total Carbohidrati:
-																		<div
-																			style="margin-top: -15px; color: #7300e6; margin-right: 10px; margin-left: 5px; font-weight: 900; font-size: 40px;"
-																			th:text="${#aggregates.sum(foods.![T(Math).floor(carbohydrates)])}"></div>
+																			style="color: black; font-size: 40px; display: block; margin-right: 20px; font-weight: 600; margin-top: -20px;">Alimente:</div>
+																		<a
+																			style="margin-bottom: 20px !important; background: #7300e6; font-weight: 700; padding: 15px; border: none; border-radius: 60px; width: auto; font-size: 15px; height: 40px; display: inline-flex; text-decoration: none; align-items: center; justify-content: center; margin: 0 10px 0.5rem 0; position: relative; color: white;"
+																			th:each="food, iter : ${foods}"
+																			th:href="${'#slide-'+ food.foodId}"
+																			th:id="${'slide'+ iter.index}" th:text="${food.name}"></a>
 																	</div>
-																	<div
-																		style="color: black; font-size: 40px; display: block; margin-right: 20px; font-weight: 600; margin-top: -20px;">Alimente:</div>
-																	<a
-																		style="margin-bottom: 20px !important; background: #7300e6; font-weight: 700; padding: 15px; border: none; border-radius: 60px; width: auto; font-size: 15px; height: 40px; display: inline-flex; text-decoration: none; align-items: center; justify-content: center; margin: 0 10px 0.5rem 0; position: relative; color: white;"
-																		th:each="food, iter : ${foods}"
-																		th:href="${'#slide-'+ food.foodId}"
-																		th:id="${'slide'+ iter.index}" th:text="${food.name}"></a>
 																</div>
-															</div>
-															<div class="slides" style="margin-top: 40px;">
-																<div th:each="food, iter : ${foods}"
-																	style="border-radius: 30px; overflow: hidden;">
-																	<div th:id="${'slide-'+ food.foodId}" style="">
-																		<div class="wrapper-slider">
-																			<div class="product-img" style="width: 380px;">
-																				<th:block th:if="${food.images.size() > 0}">
-																					<img
-																						style="padding: 30px; display: block; position: absolute; top: 50%; left: 50%; min-height: 100%; min-width: 100%; transform: translate(-50%, -50%);"
-																						th:src="@{'images/plans/diets/'+${food.images[0].fileName}}">
-																				</th:block>
-																				<th:block th:if="${food.images.size() eq 0}">
-																					<img
-																						style="padding: 30px; display: block; position: absolute; top: 50%; left: 50%; min-height: 100%; min-width: 100%; transform: translate(-50%, -50%);"
-																						onerror="if (this.src != 'images/di.png') this.src = 'images/di.png';"
-																						th:src="@{'images/plans/diets/'+${iter.index+1}+'.jpg'}">
-																				</th:block>
-																			</div>
-																			<div class="product-info"
-																				style="position: relative; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); border-top-right-radius: 30px; border-bottom-right-radius: 30px; width: 400px;">
-																				<div class="product-text"
-																					style="z-index: 2; color: black; text-align: left; margin-left: 20px; font-size: 15px; position: relative; top: 30px;">
-																					<div
-																						style="margin-top: 45px; font-size: 50px; font-weight: 600; color: black; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;"
-																						th:text="${food.name}"></div>
-																					<div class="left"
-																						style="float: left; width: 155px;">
-																						<div style="display: flex; align-items: baseline;">
-																							Calorii:
+																<div class="slides" style="margin-top: 40px;">
+																	<div th:each="food, iter : ${foods}"
+																		style="border-radius: 30px; overflow: hidden;">
+																		<div th:id="${'slide-'+ food.foodId}" style="">
+																			<div class="wrapper-slider">
+																				<div class="product-img" style="width: 380px;">
+																					<th:block th:if="${food.images.size() > 0}">
+																						<img
+																							style="padding: 30px; display: block; position: absolute; top: 50%; left: 50%; min-height: 100%; min-width: 100%; transform: translate(-50%, -50%);"
+																							th:src="@{'images/plans/diets/'+${food.images[0].fileName}}">
+																					</th:block>
+																					<th:block th:if="${food.images.size() eq 0}">
+																						<img
+																							style="padding: 30px; display: block; position: absolute; top: 50%; left: 50%; min-height: 100%; min-width: 100%; transform: translate(-50%, -50%);"
+																							onerror="if (this.src != 'images/di.png') this.src = 'images/di.png';"
+																							th:src="@{'images/plans/diets/'+${iter.index+1}+'.jpg'}">
+																					</th:block>
+																				</div>
+																				<div class="product-info"
+																					style="position: relative; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); border-top-right-radius: 30px; border-bottom-right-radius: 30px; width: 400px;">
+																					<div class="product-text"
+																						style="z-index: 2; color: black; text-align: left; margin-left: 20px; font-size: 15px; position: relative; top: 30px;">
+																						<div
+																							style="margin-top: 45px; font-size: 50px; font-weight: 600; color: black; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;"
+																							th:text="${food.name}"></div>
+																						<div class="left"
+																							style="float: left; width: 155px;">
 																							<div
-																								style="margin-bottom: -7px; margin-left: 10px; font-size: 30px; font-weight: 900;"
-																								th:text="${food.calories}"></div>
-																						</div>
-																						<div style="display: flex; align-items: baseline;">
-																							Proteine:
+																								style="display: flex; align-items: baseline;">
+																								Calorii:
+																								<div
+																									style="margin-bottom: -7px; margin-left: 10px; font-size: 30px; font-weight: 900;"
+																									th:text="${food.calories}"></div>
+																							</div>
 																							<div
-																								style="margin-bottom: -7px; font-size: 30px; font-weight: 900;"
-																								th:text="${food.calories}"></div>
-																						</div>
-																						<div style="display: flex; align-items: baseline;">
-																							Lipide:
+																								style="display: flex; align-items: baseline;">
+																								Proteine:
+																								<div
+																									style="margin-bottom: -7px; font-size: 30px; font-weight: 900;"
+																									th:text="${food.calories}"></div>
+																							</div>
 																							<div
-																								style="margin-bottom: -7px; margin-left: 10px; font-size: 30px; font-weight: 900;"
-																								th:text="${food.lipids}"></div>
+																								style="display: flex; align-items: baseline;">
+																								Lipide:
+																								<div
+																									style="margin-bottom: -7px; margin-left: 10px; font-size: 30px; font-weight: 900;"
+																									th:text="${food.lipids}"></div>
+																							</div>
 																						</div>
-																					</div>
-																					<div class="right"
-																						style="float: right; width: 155px;">
-																						<div style="display: flex; align-items: baseline;">
-																							Carbohidrati:
+																						<div class="right"
+																							style="float: right; width: 155px;">
 																							<div
-																								style="margin-bottom: -7px; margin-left: 10px; font-size: 30px; font-weight: 900;"
-																								th:text="${food.carbohydrates}"></div>
-																						</div>
-																						<div style="display: flex; align-items: baseline;">
-																							Fibre:
+																								style="display: flex; align-items: baseline;">
+																								Carbohidrati:
+																								<div
+																									style="margin-bottom: -7px; margin-left: 10px; font-size: 30px; font-weight: 900;"
+																									th:text="${food.carbohydrates}"></div>
+																							</div>
 																							<div
-																								style="margin-bottom: -7px; margin-left: 10px; font-size: 30px; font-weight: 900;"
-																								th:text="${food.fiber}"></div>
-																						</div>
-																						<div style="display: flex; align-items: baseline;">
-																							Gramaj:
+																								style="display: flex; align-items: baseline;">
+																								Fibre:
+																								<div
+																									style="margin-bottom: -7px; margin-left: 10px; font-size: 30px; font-weight: 900;"
+																									th:text="${food.fiber}"></div>
+																							</div>
 																							<div
-																								style="margin-bottom: -7px; margin-left: 10px; font-size: 30px; font-weight: 900;"
-																								th:text="${food.weight}"></div>
+																								style="display: flex; align-items: baseline;">
+																								Gramaj:
+																								<div
+																									style="margin-bottom: -7px; margin-left: 10px; font-size: 30px; font-weight: 900;"
+																									th:text="${food.weight}"></div>
+																							</div>
 																						</div>
-																					</div>
-																					<div class="product-price-btn">
-																						<a
-																							style="margin-right: 95 !important; background-color: #7300e6; font-weight: 600; font-size: 20px; margin-top: 20px !important; line-height: 9px; padding: 20px; text-align: center;"
-																							th:href="@{/view_food/{id}(id = ${food.foodId})}">DETALII</a>
+																						<div class="product-price-btn">
+																							<a
+																								style="margin-right: 95 !important; background-color: #7300e6; font-weight: 600; font-size: 20px; margin-top: 20px !important; line-height: 9px; padding: 20px; text-align: center;"
+																								th:href="@{/view_food/{id}(id = ${food.foodId})}">DETALII</a>
+																						</div>
 																					</div>
 																				</div>
 																			</div>

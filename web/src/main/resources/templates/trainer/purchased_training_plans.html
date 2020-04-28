@@ -1,50 +1,217 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Admin</title>
+<title>Purchased Training Plans</title>
+<link th:href="@{css/font-face.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-4.7/css/font-awesome.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-5/css/fontawesome-all.min.css}"
+	rel="stylesheet" media="all">
 <link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-	rel="stylesheet" id="bootstrap-css">
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	th:href="@{vendor/mdi-font/css/material-design-iconic-font.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/animsition/animsition.min.css}" rel="stylesheet"
+	media="all">
+<link
+	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/wow/animate.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/css-hamburgers/hamburgers.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/slick/slick.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/select2/select2.min.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{css/theme.css}" rel="stylesheet" media="all">
+<link th:href="@{css/cart.css}" rel="stylesheet" media="all">
+<link th:href="@{css/style.css}" rel="stylesheet" media="all">
 </head>
 <body>
-	<div th:unless="${#lists.size(trainingPlans)}">Nu ai creat niciun plan de antrenament momentan</div>
-	<div th:if="${#lists.size(trainingPlans)}">
-		<h3
-			style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Antrenamente Cumparate</h3>
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="row">
-						<div class="col-md-10 mx-auto">
-							<table class="table table-striped">
-								<thead class="center-align">
-									<tr>
-										<th>Nume</th>
-										<th>Actiuni</th>
-									</tr>
-								</thead>
-								<tbody class="center-align">
-									<th:block th:each="tp, iterStat : ${trainingPlans}">
-										<tr>
-											<td th:text="${tp.helperPlan.name}"></td>
-											<td>
-												<form th:action="@{/plan_content}" method="post">
-													<input type="hidden" name="trainingPlanId"
-														th:value="${tp.helperPlan.helperPlanId}" />
-													<button type="submit"
-														style="padding: 10px 15px; letter-spacing: 0px; font-size: 15px; text-decoration: none; font-family: 'Montserrat', sans-serif; color: white; background: #7300e6; font-weight: bold; border-radius: 15px; margin: 0px !important;">Vezi
-														Exercitii</button>
-												</form>
-												<a th:href="@{/edit_training_plan/{id}(id=${tp.helperPlan.helperPlanId})}" class="btn btn-success">Editeaza Antrenamentul</a>
-											</td>
-										</tr>
-									</th:block>
-								</tbody>
-							</table>
+	<div class="page-wrapper">
+		<header style="background-color: white;"
+			class="header-mobile d-block d-lg-none">
+			<div class="header-mobile__bar">
+				<div class="container-fluid">
+					<div class="header-mobile-inner">
+						<a class="logo" href="index.html"> <img
+							src="images/logo/Screenshot_18.png">
+						</a>
+						<button class="hamburger hamburger--slider" type="button">
+							<span class="hamburger-box"> <span class="hamburger-inner"></span>
+							</span>
+						</button>
+					</div>
+				</div>
+			</div>
+			<nav class="navbar-mobile">
+				<div class="container-fluid">
+					<ul class="navbar-mobile__list list-unstyled">
+						<li><a href="/trainer" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/view_learners" class="links" style=""><img
+								style="height: 40px; width: 40px; background-color: #4A7AFF; border-radius: 30px; border: 3px solid #4A7AFF;"
+								width="800" height="800" src="images/avatar/man.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cursanti</span></a></li>
+						<li><a href="/training_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Antrenamente</span></a></li>
+						<li><a href="/create_training_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/diet.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Creeaza
+									Antrenament</span></a></li>
+						<li><a href="/purchased_training_plans" class="links"
+							style=""><img style="height: 40px; width: 40px;" width="800"
+								height="800" src="images/logo/gym-ex.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Antrenamente
+									Vandute</span></a></li>
+						<li><a href="/view_feedbacks" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/positive-vote.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Feedback-uri
+									Cursanti</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<aside style="background-color: white;"
+			class="menu-sidebar d-none d-lg-block">
+			<div class="logo">
+				<a href="#"> <img src="images/logo/Screenshot_18.png">
+				</a>
+			</div>
+			<div class="menu-sidebar__content js-scrollbar1">
+				<nav class="navbar-sidebar">
+					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+						<li><a href="/trainer" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/view_learners" class="links" style=""><img
+								style="height: 40px; width: 40px; background-color: #4A7AFF; border-radius: 30px; border: 3px solid #4A7AFF;"
+								width="800" height="800" src="images/avatar/man.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cursanti</span></a></li>
+						<li><a href="/training_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/exercise.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Antrenamente</span></a></li>
+						<li><a href="/create_training_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/diet.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Creeaza
+									Antrenament</span></a></li>
+						<li><a href="/purchased_training_plans" class="links"
+							style=""><img style="height: 40px; width: 40px;" width="800"
+								height="800" src="images/logo/gym-ex.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Antrenamente
+									Vandute</span></a></li>
+						<li><a href="/view_feedbacks" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/positive-vote.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Feedback-uri
+									Cursanti</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</nav>
+			</div>
+		</aside>
+		<div class="page-container">
+			<div class="main-content">
+				<div class="section__content section__content--p30">
+					<div th:unless="${#lists.size(trainingPlans)}"
+						style="font-size: 90px; color: white; font-weight: 800; text-align: center; position: relative; top: 150px;">Nu
+						ai vandut niciun plan de antrenament momentan</div>
+					<div th:if="${#lists.size(trainingPlans)}">
+						<h3
+							style="text-align: center; font-size: 60px; margin-top: 30px; margin-bottom: 30px; color: white; font-weight: 700;">Antrenamente
+							Vandute</h3>
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-4" style="margin-bottom: 100px;"
+											th:each="plan, iterStat : ${trainingPlans}">
+											<div class="card-type-2" style="border-radius: 30px;">
+												<th:block
+													th:if="${plan.helperPlan.typeOfPlan eq 'Antrenament' and plan.helperPlan.forWho.getGender() eq 'Barbat'}">
+													<div class="img-c"
+														style="height: 300px; margin-top: -20px;">
+														<img
+															th:src="@{'images/plans/trainings/man/man_training'+${iterStat.index+1}+'.jpg'}"
+															class="img scale-img" width="800" height="800"
+															style="height: 80%; width: 90%" alt="green apple slice">
+													</div>
+												</th:block>
+												<th:block
+													th:if="${plan.helperPlan.typeOfPlan eq 'Antrenament' and plan.helperPlan.forWho.getGender() eq 'Femeie'}">
+													<div class="img-c"
+														style="height: 300px; margin-top: -20px;">
+														<img
+															th:src="@{'images/plans/trainings/woman/woman_training'+${iterStat.index+1}+'.jpg'}"
+															class="img scale-img" width="800" height="800"
+															style="height: 80%; width: 90%" alt="green apple slice">
+													</div>
+												</th:block>
+												<th:block th:if="${plan.helperPlan.typeOfPlan eq 'Dieta'}">
+													<div class="img-c"
+														style="height: 300px; margin-top: -20px;">
+														<img
+															th:src="@{'images/plans/diets/diet'+${iterStat.index+1}+'.jpg'}"
+															class="img scale-img" width="800" height="800"
+															style="height: 80%; width: 90%" alt="green apple slice">
+													</div>
+												</th:block>
+												<div class="device-info" style="margin-top: 0px;">
+													<th:block th:if="${plan.helperPlan.exercises.size() > 0 }">
+														<form th:action="@{/plan_content}" method="post">
+															<input type="hidden" name="trainingPlanId"
+																th:value="${plan.helperPlan.helperPlanId}" />
+															<button type="submit">
+																<h2 th:text="${plan.helperPlan.name}" class="choose"
+																	style="font-size: 25px; font-weight: 700; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden; text-align: center;"></h2>
+															</button>
+														</form>
+													</th:block>
+													<th:block th:if="${plan.helperPlan.exercises.size() eq 0 }">
+														<h2
+															style="font-size: 25px; font-weight: 700; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden; text-align: center;"
+															th:text="${plan.helperPlan.name}"></h2>
+													</th:block>
+													<h3
+														style="font-size: 20px; margin-bottom: 15px; font-weight: 100;"
+														th:text="${'Special pentru: ' + plan.helperPlan.forWho.getGender()}"></h3>
+													<h6
+														style="font-size: 15px; margin-bottom: 10px; font-weight: 100;"
+														th:text="${'Data Cumparare: ' + plan.dateOfPurchase}"></h6>
+													<h6 style="font-size: 15px; font-weight: 100;">
+														Cumparat de: <a
+															th:href="@{/view_progress/{id}(id=${plan.user.accountId})}"
+															class="choose"
+															style="margin-bottom: 0px; font-size: 25px; letter-spacing: 1px; font-weight: 700;"
+															th:text="${plan.user.username}"></a>
+													</h6>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
