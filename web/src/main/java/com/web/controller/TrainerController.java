@@ -246,7 +246,6 @@ public class TrainerController {
 		Account trainer = accountService.getAccountConnected();
 		if (trainer.isActive()) {
 			if (bindingResult.hasErrors()) {
-				bindingResult.getAllErrors().forEach(element -> System.out.println(element));
 				attr.addFlashAttribute("org.springframework.validation.BindingResult.trainingPlan", bindingResult);
 				attr.addFlashAttribute("trainingPlan", trainingPlan);
 				return "redirect:/create_training_plan";

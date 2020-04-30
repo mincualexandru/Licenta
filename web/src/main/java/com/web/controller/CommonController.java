@@ -160,6 +160,7 @@ public class CommonController {
 				}
 
 			}
+			model.addAttribute("account", helper);
 			model.addAttribute("learnerId", learnerId);
 			model.addAttribute("qualifyings", Qualifying.values());
 			return "common/helper_offers_feedback";

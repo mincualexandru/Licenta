@@ -34,37 +34,37 @@ public class Food implements Comparable<Food> {
 	private HelperPlan dietPlan;
 
 	@Column(name = "name", nullable = false)
-	@NotEmpty(message = "Campul este obligatoriu !")
+	@NotEmpty(message = "**Campul este obligatoriu")
 	private String name;
 
 	@Column(name = "calories", nullable = true)
-	@NotNull(message = "Campul este obligatoriu !")
-	@Range(min = 0, message = "Valorile negative nu sunt permise")
+	@Range(min = 0, message = "**Valorile negative nu sunt permise")
+	@NotNull(message = "**Campul este obligatoriu")
 	private float calories;
 
 	@Column(name = "protein", nullable = true)
-	@NotNull(message = "Campul este obligatoriu !")
-	@Range(min = 0, message = "Valorile negative nu sunt permise")
+	@Range(min = 0, message = "**Valorile negative nu sunt permise")
+	@NotNull(message = "**Campul este obligatoriu")
 	private float protein;
 
 	@Column(name = "lipids", nullable = true)
-	@NotNull(message = "Campul este obligatoriu !")
-	@Range(min = 0, message = "Valorile negative nu sunt permise")
+	@Range(min = 0, message = "**Valorile negative nu sunt permise")
+	@NotNull(message = "**Campul este obligatoriu")
 	private float lipids;
 
 	@Column(name = "carbohydrates", nullable = true)
-	@NotNull(message = "Campul este obligatoriu !")
-	@Range(min = 0, message = "Valorile negative nu sunt permise")
+	@Range(min = 0, message = "**Valorile negative nu sunt permise")
+	@NotNull(message = "**Campul este obligatoriu")
 	private float carbohydrates;
 
 	@Column(name = "fiber", nullable = true)
-	@NotNull(message = "Campul este obligatoriu !")
-	@Range(min = 0, message = "Valorile negative nu sunt permise")
+	@Range(min = 0, message = "**Valorile negative nu sunt permise")
+	@NotNull(message = "**Campul este obligatoriu")
 	private float fiber;
 
 	@Column(name = "weight", nullable = true)
-	@NotNull(message = "Campul este obligatoriu !")
-	@Range(min = 0, message = "Valorile negative nu sunt permise")
+	@Range(min = 0, message = "**Valorile negative nu sunt permise")
+	@NotNull(message = "**Campul este obligatoriu")
 	private float weight;
 
 	@Column(name = "date")

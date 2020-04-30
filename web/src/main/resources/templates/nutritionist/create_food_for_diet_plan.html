@@ -2,132 +2,271 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Sign up</title>
-<base href="/">
+<title>Create Food</title>
+<link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
+<link th:href="@{/vendor/font-awesome-4.7/css/font-awesome.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{/vendor/font-awesome-5/css/fontawesome-all.min.css}"
+	rel="stylesheet" media="all">
 <link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-	rel="stylesheet" id="bootstrap-css">
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" th:href="@{css/style.css}"/>
+	th:href="@{/vendor/mdi-font/css/material-design-iconic-font.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{/vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{/vendor/animsition/animsition.min.css}"
+	rel="stylesheet" media="all">
+<link
+	th:href="@{/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{/vendor/wow/animate.css}" rel="stylesheet" media="all">
+<link th:href="@{/vendor/css-hamburgers/hamburgers.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{/vendor/slick/slick.css}" rel="stylesheet" media="all">
+<link th:href="@{/vendor/select2/select2.min.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{/vendor/perfect-scrollbar/perfect-scrollbar.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{/css/theme.css}" rel="stylesheet" media="all">
+<link th:href="@{/css/cart.css}" rel="stylesheet" media="all">
+<style>
+.modal-backdrop {
+	display: none;
+}
+
+.modal {
+	background: rgba(0, 0, 0, 0.5);
+}
+</style>
 </head>
 <body>
-<div th:if="${inexistentValue}">
-	Valoarea introdusa nu exista
-</div>
-<div th:unless="${inexistentValue}">
-		<div class="container">
-		<form class="form-horizontal" role="form" method="post"
-			th:action="@{/create_food_for_diet_plan_save}" th:object="${food}">
-			<input type="hidden" name="dietPlanId" th:value="${dietPlanId}"/>
-			<div style="position: relative; top: 110px; left: 250px;">
-				<h3>Creaza Aliment</h3>
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<label>Nume</label>
-							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-								<input type="text" th:field="*{name}"
-									class="form-control validation" id="firstName" placeholder="Nume"
-									autofocus>
-							</div>
-							<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<label>Numar Calorii</label>
-							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-								<input type="number" step="0.01" th:field="*{calories}"
-									class="form-control validation" id="firstName" placeholder="Calorii"
-									autofocus>
-							</div>
-							<div th:if="${#fields.hasErrors('calories')}" th:errors="*{calories}"></div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<label>Numar Proteine</label>
-							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-								<input type="number" step="0.01" th:field="*{protein}"
-									class="form-control validation" id="firstName" placeholder="Proteine"
-									autofocus>
-							</div>
-							<div th:if="${#fields.hasErrors('protein')}" th:errors="*{protein}"></div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<label>Numar Lipide</label>
-							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-								<input type="number" step="0.01" th:field="*{lipids}"
-									class="form-control validation" id="firstName" placeholder="Lipide"
-									autofocus>
-							</div>
-							<div th:if="${#fields.hasErrors('lipids')}" th:errors="*{lipids}"></div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<label>Numar Carbohidrati</label>
-							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-								<input type="number" step="0.01" th:field="*{carbohydrates}"
-									class="form-control validation" id="firstName" placeholder="Carbohidrati"
-									autofocus>
-							</div>
-							<div th:if="${#fields.hasErrors('carbohydrates')}" th:errors="*{carbohydrates}"></div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<label>Numar Fibre</label>
-							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-								<input type="number" step="0.01" th:field="*{fiber}"
-									class="form-control validation" id="firstName" placeholder="Fibre"
-									autofocus>
-							</div>
-							<div th:if="${#fields.hasErrors('fiber')}" th:errors="*{fiber}"></div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<label>Gramaj</label>
-							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-								<input type="number" step="0.01" th:field="*{weight}"
-									class="form-control validation" id="firstName" placeholder="Gramaj"
-									autofocus>
-							</div>
-							<div th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}"></div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-3"></div>
-					<div class="col-md-6">
-						<button type="submit" class="btn btn-success">
-							<i class="fa fa-user-plus"></i> Register
+	<div class="page-wrapper">
+		<header style="background-color: white;"
+			class="header-mobile d-block d-lg-none">
+			<div class="header-mobile__bar">
+				<div class="container-fluid">
+					<div class="header-mobile-inner">
+						<a class="logo" href="index.html"> <img
+							src="/images/logo/Screenshot_18.png">
+						</a>
+						<button class="hamburger hamburger--slider" type="button">
+							<span class="hamburger-box"> <span class="hamburger-inner"></span>
+							</span>
 						</button>
 					</div>
 				</div>
 			</div>
-		</form>
+			<nav class="navbar-mobile">
+				<div class="container-fluid">
+					<ul class="navbar-mobile__list list-unstyled">
+						<li><a href="/trainer" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/view_learners" class="links" style=""><img
+								style="height: 40px; width: 40px; background-color: #4A7AFF; border-radius: 30px; border: 3px solid #4A7AFF;"
+								width="800" height="800" src="/images/avatar/man.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cursanti</span></a></li>
+						<li><a href="/diet_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Diete</span></a></li>
+						<li><a href="/create_diet_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/kcalaccumulated.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Creeaza
+									Dieta</span></a></li>
+						<li><a href="/purchased_diet_plans" class="links"
+							style=""><img style="height: 40px; width: 40px;" width="800"
+								height="800" src="/images/logo/burn.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Diete
+									Vandute</span></a></li>
+						<li><a href="/view_feedbacks" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/positive-vote.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Feedback-uri
+									Cursanti</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<aside style="background-color: white;"
+			class="menu-sidebar d-none d-lg-block">
+			<div class="logo">
+				<a href="#"> <img src="/images/logo/Screenshot_18.png">
+				</a>
+			</div>
+			<div class="menu-sidebar__content js-scrollbar1">
+				<nav class="navbar-sidebar">
+					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+						<li><a href="/trainer" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+						<li><a href="/view_learners" class="links" style=""><img
+								style="height: 40px; width: 40px; background-color: #4A7AFF; border-radius: 30px; border: 3px solid #4A7AFF;"
+								width="800" height="800" src="/images/avatar/man.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cursanti</span></a></li>
+						<li><a href="/diet_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/popsicle.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Diete</span></a></li>
+						<li><a href="/create_diet_plan" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/kcalaccumulated.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Creeaza
+									Dieta</span></a></li>
+						<li><a href="/purchased_diet_plans" class="links"
+							style=""><img style="height: 40px; width: 40px;" width="800"
+								height="800" src="/images/logo/burn.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Diete
+									Vandute</span></a></li>
+						<li><a href="/view_feedbacks" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/positive-vote.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Feedback-uri
+									Cursanti</span></a></li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</nav>
+			</div>
+		</aside>
+		<div class="page-container">
+			<div class="main-content">
+				<div class="section__content section__content--p30">
+					<div th:if="${inexistentValue}"
+						style="font-size: 90px; color: white; font-weight: 800; text-align: center; position: relative; top: 200px;">
+						Valoarea <br> introdusa nu exista
+					</div>
+					<div th:unless="${inexistentValue}">
+						<div class="container-fluid">
+							<form class="form-horizontal" role="form" method="post"
+								th:action="@{/create_food_for_diet_plan_save}"
+								th:object="${food}">
+								<input type="hidden" name="dietPlanId" th:value="${dietPlanId}" />
+								<div class="row">
+									<div class="col-md-6 mx-auto"
+										style="background-color: white; border-radius: 30px; padding: 30px 50px; position: relative; top: -20px;">
+										<img
+											style="width: 150px; height: 150px; position: relative; left: 175px;"
+											src="/images/logo/kcalaccumulated.png" />
+										<h3
+											style="text-align: center; font-size: 45px; color: #7300e6; font-weight: 700; margin-bottom: 15px;">Aliment
+											Nou</h3>
+										<div style="margin-bottom: 10px;">
+											<label
+												style="color: black; font-weight: 100; font-size: 20px;">Nume</label>
+											<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+												<input type="text" th:field="*{name}"
+													class="form-control validation" id="firstName"
+													placeholder="Nume Aliment" autofocus
+													style="margin-bottom: 5px; font-size: 18px;">
+											</div>
+											<div style="color: red;" th:if="${#fields.hasErrors('name')}"
+												th:errors="*{name}"></div>
+										</div>
+										<div class="form-row" style="margin-bottom: 10px;">
+											<div class="col">
+												<label
+													style="color: black; font-weight: 100; font-size: 20px;">Gramaj</label>
+												<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+													<input type="number" th:field="*{weight}"
+														class="form-control validation" id="weight"
+														placeholder="Numar Gramaj" autofocus
+														style="margin-bottom: 5px; font-size: 18px;">
+												</div>
+												<div style="color: red;"
+													th:if="${#fields.hasErrors('weight')}"
+													th:errors="*{weight}"></div>
+											</div>
+											<div class="col">
+												<label
+													style="color: black; font-weight: 100; font-size: 20px;">Calorii</label>
+												<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+													<input type="number" th:field="*{calories}"
+														class="form-control validation" id="calories"
+														placeholder="Numar Calorii Acumulate" autofocus
+														style="margin-bottom: 5px; font-size: 18px;">
+												</div>
+												<div style="color: red;"
+													th:if="${#fields.hasErrors('calories')}"
+													th:errors="*{calories}"></div>
+											</div>
+										</div>
+										<div class="form-row" style="margin-bottom: 10px;">
+											<div class="col">
+												<label
+													style="color: black; font-weight: 100; font-size: 20px;">Proteine</label>
+												<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+													<input type="number" th:field="*{protein}"
+														class="form-control validation" id="protein"
+														placeholder="Numar Proteine" autofocus
+														style="margin-bottom: 5px; font-size: 18px;">
+												</div>
+												<div style="color: red;"
+													th:if="${#fields.hasErrors('protein')}"
+													th:errors="*{protein}"></div>
+											</div>
+											<div class="col">
+												<label
+													style="color: black; font-weight: 100; font-size: 20px;">Lipide</label>
+												<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+													<input type="number" th:field="*{lipids}"
+														class="form-control validation" id="lipids"
+														placeholder="Numar Lipide" autofocus
+														style="margin-bottom: 5px; font-size: 18px;">
+												</div>
+												<div th:if="${#fields.hasErrors('lipids')}"
+													th:errors="*{lipids}"></div>
+											</div>
+										</div>
+										<div class="form-row" style="margin-bottom: 10px;">
+											<div class="col">
+												<label
+													style="color: black; font-weight: 100; font-size: 20px;">Carbohidrati</label>
+												<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+													<input type="number" th:field="*{carbohydrates}"
+														class="form-control validation" id="carbohydrates"
+														placeholder="Numar Carbohidrati" autofocus
+														style="margin-bottom: 5px; font-size: 18px;">
+												</div>
+												<div style="color: red;"
+													th:if="${#fields.hasErrors('carbohydrates')}"
+													th:errors="*{carbohydrates}"></div>
+											</div>
+											<div class="col">
+												<label
+													style="color: black; font-weight: 100; font-size: 20px;">Fibre</label>
+												<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+													<input type="number" th:field="*{fiber}"
+														class="form-control validation" id="fiber"
+														placeholder="Numar Fibre" autofocus
+														style="margin-bottom: 5px; font-size: 18px;">
+												</div>
+												<div style="color: red;"
+													th:if="${#fields.hasErrors('fiber')}" th:errors="*{fiber}"></div>
+											</div>
+										</div>
+										<button
+											style="margin-right: 40px; padding-left: 25px; padding-right: 25px; margin-bottom: -10px;"
+											type="submit" class="btnn2">Creaza</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-</div>
 	<script type="text/javascript" th:src="@{/js/signup.js}"></script>
 </body>
 </html>

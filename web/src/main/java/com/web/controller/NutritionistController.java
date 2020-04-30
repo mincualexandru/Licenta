@@ -4,8 +4,12 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -88,8 +92,48 @@ public class NutritionistController {
 	@GetMapping(path = { "/nutritionist" })
 	public String nutritionist(Model model) {
 		Account account = accountService.getAccountConnected();
+		LocalDate date = LocalDate.now();
+		LocalDateTime startDateTime = date.atStartOfDay();
+		LocalDateTime endDateTime = date.atStartOfDay().plusDays(1).minusSeconds(1);
+		Timestamp timestampStartDate = Timestamp.valueOf(startDateTime);
+		Timestamp timestampEndDate = Timestamp.valueOf(endDateTime);
+		Set<HelperPlan> plansCreatedToday = helperPlanService.findAllByHelperAccountIdAndDateOfCreationBetween(
+				account.getAccountId(), timestampStartDate, timestampEndDate);
+		Set<UserPlan> userPlansToday = userPlanService.findAllByHelperPlanHelperAccountIdAndDateOfPurchaseBetween(
+				account.getAccountId(), timestampStartDate, timestampEndDate);
+		Set<Integer> learnersIds = accountService.findAllLearnersByHelperId(account.getAccountId());
+		Set<Account> learners = new HashSet<>();
+		for (Integer integer : learnersIds) {
+			Account learner = accountService.findById(integer).get();
+			learners.add(learner);
+		}
+		Set<FoodEaten> foodEatenToday = new HashSet<>();
+		learners.forEach(
+				element -> foodEatenToday.addAll(foodEatenService.findAllByUserAccountIdAndDateOfExecutionBetween(
+						element.getAccountId(), timestampStartDate, timestampEndDate)));
+		Set<FoodEaten> allFoods = new HashSet<>();
+		learners.forEach(element -> allFoods.addAll(element.getFoodEaten()));
+		Map<Food, Long> favoriteFoods = allFoods.stream().map(element -> element.getFood())
+				.collect(Collectors.groupingBy(e -> e, Collectors.counting()));
+		Map<Food, Long> favoriteFoodDesc = sortFoods(favoriteFoods, false);
 		model.addAttribute("account", account);
+		model.addAttribute("learners", learners);
+		model.addAttribute("plansCreatedToday", plansCreatedToday);
+		model.addAttribute("foodEatenToday", foodEatenToday);
+		model.addAttribute("userPlansToday", userPlansToday);
+		model.addAttribute("favoriteFoodDesc", favoriteFoodDesc);
 		return "nutritionist/nutritionist";
+
+	}
+
+	private static Map<Food, Long> sortFoods(Map<Food, Long> unsortMap, final boolean order) {
+		List<Entry<Food, Long>> list = new LinkedList<>(unsortMap.entrySet());
+		list.sort((o1, o2) -> order
+				? o1.getValue().compareTo(o2.getValue()) == 0 ? o1.getKey().compareTo(o2.getKey())
+						: o1.getValue().compareTo(o2.getValue())
+				: o2.getValue().compareTo(o1.getValue()) == 0 ? o2.getKey().compareTo(o1.getKey())
+						: o2.getValue().compareTo(o1.getValue()));
+		return list.stream().collect(Collectors.toMap(Entry::getKey, Entry::getValue, (a, b) -> b, LinkedHashMap::new));
 
 	}
 
@@ -137,7 +181,7 @@ public class NutritionistController {
 
 	@PostMapping(path = { "/create_diet_plan_save" })
 	public String createDietPlanSave(Model model, @Valid @ModelAttribute("dietPlan") HelperPlan dietPlan,
-			BindingResult bindingResult, RedirectAttributes attr) {
+			@RequestParam String typeOfPlan, BindingResult bindingResult, RedirectAttributes attr) {
 		Account account = accountService.getAccountConnected();
 		if (account.isActive()) {
 			if (bindingResult.hasErrors()) {
@@ -145,9 +189,8 @@ public class NutritionistController {
 				attr.addFlashAttribute("dietPlan", dietPlan);
 				return "redirect:/create_diet_plan";
 			} else {
-				Account trainer = accountService.getAccountConnected();
-				dietPlan.setHelper(trainer);
-				dietPlan.setTypeOfPlan("Dieta");
+				dietPlan.setTypeOfPlan(typeOfPlan);
+				dietPlan.setHelper(account);
 				helperPlanService.save(dietPlan);
 				return "redirect:/diet_plans";
 			}
@@ -179,7 +222,7 @@ public class NutritionistController {
 
 	@PostMapping(path = { "/edit_diet_plan_save" })
 	public String editDietPlanSave(@Valid @ModelAttribute("dietPlan") HelperPlan dietPlan, BindingResult bindingResult,
-			RedirectAttributes attr, Model model, @RequestParam Integer dietPlanId) {
+			RedirectAttributes attr, Model model, @RequestParam Integer dietPlanId, @RequestParam String typeOfPlan) {
 		Account account = accountService.getAccountConnected();
 		if (account.isActive()) {
 			if (bindingResult.hasErrors()) {
@@ -188,9 +231,11 @@ public class NutritionistController {
 				return "redirect:/edit_diet_plan/" + dietPlanId;
 			} else {
 				HelperPlan oldDietPlan = helperPlanService.findById(dietPlanId).get();
+				oldDietPlan.setTypeOfPlan(typeOfPlan);
 				oldDietPlan.setForWho(dietPlan.getForWho());
 				oldDietPlan.setName(dietPlan.getName());
 				oldDietPlan.setPrice(dietPlan.getPrice());
+				oldDietPlan.setDescription(dietPlan.getDescription());
 				oldDietPlan.setDateOfCreation(oldDietPlan.getDateOfCreation());
 				oldDietPlan.setHelper(oldDietPlan.getHelper());
 				helperPlanService.save(oldDietPlan);

@@ -12,108 +12,179 @@
 <link th:href="@{css/cart.css}" rel="stylesheet" media="all">
 </head>
 <body>
-	<div class="page-wrapper">
-		<header style="background-color: white;"
-			class="header-mobile d-block d-lg-none">
-			<div class="header-mobile__bar">
-				<div class="container-fluid">
-					<div class="header-mobile-inner">
-						<a class="logo" href="index.html"> <img
-							src="images/logo/Screenshot_18.png">
-						</a>
-						<button class="hamburger hamburger--slider" type="button">
-							<span class="hamburger-box"> <span class="hamburger-inner"></span>
-							</span>
-						</button>
+	<th:block th:each="role : ${account.roles}">
+		<div class="page-wrapper">
+			<header style="background-color: white;"
+				class="header-mobile d-block d-lg-none">
+				<div class="header-mobile__bar">
+					<div class="container-fluid">
+						<div class="header-mobile-inner">
+							<a class="logo" href="index.html"> <img
+								src="images/logo/Screenshot_18.png">
+							</a>
+							<button class="hamburger hamburger--slider" type="button">
+								<span class="hamburger-box"> <span
+									class="hamburger-inner"></span>
+								</span>
+							</button>
+						</div>
 					</div>
 				</div>
-			</div>
-			<nav class="navbar-mobile">
-				<div class="container-fluid">
-					<ul class="navbar-mobile__list list-unstyled">
-						<li><a href="/trainer" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/home.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
-						<li><a href="/view_learners" class="links" style=""><img
-								style="height: 40px; width: 40px; background-color: #4A7AFF; border-radius: 30px; border: 3px solid #4A7AFF;"
-								width="800" height="800" src="images/avatar/man.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cursanti</span></a></li>
-						<li><a href="/training_plans" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/exercise.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Antrenamente</span></a></li>
-						<li><a href="/create_training_plan" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/diet.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Creeaza
-									Antrenament</span></a></li>
-						<li><a href="/purchased_training_plans" class="links"
-							style=""><img style="height: 40px; width: 40px;" width="800"
-								height="800" src="images/logo/gym-ex.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Antrenamente
-									Vandute</span></a></li>
-						<li><a href="/view_feedbacks" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/positive-vote.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Feedback-uri
-									Cursanti</span></a></li>
-						<li><a href="/logout" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/logout.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
-					</ul>
-				</div>
-			</nav>
-		</header>
-		<aside style="background-color: white;"
-			class="menu-sidebar d-none d-lg-block">
-			<div class="logo">
-				<a href="#"> <img src="images/logo/Screenshot_18.png">
-				</a>
-			</div>
-			<div class="menu-sidebar__content js-scrollbar1">
-				<nav class="navbar-sidebar">
-					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
-						<li><a href="/trainer" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/home.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
-						<li><a href="/view_learners" class="links" style=""><img
-								style="height: 40px; width: 40px; background-color: #4A7AFF; border-radius: 30px; border: 3px solid #4A7AFF;"
-								width="800" height="800" src="images/avatar/man.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cursanti</span></a></li>
-						<li><a href="/training_plans" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/exercise.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Antrenamente</span></a></li>
-						<li><a href="/create_training_plan" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/diet.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Creeaza
-									Antrenament</span></a></li>
-						<li><a href="/purchased_training_plans" class="links"
-							style=""><img style="height: 40px; width: 40px;" width="800"
-								height="800" src="images/logo/gym-ex.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Antrenamente
-									Vandute</span></a></li>
-						<li><a href="/view_feedbacks" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/positive-vote.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Feedback-uri
-									Cursanti</span></a></li>
-						<li><a href="/logout" class="links" style=""><img
-								style="height: 40px; width: 40px;" width="800" height="800"
-								src="images/logo/logout.png"><span
-								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
-					</ul>
+				<nav class="navbar-mobile">
+					<div class="container-fluid">
+						<ul class="navbar-mobile__list list-unstyled">
+							<th:block th:if="${role.name eq 'ROLE_NUTRITIONIST'}">
+								<li><a href="/trainer" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/home.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+								<li><a href="/view_learners" class="links" style=""><img
+										style="height: 40px; width: 40px; background-color: #4A7AFF; border-radius: 30px; border: 3px solid #4A7AFF;"
+										width="800" height="800" src="/images/avatar/man.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cursanti</span></a></li>
+								<li><a href="/diet_plans" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/popsicle.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Diete</span></a></li>
+								<li><a href="/create_diet_plan" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/kcalaccumulated.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Creeaza
+											Dieta</span></a></li>
+								<li><a href="/purchased_diet_plans" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/burn.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Diete
+											Vandute</span></a></li>
+								<li><a href="/view_feedbacks" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/positive-vote.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Feedback-uri
+											Cursanti</span></a></li>
+								<li><a href="/logout" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/logout.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+							</th:block>
+							<th:block th:if="${role.name eq 'ROLE_TRAINER'}">
+								<li><a href="/trainer" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/home.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+								<li><a href="/view_learners" class="links" style=""><img
+										style="height: 40px; width: 40px; background-color: #4A7AFF; border-radius: 30px; border: 3px solid #4A7AFF;"
+										width="800" height="800" src="/images/avatar/man.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cursanti</span></a></li>
+								<li><a href="/training_plans" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/exercise.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Antrenamente</span></a></li>
+								<li><a href="/create_training_plan" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/diet.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Creeaza
+											Antrenament</span></a></li>
+								<li><a href="/purchased_training_plans" class="links"
+									style=""><img style="height: 40px; width: 40px;"
+										width="800" height="800" src="/images/logo/gym-ex.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Antrenamente
+											Vandute</span></a></li>
+								<li><a href="/view_feedbacks" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/positive-vote.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Feedback-uri
+											Cursanti</span></a></li>
+								<li><a href="/logout" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/logout.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+							</th:block>
+						</ul>
+					</div>
 				</nav>
-			</div>
-		</aside>
-		<div class="page-container">
-			<div class="main-content">
-				<div class="section__content section__content--p30">
-					<div th:each="role : ${account.roles}">
+			</header>
+			<aside style="background-color: white;"
+				class="menu-sidebar d-none d-lg-block">
+				<div class="logo">
+					<a href="#"> <img src="images/logo/Screenshot_18.png">
+					</a>
+				</div>
+				<div class="menu-sidebar__content js-scrollbar1">
+					<nav class="navbar-sidebar">
+						<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+							<th:block th:if="${role.name eq 'ROLE_NUTRITIONIST'}">
+								<li><a href="/trainer" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/home.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+								<li><a href="/view_learners" class="links" style=""><img
+										style="height: 40px; width: 40px; background-color: #4A7AFF; border-radius: 30px; border: 3px solid #4A7AFF;"
+										width="800" height="800" src="/images/avatar/man.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cursanti</span></a></li>
+								<li><a href="/diet_plans" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/popsicle.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Diete</span></a></li>
+								<li><a href="/create_diet_plan" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/kcalaccumulated.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Creeaza
+											Dieta</span></a></li>
+								<li><a href="/purchased_diet_plans" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/burn.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Diete
+											Vandute</span></a></li>
+								<li><a href="/view_feedbacks" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/positive-vote.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Feedback-uri
+											Cursanti</span></a></li>
+								<li><a href="/logout" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/logout.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+							</th:block>
+							<th:block th:if="${role.name eq 'ROLE_TRAINER'}">
+								<li><a href="/trainer" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/home.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
+								<li><a href="/view_learners" class="links" style=""><img
+										style="height: 40px; width: 40px; background-color: #4A7AFF; border-radius: 30px; border: 3px solid #4A7AFF;"
+										width="800" height="800" src="/images/avatar/man.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cursanti</span></a></li>
+								<li><a href="/training_plans" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/exercise.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Antrenamente</span></a></li>
+								<li><a href="/create_training_plan" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/diet.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Creeaza
+											Antrenament</span></a></li>
+								<li><a href="/purchased_training_plans" class="links"
+									style=""><img style="height: 40px; width: 40px;"
+										width="800" height="800" src="/images/logo/gym-ex.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Antrenamente
+											Vandute</span></a></li>
+								<li><a href="/view_feedbacks" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/positive-vote.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Feedback-uri
+											Cursanti</span></a></li>
+								<li><a href="/logout" class="links" style=""><img
+										style="height: 40px; width: 40px;" width="800" height="800"
+										src="/images/logo/logout.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+							</th:block>
+						</ul>
+					</nav>
+				</div>
+			</aside>
+			<div class="page-container">
+				<div class="main-content">
+					<div class="section__content section__content--p30">
 						<div th:if="${role.name == 'ROLE_TRAINER'}">
 							<div th:if="${emptyList}"
 								style="font-size: 90px; color: white; font-weight: 800; text-align: center; position: relative; top: 200px;">Nu
@@ -191,40 +262,74 @@
 							</div>
 						</div>
 						<div th:if="${role.name == 'ROLE_NUTRITIONIST'}">
-							<div th:unless="${#lists.size(foodFeedbacks)}">Nu ai primit
-								niciun feedback</div>
-							<div th:if="${#lists.size(foodFeedbacks)}">
+							<div th:if="${emptyList}"
+								style="font-size: 90px; color: white; font-weight: 800; text-align: center; position: relative; top: 200px;">Nu
+								ai primit niciun feedback</div>
+							<div th:if="${foodFeedbacks}">
 								<h3
-									style="text-align: center; font-size: 40px; margin-top: 30px; margin-bottom: 30px;">Clienti</h3>
+									style="text-align: center; font-size: 60px; margin-top: 30px; margin-bottom: 30px; color: white; font-weight: 700;">Feedback-uri
+									Clienti</h3>
 								<div class="container-fluid">
-									<div class="row">
-										<div class="col-md-12">
-											<div class="row">
-												<div class="col-md-10 mx-auto">
-													<table class="table table-striped">
-														<thead class="center-align">
-															<tr>
-																<th>Utilizator</th>
-																<th>Aliment</th>
-																<th>Plan Dieta</th>
-																<th>Data</th>
-																<th>Mesaj</th>
-																<th>Rating</th>
-															</tr>
-														</thead>
-														<tbody class="center-align">
-															<th:block th:each="feedback, iterStat : ${foodFeedbacks}">
-																<tr>
-																	<td th:text="${feedback.user.username}"></td>
-																	<td th:text="${feedback.food.name}"></td>
-																	<td th:text="${feedback.food.dietPlan.name}"></td>
-																	<td th:text="${feedback.dateOfFeedbackProvied}"></td>
-																	<td th:text="${feedback.message}"></td>
-																	<td th:text="${feedback.rating}"></td>
-																</tr>
-															</th:block>
-														</tbody>
-													</table>
+									<div class="row"
+										style="margin-bottom: 70px; position: relative; top: 30px;">
+										<div class="col-md-4" style="margin-bottom: 25px;"
+											th:each="feedback, iterStat : ${foodFeedbacks}">
+											<div class="card-type-2"
+												style="height: auto; border-radius: 37px; position: relative; float: left; padding: 30px; min-height: 100%;">
+												<th:block
+													th:if="${feedback.user.gender.getGender() eq 'Barbat'}">
+													<img
+														style="height: 60px; width: 60px; position: relative; left: -20px; top: -20px; background-color: #d3d3d3; border-radius: 30px; border: 3px solid #d3d3d3;"
+														width="800" height="800"
+														th:src="@{'images/avatar/man.png'}">
+												</th:block>
+												<th:block
+													th:if="${feedback.user.gender.getGender() eq 'Femeie'}">
+													<img
+														style="height: 60px; width: 60px; position: relative; left: -20px; top: -20px; background-color: #d3d3d3; border-radius: 30px; border: 3px solid #d3d3d3;"
+														width="800" height="800"
+														th:src="@{'images/avatar/woman.png'}">
+												</th:block>
+												<div
+													style="position: relative; top: -5px; justify-content: center; align-items: center; font-weight: 700; color: black; font-size: 20px; text-align: center;">
+													<div th:text="${feedback.food.name}" class="choose"
+														style="font-size: 30px; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;">
+													</div>
+													<div
+														style="font-size: 12px; color: gray; font-weight: 100; margin-top: -10px; margin-bottom: 10px; letter-spacing: 2px;">
+														Cursant: <span th:text="${feedback.user.username}"
+															style="font-size: 25px; color: #7300e6; letter-spacing: 0px; font-weight: 700;">
+														</span>
+													</div>
+													<div
+														style="font-size: 12px; color: gray; font-weight: 100; margin-bottom: 10px; letter-spacing: 2px; display: flex; justify-content: center; align-items: baseline;">
+														Nota Aliment:
+														<th:block
+															th:each="i: ${#numbers.sequence(1, feedback.rating)}">
+															<img src="images/logo/favourites.png"
+																class="fa-size-tip flaticon-size"
+																style="width: 30px; height: 30px;">
+														</th:block>
+													</div>
+													<div
+														style="font-size: 12px; color: gray; font-weight: 100; margin-bottom: 10px; letter-spacing: 2px;">
+														Inclus in:
+														<div th:text="${feedback.food.dietPlan.name}"
+															style="font-size: 25px; color: #7300e6; letter-spacing: 0px; font-weight: 700;">
+														</div>
+													</div>
+													<div
+														style="font-size: 12px; color: gray; font-weight: 100; margin-bottom: 10px; letter-spacing: 2px;">
+														Data Feedback: <span
+															th:text="${feedback.dateOfFeedbackProvied}"></span>
+													</div>
+													<div
+														style="font-size: 18px; color: #7300e6; font-weight: 100; margin-bottom: 10px; font-weight: 700; letter-spacing: 2px;">
+														Mesaj:
+														<div th:text="${feedback.message}"
+															style="display: inline-block; font-size: 12px; color: gray; letter-spacing: 2px; font-weight: 100;">
+														</div>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -236,6 +341,6 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</th:block>
 </body>
 </html>

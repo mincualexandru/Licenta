@@ -208,11 +208,11 @@
 											</div>
 											<div
 												style="display: block; align-items: baseline; font-size: 20px;">
-												Exercitii Efectuate:
+												Total Exercitii Efectuate:
 												<button data-toggle="modal"
 													data-target="#modal-exercises-done-today"
 													th:attr="data-target='#modal-exercises-done-today'"
-													class="view-ex-or-food" th:text="${numberOfExercisesDone}"
+													class="view-ex-or-food" th:text="${exercisesDoneForLearner.size()}"
 													style="margin-left: 5px; margin-right: 10px; font-size: 60px; font-weight: 900;"></button>
 												<div class="modal modal-exercises-done-today fade in"
 													th:id="modal-exercises-done-today">
@@ -224,8 +224,8 @@
 																style="height: 680px; overflow-y: auto; overflow-x: hidden;">
 																<div style="text-align: center; color: #7300e6;">
 																	<h2
-																		style="color: #7300e6; font-size: 45px; margin-bottom: 40px; margin-top: 20px;">Exercitii
-																		Efectuate Astazi</h2>
+																		style="color: #7300e6; font-size: 45px; margin-bottom: 40px; margin-top: 20px;">Total Exercitii
+																		Efectuate</h2>
 																</div>
 																<div class="row" style="position: relative; left: 65px;">
 																	<div class="col-md-5"
