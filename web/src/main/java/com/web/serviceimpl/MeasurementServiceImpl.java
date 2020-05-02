@@ -151,4 +151,9 @@ public class MeasurementServiceImpl implements MeasurementService {
 		return measurementDao.findAllByUserDeviceUserDeviceIdAndStartDateBetween(userDeviceId, timestampStartDate,
 				timestampEndDate);
 	}
+
+	@Override
+	public void saveAll(Set<Measurement> measurements) {
+		measurementDao.saveAll(measurements);
+	}
 }

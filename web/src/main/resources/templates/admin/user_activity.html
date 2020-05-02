@@ -44,12 +44,13 @@
 
 <body>
 	<div class="page-wrapper">
-		<header class="header-mobile d-block d-lg-none">
+		<header style="background-color: white;"
+			class="header-mobile d-block d-lg-none">
 			<div class="header-mobile__bar">
 				<div class="container-fluid">
 					<div class="header-mobile-inner">
 						<a class="logo" href="index.html"> <img
-							src="images/icon/logo.png" alt="CoolAdmin" />
+							src="/images/logo/Screenshot_18.png">
 						</a>
 						<button class="hamburger hamburger--slider" type="button">
 							<span class="hamburger-box"> <span class="hamburger-inner"></span>
@@ -61,106 +62,137 @@
 			<nav class="navbar-mobile">
 				<div class="container-fluid">
 					<ul class="navbar-mobile__list list-unstyled">
-						<li class="has-sub"><a class="js-arrow" href="#"> <i
-								class="fas fa-tachometer-alt"></i>Dashboard
-						</a>
-							<ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-								<li><a href="index.html">Dashboard 1</a></li>
-								<li><a href="index2.html">Dashboard 2</a></li>
-								<li><a href="index3.html">Dashboard 3</a></li>
-								<li><a href="index4.html">Dashboard 4</a></li>
-							</ul></li>
-						<li><a href="chart.html"> <i class="fas fa-chart-bar"></i>Charts
-						</a></li>
-						<li><a href="table.html"> <i class="fas fa-table"></i>Tables
-						</a></li>
-						<li><a href="form.html"> <i class="far fa-check-square"></i>Forms
-						</a></li>
-						<li><a href="calendar.html"> <i
-								class="fas fa-calendar-alt"></i>Calendar
-						</a></li>
-						<li><a href="map.html"> <i class="fas fa-map-marker-alt"></i>Maps
-						</a></li>
-						<li class="has-sub"><a class="js-arrow" href="#"> <i
-								class="fas fa-copy"></i>Pages
-						</a>
-							<ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-								<li><a href="login.html">Login</a></li>
-								<li><a href="register.html">Register</a></li>
-								<li><a href="forget-pass.html">Forget Password</a></li>
-							</ul></li>
-						<li class="has-sub"><a class="js-arrow" href="#"> <i
-								class="fas fa-desktop"></i>UI Elements
-						</a>
-							<ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-								<li><a href="button.html">Button</a></li>
-								<li><a href="badge.html">Badges</a></li>
-								<li><a href="tab.html">Tabs</a></li>
-								<li><a href="card.html">Cards</a></li>
-								<li><a href="alert.html">Alerts</a></li>
-								<li><a href="progress-bar.html">Progress Bars</a></li>
-								<li><a href="modal.html">Modals</a></li>
-								<li><a href="switch.html">Switchs</a></li>
-								<li><a href="grid.html">Grids</a></li>
-								<li><a href="fontawesome.html">Fontawesome Icon</a></li>
-								<li><a href="typo.html">Typography</a></li>
-							</ul></li>
+						<li><a href="/admin" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Admin</span></a></li>
+						<li><a href="/accounts" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Conturi</span></a></li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="plans" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/portfolio.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Planuri</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="devices" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/smartwatch2.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Dispozitive</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption"
+									value="exerciseFeedbacks" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/positive-vote.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Feedback-uri
+										Exercitii</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="foodFeedbacks" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/interface.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Feedback-uri
+										Alimente</span>
+								</button>
+							</form>
+						</li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
 					</ul>
 				</div>
 			</nav>
 		</header>
-		<aside class="menu-sidebar d-none d-lg-block">
+		<aside style="background-color: white;"
+			class="menu-sidebar d-none d-lg-block">
 			<div class="logo">
-				<a href="#"> <img src="images/icon/logo.png" alt="Cool Admin" />
+				<a href="#"> <img src="/images/logo/Screenshot_18.png">
 				</a>
 			</div>
 			<div class="menu-sidebar__content js-scrollbar1">
 				<nav class="navbar-sidebar">
-					<ul class="list-unstyled navbar__list">
-						<li class="active has-sub"><a class="js-arrow" href="#">
-								<i class="fas fa-tachometer-alt"></i>Dashboard
-						</a>
-							<ul class="list-unstyled navbar__sub-list js-sub-list">
-								<li><a href="index.html">Dashboard 1</a></li>
-								<li><a href="index2.html">Dashboard 2</a></li>
-								<li><a href="index3.html">Dashboard 3</a></li>
-								<li><a href="index4.html">Dashboard 4</a></li>
-							</ul></li>
-						<li><a href="chart.html"> <i class="fas fa-chart-bar"></i>Charts
-						</a></li>
-						<li><a href="table.html"> <i class="fas fa-table"></i>Tables
-						</a></li>
-						<li><a href="form.html"> <i class="far fa-check-square"></i>Forms
-						</a></li>
-						<li><a href="calendar.html"> <i
-								class="fas fa-calendar-alt"></i>Calendar
-						</a></li>
-						<li><a href="map.html"> <i class="fas fa-map-marker-alt"></i>Maps
-						</a></li>
-						<li class="has-sub"><a class="js-arrow" href="#"> <i
-								class="fas fa-copy"></i>Pages
-						</a>
-							<ul class="list-unstyled navbar__sub-list js-sub-list">
-								<li><a href="login.html">Login</a></li>
-								<li><a href="register.html">Register</a></li>
-								<li><a href="forget-pass.html">Forget Password</a></li>
-							</ul></li>
-						<li class="has-sub"><a class="js-arrow" href="#"> <i
-								class="fas fa-desktop"></i>UI Elements
-						</a>
-							<ul class="list-unstyled navbar__sub-list js-sub-list">
-								<li><a href="button.html">Button</a></li>
-								<li><a href="badge.html">Badges</a></li>
-								<li><a href="tab.html">Tabs</a></li>
-								<li><a href="card.html">Cards</a></li>
-								<li><a href="alert.html">Alerts</a></li>
-								<li><a href="progress-bar.html">Progress Bars</a></li>
-								<li><a href="modal.html">Modals</a></li>
-								<li><a href="switch.html">Switchs</a></li>
-								<li><a href="grid.html">Grids</a></li>
-								<li><a href="fontawesome.html">Fontawesome Icon</a></li>
-								<li><a href="typo.html">Typography</a></li>
-							</ul></li>
+					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+						<li><a href="/admin" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Admin</span></a></li>
+						<li><a href="/accounts" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Conturi</span></a></li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="plans" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/portfolio.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Planuri</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="devices" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/smartwatch2.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Dispozitive</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption"
+									value="exerciseFeedbacks" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/positive-vote.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Feedback-uri
+										Exercitii</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="foodFeedbacks" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/interface.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Feedback-uri
+										Alimente</span>
+								</button>
+							</form>
+						</li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
 					</ul>
 				</nav>
 			</div>
@@ -170,231 +202,40 @@
 				<div class="section__content section__content--p30">
 					<div class="container-fluid">
 						<div th:if="${account.active == true}">
+							<div
+								style="font-size: 60px; font-weight: 600; text-align: center; color: white; margin-bottom: 60px;"
+								th:text="${account.username}"></div>
 							<div th:if="${#lists.size(account.userDevices)}">
-								<div th:if="${#lists.size(account.userDevices) eq 3}">
-									<div class="row">
-										<div class="col-md-12">
-											<div class="row">
-												<div class="col-md-4"
-													th:each="userDevice : ${account.userDevices}">
-													<div class="card">
-														<div th:if="${userDevice.device.name eq 'Fit Buddy'}">
-															<img class="card-img-top"
-																src="images/4e56fc0b-28d1-4bd4-98c6-697e5a8e4721_rw_1200.gif"
-																alt="Card image cap" style="height: 300px;">
-														</div>
-														<div th:if="${userDevice.device.name eq 'Bratara'}">
-															<img class="card-img-top" src="images/band.jpg"
-																alt="Card image cap"
-																style="height: 300px; padding: 20px;">
-														</div>
-														<div
-															th:if="${userDevice.device.name eq 'Cantar Inteligent'}">
-															<img class="card-img-top" src="images/scale.jpg"
-																alt="Card image cap"
-																style="height: 300px; padding: 20px;">
-														</div>
-														<div class="card-body">
-															<h4 class="card-title mb-3"
-																th:text="${userDevice.device.name}"></h4>
-															<h5 th:text="${userDevice.device.price}"></h5>
-															<h5 th:text="${userDevice.dateOfPurchase}"></h5>
-															<button data-toggle="modal"
-																data-target="#modal-measurements"
-																th:attr="data-target='#modal-measurements'+${userDevice.userDeviceId}">Vezi
-																Masuratori</button>
-															<div class="modal modal-measurements fade in"
-																th:id="modal-measurements+${userDevice.userDeviceId}"
-																data-backdrop="false"
-																style="background: rgba(0, 0, 0, 0.5);">
-																<div class="modal-dialog">
-																	<div class="modal-content">
-																		<div class="modal-header">
-																			<button type="button" class="close"
-																				data-dismiss="modal" aria-label="Close">
-																				<span aria-hidden="true">×</span>
-																			</button>
-																			<h5 class="modal-title">Masuratori</h5>
-																		</div>
-																		<div class="modal-body">
-																			<div th:if="${#lists.size(userDevice.measurements)}">
-																				<ul
-																					th:each="measure, iterStat : ${userDevice.measurements}">
-																					<li th:text="${measure.name}"></li>
-																					<li th:text="${measure.startDate}"></li>
-																					<li th:text="${measure.value}"></li>
-																					<li th:text="${measure.unitOfMeasurement}"></li>
-																				</ul>
-																			</div>
-																			<div
-																				th:unless="${#lists.size(userDevice.measurements)}">
-																				Acest dispozitiv nu are calculat nicio masuratoare
-																				momentan</div>
-																		</div>
-																		<div class="modal-footer">
-																			<button type="button"
-																				class="btn btn-outline pull-left"
-																				data-dismiss="modal">Close</button>
-																			<button type="submit">Save</button>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
+								<div class="row" style="position: relative; left: 200px;">
+									<div class="col-md-12">
+										<div class="row">
+											<div class="col-md-4"
+												th:each="userDevice : ${account.userDevices}">
+												<div class="card" style="border-radius: 30px; border: none;">
+													<div th:if="${userDevice.device.name eq 'Fit Buddy'}">
+														<img class="card-img-top"
+															src="/images/devices/fit_buddy/4e56fc0b-28d1-4bd4-98c6-697e5a8e4721_rw_1200.gif"
+															alt="Card image cap"
+															style="height: 300px; border-top-left-radius: 30px; border-top-right-radius: 30px;">
 													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div th:if="${#lists.size(account.userDevices) eq 2}">
-									<div class="row">
-										<div class="col-md-12">
-											<div class="row">
-												<div class="col-md-6"
-													th:each="userDevice : ${account.userDevices}">
-													<div class="card">
-														<div th:if="${userDevice.device.name eq 'Fit Buddy'}">
-															<img class="card-img-top"
-																src="images/4e56fc0b-28d1-4bd4-98c6-697e5a8e4721_rw_1200.gif"
-																alt="Card image cap" style="height: 400px;">
-														</div>
-														<div th:if="${userDevice.device.name eq 'Bratara'}">
-															<img class="card-img-top" src="images/band.jpg"
-																alt="Card image cap"
-																style="height: 400px; padding: 20px;">
-														</div>
-														<div
-															th:if="${userDevice.device.name eq 'Cantar Inteligent'}">
-															<img class="card-img-top" src="images/scale.jpg"
-																alt="Card image cap"
-																style="height: 400px; padding: 20px;">
-														</div>
-														<div class="card-body">
-															<h4 class="card-title mb-3"
-																th:text="${userDevice.device.name}"></h4>
-															<h5 th:text="${userDevice.device.price}"></h5>
-															<h5 th:text="${userDevice.dateOfPurchase}"></h5>
-															<button data-toggle="modal"
-																data-target="#modal-measurements"
-																th:attr="data-target='#modal-measurements'+${userDevice.userDeviceId}">Vezi
-																Masuratori</button>
-															<div class="modal modal-measurements fade in"
-																th:id="modal-measurements+${userDevice.userDeviceId}"
-																data-backdrop="false"
-																style="background: rgba(0, 0, 0, 0.5);">
-																<div class="modal-dialog">
-																	<div class="modal-content">
-																		<div class="modal-header">
-																			<button type="button" class="close"
-																				data-dismiss="modal" aria-label="Close">
-																				<span aria-hidden="true">×</span>
-																			</button>
-																			<h5 class="modal-title">Masuratori</h5>
-																		</div>
-																		<div class="modal-body">
-																			<div th:if="${#lists.size(userDevice.measurements)}">
-																				<ul
-																					th:each="measure, iterStat : ${userDevice.measurements}">
-																					<li th:text="${measure.name}"></li>
-																					<li th:text="${measure.startDate}"></li>
-																					<li th:text="${measure.value}"></li>
-																					<li th:text="${measure.unitOfMeasurement}"></li>
-																				</ul>
-																			</div>
-																			<div
-																				th:unless="${#lists.size(userDevice.measurements)}">
-																				Acest dispozitiv nu are calculat nicio masuratoare
-																				momentan</div>
-																		</div>
-																		<div class="modal-footer">
-																			<button type="button"
-																				class="btn btn-outline pull-left"
-																				data-dismiss="modal">Close</button>
-																			<button type="submit">Save</button>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
+													<div th:if="${userDevice.device.name eq 'Bratara'}">
+														<img class="card-img-top"
+															src="/images/devices/band/band.jpg" alt="Card image cap"
+															style="height: 300px; padding: 20px;">
 													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div th:if="${#lists.size(account.userDevices) eq 1}">
-									<div class="row">
-										<div class="col-md-12">
-											<div class="row">
-												<div class="col-md-12">
-													<div class="col-md-6 mx-auto"
-														th:each="userDevice : ${account.userDevices}">
-														<div class="card">
-															<div th:if="${userDevice.device.name eq 'Fit Buddy'}">
-																<img class="card-img-top"
-																	src="images/4e56fc0b-28d1-4bd4-98c6-697e5a8e4721_rw_1200.gif"
-																	alt="Card image cap" style="height: 400px;">
-															</div>
-															<div th:if="${userDevice.device.name eq 'Bratara'}">
-																<img class="card-img-top" src="images/band.jpg"
-																	alt="Card image cap"
-																	style="height: 400px; padding: 20px;">
-															</div>
-															<div
-																th:if="${userDevice.device.name eq 'Cantar Inteligent'}">
-																<img class="card-img-top" src="images/scale.jpg"
-																	alt="Card image cap"
-																	style="height: 400px; padding: 20px;">
-															</div>
-															<div class="card-body">
-																<h4 class="card-title mb-3"
-																	th:text="${userDevice.device.name}"></h4>
-																<h5 th:text="${userDevice.device.price}"></h5>
-																<h5 th:text="${userDevice.dateOfPurchase}"></h5>
-																<button data-toggle="modal"
-																	data-target="#modal-measurements"
-																	th:attr="data-target='#modal-measurements'+${userDevice.userDeviceId}">Vezi
-																	Masuratori</button>
-																<div class="modal modal-measurements fade in"
-																	th:id="modal-measurements+${userDevice.userDeviceId}"
-																	data-backdrop="false"
-																	style="background: rgba(0, 0, 0, 0.5);">
-																	<div class="modal-dialog">
-																		<div class="modal-content">
-																			<div class="modal-header">
-																				<button type="button" class="close"
-																					data-dismiss="modal" aria-label="Close">
-																					<span aria-hidden="true">×</span>
-																				</button>
-																				<h5 class="modal-title">Masuratori</h5>
-																			</div>
-																			<div class="modal-body">
-																				<div th:if="${#lists.size(userDevice.measurements)}">
-																					<ul
-																						th:each="measure, iterStat : ${userDevice.measurements}">
-																						<li th:text="${measure.name}"></li>
-																						<li th:text="${measure.startDate}"></li>
-																						<li th:text="${measure.value}"></li>
-																						<li th:text="${measure.unitOfMeasurement}"></li>
-																					</ul>
-																				</div>
-																				<div
-																					th:unless="${#lists.size(userDevice.measurements)}">
-																					Acest dispozitiv nu are calculat nicio masuratoare
-																					momentan</div>
-																			</div>
-																			<div class="modal-footer">
-																				<button type="button"
-																					class="btn btn-outline pull-left"
-																					data-dismiss="modal">Close</button>
-																				<button type="submit">Save</button>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
+													<div
+														th:if="${userDevice.device.name eq 'Cantar Inteligent'}">
+														<img class="card-img-top"
+															src="/images/devices/scale/scale.jpg"
+															alt="Card image cap"
+															style="height: 300px; padding: 20px;">
+													</div>
+													<div class="card-body">
+														<h4 style="font-size: 35px;" class="card-title mb-3"
+															th:text="${userDevice.device.name}"></h4>
+														<h5
+															style="color: gray; font-weight: 100; letter-spacing: 1px;"
+															th:utext="${'Data Cumpararii: <br>' + userDevice.dateOfPurchase}"></h5>
 													</div>
 												</div>
 											</div>
@@ -405,64 +246,145 @@
 							<div th:if="${#lists.size(account.userPlans)}">
 								<div class="row">
 									<div class="col-lg-6">
-										<div class="top-campaign" style="min-height: 100%;">
-											<h3 class="title-3 m-b-30">Diete</h3>
+										<div class="top-campaign"
+											style="min-height: 100%; border-radius: 30px;">
+											<h3 style="font-size: 45px; font-weight: 600;"
+												class="title-3 m-b-30">Diete</h3>
 											<div class="table-responsive">
 												<table class="table table-top-campaign">
+													<thead>
+														<tr style="border: none;">
+															<th style="border: none; color: black;">Nume</th>
+															<th style="border: none; color: black;">Pret</th>
+															<th style="border: none; color: black;">Data
+																Cumparare</th>
+															<th style="border: none; color: black;">Actiuni</th>
+														</tr>
+													</thead>
 													<tbody>
-														<tr th:each="userPlan : ${account.userPlans}">
-															<div th:if="${userPlan.helperPlan.typeOfPlan == 'Dieta'}">
-																<td
-																	th:text="${userPlan.userPlanId + '. ' +userPlan.helperPlan.name}"></td>
-																<td th:text="${userPlan.helperPlan.price}"></td>
-																<td th:text="${userPlan.dateOfPurchase}"></td>
-																<td>
-																	<button data-toggle="modal"
-																		data-target="#modal-food-eaten"
-																		th:attr="data-target='#modal-food-eaten'+${userPlan.userPlanId}">Vezi
-																		Alimente</button>
+														<tr style="border: none;"
+															th:each="userPlan : ${account.userPlans}">
+															<th:block
+																th:if="${userPlan.helperPlan.typeOfPlan == 'Dieta'}">
+																<td style="border: none; color: black;"
+																	th:text="${userPlan.helperPlan.name}"></td>
+																<td style="border: none; color: black;"
+																	th:text="${userPlan.helperPlan.price}"></td>
+																<td style="border: none; color: black;"
+																	th:text="${userPlan.dateOfPurchase}"></td>
+																<td style="border: none; color: black;">
+																	<button
+																		style="background: #7300e6; color: white; padding: 1px 15px; text-align: center; border-radius: 10px;"
+																		data-toggle="modal" data-target="#modal-food-eaten"
+																		th:attr="data-target='#modal-food-eaten'+${userPlan.userPlanId}">Alimente</button>
 																	<div class="modal modal-food-eaten fade in"
 																		th:id="modal-food-eaten+${userPlan.userPlanId}"
 																		data-backdrop="false"
 																		style="background: rgba(0, 0, 0, 0.5);">
-																		<div class="modal-dialog">
-																			<div class="modal-content">
+																		<div class="modal-dialog"
+																			style="overflow-y: initial !important;">
+																			<div class="modal-content"
+																				style="box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6); border-radius: 12px; width: 950px; position: relative; left: -50px;">
 																				<div class="modal-header">
 																					<button type="button" class="close"
 																						data-dismiss="modal" aria-label="Close">
 																						<span aria-hidden="true">×</span>
 																					</button>
-																					<h5 class="modal-title">Alimentele Consumate</h5>
 																				</div>
-																				<div class="modal-body">
-																					<div
-																						th:if="${#lists.size(userPlan.helperPlan.foods)}">
-																						<ul
-																							th:each="food, iterStat : ${userPlan.helperPlan.foods}">
-																							<li th:text="${food.name}"></li>
-																							<li th:text="${food.calories}"></li>
-																							<li th:text="${food.protein}"></li>
-																							<li th:text="${food.lipids}"></li>
-																							<li th:text="${food.carbohydrates}"></li>
-																							<li th:text="${food.fiber}"></li>
-																							<li th:text="${food.weight}"></li>
-																						</ul>
+																				<div class="modal-body"
+																					style="height: 680px; overflow-y: auto; overflow-x: hidden;">
+																					<div style="text-align: center; color: #7300e6;">
+																						<h2
+																							style="color: #7300e6; font-size: 45px; margin-bottom: 40px; margin-top: 20px;">Alimente
+																							Consumate Din Plan</h2>
 																					</div>
-																					<div
-																						th:unless="${#lists.size(userPlan.helperPlan.foods)}">
-																						Din aceasta dieta nu s-a consumat niciun aliment</div>
-																				</div>
-																				<div class="modal-footer">
-																					<button type="button"
-																						class="btn btn-outline pull-left"
-																						data-dismiss="modal">Close</button>
-																					<button type="submit">Save</button>
+																					<div class="row"
+																						style="position: relative; left: 65px;">
+																						<div class="col-md-5"
+																							th:each="food, iterStat : ${userPlan.helperPlan.foods}">
+																							<div class="card-type-2"
+																								style="position: relative; height: 450px; background-color: #f6f6f6; border-radius: 30px; border: 0; margin-bottom: 25px;">
+																								<div class="img-c"
+																									style="padding-top: 100%; top: -50px; position: relative; height: 500px;">
+																									<th:block th:if="${food.images.size() > 0}">
+																										<img style="height: 300px;" class="img"
+																											width="800" height="800"
+																											th:src="@{'images/plans/diets/'+${food.images[0].fileName}}">
+																									</th:block>
+																									<th:block th:if="${food.images.size() eq 0}">
+																										<img style="height: 300px;" class="img"
+																											width="800" height="800"
+																											th:src="@{'images/di.png'}">
+																									</th:block>
+																								</div>
+																								<div class="overlay-food"
+																									style="background-color: #f6f6f6;">
+																									<div class="text" style="left: 47%;">
+																										<div
+																											style="font-size: 45px; color: #7300e6; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;"
+																											th:text="${food.name}"></div>
+																										<div class="posts" style="margin-top: 10px;">
+																											<div class="one" style="font-weight: 100;">
+																												<span style="display: block;">Calorii</span>
+																												<span
+																													style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																													th:text="${food.calories}"></span> <img
+																													style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																													src="/images/logo/meal.png">
+																											</div>
+																											<div class="two" style="font-weight: 100;">
+																												<span style="display: block;">Proteine</span>
+																												<span
+																													style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																													th:text="${food.protein}"></span> <img
+																													style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																													src="/images/logo/proteins.png">
+																											</div>
+																											<div class="two" style="font-weight: 100;">
+																												<span style="display: block;">Gramaj</span>
+																												<span
+																													style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																													th:text="${food.weight}"></span> <img
+																													style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																													src="/images/logo/scale.png">
+																											</div>
+																										</div>
+																										<div class="posts" style="margin-top: 10px;">
+																											<div class="one" style="font-weight: 100;">
+																												<span style="display: block;">Fibre</span> <span
+																													style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																													th:text="${food.fiber}"></span> <img
+																													style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																													src="/images/logo/vegetable.png">
+																											</div>
+																											<div class="two" style="font-weight: 100;">
+																												<span style="display: block;">Carbohidrati</span>
+																												<span
+																													style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																													th:text="${food.carbohydrates}"></span> <img
+																													style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																													src="/images/logo/potato.png">
+																											</div>
+																											<div class="one" style="font-weight: 100;">
+																												<span style="display: block;">Lipide</span>
+																												<span
+																													style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																													th:text="${food.lipids}"></span> <img
+																													style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																													src="/images/logo/trans-fat.png">
+																											</div>
+																										</div>
+																									</div>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
 																				</div>
 																			</div>
 																		</div>
 																	</div>
 																</td>
-															</div>
+															</th:block>
 														</tr>
 													</tbody>
 												</table>
@@ -470,65 +392,152 @@
 										</div>
 									</div>
 									<div class="col-lg-6">
-										<div class="top-campaign" style="min-height: 100%;">
-											<h3 class="title-3 m-b-30">Antrenamente</h3>
+										<div class="top-campaign"
+											style="min-height: 100%; border-radius: 30px;">
+											<h3 style="font-size: 45px; font-weight: 600;"
+												class="title-3 m-b-30">Antrenamente</h3>
 											<div class="table-responsive">
 												<table class="table table-top-campaign">
+													<thead>
+														<tr style="border: none;">
+															<th style="border: none; color: black;">Nume</th>
+															<th style="border: none; color: black;">Pret</th>
+															<th style="border: none; color: black;">Data
+																Cumparare</th>
+															<th style="border: none; color: black;">Actiuni</th>
+														</tr>
+													</thead>
 													<tbody>
 														<tr th:each="userPlan : ${account.userPlans}">
-															<div
+															<th:block style="border: none;"
 																th:if="${userPlan.helperPlan.typeOfPlan == 'Antrenament'}">
-																<td
-																	th:text="${userPlan.userPlanId + '. ' +userPlan.helperPlan.name}"></td>
-																<td th:text="${userPlan.helperPlan.price}"></td>
-																<td th:text="${userPlan.dateOfPurchase}"></td>
-																<td>
-																	<button data-toggle="modal"
+																<td style="border: none; color: black;"
+																	th:text="${userPlan.helperPlan.name}"></td>
+																<td style="border: none; color: black;"
+																	th:text="${userPlan.helperPlan.price}"></td>
+																<td style="border: none; color: black;"
+																	th:text="${userPlan.dateOfPurchase}"></td>
+																<td style="border: none; color: black;">
+																	<button
+																		style="background: #7300e6; color: white; padding: 1px 15px; text-align: center; border-radius: 10px;"
+																		data-toggle="modal"
 																		data-target="#modal-exercises-done"
-																		th:attr="data-target='#modal-exercises-done'+${userPlan.userPlanId}">Vezi
-																		Exercitii</button>
+																		th:attr="data-target='#modal-exercises-done'+${userPlan.userPlanId}">Exercitii</button>
 																	<div class="modal modal-exercises-done fade in"
 																		th:id="modal-exercises-done+${userPlan.userPlanId}"
 																		data-backdrop="false"
 																		style="background: rgba(0, 0, 0, 0.5);">
-																		<div class="modal-dialog">
-																			<div class="modal-content">
+																		<div class="modal-dialog"
+																			style="overflow-y: initial !important;">
+																			<div class="modal-content"
+																				style="box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6); border-radius: 12px; width: 950px; position: relative; left: -50px;">
 																				<div class="modal-header">
 																					<button type="button" class="close"
 																						data-dismiss="modal" aria-label="Close">
 																						<span aria-hidden="true">×</span>
 																					</button>
-																					<h5 class="modal-title">Exercitiile Efectuate</h5>
 																				</div>
-																				<div class="modal-body">
-																					<div
-																						th:if="${#lists.size(userPlan.helperPlan.exercises)}">
-																						<ul
-																							th:each="exercise, iterStat : ${userPlan.helperPlan.exercises}">
-																							<li th:text="${exercise.name}"></li>
-																							<li th:text="${exercise.caloriesBurned}"></li>
-																							<li th:text="${exercise.numberOfSeries}"></li>
-																							<li th:text="${exercise.numberOfReps}"></li>
-																							<li th:text="${exercise.execution}"></li>
-																							<li th:text="${exercise.trainedMuscleGroup}"></li>
-																						</ul>
+																				<div class="modal-body"
+																					style="height: 680px; overflow-y: auto; overflow-x: hidden;">
+																					<div style="text-align: center; color: #7300e6;">
+																						<h2
+																							style="color: #7300e6; font-size: 45px; margin-bottom: 40px; margin-top: 20px;">Exercitii
+																							Efectuate Din Plan</h2>
 																					</div>
-																					<div
-																						th:unless="${#lists.size(userPlan.helperPlan.exercises)}">
-																						Din acest antrenament nu s-a efectuat niciun
-																						exercitiu</div>
-																				</div>
-																				<div class="modal-footer">
-																					<button type="button"
-																						class="btn btn-outline pull-left"
-																						data-dismiss="modal">Close</button>
-																					<button type="submit">Save</button>
+																					<div class="row"
+																						style="position: relative; left: 65px;">
+																						<div class="col-md-5"
+																							th:each="exercise, iterStat : ${userPlan.helperPlan.exercises}">
+																							<div class="card-type-2"
+																								style="position: relative; height: 450px; background-color: #f6f6f6; border-radius: 30px; border: 0; margin-bottom: 25px;">
+																								<div class="img-c"
+																									style="padding-top: 100%; top: -50px; position: relative; height: 500px;">
+																									<th:block
+																										th:if="${exercise.exerciseImages.size() > 0 and exercise.trainingPlan.forWho.getGender() eq 'Barbat'}">
+																										<img style="height: 300px;" class="img"
+																											width="800" height="800"
+																											th:src="@{'images/plans/trainings/man/exercise/'+${exercise.exerciseImages[0].fileName}}">
+																									</th:block>
+																									<th:block
+																										th:if="${exercise.exerciseImages.size() > 0 and exercise.trainingPlan.forWho.getGender() eq 'Femeie'}">
+																										<img style="height: 300px;" class="img"
+																											width="800" height="800"
+																											th:src="@{'images/plans/trainings/woman/exercise/'+${exercise.exerciseImages[0].fileName}}">
+																									</th:block>
+																									<th:block
+																										th:if="${exercise.exerciseImages.size() eq 0}">
+																										<img style="height: 300px;" class="img"
+																											width="800" height="800"
+																											th:src="@{'images/di.png'}">
+																									</th:block>
+																								</div>
+																								<div class="overlay-food"
+																									style="background-color: #f6f6f6;">
+																									<div class="text" style="left: 47%;">
+																										<div
+																											style="font-size: 45px; color: #7300e6; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;"
+																											th:text="${exercise.name}"></div>
+
+																										<div class="posts" style="margin-top: 10px;">
+																											<div class="one" style="font-weight: 100;">
+																												<span style="display: block;">Calorii
+																													Arse</span> <span
+																													style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																													th:text="${exercise.caloriesBurned}"></span>
+																												<img
+																													style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																													src="/images/logo/burning.png">
+																											</div>
+																											<div class="two" style="font-weight: 100;">
+																												<span style="display: block;">Numar
+																													Serii</span> <span
+																													style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																													th:text="${exercise.numberOfSeries}"></span>
+																												<img
+																													style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																													src="/images/logo/gym.png">
+																											</div>
+																											<div class="two" style="font-weight: 100;">
+																												<span style="display: block;">Numar
+																													Repetari</span> <span
+																													style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																													th:text="${exercise.numberOfReps}"></span>
+																												<img
+																													style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																													src="/images/logo/muscle.png">
+																											</div>
+																										</div>
+																										<div class="posts" style="margin-top: 10px;">
+																											<div class="one" style="font-weight: 100;">
+																												<span style="display: block;">Grupa
+																													Muschi</span> <span
+																													style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																													th:text="${exercise.trainedMuscleGroup.getMuscleGroup()}"></span>
+																												<img
+																													style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																													src="/images/logo/treadmill.png">
+																											</div>
+																											<div class="two" style="font-weight: 100;">
+																												<span style="display: block;">Categorie</span>
+																												<span
+																													style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																													th:text="${exercise.exerciseCategory}"></span>
+																												<img
+																													style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																													src="/images/logo/ssss.png">
+																											</div>
+																										</div>
+																									</div>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
 																				</div>
 																			</div>
 																		</div>
 																	</div>
 																</td>
-															</div>
+															</th:block>
 														</tr>
 													</tbody>
 												</table>
@@ -538,30 +547,15 @@
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-lg-4"
-									th:if="${#lists.size(chartExercisesDone.keySet())}">
-									<div class="au-card m-b-30" style="margin-top: 30px;">
-										<div class="au-card-inner">
-											<h3 class="title-2 m-b-40">Alimente</h3>
-											<canvas id="food-eaten"></canvas>
-										</div>
-									</div>
-								</div>
-								<div class="col-lg-4"
-									th:if="${#lists.size(chartFoodEaten.keySet())}">
-									<div class="au-card m-b-30" style="margin-top: 30px;">
-										<div class="au-card-inner">
-											<h3 class="title-2 m-b-40">Exercitii</h3>
-											<canvas id="exercises-done"></canvas>
-										</div>
-									</div>
-								</div>
-								<div class="col-lg-4"
+								<div class="col-lg-10 mx-auto"
+									style="position: relative; top: 50px; background-color: white; border-radius: 30px; padding: 50px; margin-bottom: 100px;"
 									th:if="${#lists.size(chartMeasurements.keySet())}">
-									<div class="au-card m-b-30" style="margin-top: 30px;">
-										<div class="au-card-inner">
-											<h3 class="title-2 m-b-40">Masuratori</h3>
-											<canvas id="measurements"></canvas>
+									<div
+										style="font-size: 60px; font-weight: 600; text-align: center; color: #7300e6;">Masuratori
+										Calculate</div>
+									<div class="row">
+										<div class="col-md-12">
+											<div id="measurements"></div>
 										</div>
 									</div>
 								</div>
@@ -569,37 +563,46 @@
 							<div class="row">
 								<div
 									th:if="${passedTenDaysFoodEaten && passedTenDaysExerciseDone}">
-									<h4>Poti dezactiva acest cont</h4>
-									<ul>
-										<div th:if="${passedTenDaysFoodEaten}">
-											<li>Au trecut 10 zile de cand a consumat un aliment
-												propus de unul dintre nutritionistii sai</li>
-										</div>
-										<div th:if="${passedTenDaysExerciseDone}">
-											<li>Au trecut 10 zile de cand a efectuat un exercitiu
-												propus de unul dintre antrenorii sai</li>
-										</div>
+									<h4 style="color: white; font-size: 35px; font-weight: 600;">Dezactiveaza
+										Cont</h4>
+									<ul style="list-style: hangul-consonant;">
+										<th:block th:if="${passedTenDaysFoodEaten}">
+											<li
+												style="color: white; font-size: 25px; letter-spacing: 2px;">Au
+												trecut 10 zile de cand ai consumat un aliment propus de unul
+												dintre nutritionistii tai</li>
+										</th:block>
+										<th:block th:if="${passedTenDaysExerciseDone}">
+											<li
+												style="color: white; font-size: 25px; letter-spacing: 2px;">Au
+												trecut 10 zile de cand ai efectuat un exercitiu propus de
+												unul dintre antrenorii tai</li>
+										</th:block>
 									</ul>
 									<form th:action="@{/disable_account}" method="post">
 										<input type="hidden" name="accountId"
 											th:value="${account.accountId}" />
-										<button type="submit" class="btn btn-danger">
+										<button type="submit" class="btnn2"
+											style="color: #7300e6; background-color: white; font-size: 25px; margin-top: 50px !important; margin-bottom: 50px !important; position: relative; left: -150px;">
 											Dezactiveaza Cont</button>
 									</form>
 								</div>
 							</div>
 						</div>
 						<div th:if="${account.active == false}">
-							Acest cont a fost dezactivat din cauza ca
-							<ul>
-								<div th:if="${passedTenDaysFoodEaten}">
-									<li>Au trecut 10 zile de cand a consumat un aliment propus
-										de unul dintre nutritionistii sai</li>
-								</div>
-								<div th:if="${passedTenDaysExerciseDone}">
-									<li>Au trecut 10 zile de cand a efectuat un exercitiu
-										propus de unul dintre antrenorii sai</li>
-								</div>
+							<h4 style="color: white; font-size: 35px; font-weight: 600;">Dezactiveaza
+								Cont</h4>
+							<ul style="list-style: hangul-consonant;">
+								<th:block th:if="${passedTenDaysFoodEaten}">
+									<li style="color: white; font-size: 25px; letter-spacing: 2px;">Au
+										trecut 10 zile de cand ai consumat un aliment propus de unul
+										dintre nutritionistii tai</li>
+								</th:block>
+								<th:block th:if="${passedTenDaysExerciseDone}">
+									<li style="color: white; font-size: 25px; letter-spacing: 2px;">Au
+										trecut 10 zile de cand ai efectuat un exercitiu propus de unul
+										dintre antrenorii tai</li>
+								</th:block>
 							</ul>
 						</div>
 					</div>
@@ -608,298 +611,101 @@
 		</div>
 
 	</div>
-
-	<script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
-	<script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
-	<script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
-	<script th:src="@{/vendor/slick/slick.min.js}">
-    </script>
-	<script th:src="@{/vendor/wow/wow.min.js}"></script>
-	<script th:src="@{/vendor/animsition/animsition.min.js}"></script>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
 	<script
-		th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
-    </script>
-	<script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
-	<script th:src="@{/vendor/counter-up/jquery.counterup.min.js}">
-    </script>
-	<script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
-	<script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
-	<script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
-	<script th:src="@{/vendor/select2/select2.min.js}">
-    </script>
-
-	<script th:src="@{/js/main.js}"></script>
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<script src="https://code.highcharts.com/modules/data.js"></script>
+	<script src="https://code.highcharts.com/stock/highstock.js"></script>
+	<script src="https://code.highcharts.com/modules/drilldown.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script src="https://code.highcharts.com/modules/export-data.js"></script>
+	<script src="https://code.highcharts.com/modules/accessibility.js"></script>
 	<script th:inline="javascript">
-    try {
+	Highcharts.setOptions({
+	    colors: ['#7300e6']
+	  });
+	  $('#measurements').highcharts({
+	    chart: {
+	      type: 'areaspline',
+	      zoomType: 'x'
+	    },
+	    title: { text: null },
+        scrollbar: {
+            enabled: true,
+            barBackgroundColor: '#7300e6',
+            barBorderRadius: 7,
+            barBorderWidth: 0,
+            buttonBackgroundColor: '#7300e6',
+            buttonBorderWidth: 0,
+            buttonArrowColor: 'white',
+            buttonBorderRadius: 7,
+            rifleColor: 'white',
+            trackBackgroundColor: 'white',
+            trackBorderWidth: 1,
+            trackBorderColor: 'silver',
+            trackBorderRadius: 7
+        },
+	    legend: { enabled: false },
+	    xAxis: {
+	      type: 'datetime',
+	      categories: [[${chartMeasurements.keySet()}]],
+	      labels: {
+              style: {
+                  color: 'black',
+                  font: '16px Arial, sans-serif',
+                  fontWeight: '600'
+              }
+          },
+          crosshair: true,
+          min: 0,
+          max: 5
+	    },
 
-        //Team chart
-        var ctx = document.getElementById("exercises-done");
-        if (ctx) {
-          ctx.height = 150;
-          var myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-              labels: [[${chartExercisesDone.keySet()}]],
-              type: 'line',
-              defaultFontFamily: 'Poppins',
-              datasets: [{
-                data: [[${chartExercisesDone.values()}]],
-                label: "Numar Exercitii",
-                backgroundColor: 'rgba(0,103,255,.15)',
-                borderColor: 'rgba(0,103,255,0.5)',
-                borderWidth: 3.5,
-                pointStyle: 'circle',
-                pointRadius: 5,
-                pointBorderColor: 'transparent',
-                pointBackgroundColor: 'rgba(0,103,255,0.5)',
-              },]
+	    yAxis: {
+	    	title: {
+                text: 'Valori',
+                    style: {
+                        color: 'black',
+                        font: '22px Arial, sans-serif',
+                        fontWeight: '600'
+                    }
             },
-            options: {
-              responsive: true,
-              tooltips: {
-                mode: 'index',
-                titleFontSize: 12,
-                titleFontColor: '#000',
-                bodyFontColor: '#000',
-                backgroundColor: '#fff',
-                titleFontFamily: 'Poppins',
-                bodyFontFamily: 'Poppins',
-                cornerRadius: 3,
-                intersect: false,
-              },
-              legend: {
-                display: false,
-                position: 'top',
-                labels: {
-                  usePointStyle: true,
-                  fontFamily: 'Poppins',
-                },
-
-
-              },
-              scales: {
-                xAxes: [{
-                  display: true,
-                  gridLines: {
-                    display: false,
-                    drawBorder: false
-                  },
-                  scaleLabel: {
-                    display: false,
-                    labelString: 'Month'
-                  },
-                  ticks: {
-                    fontFamily: "Poppins"
-                  }
-                }],
-                yAxes: [{
-                  display: true,
-                  gridLines: {
-                    display: false,
-                    drawBorder: false
-                  },
-                  scaleLabel: {
-                    display: true,
-                    labelString: 'Valoare',
-                    fontFamily: "Poppins"
-                  },
-                  ticks: {
-                    fontFamily: "Poppins"
-                  }
-                }]
-              },
-              title: {
-                display: false,
-              }
-            }
-          });
-        }
-
-
-      } catch (error) {
-        console.log(error);
-      }
-      
-      
-      try {
-
-          //Team chart
-          var ctx = document.getElementById("food-eaten");
-          if (ctx) {
-            ctx.height = 150;
-            var myChart = new Chart(ctx, {
-              type: 'line',
-              data: {
-                labels: [[${chartFoodEaten.keySet()}]],
-                type: 'line',
-                defaultFontFamily: 'Poppins',
-                datasets: [{
-                  data: [[${chartFoodEaten.values()}]],
-                  label: "Numar Alimente",
-                  backgroundColor: 'rgba(0,103,255,.15)',
-                  borderColor: 'rgba(0,103,255,0.5)',
-                  borderWidth: 3.5,
-                  pointStyle: 'circle',
-                  pointRadius: 5,
-                  pointBorderColor: 'transparent',
-                  pointBackgroundColor: 'rgba(0,103,255,0.5)',
-                },]
-              },
-              options: {
-                responsive: true,
-                tooltips: {
-                  mode: 'index',
-                  titleFontSize: 12,
-                  titleFontColor: '#000',
-                  bodyFontColor: '#000',
-                  backgroundColor: '#fff',
-                  titleFontFamily: 'Poppins',
-                  bodyFontFamily: 'Poppins',
-                  cornerRadius: 3,
-                  intersect: false,
-                },
-                legend: {
-                  display: false,
-                  position: 'top',
-                  labels: {
-                    usePointStyle: true,
-                    fontFamily: 'Poppins',
-                  },
-
-
-                },
-                scales: {
-                  xAxes: [{
-                    display: true,
-                    gridLines: {
-                      display: false,
-                      drawBorder: false
-                    },
-                    scaleLabel: {
-                      display: false,
-                      labelString: 'Month'
-                    },
-                    ticks: {
-                      fontFamily: "Poppins"
-                    }
-                  }],
-                  yAxes: [{
-                    display: true,
-                    gridLines: {
-                      display: false,
-                      drawBorder: false
-                    },
-                    scaleLabel: {
-                      display: true,
-                      labelString: 'Valoare',
-                      fontFamily: "Poppins"
-                    },
-                    ticks: {
-                      fontFamily: "Poppins"
-                    }
-                  }]
-                },
-                title: {
-                  display: false,
+            gridLineColor: 'transparent',
+            labels: {
+                style: {
+                    color: 'black',
+                    font: '16px Arial, sans-serif',
+                    fontWeight: '600'
                 }
-              }
-            });
-          }
-
-
-        } catch (error) {
-          console.log(error);
-        }
-        
-        try {
-
-            //Team chart
-            var ctx = document.getElementById("measurements");
-            if (ctx) {
-              ctx.height = 150;
-              var myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                  labels: [[${chartMeasurements.keySet()}]],
-                  type: 'line',
-                  defaultFontFamily: 'Poppins',
-                  datasets: [{
-                    data: [[${chartMeasurements.values()}]],
-                    label: "Numar Masuratori",
-                    backgroundColor: 'rgba(0,103,255,.15)',
-                    borderColor: 'rgba(0,103,255,0.5)',
-                    borderWidth: 3.5,
-                    pointStyle: 'circle',
-                    pointRadius: 5,
-                    pointBorderColor: 'transparent',
-                    pointBackgroundColor: 'rgba(0,103,255,0.5)',
-                  },]
-                },
-                options: {
-                  responsive: true,
-                  tooltips: {
-                    mode: 'index',
-                    titleFontSize: 12,
-                    titleFontColor: '#000',
-                    bodyFontColor: '#000',
-                    backgroundColor: '#fff',
-                    titleFontFamily: 'Poppins',
-                    bodyFontFamily: 'Poppins',
-                    cornerRadius: 3,
-                    intersect: false,
-                  },
-                  legend: {
-                    display: false,
-                    position: 'top',
-                    labels: {
-                      usePointStyle: true,
-                      fontFamily: 'Poppins',
-                    },
-
-
-                  },
-                  scales: {
-                    xAxes: [{
-                      display: true,
-                      gridLines: {
-                        display: false,
-                        drawBorder: false
-                      },
-                      scaleLabel: {
-                        display: false,
-                        labelString: 'Month'
-                      },
-                      ticks: {
-                        fontFamily: "Poppins"
-                      }
-                    }],
-                    yAxes: [{
-                      display: true,
-                      gridLines: {
-                        display: false,
-                        drawBorder: false
-                      },
-                      scaleLabel: {
-                        display: true,
-                        labelString: 'Valoare',
-                        fontFamily: "Poppins"
-                      },
-                      ticks: {
-                        fontFamily: "Poppins"
-                      }
-                    }]
-                  },
-                  title: {
-                    display: false,
-                  }
-                }
-              });
             }
+	    },
 
+	    tooltip: {
+	      shared: true
+	    },
 
-          } catch (error) {
-            console.log(error);
-          }
+	    credits: {
+	      enabled: false
+	    },
+
+	    plotOptions: {
+	      areaspline: {
+	        fillOpacity: 0.8,
+	        pointPlacement: 'on'
+	      },
+	      series: {
+	        marker: { enabled: false },
+	        lineWidth: 0
+	      }
+	    },
+
+	    series: [{
+	      name: 'Valoare',
+	        data: [[${chartMeasurements.values()}]]
+	    }]
+	  });
     </script>
 </body>
 

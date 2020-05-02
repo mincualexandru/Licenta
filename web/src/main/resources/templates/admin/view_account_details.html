@@ -2,44 +2,435 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Sign up</title>
+<title>View Profile</title>
 <base href="/">
 <link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
 	rel="stylesheet" id="bootstrap-css">
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" th:href="@{css/style.css}"/>
+<link th:href="@{css/font-face.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-4.7/css/font-awesome.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-5/css/fontawesome-all.min.css}"
+	rel="stylesheet" media="all">
+<link
+	th:href="@{vendor/mdi-font/css/material-design-iconic-font.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{vendor/animsition/animsition.min.css}" rel="stylesheet"
+	media="all">
+<link
+	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/wow/animate.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/css-hamburgers/hamburgers.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/slick/slick.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/select2/select2.min.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{css/theme.css}" rel="stylesheet" media="all">
+<link rel="stylesheet" type="text/css" th:href="@{css/style.css}" />
 </head>
 <body>
-	<div class="container">
-			<div style="position: relative; top: 110px; left: 250px;">
-				<h3>Informatii cont</h3>
-				<div class="row">
-					<p th:text="${account.username}"></p>
-					<ul th:each="skill : ${accountInformation.skills}">
-						<li th:text="${skill.description}"></li>
-					</ul>
-					<ul th:each="education : ${accountInformation.education}">
-						<li th:text="${education.name}"></li>
-						<li th:text="${education.city}"></li>
-						<li th:text="${education.start}"></li>
-						<li th:text="${education.end}"></li>
-					</ul>
-					<ul th:each="experience : ${accountInformation.experiences}">
-						<li th:text="${experience.name}"></li>
-						<li th:text="${experience.city}"></li>
-						<li th:text="${experience.start}"></li>
-						<li th:text="${experience.end}"></li>
-					</ul>
-				</div>
-				<div class="row">
-						<a th:href="@{/accounts}" class="btn btn-success"> Inapoi</a>
+	<div class="page-wrapper">
+		<header style="background-color: white;"
+			class="header-mobile d-block d-lg-none">
+			<div class="header-mobile__bar">
+				<div class="container-fluid">
+					<div class="header-mobile-inner">
+						<a class="logo" href="index.html"> <img
+							src="/images/logo/Screenshot_18.png">
+						</a>
+						<button class="hamburger hamburger--slider" type="button">
+							<span class="hamburger-box"> <span class="hamburger-inner"></span>
+							</span>
+						</button>
+					</div>
 				</div>
 			</div>
+			<nav class="navbar-mobile">
+				<div class="container-fluid">
+					<ul class="navbar-mobile__list list-unstyled">
+						<li><a href="/admin" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Admin</span></a></li>
+						<li><a href="/accounts" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Conturi</span></a></li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="plans" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/portfolio.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Planuri</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="devices" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/smartwatch2.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Dispozitive</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption"
+									value="exerciseFeedbacks" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/positive-vote.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Feedback-uri
+										Exercitii</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="foodFeedbacks" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/interface.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Feedback-uri
+										Alimente</span>
+								</button>
+							</form>
+						</li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<aside style="background-color: white;"
+			class="menu-sidebar d-none d-lg-block">
+			<div class="logo">
+				<a href="#"> <img src="/images/logo/Screenshot_18.png">
+				</a>
+			</div>
+			<div class="menu-sidebar__content js-scrollbar1">
+				<nav class="navbar-sidebar">
+					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+						<li><a href="/admin" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Admin</span></a></li>
+						<li><a href="/accounts" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Conturi</span></a></li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="plans" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/portfolio.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Planuri</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="devices" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/smartwatch2.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Dispozitive</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption"
+									value="exerciseFeedbacks" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/positive-vote.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Feedback-uri
+										Exercitii</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="foodFeedbacks" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/interface.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Feedback-uri
+										Alimente</span>
+								</button>
+							</form>
+						</li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</nav>
+			</div>
+		</aside>
+		<div class="page-container">
+			<div class="main-content">
+				<div class="section__content section__content--p30">
+						<th:block th:each="roles: ${account.roles}">
+							<th:block
+								th:if="${role.name eq 'ROLE_TRAINER' or role.name eq 'ROLE_NUTRITIONIST'}">
+								<th:block
+									th:if="${account.accountInformation != null and account.active eq true}">
+									<div
+										style="text-align: center; font-size: 70px; color: white; font-weight: 700;">Informatii
+										Cont</div>
+								</th:block>
+								<th:block th:if="${account.active eq false}">
+									<div
+										style="text-align: center; font-size: 70px; color: white; font-weight: 700;">Valideaza
+										Cont Expert</div>
+								</th:block>
+							</th:block>
+							<th:block th:if="${role.name eq 'ROLE_USER'}">
+								<div
+									style="text-align: center; font-size: 70px; color: white; font-weight: 700;">Informatii
+									Cont</div>
+							</th:block>
+						</th:block>
+						<div class="wrapper" style="min-height: 0px;">
+							<div class="profile-card js-profile-card">
+								<div class="profile-card__img">
+									<div th:if="${account.gender.getGender() eq 'Barbat'}"
+										style="background-color: black;">
+										<img src="/images/avatar/man.png" alt="profile card">
+									</div>
+									<div th:if="${account.gender.getGender() eq 'Femeie'}"
+										style="background-color: black;">
+										<img src="/images/avatar/woman.png" alt="profile card">
+									</div>
+								</div>
+								<div class="profile-card__cnt js-profile-cnt">
+									<div class="profile-card__name" th:text="${account.username}"></div>
+									<div class="profile-card-inf">
+										<div class="profile-card-inf__item">
+											<div class="profile-card-inf__title"
+												th:text="${account.firstName}"></div>
+											<div class="profile-card-inf__txt">Nume</div>
+										</div>
+
+										<div class="profile-card-inf__item">
+											<div class="profile-card-inf__title"
+												th:text="${account.lastName}"></div>
+											<div class="profile-card-inf__txt">Prenume</div>
+										</div>
+
+										<div class="profile-card-inf__item">
+											<div class="profile-card-inf__title"
+												th:text="${account.phoneNumber}"></div>
+											<div class="profile-card-inf__txt">Numar Telefon</div>
+										</div>
+
+										<div class="profile-card-inf__item">
+											<div class="profile-card-inf__title"
+												th:text="${account.email}"></div>
+											<div class="profile-card-inf__txt">Email</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-md-11 mx-auto">
+								<div class="row" style="margin-bottom: 40px;">
+									<div class="col-lg-6"
+										th:if="${accountInformation.education.size() > 0}">
+										<div class="au-card m-b-30" style="min-height: 100%;">
+											<div class="au-card-inner">
+												<div class="education"
+													style="display: flex; justify-content: center; align-items: center;">
+													<h1 style="font-size: 45px; float: left; color: #7300e6;">Educatie</h1>
+												</div>
+												<div class="timeline">
+													<div class="container right"
+														th:each="ed : ${accountInformation.education}">
+														<div class="content">
+															<div class="left-content">
+																<h2 th:text="${ed.start + ' - ' + ed.end}"></h2>
+																<h5 th:text="${'Institutie: ' + ed.name}"></h5>
+																<h5 th:text="${'Oras: ' + ed.city}"></h5>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-6"
+										th:if="${accountInformation.experiences.size() > 0}">
+										<div class="au-card m-b-30" style="min-height: 100%;">
+											<div class="au-card-inner">
+												<div class="experiences"
+													style="display: flex; justify-content: center; align-items: center;">
+													<h1 style="font-size: 45px; float: left; color: #7300e6;">Experienta</h1>
+												</div>
+												<div class="timeline">
+													<div class="container right"
+														th:each="experience : ${accountInformation.experiences}">
+														<div class="content">
+															<div class="left-content">
+																<h2
+																	th:text="${experience.start + ' - ' + experience.end}"></h2>
+																<h5 th:text="${'Institutie: ' + experience.name}"></h5>
+																<h5 th:text="${'Oras: ' + experience.city}"></h5>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-11 mx-auto">
+								<div class="row" style="margin-bottom: 40px;">
+									<div class="col-lg-6"
+										th:if="${accountInformation.skills.size() > 0}">
+										<div class="au-card m-b-30" style="min-height: 100%;">
+											<div class="au-card-inner">
+												<div class="skills"
+													style="display: flex; justify-content: center; align-items: center;">
+													<h1 style="float: left; color: #7300e6; font-size: 45px;">Abilitati</h1>
+												</div>
+												<div
+													style="padding: 10px 40px; position: relative; background-color: inherit;"
+													th:each="skill, iterStat : ${accountInformation.skills}">
+													<div class="content">
+														<div class="left-content">
+															<h3
+																th:text="${iterStat.index + 1 + '. ' + skill.description}"></h3>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-6"
+										th:if="${account.accountInformation.description}">
+										<div class="au-card m-b-30" style="min-height: 100%;">
+											<div class="au-card-inner">
+												<div class="about-me"
+													style="display: flex; justify-content: center; align-items: center;">
+													<h1 style="float: left; color: #7300e6; font-size: 45px;">Descriere
+														Cont</h1>
+												</div>
+												<div
+													style="padding: 30px 40px; position: relative; background-color: inherit;">
+													<h5 class="content"
+														th:text="${account.accountInformation.description}"></h5>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<th:block th:each="roles: ${account.roles}">
+						<th:block
+							th:if="${role.name eq 'ROLE_TRAINER' or role.name eq 'ROLE_NUTRITIONIST'}">
+							<th:block th:if="${account.active eq false}">
+								<form class="form-horizontal" role="form"
+									th:action="@{/validate_account_save}" method="POST">
+									<input type="hidden" name="accountId"
+										th:value="${account.accountId}" />
+									<button type="submit" class="btnn2"
+										style="color: #7300e6; background-color: white; font-size: 25px; margin-top: 50px !important; margin-bottom: 50px !important; position: relative; left: -150px;">Valideaza
+										Cont</button>
+								</form>
+							</th:block>
+						</th:block>
+					</th:block>
+				</div>
+			</div>
+		</div>
 	</div>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<script type="text/javascript" th:src="@{/js/validationcv.js}"></script>
+	<script src="https://code.highcharts.com/modules/data.js"></script>
+	<script src="https://code.highcharts.com/stock/highstock.js"></script>
+	<script src="https://code.highcharts.com/modules/drilldown.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script src="https://code.highcharts.com/modules/export-data.js"></script>
+	<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+	<script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
+	<script th:src="@{/vendor/slick/slick.min.js}">
+		
+	</script>
+	<script th:src="@{/vendor/wow/wow.min.js}"></script>
+	<script th:src="@{/vendor/animsition/animsition.min.js}"></script>
+	<script
+		th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
+		
+	</script>
+	<script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
+	<script th:src="@{/vendor/counter-up/jquery.counterup.min.js}">
+		
+	</script>
+	<script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
+	<script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
+	<script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
+	<script th:src="@{/vendor/select2/select2.min.js}">
+		
+	</script>
+
+	<script th:src="@{/js/main.js}"></script>
+	<script>
+		var messageBox = document.querySelector('.js-message');
+		var btn = document.querySelector('.js-message-btn');
+		var card = document.querySelector('.js-profile-card');
+		var closeBtn = document.querySelectorAll('.js-message-close');
+
+		btn.addEventListener('click', function(e) {
+			e.preventDefault();
+			card.classList.add('active');
+		});
+
+		closeBtn.forEach(function(element, index) {
+			console.log(element);
+			element.addEventListener('click', function(e) {
+				e.preventDefault();
+				card.classList.remove('active');
+			});
+		});
+	</script>
 </body>
 </html>

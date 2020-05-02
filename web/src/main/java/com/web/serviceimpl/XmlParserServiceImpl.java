@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -19,6 +20,7 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +32,7 @@ import org.xml.sax.SAXException;
 
 import com.web.model.Measurement;
 import com.web.model.UserDevice;
+import com.web.service.MeasurementService;
 import com.web.service.XmlParserService;
 import com.web.utils.BandTypeMeasurement;
 import com.web.utils.ScaleTypeMeasurement;
@@ -40,6 +43,9 @@ public class XmlParserServiceImpl implements XmlParserService {
 
 	@PersistenceContext
 	private EntityManager entityManager;
+
+	@Autowired
+	private MeasurementService measurementService;
 
 	@Override
 	public boolean readAllMeasurementsFromXmlFile(Set<UserDevice> userDevices, String username) throws ParseException {
@@ -90,7 +96,8 @@ public class XmlParserServiceImpl implements XmlParserService {
 	}
 
 	@Override
-	public NodeList getAllMeasurements(NodeList childNodes, Set<UserDevice> userDevices) throws ParseException {
+	public void getAllMeasurements(NodeList childNodes, Set<UserDevice> userDevices) throws ParseException {
+		Set<Measurement> measurements = new HashSet<>();
 		for (int i = 2; i < childNodes.getLength(); i++) {
 			Node node = childNodes.item(i);
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -137,22 +144,11 @@ public class XmlParserServiceImpl implements XmlParserService {
 					}
 				}
 				if (!(measure.getUserDevice() == null)) {
-					insertMeasure(measure);
+					measurements.add(measure);
 				}
 			}
 		}
-		return childNodes;
-
-	}
-
-	@Transactional
-	public void insertMeasure(Measurement measure) {
-		entityManager.createNativeQuery(
-				"INSERT INTO measurements (user_device_id, name, value, unit_of_measurement, start_date, end_date, from_xml) VALUES (?,?,?,?,?,?,?)")
-				.setParameter(1, measure.getUserDevice()).setParameter(2, measure.getName())
-				.setParameter(3, measure.getValue()).setParameter(4, measure.getUnitOfMeasurement())
-				.setParameter(5, measure.getStartDate()).setParameter(6, measure.getEndDate())
-				.setParameter(7, measure.getFromXml()).executeUpdate();
+		measurementService.saveAll(measurements);
 	}
 
 }

@@ -44,12 +44,13 @@
 
 <body>
 	<div class="page-wrapper">
-		<header class="header-mobile d-block d-lg-none">
+		<header style="background-color: white;"
+			class="header-mobile d-block d-lg-none">
 			<div class="header-mobile__bar">
 				<div class="container-fluid">
 					<div class="header-mobile-inner">
 						<a class="logo" href="index.html"> <img
-							src="images/icon/logo.png" alt="CoolAdmin" />
+							src="/images/logo/Screenshot_18.png">
 						</a>
 						<button class="hamburger hamburger--slider" type="button">
 							<span class="hamburger-box"> <span class="hamburger-inner"></span>
@@ -61,123 +62,270 @@
 			<nav class="navbar-mobile">
 				<div class="container-fluid">
 					<ul class="navbar-mobile__list list-unstyled">
-						<li><a th:href="@{/admin}">Admin</a></li>
-						<li><a th:href="@{/accounts}">Conturi</a></li>
-						<li><a th:href="@{/view_devices}">Dispozitive</a></li>
-						<li><a th:href="@{/view_measurements}">Masuratori</a></li>
-						<li><a th:href="@{/view_plans}">Planuri</a></li>
-						<li><a th:href="@{/view_exercises}">Exercitii</a></li>
-						<li><a th:href="@{/view_foods}">Alimente</a></li>
+						<li><a href="/admin" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Admin</span></a></li>
+						<li><a href="/accounts" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Conturi</span></a></li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="plans" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/portfolio.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Planuri</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="devices" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/smartwatch2.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Dispozitive</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption"
+									value="exerciseFeedbacks" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/positive-vote.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Feedback-uri
+										Exercitii</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="foodFeedbacks" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/interface.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Feedback-uri
+										Alimente</span>
+								</button>
+							</form>
+						</li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
 					</ul>
 				</div>
 			</nav>
 		</header>
-		<aside class="menu-sidebar d-none d-lg-block">
+		<aside style="background-color: white;"
+			class="menu-sidebar d-none d-lg-block">
 			<div class="logo">
-				<a href="#"> <img src="images/icon/logo.png" alt="Cool Admin" />
+				<a href="#"> <img src="/images/logo/Screenshot_18.png">
 				</a>
 			</div>
 			<div class="menu-sidebar__content js-scrollbar1">
 				<nav class="navbar-sidebar">
-					<ul class="list-unstyled navbar__list">
-						<li><a th:href="@{/admin}">Admin</a></li>
-						<li><a th:href="@{/accounts}">Conturi</a></li>
-						<li><a th:href="@{/view_devices}">Dispozitive</a></li>
-						<li><a th:href="@{/view_measurements}">Masuratori</a></li>
-						<li><a th:href="@{/view_plans}">Planuri</a></li>
-						<li><a th:href="@{/view_exercises}">Exercitii</a></li>
-						<li><a th:href="@{/view_foods}">Alimente</a></li>
+					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+						<li><a href="/admin" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Admin</span></a></li>
+						<li><a href="/accounts" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Conturi</span></a></li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="plans" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/portfolio.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Planuri</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="devices" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/smartwatch2.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Dispozitive</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption"
+									value="exerciseFeedbacks" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/positive-vote.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Feedback-uri
+										Exercitii</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="foodFeedbacks" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/interface.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Feedback-uri
+										Alimente</span>
+								</button>
+							</form>
+						</li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
 					</ul>
 				</nav>
 			</div>
 		</aside>
 		<div class="page-container">
 			<div class="main-content">
-				<div class="section__content section__content--p30">	
-					<div th:if="${#lists.size(users)}">
-							<h3 style="text-align: center; font-size: 30px;">Utilizatori</h3>
-						<table class="table table-striped">
-							<thead class="center-align">
-								<tr>
-									<th>Nume Utilizator</th>
-									<th>Nume</th>
-									<th>Prenume</th>
-									<th>Email</th>
-									<th>Numar Telefon</th>
-									<th>Data Creare</th>
-									<th>Actiuni</th>
-								</tr>
-							</thead>
-							<tbody class="center-align">
-								<th:block th:each="account, iterStat : ${users}">
-									<tr>
-										<td th:text="${account.username}"></td>
-										<td th:text="${account.firstName}"></td>
-										<td th:text="${account.lastName}"></td>
-										<td th:text="${account.email}"></td>
-										<td th:text="${account.phoneNumber}"></td>
-										<td th:text="${account.dateOfCreation}"></td>
-										<td>
+				<div class="section__content section__content--p30">
+					<th:block th:if="${users.size() > 0}">
+						<div
+							style="text-align: center; font-size: 70px; margin-bottom: 60px; color: white; font-weight: 700;">Utilizatori</div>
+						<div class="row" style="margin-bottom: 50px;">
+							<div class="col-md-4" style="margin-bottom: 25px;"
+								th:each="user, iterStat : ${users}">
+								<div class="card-type-2"
+									style="height: 450px; border-radius: 37px; position: relative; float: left; padding: 30px;">
+									<th:block th:if="${user.gender.getGender() eq 'Barbat'}">
+										<img
+											style="height: 60px; width: 60px; position: relative; left: -20px; top: -20px; background-color: #d3d3d3; border-radius: 30px; border: 3px solid #d3d3d3;"
+											width="800" height="800" th:src="@{'images/avatar/man.png'}">
+									</th:block>
+									<th:block th:if="${user.gender.getGender() eq 'Femeie'}">
+										<img
+											style="height: 60px; width: 60px; position: relative; left: -20px; top: -20px; background-color: #d3d3d3; border-radius: 30px; border: 3px solid #d3d3d3;"
+											width="800" height="800"
+											th:src="@{'images/avatar/woman.png'}">
+									</th:block>
+									<div
+										style="position: relative; top: -25px; justify-content: center; align-items: center; font-weight: 700; color: black; font-size: 20px; text-align: center;">
+										<div
+											style="font-size: 40px; color: #7300e6; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;"
+											th:text="${user.username}"></div>
+										<div
+											style="position: relative; top: 10px; background-color: #f6f6f6; border-radius: 30px; padding: 30px;">
+											<span th:text="${'Nume Utilizator: ' + user.firstName}"
+												style="font-size: 12px; color: gray; font-weight: 100; display: block; margin-top: 5px; letter-spacing: 2px;"></span>
+											<span
+												th:utext="${'Prenume Utilizator:<br> ' + user.lastName}"
+												style="font-size: 12px; color: gray; font-weight: 100; display: block; margin-top: 5px; letter-spacing: 2px;"></span>
+											<span th:text="${'Email: ' + user.email}"
+												style="font-size: 12px; color: gray; font-weight: 100; display: block; margin-top: 5px; letter-spacing: 2px;"></span>
+											<span th:text="${'Numar Telefon: ' + user.phoneNumber}"
+												style="font-size: 12px; color: gray; font-weight: 100; display: block; margin-top: 5px; letter-spacing: 2px;"></span>
+											<span th:utext="${'Data Creare:<br>' + user.dateOfCreation}"
+												style="font-size: 12px; color: gray; font-weight: 100; display: block; margin-top: 5px; letter-spacing: 2px;"></span>
+
+										</div>
+										<div>
 											<form class="btn-group inline" th:action="@{/user_activity}"
-											method="post"><input type="hidden" name="accountId"
-												th:value="${account.accountId}" />
-												<button type="submit" class="btn btn-danger">Activitate</button>
-											</form>
-										</td>
-									</tr>
-								</th:block>
-							</tbody>
-						</table>
-						</div>
-						<div th:if="${#lists.size(helpers)}">
-							<h3 style="text-align: center; font-size: 30px;">Instructori</h3>
-						<table class="table table-striped">
-							<thead class="center-align">
-								<tr>
-									<th>Nume Utilizator</th>
-									<th>Nume</th>
-									<th>Prenume</th>
-									<th>Email</th>
-									<th>Numar Telefon</th>
-									<th>Data Creare</th>
-									<th>Actiuni</th>
-								</tr>
-							</thead>
-							<tbody class="center-align">
-								<th:block th:each="account, iterStat : ${helpers}">
-									<tr>
-										<td th:text="${account.username}"></td>
-										<td th:text="${account.firstName}"></td>
-										<td th:text="${account.lastName}"></td>
-										<td th:text="${account.email}"></td>
-										<td th:text="${account.phoneNumber}"></td>
-										<td th:text="${account.dateOfCreation}"></td>
-										<td>
-										<div th:if="${account.accountInformation}">
-											<form class="btn-group inline" th:action="@{/view_account_details}"
-											method="post"><input type="hidden" name="accountId"
-												th:value="${account.accountId}" />
-												<button type="submit" class="btn btn-danger">Mai multe detalii</button>
-										</form>
-										<form class="btn-group inline" th:action="@{/helper_activity}"
-											method="post"><input type="hidden" name="accountId"
-												th:value="${account.accountId}" />
-												<button type="submit" class="btn btn-danger">Activitate</button>
+												method="post">
+												<input type="hidden" name="accountId"
+													th:value="${user.accountId}" />
+												<button type="submit" class="btnn2"
+													style="padding: 3px 15px; margin-top: 30px;">Activitate</button>
 											</form>
 										</div>
-										<div th:if="${account.active == false}">
-											<form class="btn-group inline" th:action="@{/validate-account}"
-											method="post"><input type="hidden" name="accountId"
-												th:value="${account.accountId}" />
-												<button type="submit" class="btn btn-success">Valideaza Cont</button>
-										</form>
-										</div>
-										</td>
-									</tr>
-								</th:block>
-							</tbody>
-						</table>
+									</div>
+								</div>
+							</div>
 						</div>
+					</th:block>
+					<th:block th:if="${helpers.size() > 0}">
+						<div
+							style="text-align: center; font-size: 70px; margin-bottom: 60px; color: white; font-weight: 700;">Experti</div>
+						<div class="row" style="margin-bottom: 50px;">
+							<div class="col-md-4" style="margin-bottom: 25px;"
+								th:each="user, iterStat : ${helpers}">
+								<div class="card-type-2"
+									style="height: auto; border-radius: 37px; position: relative; float: left; padding: 30px; min-height: 100%;">
+									<th:block th:if="${user.gender.getGender() eq 'Barbat'}">
+										<img
+											style="height: 60px; width: 60px; position: relative; left: -20px; top: -20px; background-color: #d3d3d3; border-radius: 30px; border: 3px solid #d3d3d3;"
+											width="800" height="800" th:src="@{'images/avatar/man.png'}">
+									</th:block>
+									<th:block th:if="${user.gender.getGender() eq 'Femeie'}">
+										<img
+											style="height: 60px; width: 60px; position: relative; left: -20px; top: -20px; background-color: #d3d3d3; border-radius: 30px; border: 3px solid #d3d3d3;"
+											width="800" height="800"
+											th:src="@{'images/avatar/woman.png'}">
+									</th:block>
+									<div
+										style="position: relative; top: -15px; justify-content: center; align-items: center; font-weight: 700; color: black; font-size: 20px; text-align: center;">
+										<div
+											style="font-size: 40px; color: #7300e6; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;"
+											th:text="${user.username}"></div>
+										<div
+											style="position: relative; top: 10px; background-color: #f6f6f6; border-radius: 30px; padding: 30px;">
+											<span th:text="${'Nume Utilizator: ' + user.firstName}"
+												style="font-size: 12px; color: gray; font-weight: 100; display: block; margin-top: 5px; letter-spacing: 2px;"></span>
+											<span
+												th:utext="${'Prenume Utilizator:<br> ' + user.lastName}"
+												style="font-size: 12px; color: gray; font-weight: 100; display: block; margin-top: 5px; letter-spacing: 2px;"></span>
+											<span th:text="${'Email: ' + user.email}"
+												style="font-size: 12px; color: gray; font-weight: 100; display: block; margin-top: 5px; letter-spacing: 2px;"></span>
+											<span th:text="${'Numar Telefon: ' + user.phoneNumber}"
+												style="font-size: 12px; color: gray; font-weight: 100; display: block; margin-top: 5px; letter-spacing: 2px;"></span>
+											<span th:utext="${'Data Creare:<br>' + user.dateOfCreation}"
+												style="font-size: 12px; color: gray; font-weight: 100; display: block; margin-top: 5px; letter-spacing: 2px;"></span>
+
+										</div>
+										<div>
+											<div th:if="${user.accountInformation != null and user.active eq true}">
+												<form class="btn-group inline"
+													th:action="@{/helper_activity}" method="post">
+													<input type="hidden" name="accountId"
+														th:value="${user.accountId}" />
+													<button type="submit" class="btnn2"
+														style="padding: 3px 15px; margin-top: 40px; width: 210px; text-align: center;">Activitate</button>
+												</form>
+												<form class="btn-group inline"
+													th:action="@{/view_account_details}" method="post">
+													<input type="hidden" name="accountId"
+														th:value="${user.accountId}" />
+													<button type="submit" class="btnn2"
+														style="padding: 3px 15px; margin-top: 15px;">Mai
+														multe detalii</button>
+												</form>
+											</div>
+											<div th:if="${user.active eq false}">
+												<form class="btn-group inline"
+													th:action="@{/view_account_details}" method="post">
+													<input type="hidden" name="accountId"
+														th:value="${user.accountId}" />
+													<button type="submit" class="btnn2"
+														style="padding: 3px 15px; margin-top: 30px;">Valideaza
+														Cont</button>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</th:block>
 				</div>
 			</div>
 		</div>
@@ -187,20 +335,24 @@
 	<script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
 	<script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
 	<script th:src="@{/vendor/slick/slick.min.js}">
-    </script>
+		
+	</script>
 	<script th:src="@{/vendor/wow/wow.min.js}"></script>
 	<script th:src="@{/vendor/animsition/animsition.min.js}"></script>
 	<script
 		th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
-    </script>
+		
+	</script>
 	<script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
 	<script th:src="@{/vendor/counter-up/jquery.counterup.min.js}">
-    </script>
+		
+	</script>
 	<script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
 	<script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
 	<script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
 	<script th:src="@{/vendor/select2/select2.min.js}">
-    </script>
+		
+	</script>
 
 	<script th:src="@{/js/main.js}"></script>
 </body>

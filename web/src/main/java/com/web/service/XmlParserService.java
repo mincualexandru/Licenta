@@ -19,7 +19,7 @@ public interface XmlParserService {
 
 	void removeEmptyNodes(Document doc) throws XPathExpressionException;
 
-	NodeList getAllMeasurements(NodeList childNodes, Set<UserDevice> userDevices) throws ParseException;
+	void getAllMeasurements(NodeList childNodes, Set<UserDevice> userDevices) throws ParseException;
 
 	Document readXML(DocumentBuilderFactory factory, String username)
 			throws ParserConfigurationException, SAXException, IOException;

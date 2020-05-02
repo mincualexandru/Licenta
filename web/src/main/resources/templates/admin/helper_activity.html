@@ -44,12 +44,13 @@
 
 <body>
 	<div class="page-wrapper">
-		<header class="header-mobile d-block d-lg-none">
+		<header style="background-color: white;"
+			class="header-mobile d-block d-lg-none">
 			<div class="header-mobile__bar">
 				<div class="container-fluid">
 					<div class="header-mobile-inner">
 						<a class="logo" href="index.html"> <img
-							src="images/icon/logo.png" alt="CoolAdmin" />
+							src="/images/logo/Screenshot_18.png">
 						</a>
 						<button class="hamburger hamburger--slider" type="button">
 							<span class="hamburger-box"> <span class="hamburger-inner"></span>
@@ -61,106 +62,137 @@
 			<nav class="navbar-mobile">
 				<div class="container-fluid">
 					<ul class="navbar-mobile__list list-unstyled">
-						<li class="has-sub"><a class="js-arrow" href="#"> <i
-								class="fas fa-tachometer-alt"></i>Dashboard
-						</a>
-							<ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-								<li><a href="index.html">Dashboard 1</a></li>
-								<li><a href="index2.html">Dashboard 2</a></li>
-								<li><a href="index3.html">Dashboard 3</a></li>
-								<li><a href="index4.html">Dashboard 4</a></li>
-							</ul></li>
-						<li><a href="chart.html"> <i class="fas fa-chart-bar"></i>Charts
-						</a></li>
-						<li><a href="table.html"> <i class="fas fa-table"></i>Tables
-						</a></li>
-						<li><a href="form.html"> <i class="far fa-check-square"></i>Forms
-						</a></li>
-						<li><a href="calendar.html"> <i
-								class="fas fa-calendar-alt"></i>Calendar
-						</a></li>
-						<li><a href="map.html"> <i class="fas fa-map-marker-alt"></i>Maps
-						</a></li>
-						<li class="has-sub"><a class="js-arrow" href="#"> <i
-								class="fas fa-copy"></i>Pages
-						</a>
-							<ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-								<li><a href="login.html">Login</a></li>
-								<li><a href="register.html">Register</a></li>
-								<li><a href="forget-pass.html">Forget Password</a></li>
-							</ul></li>
-						<li class="has-sub"><a class="js-arrow" href="#"> <i
-								class="fas fa-desktop"></i>UI Elements
-						</a>
-							<ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-								<li><a href="button.html">Button</a></li>
-								<li><a href="badge.html">Badges</a></li>
-								<li><a href="tab.html">Tabs</a></li>
-								<li><a href="card.html">Cards</a></li>
-								<li><a href="alert.html">Alerts</a></li>
-								<li><a href="progress-bar.html">Progress Bars</a></li>
-								<li><a href="modal.html">Modals</a></li>
-								<li><a href="switch.html">Switchs</a></li>
-								<li><a href="grid.html">Grids</a></li>
-								<li><a href="fontawesome.html">Fontawesome Icon</a></li>
-								<li><a href="typo.html">Typography</a></li>
-							</ul></li>
+						<li><a href="/admin" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Admin</span></a></li>
+						<li><a href="/accounts" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Conturi</span></a></li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="plans" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/portfolio.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Planuri</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="devices" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/smartwatch2.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Dispozitive</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption"
+									value="exerciseFeedbacks" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/positive-vote.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Feedback-uri
+										Exercitii</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="foodFeedbacks" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/interface.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Feedback-uri
+										Alimente</span>
+								</button>
+							</form>
+						</li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
 					</ul>
 				</div>
 			</nav>
 		</header>
-		<aside class="menu-sidebar d-none d-lg-block">
+		<aside style="background-color: white;"
+			class="menu-sidebar d-none d-lg-block">
 			<div class="logo">
-				<a href="#"> <img src="images/icon/logo.png" alt="Cool Admin" />
+				<a href="#"> <img src="/images/logo/Screenshot_18.png">
 				</a>
 			</div>
 			<div class="menu-sidebar__content js-scrollbar1">
 				<nav class="navbar-sidebar">
-					<ul class="list-unstyled navbar__list">
-						<li class="active has-sub"><a class="js-arrow" href="#">
-								<i class="fas fa-tachometer-alt"></i>Dashboard
-						</a>
-							<ul class="list-unstyled navbar__sub-list js-sub-list">
-								<li><a href="index.html">Dashboard 1</a></li>
-								<li><a href="index2.html">Dashboard 2</a></li>
-								<li><a href="index3.html">Dashboard 3</a></li>
-								<li><a href="index4.html">Dashboard 4</a></li>
-							</ul></li>
-						<li><a href="chart.html"> <i class="fas fa-chart-bar"></i>Charts
-						</a></li>
-						<li><a href="table.html"> <i class="fas fa-table"></i>Tables
-						</a></li>
-						<li><a href="form.html"> <i class="far fa-check-square"></i>Forms
-						</a></li>
-						<li><a href="calendar.html"> <i
-								class="fas fa-calendar-alt"></i>Calendar
-						</a></li>
-						<li><a href="map.html"> <i class="fas fa-map-marker-alt"></i>Maps
-						</a></li>
-						<li class="has-sub"><a class="js-arrow" href="#"> <i
-								class="fas fa-copy"></i>Pages
-						</a>
-							<ul class="list-unstyled navbar__sub-list js-sub-list">
-								<li><a href="login.html">Login</a></li>
-								<li><a href="register.html">Register</a></li>
-								<li><a href="forget-pass.html">Forget Password</a></li>
-							</ul></li>
-						<li class="has-sub"><a class="js-arrow" href="#"> <i
-								class="fas fa-desktop"></i>UI Elements
-						</a>
-							<ul class="list-unstyled navbar__sub-list js-sub-list">
-								<li><a href="button.html">Button</a></li>
-								<li><a href="badge.html">Badges</a></li>
-								<li><a href="tab.html">Tabs</a></li>
-								<li><a href="card.html">Cards</a></li>
-								<li><a href="alert.html">Alerts</a></li>
-								<li><a href="progress-bar.html">Progress Bars</a></li>
-								<li><a href="modal.html">Modals</a></li>
-								<li><a href="switch.html">Switchs</a></li>
-								<li><a href="grid.html">Grids</a></li>
-								<li><a href="fontawesome.html">Fontawesome Icon</a></li>
-								<li><a href="typo.html">Typography</a></li>
-							</ul></li>
+					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+						<li><a href="/admin" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Admin</span></a></li>
+						<li><a href="/accounts" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Conturi</span></a></li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="plans" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/portfolio.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Planuri</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="devices" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/smartwatch2.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Dispozitive</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption"
+									value="exerciseFeedbacks" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/positive-vote.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Feedback-uri
+										Exercitii</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="foodFeedbacks" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/interface.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Feedback-uri
+										Alimente</span>
+								</button>
+							</form>
+						</li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
 					</ul>
 				</nav>
 			</div>
@@ -170,20 +202,39 @@
 				<div class="section__content section__content--p30">
 					<div class="container-fluid">
 						<div th:if="${account.active == true}">
+							<div
+								style="text-align: center; font-size: 70px; margin-bottom: 60px; color: white; font-weight: 700;">Activitate
+								Expert</div>
 							<div th:if="${#lists.size(learners)}">
 								<div class="row">
 									<div class="col-lg-8 mx-auto" style="margin-bottom: 40px;">
-										<div class="top-campaign">
-											<h3 class="title-3 m-b-30">Cursanti</h3>
+										<div class="top-campaign" style="border-radius: 30px;">
+											<h3 class="title-3 m-b-30"
+												style="font-size: 45px; font-weight: 600;">Cursanti</h3>
 											<div class="table-responsive">
 												<table class="table table-top-campaign">
+													<thead>
+														<tr style="border: none;">
+															<th style="border: none; color: black;">Nume</th>
+															<th style="border: none; color: black;">Email</th>
+															<th style="border: none; color: black;">Telefon</th>
+															<th style="border: none; color: black;">Data
+																Nasterii</th>
+															<th style="border: none; color: black;">Sex</th>
+														</tr>
+													</thead>
 													<tbody>
-														<tr th:each="account : ${learners}">
-															<td th:text="${account.username}"></td>
-															<td th:text="${account.email}"></td>
-															<td th:text="${account.phoneNumber}"></td>
-															<td th:text="${account.bornDate}"></td>
-															<td th:text="${account.gender}"></td>
+														<tr style="border: none;" th:each="account : ${learners}">
+															<td style="border: none; color: black;"
+																th:text="${account.username}"></td>
+															<td style="border: none; color: black;"
+																th:text="${account.email}"></td>
+															<td style="border: none; color: black;"
+																th:text="${account.phoneNumber}"></td>
+															<td style="border: none; color: black;"
+																th:text="${account.bornDate}"></td>
+															<td style="border: none; color: black;"
+																th:text="${account.gender}"></td>
 													</tbody>
 												</table>
 											</div>
@@ -191,58 +242,153 @@
 									</div>
 								</div>
 							</div>
+							<div style="color: white; font-size: 70px; margin-bottom: 20px; font-weight: 600; text-align: center;" th:if="${learners.size() eq 0}">
+								Cursanti : 0 
+							</div>
 							<div th:if="${#lists.size(account.plans)}">
 								<div class="row">
 									<div class="col-lg-8 mx-auto">
-										<div class="top-campaign">
-											<h3 class="title-3 m-b-30">Planuri</h3>
+										<div class="top-campaign" style="border-radius: 30px;">
+											<h3 class="title-3 m-b-30"
+												style="font-size: 45px; font-weight: 600;">Planuri</h3>
 											<div class="table-responsive">
 												<table class="table table-top-campaign">
+													<thead>
+														<tr style="border: none;">
+															<th style="border: none; color: black;">Nume</th>
+															<th style="border: none; color: black;">Pentru cine?</th>
+															<th style="border: none; color: black;">Pret</th>
+															<th style="border: none; color: black;">Data Crearii</th>
+															<th style="border: none; color: black;">Actiuni</th>
+														</tr>
+													</thead>
 													<tbody>
-														<tr th:each="plan : ${account.plans}">
-															<td th:text="${plan.name}"></td>
-															<td th:text="${plan.forWho}"></td>
-															<td th:text="${plan.price}"></td>
-															<td th:text="${plan.dateOfCreation}"></td>
-															<td>
+														<tr style="border: none;"
+															th:each="plan : ${account.plans}">
+															<td style="border: none; color: black;"
+																th:text="${plan.name}"></td>
+															<td style="border: none; color: black;"
+																th:text="${plan.forWho.getGender()}"></td>
+															<td style="border: none; color: black;"
+																th:text="${plan.price + ' LEI'}"></td>
+															<td style="border: none; color: black;"
+																th:text="${plan.dateOfCreation}"></td>
+															<td style="border: none; color: black;">
 																<div th:if="${plan.typeOfPlan == 'Antrenament'}">
-																	<button data-toggle="modal"
-																		data-target="#modal-exercises"
+																	<button
+																		style="background: #7300e6; color: white; padding: 1px 15px; text-align: center; border-radius: 10px;"
+																		data-toggle="modal" data-target="#modal-exercises"
 																		th:attr="data-target='#modal-exercises'+${plan.helperPlanId}">Vezi
 																		Exercitii</button>
 																	<div class="modal modal-exercises fade in"
 																		th:id="modal-exercises+${plan.helperPlanId}"
 																		data-backdrop="false"
 																		style="background: rgba(0, 0, 0, 0.5);">
-																		<div class="modal-dialog">
-																			<div class="modal-content">
+																		<div class="modal-dialog"
+																			style="overflow-y: initial !important;">
+																			<div class="modal-content"
+																				style="box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6); border-radius: 12px; width: 950px; position: relative; left: -50px;">
 																				<div class="modal-header">
 																					<button type="button" class="close"
 																						data-dismiss="modal" aria-label="Close">
 																						<span aria-hidden="true">×</span>
 																					</button>
-																					<h5 class="modal-title">Exercitii</h5>
 																				</div>
-																				<div class="modal-body">
-																					<div th:if="${#lists.size(plan.exercises)}">
-																						<ul
-																							th:each="exercise, iterStat : ${plan.exercises}">
-																							<li th:text="${exercise.name}"></li>
-																							<li th:text="${exercise.caloriesBurned}"></li>
-																							<li th:text="${exercise.numberOfSeries}"></li>
-																							<li th:text="${exercise.numberOfReps}"></li>
-																							<li th:text="${exercise.execution}"></li>
-																							<li th:text="${exercise.trainedMuscleGroup}"></li>
-																						</ul>
+																				<div class="modal-body"
+																					style="height: 680px; overflow-y: auto; overflow-x: hidden;">
+																					<div style="text-align: center; color: #7300e6;">
+																						<h2
+																							style="color: #7300e6; font-size: 45px; margin-bottom: 40px; margin-top: 20px;">Exercitii
+																							Plan Antrenament</h2>
 																					</div>
-																					<div th:unless="${#lists.size(plan.exercises)}">
-																						Acest antrenament nu are niciun exercitiu</div>
-																				</div>
-																				<div class="modal-footer">
-																					<button type="button"
-																						class="btn btn-outline pull-left"
-																						data-dismiss="modal">Close</button>
-																					<button type="submit">Save</button>
+																					<div class="row"
+																						style="position: relative; left: 65px;">
+																						<div class="col-md-5"
+																							th:each="exercise, iterStat : ${plan.exercises}">
+																							<div class="card-type-2"
+																								style="position: relative; height: 450px; background-color: #f6f6f6; border-radius: 30px; border: 0; margin-bottom: 25px;">
+																								<div class="img-c"
+																									style="padding-top: 100%; top: -50px; position: relative; height: 500px;">
+																									<th:block
+																										th:if="${exercise.exerciseImages.size() > 0 and exercise.trainingPlan.forWho.getGender() eq 'Barbat'}">
+																										<img style="height: 300px;" class="img"
+																											width="800" height="800"
+																											th:src="@{'images/plans/trainings/man/exercise/'+${exercise.exerciseImages[0].fileName}}">
+																									</th:block>
+																									<th:block
+																										th:if="${exercise.exerciseImages.size() > 0 and exercise.trainingPlan.forWho.getGender() eq 'Femeie'}">
+																										<img style="height: 300px;" class="img"
+																											width="800" height="800"
+																											th:src="@{'images/plans/trainings/woman/exercise/'+${exercise.exerciseImages[0].fileName}}">
+																									</th:block>
+																									<th:block
+																										th:if="${exercise.exerciseImages.size() eq 0}">
+																										<img style="height: 300px;" class="img"
+																											width="800" height="800"
+																											th:src="@{'images/di.png'}">
+																									</th:block>
+																								</div>
+																								<div class="overlay-food"
+																									style="background-color: #f6f6f6;">
+																									<div class="text" style="left: 47%;">
+																										<div
+																											style="font-size: 45px; color: #7300e6; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;"
+																											th:text="${exercise.name}"></div>
+
+																										<div class="posts" style="margin-top: 10px;">
+																											<div class="one" style="font-weight: 100;">
+																												<span style="display: block;">Calorii
+																													Arse</span> <span
+																													style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																													th:text="${exercise.caloriesBurned}"></span>
+																												<img
+																													style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																													src="/images/logo/burning.png">
+																											</div>
+																											<div class="two" style="font-weight: 100;">
+																												<span style="display: block;">Numar
+																													Serii</span> <span
+																													style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																													th:text="${exercise.numberOfSeries}"></span>
+																												<img
+																													style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																													src="/images/logo/gym.png">
+																											</div>
+																											<div class="two" style="font-weight: 100;">
+																												<span style="display: block;">Numar
+																													Repetari</span> <span
+																													style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																													th:text="${exercise.numberOfReps}"></span>
+																												<img
+																													style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																													src="/images/logo/muscle.png">
+																											</div>
+																										</div>
+																										<div class="posts" style="margin-top: 10px;">
+																											<div class="one" style="font-weight: 100;">
+																												<span style="display: block;">Grupa
+																													Muschi</span> <span
+																													style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																													th:text="${exercise.trainedMuscleGroup.getMuscleGroup()}"></span>
+																												<img
+																													style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																													src="/images/logo/treadmill.png">
+																											</div>
+																											<div class="two" style="font-weight: 100;">
+																												<span style="display: block;">Categorie</span>
+																												<span
+																													style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																													th:text="${exercise.exerciseCategory}"></span>
+																												<img
+																													style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																													src="/images/logo/ssss.png">
+																											</div>
+																										</div>
+																									</div>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
 																				</div>
 																			</div>
 																		</div>
@@ -256,36 +402,104 @@
 																		th:id="modal-foods+${plan.helperPlanId}"
 																		data-backdrop="false"
 																		style="background: rgba(0, 0, 0, 0.5);">
-																		<div class="modal-dialog">
-																			<div class="modal-content">
+																		<div class="modal-dialog"
+																			style="overflow-y: initial !important;">
+																			<div class="modal-content"
+																				style="box-shadow: 0px 8px 60px -10px rgba(13, 28, 39, 0.6); border-radius: 12px; width: 950px; position: relative; left: -50px;">
 																				<div class="modal-header">
 																					<button type="button" class="close"
 																						data-dismiss="modal" aria-label="Close">
 																						<span aria-hidden="true">×</span>
 																					</button>
-																					<h5 class="modal-title">Alimente</h5>
 																				</div>
-																				<div class="modal-body">
-																					<div th:if="${#lists.size(plan.foods)}">
-																						<ul th:each="food, iterStat : ${plan.foods}">
-																							<li th:text="${food.name}"></li>
-																							<li th:text="${food.calories}"></li>
-																							<li th:text="${food.protein}"></li>
-																							<li th:text="${food.lipids}"></li>
-																							<li th:text="${food.carbohydrates}"></li>
-																							<li th:text="${food.fiber}"></li>
-																							<li th:text="${food.weight}"></li>
-																							<li th:text="${food.recommendedTimeRange}"></li>
-																						</ul>
+																				<div class="modal-body"
+																					style="height: 680px; overflow-y: auto; overflow-x: hidden;">
+																					<div style="text-align: center; color: #7300e6;">
+																						<h2
+																							style="color: #7300e6; font-size: 45px; margin-bottom: 40px; margin-top: 20px;">Alimente
+																							Plan Dieta</h2>
 																					</div>
-																					<div th:unless="${#lists.size(plan.foods)}">
-																						Aceasta dieta nu are niciun aliment</div>
-																				</div>
-																				<div class="modal-footer">
-																					<button type="button"
-																						class="btn btn-outline pull-left"
-																						data-dismiss="modal">Close</button>
-																					<button type="submit">Save</button>
+																					<div class="row"
+																						style="position: relative; left: 65px;">
+																						<div class="col-md-5"
+																							th:each="food, iterStat : ${plan.foods}">
+																							<div class="card-type-2"
+																								style="position: relative; height: 450px; background-color: #f6f6f6; border-radius: 30px; border: 0; margin-bottom: 25px;">
+																								<div class="img-c"
+																									style="padding-top: 100%; top: -50px; position: relative; height: 500px;">
+																									<th:block th:if="${food.images.size() > 0}">
+																										<img style="height: 300px;" class="img"
+																											width="800" height="800"
+																											th:src="@{'images/plans/diets/'+${food.images[0].fileName}}">
+																									</th:block>
+																									<th:block th:if="${food.images.size() eq 0}">
+																										<img style="height: 300px;" class="img"
+																											width="800" height="800"
+																											th:src="@{'images/di.png'}">
+																									</th:block>
+																								</div>
+																								<div class="overlay-food"
+																									style="background-color: #f6f6f6;">
+																									<div class="text" style="left: 47%;">
+																										<div
+																											style="font-size: 45px; color: #7300e6; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;"
+																											th:text="${food.name}"></div>
+																										<div class="posts" style="margin-top: 10px;">
+																											<div class="one" style="font-weight: 100;">
+																												<span style="display: block;">Calorii</span>
+																												<span
+																													style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																													th:text="${food.calories}"></span> <img
+																													style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																													src="/images/logo/meal.png">
+																											</div>
+																											<div class="two" style="font-weight: 100;">
+																												<span style="display: block;">Proteine</span>
+																												<span
+																													style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																													th:text="${food.protein}"></span> <img
+																													style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																													src="/images/logo/proteins.png">
+																											</div>
+																											<div class="two" style="font-weight: 100;">
+																												<span style="display: block;">Gramaj</span>
+																												<span
+																													style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																													th:text="${food.weight}"></span> <img
+																													style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																													src="/images/logo/scale.png">
+																											</div>
+																										</div>
+																										<div class="posts" style="margin-top: 10px;">
+																											<div class="one" style="font-weight: 100;">
+																												<span style="display: block;">Fibre</span> <span
+																													style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																													th:text="${food.fiber}"></span> <img
+																													style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																													src="/images/logo/vegetable.png">
+																											</div>
+																											<div class="two" style="font-weight: 100;">
+																												<span style="display: block;">Carbohidrati</span>
+																												<span
+																													style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																													th:text="${food.carbohydrates}"></span> <img
+																													style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																													src="/images/logo/potato.png">
+																											</div>
+																											<div class="one" style="font-weight: 100;">
+																												<span style="display: block;">Lipide</span>
+																												<span
+																													style="display: inline-block; font-size: 35px; color: #7300e6; font-weight: 700;"
+																													th:text="${food.lipids}"></span> <img
+																													style="left: 2px; height: 40px; width: 40px; position: relative; top: -5px;"
+																													src="/images/logo/trans-fat.png">
+																											</div>
+																										</div>
+																									</div>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
 																				</div>
 																			</div>
 																		</div>
@@ -300,68 +514,47 @@
 									</div>
 								</div>
 							</div>
+							<div style="color: white; font-size: 70px; margin-bottom: 20px; font-weight: 600; text-align: center;" th:if="${account.plans.size() eq 0}">
+								Planuri Create : 0 
+							</div>
 							<div th:if="${#lists.size(chart.keySet())}">
-								<div class="row">
-									<div class="col-lg-8 mx-auto">
-										<div class="au-card m-b-30" style="margin-top: 30px;">
-											<div class="au-card-inner">
-												<div th:each="role: ${account.roles}">
-													<div th:if="${role.name eq 'ROLE_TRAINER'}">
-														<h3 class="title-2 m-b-40">Exercitii</h3>
-													</div>
-													<div th:if="${role.name eq 'ROLE_NUTRITIONIST'}">
-														<h3 class="title-2 m-b-40">Alimente</h3>
-													</div>
-												</div>
-												<canvas id="chart"></canvas>
+								<div class="row" style="margin-bottom: 100px;">
+									<div class="col-md-8 mx-auto"
+										style="position: relative; top: 50px; background-color: white; border-radius: 30px; padding: 50px;">
+										<th:block th:each="role: ${account.roles}">
+											<th:block th:if="${role.name eq 'ROLE_TRAINER'}">
+												<div
+													style="font-size: 60px; font-weight: 600; text-align: center; color: #7300e6;">Exercitii
+													Create</div>
+											</th:block>
+											<th:block th:if="${role.name eq 'ROLE_NUTRITIONIST'}">
+												<div
+													style="font-size: 60px; font-weight: 600; text-align: center; color: #7300e6;">Alimente
+													Create</div>
+											</th:block>
+										</th:block>
+										<div class="row">
+											<div class="col-md-12">
+												<div id="container"></div>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-<!-- 							<div class="row"> -->
-<!-- 								<div th:if="${isNutritionist}"> -->
-<!-- 									<div th:if="${passedTenDaysFood}"> -->
-<!-- 										<h4>Poti dezactiva acest cont</h4> -->
-<!-- 										<ul> -->
-<!-- 											<div th:if="${passedTenDaysFood}"> -->
-<!-- 												<li>Au trecut 10 zile de cand nu a mai adaugat niciun -->
-<!-- 													aliment</li> -->
-<!-- 											</div> -->
-<!-- 										</ul> -->
-<!-- 										<form th:action="@{/disable_account}" method="post"> -->
-<!-- 											<input type="hidden" name="accountId" -->
-<!-- 												th:value="${account.accountId}" /> -->
-<!-- 											<button type="submit" class="btn btn-danger"> -->
-<!-- 												Dezactiveaza Cont</button> -->
-<!-- 										</form> -->
-<!-- 									</div> -->
-<!-- 								</div> -->
-<!-- 								<div th:if="${isTrainer}"> -->
-<!-- 									<div th:if="${passedTenDaysExercise}"> -->
-<!-- 										<h4>Poti dezactiva acest cont</h4> -->
-<!-- 										<ul> -->
-<!-- 											<div th:if="${passedTenDaysExercise}"> -->
-<!-- 												<li>Au trecut 10 zile de cand nu a mai adaugat niciun -->
-<!-- 													exercitiu</li> -->
-<!-- 											</div> -->
-<!-- 										</ul> -->
-<!-- 										<form th:action="@{/disable_account}" method="post"> -->
-<!-- 											<input type="hidden" name="accountId" -->
-<!-- 												th:value="${account.accountId}" /> -->
-<!-- 											<button type="submit" class="btn btn-danger"> -->
-<!-- 												Dezactiveaza Cont</button> -->
-<!-- 										</form> -->
-<!-- 									</div> -->
-<!-- 								</div> -->
-<!-- 							</div> -->
 						</div>
 					</div>
 					<div th:if="${account.active == false}">
-						Acest cont a fost dezactivat din cauza ca
-						<ul>
-							Momentan nu a trimis cv-ul
-						</ul>
+						<div
+							style="text-align: center; font-size: 70px; color: white; font-weight: 700; position: relative; top: 200px;">
+							Cont Dezactivat</div>
+						<form class="btn-group inline"
+							th:action="@{/view_account_details}" method="post">
+							<input type="hidden" name="accountId"
+								th:value="${account.accountId}" />
+							<button type="submit" class="btnn2"
+								style="padding: 3px 15px; margin-top: 30px; color: #7300e6; background-color: white; font-size: 30px; position: relative; left: 700px; top: 200px;">Valideaza
+								Cont</button>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -387,98 +580,97 @@
 	<script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
 	<script th:src="@{/vendor/select2/select2.min.js}">
     </script>
-
+	<script src="https://code.highcharts.com/modules/data.js"></script>
+	<script src="https://code.highcharts.com/stock/highstock.js"></script>
+	<script src="https://code.highcharts.com/modules/drilldown.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script src="https://code.highcharts.com/modules/export-data.js"></script>
+	<script src="https://code.highcharts.com/modules/accessibility.js"></script>
 	<script th:src="@{/js/main.js}"></script>
 	<script th:inline="javascript">
-    try {
-
-        //Team chart
-        var ctx = document.getElementById("chart");
-        if (ctx) {
-          ctx.height = 150;
-          var myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-              labels: [[${chart.keySet()}]],
-              type: 'line',
-              defaultFontFamily: 'Poppins',
-              datasets: [{
-                data: [[${chart.values()}]],
-                label: "Numar",
-                backgroundColor: 'rgba(0,103,255,.15)',
-                borderColor: 'rgba(0,103,255,0.5)',
-                borderWidth: 3.5,
-                pointStyle: 'circle',
-                pointRadius: 5,
-                pointBorderColor: 'transparent',
-                pointBackgroundColor: 'rgba(0,103,255,0.5)',
-              },]
-            },
-            options: {
-              responsive: true,
-              tooltips: {
-                mode: 'index',
-                titleFontSize: 12,
-                titleFontColor: '#000',
-                bodyFontColor: '#000',
-                backgroundColor: '#fff',
-                titleFontFamily: 'Poppins',
-                bodyFontFamily: 'Poppins',
-                cornerRadius: 3,
-                intersect: false,
-              },
-              legend: {
-                display: false,
-                position: 'top',
-                labels: {
-                  usePointStyle: true,
-                  fontFamily: 'Poppins',
-                },
-
-
-              },
-              scales: {
-                xAxes: [{
-                  display: true,
-                  gridLines: {
-                    display: false,
-                    drawBorder: false
-                  },
-                  scaleLabel: {
-                    display: false,
-                    labelString: 'Month'
-                  },
-                  ticks: {
-                    fontFamily: "Poppins"
-                  }
-                }],
-                yAxes: [{
-                  display: true,
-                  gridLines: {
-                    display: false,
-                    drawBorder: false
-                  },
-                  scaleLabel: {
-                    display: true,
-                    labelString: 'Valoare',
-                    fontFamily: "Poppins"
-                  },
-                  ticks: {
-                    fontFamily: "Poppins"
-                  }
-                }]
-              },
-              title: {
-                display: false,
+	Highcharts.setOptions({
+	    colors: ['#7300e6']
+	  });
+	  $('#container').highcharts({
+	    chart: {
+	      type: 'areaspline',
+	      zoomType: 'x'
+	    },
+	    title: { text: null },
+        scrollbar: {
+            enabled: true,
+            barBackgroundColor: '#7300e6',
+            barBorderRadius: 7,
+            barBorderWidth: 0,
+            buttonBackgroundColor: '#7300e6',
+            buttonBorderWidth: 0,
+            buttonArrowColor: 'white',
+            buttonBorderRadius: 7,
+            rifleColor: 'white',
+            trackBackgroundColor: 'white',
+            trackBorderWidth: 1,
+            trackBorderColor: 'silver',
+            trackBorderRadius: 7
+        },
+	    legend: { enabled: false },
+	    xAxis: {
+	      type: 'datetime',
+	      categories: [[${chart.keySet()}]],
+	      labels: {
+              style: {
+                  color: 'black',
+                  font: '16px Arial, sans-serif',
+                  fontWeight: '600'
               }
+          },
+          crosshair: true,
+          min: 0,
+          max: 5
+	    },
+
+	    yAxis: {
+	    	title: {
+                text: 'Valori',
+                    style: {
+                        color: 'black',
+                        font: '22px Arial, sans-serif',
+                        fontWeight: '600'
+                    }
+            },
+            gridLineColor: 'transparent',
+            labels: {
+                style: {
+                    color: 'black',
+                    font: '16px Arial, sans-serif',
+                    fontWeight: '600'
+                }
             }
-          });
-        }
+	    },
 
+	    tooltip: {
+	      shared: true
+	    },
 
-      } catch (error) {
-        console.log(error);
-      }
+	    credits: {
+	      enabled: false
+	    },
+
+	    plotOptions: {
+	      areaspline: {
+	        fillOpacity: 0.8,
+	        pointPlacement: 'on'
+	      },
+	      series: {
+	        marker: { enabled: false },
+	        lineWidth: 0
+	      }
+	    },
+
+	    series: [{
+	      name: 'Exercitii:',
+	        data: [[${chart.values()}]]
+	    }]
+	  });
     </script>
 </body>
 

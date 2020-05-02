@@ -60,4 +60,6 @@ public interface MeasurementService {
 
 	Set<Measurement> findAllByUserDeviceUserDeviceIdAndStartDateBetween(Integer userDeviceId,
 			Timestamp timestampStartDate, Timestamp timestampEndDate);
+
+	void saveAll(Set<Measurement> measurements);
 }

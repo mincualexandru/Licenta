@@ -40,12 +40,9 @@ import com.web.service.AccountService;
 import com.web.service.DeviceService;
 import com.web.service.ExerciseDoneService;
 import com.web.service.ExerciseFeedbackService;
-import com.web.service.ExerciseService;
 import com.web.service.FoodEatenService;
 import com.web.service.FoodFeedbackService;
-import com.web.service.FoodService;
 import com.web.service.HelperPlanService;
-import com.web.service.MeasurementService;
 import com.web.service.RoleService;
 import com.web.service.UserDeviceService;
 import com.web.service.UserPlanService;
@@ -75,16 +72,7 @@ public class AdminController {
 	private FoodEatenService foodEatenService;
 
 	@Autowired
-	private MeasurementService measurementService;
-
-	@Autowired
 	private HelperPlanService helperPlanService;
-
-	@Autowired
-	private FoodService foodService;
-
-	@Autowired
-	private ExerciseService exerciseService;
 
 	@Autowired
 	private ExerciseFeedbackService exerciseFeedbackService;
@@ -99,73 +87,31 @@ public class AdminController {
 
 	@GetMapping(path = { "/admin" })
 	public String admin(Model model) {
-		Integer totalProfit = 0;
+		Integer totalIncome = 0;
 		Integer totalPayments = 0;
-		String previousValue = null;
-		int number = 0;
-		Map<String, Integer> chartNumberOfAccountsByDay = new TreeMap<>();
-		Map<String, Integer> chartNumberOfMeasurementsByDay = new TreeMap<>();
-		Map<String, Integer> chartNumberOfUserPlansByDay = new TreeMap<>();
 		Account admin = accountService.getAccountConnected();
-		List<Account> accounts = accountService.findAll().stream()
-				.sorted((e1, e2) -> e1.getDateOfCreation().compareTo(e2.getDateOfCreation()))
-				.collect(Collectors.toList());
+		Set<Account> accounts = accountService.findAll();
+		Set<UserPlan> userPlans = userPlanService.findAll();
+		Set<Device> devices = deviceService.findAll();
 		accounts.removeIf(element -> element.getUsername() == admin.getUsername());
-		for (Account account : accounts) {
-			String value = account.getDateOfCreation().toLocalDateTime().toLocalDate()
-					.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-			if (!value.equals(previousValue)) {
-				number = 0;
-				previousValue = value;
-			}
-			number++;
-			chartNumberOfAccountsByDay.put(value, number);
-		}
-		List<Measurement> measurements = measurementService.findAll().stream()
-				.sorted((e1, e2) -> e1.getStartDate().compareTo(e2.getStartDate())).collect(Collectors.toList());
-		for (Measurement measurement : measurements) {
-			String value = measurement.getStartDate().toLocalDateTime().toLocalDate()
-					.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-			if (!value.equals(previousValue)) {
-				number = 0;
-				previousValue = value;
-			}
-			number++;
-			chartNumberOfMeasurementsByDay.put(value, number);
-		}
-		List<UserPlan> userPlans = userPlanService.findAll().stream()
-				.sorted((e1, e2) -> e1.getDateOfPurchase().compareTo(e2.getDateOfPurchase()))
-				.collect(Collectors.toList());
 		for (UserPlan plan : userPlans) {
-			String value = plan.getDateOfPurchase().toLocalDateTime().toLocalDate()
-					.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-			if (!value.equals(previousValue)) {
-				number = 0;
-				previousValue = value;
-			}
-			number++;
-			totalProfit += plan.getHelperPlan().getPrice() * 70 / 100;
+			totalIncome += plan.getHelperPlan().getPrice() * 70 / 100;
 			totalPayments += plan.getHelperPlan().getPrice() - plan.getHelperPlan().getPrice() * 70 / 100;
-			chartNumberOfUserPlansByDay.put(value, number);
 		}
 		for (UserDevice userDevice : userDeviceService.findAll()) {
-			totalProfit += userDevice.getDevice().getPrice();
+			totalIncome += userDevice.getDevice().getPrice();
 		}
 		Map<HelperPlan, Long> theMostBoughtPlans = userPlans.stream().map(element -> element.getHelperPlan())
 				.collect(Collectors.groupingBy(e -> e, Collectors.counting()));
 		Map<HelperPlan, Long> sortedMapDesc = sortByValue(theMostBoughtPlans, false);
-		model.addAttribute("exerciseFeedbacks", exerciseFeedbackService.findAll());
-		model.addAttribute("foodFeedbacks", foodFeedbackService.findAll());
-		model.addAttribute("totalProfit", totalProfit);
+		model.addAttribute("totalIncome", totalIncome);
 		model.addAttribute("totalPayments", totalPayments);
 		model.addAttribute("account", admin);
 		model.addAttribute("accounts", accounts);
-		model.addAttribute("chartNumberOfAccountsByDay", chartNumberOfAccountsByDay);
-		model.addAttribute("measurements", measurements);
-		model.addAttribute("chartNumberOfMeasurementsByDay", chartNumberOfMeasurementsByDay);
 		model.addAttribute("userPlans", userPlans);
-		model.addAttribute("chartNumberOfUserPlansByDay", chartNumberOfUserPlansByDay);
 		model.addAttribute("theMostBoughtPlans", sortedMapDesc);
+		model.addAttribute("devices", devices);
+		model.addAttribute("admin", admin);
 		return "admin/admin";
 	}
 
@@ -180,28 +126,13 @@ public class AdminController {
 
 	}
 
-	@GetMapping(path = { "/validations-accounts" })
-	public String validationsAccounts(Model model) {
-		Set<Account> inactiveAccounts = accountService.findAllByActive(false);
-		inactiveAccounts.removeIf(element -> element.getAccountInformation() == null);
-		model.addAttribute("inactiveAccounts", inactiveAccounts);
-		return "admin/validations-accounts";
-	}
-
-	@PostMapping(path = { "/validate-account" })
-	public String validateAccount(Model model, @RequestParam Integer accountId) {
-		model.addAttribute("account", accountService.findById(accountId).get());
-		model.addAttribute("accountInformation", accountInformationService.findByAccountAccountId(accountId));
-		return "admin/validate-account";
-	}
-
-	@PostMapping(path = { "/validate-account-save" })
+	@PostMapping(path = { "/validate_account_save" })
 	public String validateAccountSave(@RequestParam Integer accountId, Model model) {
 		Account account = accountService.findById(accountId).get();
 		LOGGER.info("Arata id " + account.getAccountId());
 		account.setActive(true);
 		accountService.save(account);
-		return "redirect:/validations-accounts";
+		return "redirect:/accounts";
 	}
 
 	@GetMapping(path = { "/accounts" })
@@ -262,37 +193,8 @@ public class AdminController {
 		userDevices.forEach(userDevice -> measurements.addAll(userDevice.getMeasurements()));
 		List<Measurement> userMeasurementsSorted = measurements.stream()
 				.sorted((e1, e2) -> e1.getStartDate().compareTo(e2.getStartDate())).collect(Collectors.toList());
-		Set<ExerciseDone> exercisesDone = exerciseDoneService.findAllByUserAccountId(account.getAccountId());
-		Set<FoodEaten> foodsEaten = foodEatenService.findAllByUserAccountId(account.getAccountId());
-		Map<String, Integer> chartExercisesDone = new TreeMap<>();
-		Map<String, Integer> chartFoodEaten = new TreeMap<>();
+		LOGGER.info(userMeasurementsSorted.size());
 		Map<String, Integer> chartMeasurements = new TreeMap<>();
-		for (ExerciseDone exerciseDone : exercisesDone) {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			LocalDateTime startDateTime = exerciseDone.getDateOfExecution().toLocalDateTime();
-			LocalDate startDate = startDateTime.toLocalDate();
-			String formatDate = startDate.format(formatter);
-			String value = formatDate;
-			if (!value.equals(previousValue)) {
-				number = 0;
-				previousValue = value;
-			}
-			number++;
-			chartExercisesDone.put(value, number);
-		}
-		for (FoodEaten foodEaten : foodsEaten) {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			LocalDateTime startDateTime = foodEaten.getDateOfExecution().toLocalDateTime();
-			LocalDate startDate = startDateTime.toLocalDate();
-			String formatDate = startDate.format(formatter);
-			String value = formatDate;
-			if (!value.equals(previousValue)) {
-				number = 0;
-				previousValue = value;
-			}
-			number++;
-			chartFoodEaten.put(value, number);
-		}
 		for (Measurement measurement : userMeasurementsSorted) {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			LocalDateTime startDateTime = measurement.getStartDate().toLocalDateTime();
@@ -329,8 +231,6 @@ public class AdminController {
 		model.addAttribute("passedTenDaysFoodEaten", passedTenDaysFoodEaten);
 		model.addAttribute("passedTenDaysExerciseDone", passedTenDaysExerciseDone);
 		model.addAttribute("chartMeasurements", chartMeasurements);
-		model.addAttribute("chartExercisesDone", chartExercisesDone);
-		model.addAttribute("chartFoodEaten", chartFoodEaten);
 		model.addAttribute("devices", userDevices);
 		model.addAttribute("plans", userPlans);
 		model.addAttribute("account", account);
@@ -377,37 +277,6 @@ public class AdminController {
 			number++;
 			chart.put(formatDate, number);
 		}
-//		boolean passedTenDaysExercise = false;
-//		boolean passedTenDaysFood = false;
-//		LocalDateTime dateTimeNow = LocalDateTime.now();
-//		boolean isNutritionist = false;
-//		boolean isTrainer = false;
-//		if (account.getRoles().contains(roleService.findByName("ROLE_NUTRITIONIST").get())) {
-//			if (foodService.findTopByDietPlanHelperAccountIdOrderByCreateDateTimeDesc(accountId).isPresent()) {
-//				Food food = foodService.findTopByDietPlanHelperAccountIdOrderByCreateDateTimeDesc(accountId).get();
-//				Duration duration = Duration.between(food.getCreateDateTime().toLocalDateTime(), dateTimeNow);
-//				if (duration.toDays() > 10) {
-//					System.out.println("passedTenDaysFood");
-//					passedTenDaysFood = true;
-//				}
-//			}
-//			isNutritionist = true;
-//		} else if (account.getRoles().contains(roleService.findByName("ROLE_TRAINER").get())) {
-//			if (exerciseService.findTopByTrainingPlanHelperAccountIdOrderByCreateDateTimeDesc(accountId).isPresent()) {
-//				Exercise exercise = exerciseService
-//						.findTopByTrainingPlanHelperAccountIdOrderByCreateDateTimeDesc(accountId).get();
-//				Duration duration = Duration.between(exercise.getCreateDateTime().toLocalDateTime(), dateTimeNow);
-//				if (duration.toDays() > 10) {
-//					System.out.println("passedTenDaysExercise");
-//					passedTenDaysExercise = true;
-//				}
-//			}
-//			isTrainer = true;
-//		}
-//		model.addAttribute("isTrainer", isTrainer);
-//		model.addAttribute("isNutritionist", isNutritionist);
-//		model.addAttribute("passedTenDaysFood", passedTenDaysFood);
-//		model.addAttribute("passedTenDaysExercise", passedTenDaysExercise);
 		model.addAttribute("account", account);
 		model.addAttribute("learners", learners);
 		model.addAttribute("plans", helperPlans);
@@ -423,38 +292,25 @@ public class AdminController {
 		return "redirect:/accounts";
 	}
 
-	@GetMapping(path = { "/view_devices" })
-	public String viewDevices(Model model) {
-		Set<Device> devices = deviceService.findAll();
-		model.addAttribute("devices", devices);
-		return "admin/view_devices";
-	}
-
-	@GetMapping(path = { "/view_measurements" })
-	public String viewMeasurements(Model model) {
-		Set<Measurement> measurements = measurementService.findAll();
-		model.addAttribute("measurements", measurements);
-		return "admin/view_measurements";
-	}
-
-	@GetMapping(path = { "/view_plans" })
-	public String viewPlans(Model model) {
-		Set<HelperPlan> plans = helperPlanService.findAll();
-		model.addAttribute("plans", plans);
-		return "admin/view_plans";
-	}
-
-	@GetMapping(path = { "/view_exercises" })
-	public String viewExercises(Model model) {
-		Set<Exercise> exercises = exerciseService.findAll();
-		model.addAttribute("exercises", exercises);
-		return "admin/view_exercises";
-	}
-
-	@GetMapping(path = { "/view_foods" })
-	public String viewFoods(Model model) {
-		Set<Food> foods = foodService.findAll();
-		model.addAttribute("foods", foods);
-		return "admin/view_foods";
+	@PostMapping(path = { "/view_content_of_all_accounts" })
+	public String viewDevices(Model model, @RequestParam String contentOption) {
+		switch (contentOption) {
+		case "devices":
+			model.addAttribute("devices", deviceService.findAll());
+			break;
+		case "plans":
+			model.addAttribute("plans", helperPlanService.findAll());
+			break;
+		case "feedbacksExercises":
+			model.addAttribute("exerciseFeedbacks", exerciseFeedbackService.findAll());
+			break;
+		case "feedbacksFoods":
+			model.addAttribute("foodFeedbacks", foodFeedbackService.findAll());
+			break;
+		default:
+			model.addAttribute("noOption", true);
+			break;
+		}
+		return "admin/view_content_of_all_accounts";
 	}
 }

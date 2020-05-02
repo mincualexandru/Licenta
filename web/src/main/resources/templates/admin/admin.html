@@ -41,15 +41,62 @@
 <link th:href="@{css/theme.css}" rel="stylesheet" media="all">
 
 </head>
+<style>
+.table tbody td, .table tbody th {
+	border: 0;
+	padding: 15px;
+}
 
+tr:nth-last-child(-n+1) td:nth-last-child(-n+3) {
+	border: 0 !important;
+}
+
+.table-hover>tbody>tr:hover {
+	background-color: #e6ccff;
+}
+
+thead tr:nth-child(1) th {
+	background: white;
+	position: sticky;
+	top: 0;
+	z-index: 10;
+	border-bottom: 0;
+}
+
+.table-responsive {
+	height: 520px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	background-color: white;
+	border-radius: 30px;
+	overflow-x: hidden;
+	background-color: white;
+}
+
+table {
+	border-spacing: 0;
+	width: 100%;
+	display: table;
+	border-collapse: separate;
+}
+
+.modal-backdrop {
+	display: none;
+}
+
+.modal {
+	background: rgba(0, 0, 0, 0.5);
+}
+</style>
 <body>
 	<div class="page-wrapper">
-		<header class="header-mobile d-block d-lg-none">
+		<header style="background-color: white;"
+			class="header-mobile d-block d-lg-none">
 			<div class="header-mobile__bar">
 				<div class="container-fluid">
 					<div class="header-mobile-inner">
 						<a class="logo" href="index.html"> <img
-							src="images/icon/logo.png" alt="CoolAdmin" />
+							src="/images/logo/Screenshot_18.png">
 						</a>
 						<button class="hamburger hamburger--slider" type="button">
 							<span class="hamburger-box"> <span class="hamburger-inner"></span>
@@ -61,32 +108,137 @@
 			<nav class="navbar-mobile">
 				<div class="container-fluid">
 					<ul class="navbar-mobile__list list-unstyled">
-						<li><a th:href="@{/admin}">Admin</a></li>
-						<li><a th:href="@{/accounts}">Conturi</a></li>
-						<li><a th:href="@{/view_devices}">Dispozitive</a></li>
-						<li><a th:href="@{/view_measurements}">Masuratori</a></li>
-						<li><a th:href="@{/view_plans}">Planuri</a></li>
-						<li><a th:href="@{/view_exercises}">Exercitii</a></li>
-						<li><a th:href="@{/view_foods}">Alimente</a></li>
+						<li><a href="/admin" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Admin</span></a></li>
+						<li><a href="/accounts" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Conturi</span></a></li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="plans" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/portfolio.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Planuri</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="devices" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/smartwatch2.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Dispozitive</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption"
+									value="exerciseFeedbacks" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/positive-vote.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Feedback-uri
+										Exercitii</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="foodFeedbacks" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/interface.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Feedback-uri
+										Alimente</span>
+								</button>
+							</form>
+						</li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
 					</ul>
 				</div>
 			</nav>
 		</header>
-		<aside class="menu-sidebar d-none d-lg-block">
+		<aside style="background-color: white;"
+			class="menu-sidebar d-none d-lg-block">
 			<div class="logo">
-				<a href="#"> <img src="images/icon/logo.png" alt="Cool Admin" />
+				<a href="#"> <img src="/images/logo/Screenshot_18.png">
 				</a>
 			</div>
 			<div class="menu-sidebar__content js-scrollbar1">
 				<nav class="navbar-sidebar">
-					<ul class="list-unstyled navbar__list">
-						<li><a th:href="@{/admin}">Admin</a></li>
-						<li><a th:href="@{/accounts}">Conturi</a></li>
-						<li><a th:href="@{/view_devices}">Dispozitive</a></li>
-						<li><a th:href="@{/view_measurements}">Masuratori</a></li>
-						<li><a th:href="@{/view_plans}">Planuri</a></li>
-						<li><a th:href="@{/view_exercises}">Exercitii</a></li>
-						<li><a th:href="@{/view_foods}">Alimente</a></li>
+					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+						<li><a href="/admin" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Admin</span></a></li>
+						<li><a href="/accounts" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Conturi</span></a></li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="plans" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/portfolio.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Planuri</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="devices" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/smartwatch2.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Dispozitive</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption"
+									value="exerciseFeedbacks" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/positive-vote.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Feedback-uri
+										Exercitii</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="foodFeedbacks" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/interface.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Feedback-uri
+										Alimente</span>
+								</button>
+							</form>
+						</li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
 					</ul>
 				</nav>
 			</div>
@@ -94,191 +246,199 @@
 		<div class="page-container">
 			<div class="main-content">
 				<div class="section__content section__content--p30">
-					<div class="row m-t-25">
-						<div class="col-sm-6 col-lg-4">
-							<div class="overview-item overview-item--c1">
-								<div class="overview__inner">
-									<div class="overview-box clearfix">
-										<div class="icon">
-											<i class="zmdi zmdi-account-o"></i>
+					<div
+						style="text-align: center; font-size: 70px; margin-bottom: 60px; color: white; font-weight: 700;"
+						th:text="${'Administrator aplicatie: ' + admin.username}"></div>
+					<div class="container-fluid">
+						<div class="row"
+							style="margin-bottom: 70px; position: relative; left: 0px; top: -15px;">
+							<div class="col-md-4" style="margin-bottom: 25px;">
+								<div class="card-type-2"
+									style="height: 265px; border-radius: 37px; position: relative; float: left; padding: 30px;">
+									<img
+										style="height: 60px; width: 60px; position: relative; left: -20px; top: -20px;"
+										width="800" height="800" th:src="@{'images/logo/trainer.jpg'}">
+									<div
+										style="position: relative; top: -5px; justify-content: center; align-items: center; font-weight: 700; color: black; font-size: 20px; text-align: center;">
+										<div
+											style="font-size: 30px; color: #7300e6; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;">
+											<a href="/accounts" class="choose"
+												th:text="${userPlans.size() +  ' Conturi Create'}"></a>
 										</div>
-										<div class="text">
-											<h2 th:text="${accounts.size()}"></h2>
-											<span>conturi</span>
-										</div>
-									</div>
-									<div class="overview-chart">
-										<canvas id="users"></canvas>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-6 col-lg-4">
-							<div class="overview-item overview-item--c1">
-								<div class="overview__inner">
-									<div class="overview-box clearfix">
-										<div class="icon">
-											<i class="zmdi zmdi-calendar-note"></i>
-										</div>
-										<div class="text">
-											<h2 th:text="${measurements.size()}"></h2>
-											<span>masuratori</span>
-										</div>
-									</div>
-									<div class="overview-chart">
-										<canvas id="measurements"></canvas>
+										<span
+											style="font-size: 12px; color: gray; font-weight: 100; display: block; margin-top: -15px; margin-bottom: 10px; letter-spacing: 2px;">Acceseaza
+											istoricul de tranzactii pentru a vizualiza informatii despre
+											produsele pe care le-ai achizitionat</span>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="col-sm-6 col-lg-4">
-							<div class="overview-item overview-item--c1">
-								<div class="overview__inner">
-									<div class="overview-box clearfix">
-										<div class="icon">
-											<i class="zmdi zmdi-shopping-cart"></i>
+							<div class="col-md-4" style="margin-bottom: 25px;">
+								<div class="card-type-2"
+									style="height: 265px; border-radius: 37px; position: relative; float: left; padding: 30px;">
+									<img
+										style="height: 60px; width: 60px; position: relative; left: -20px; top: -20px;"
+										width="800" height="800"
+										th:src="@{'images/logo/portfolio.png'}">
+									<div
+										style="position: relative; top: -5px; justify-content: center; align-items: center; font-weight: 700; color: black; font-size: 20px; text-align: center;">
+										<div
+											style="font-size: 30px; color: #7300e6; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;">
+											<form th:action="@{/view_content_of_all_accounts}"
+												method="post">
+												<input type="hidden" name="contentOption" value="plans" />
+												<button type="submit" class="choose"
+													style="font-weight: 700;"
+													th:text="${accounts.size() + ' Planuri Create'}"></button>
+											</form>
 										</div>
-										<div class="text">
-											<h2 th:text="${userPlans.size()}"></h2>
-											<span>planuri cumparate</span>
-										</div>
+										<span
+											style="font-size: 12px; color: gray; font-weight: 100; display: block; margin-top: -15px; margin-bottom: 10px; letter-spacing: 2px;">Verifica-ti
+											portofelul pentru a-ti putea vizualiza fondul curent si
+											pentru a adauga bani</span>
 									</div>
-									<div class="overview-chart">
-										<canvas id="userPlans"></canvas>
+								</div>
+							</div>
+							<div class="col-md-4" style="margin-bottom: 25px;">
+								<div class="card-type-2"
+									style="height: 265px; border-radius: 37px; position: relative; float: left; padding: 30px;">
+									<img
+										style="height: 60px; width: 60px; position: relative; left: -20px; top: -20px;"
+										width="800" height="800"
+										th:src="@{'images/logo/smartwatch2.png'}">
+									<div
+										style="position: relative; top: -5px; justify-content: center; align-items: center; font-weight: 700; color: black; font-size: 20px; text-align: center;">
+										<div
+											style="font-size: 30px; color: #7300e6; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;">
+											<form th:action="@{/view_content_of_all_accounts}"
+												method="post">
+												<input type="hidden" name="contentOption" value="devices" />
+												<button type="submit" class="choose"
+													style="font-weight: 700;"
+													th:text="${devices.size() + ' Dispozitive Create'}"></button>
+											</form>
+										</div>
+										<span
+											style="font-size: 12px; color: gray; font-weight: 100; display: block; margin-top: -15px; margin-bottom: 10px; letter-spacing: 2px;">Acceseaza-ti
+											profilul pentru vizualizarea si modificarea informatiilor
+											contului tau.</span>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-lg-6" style="min-height: 100%;">
-							<h2 class="title-1 m-b-25">Top Planuri</h2>
+						<div class="col-md-7">
 							<div
-								class="au-card au-card--bg-blue au-card-top-countries m-b-40">
-								<div class="au-card-inner">
-									<div class="table-responsive">
-										<table class="table table-top-countries">
-											<thead>
-												<tr>
-													<th>Nume</th>
-													<th>Antrenor / Nutritionist</th>
-													<td>Pret</td>
-													<th>Vandut de</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr th:each="plan: ${theMostBoughtPlans.entrySet()}">
-													<td th:text="${plan.getKey().name}"></td>
-													<td th:text="${plan.getKey().helper.username}">
-													<td th:text="${plan.getKey().price}"></td>
-													<td class="text-right" th:text="${plan.getValue()}"></td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-								</div>
+								style="text-align: center; font-size: 50px; color: white; font-weight: 700;">Planuri
+								Favorite Cursanti</div>
+							<div class="table-responsive" style="margin-bottom: 100px;"
+								th:if="${theMostBoughtPlans.entrySet().size() > 0 }">
+								<table style="background-color: white;"
+									class="table table-hover">
+									<thead>
+										<tr class="text-center"
+											style="font-size: 25px; color: #7300e6;">
+											<th style="text-align: center; padding: 15px;">Plan</th>
+											<th style="text-align: center; padding: 15px;">Expert</th>
+											<th style="text-align: center; padding: 15px;">Pret</th>
+											<th style="text-align: center; padding: 15px;">Vandut de</th>
+										</tr>
+									</thead>
+									<tbody class="text-center tableBody" style="color: black;">
+										<th:block th:each="plan: ${theMostBoughtPlans.entrySet()}">
+											<tr>
+												<td class="td-favorite" th:text="${plan.getKey().name}"></td>
+												<td class="td-favorite"
+													th:text="${plan.getKey().helper.username}">
+												<td class="td-favorite" th:text="${plan.getKey().price}"></td>
+												<td class="td-favorite" th:text="${plan.getValue() + ' X'}"></td>
+											</tr>
+										</th:block>
+									</tbody>
+								</table>
 							</div>
 						</div>
-						<div class="col-lg-6">
-							<div class="au-card chart-percent-card" style="padding: 20px;">
+						<div class="col-lg-5" style="position: relative; top: 50px;">
+							<div
+								style="text-align: center; font-size: 50px; color: white; font-weight: 700;">Profit
+								Aplicatie</div>
+							<div class="au-card chart-percent-card"
+								style="padding: 20px; border-radius: 30px;">
 								<div class="au-card-inner">
-									<h3 class="title-2 tm-b-5">Profit</h3>
-									<div class="row no-gutters">
-										<div class="col-xl-4">
-											<div class="chart-note-wrap">
-												<div class="chart-note mr-0 d-block">
-													<span class="dot dot--blue"></span> <span>venituri</span>
-												</div>
-												<div class="chart-note mr-0 d-block">
-													<span class="dot dot--red"></span> <span>cheltuieli</span>
-												</div>
-											</div>
-										</div>
-										<div class="col-xl-8">
-											<div class="percent-chart">
-												<canvas id="profit"
-													style="width: 323px; height: 250px; margin: 0px auto;"></canvas>
-											</div>
-										</div>
+									<div class="chart-note mr-0">
+										<span class="dot dot--blue"></span> <span>venituri</span>
+									</div>
+									<div class="chart-note mr-0 ml-3">
+										<span class="dot dot--red"></span> <span>cheltuieli</span>
+									</div>
+									<div class="percent-chart">
+										<canvas id="profit"
+											style="position: relative; left: 30px; width: 500px; height: 250px; margin: 0px auto;"></canvas>
+									</div>
+									<div
+										style="text-align: center; color: gray; letter-spacing: 1px;">
+										Profit: <span
+											style="font-weight: 600; font-size: 35px; color: green;"
+											th:text="${totalIncome - totalPayments + ' LEI'}"></span>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="row">
-                            <div class="col-lg-6">
-                                <div class="au-card au-card--no-shadow au-card--no-pad m-b-40">
-                                    <div class="au-card-title" style="background-image:url('images/bg-title-02.jpg');">
-                                        <div class="bg-overlay bg-overlay--blue"></div>
-                                        <h3>
-                                            <i class="zmdi zmdi-comment-text"></i>Feedback-uri Alimente</h3>
-                                    </div>
-                                    <div class="au-inbox-wrap js-inbox-wrap">
-                                        <div class="au-message js-list-load">
-                                            <div class="au-message-list" style="height: 550px;">
-                                                <div class="au-message__item unread" th:each="feedback: ${foodFeedbacks}">
-                                                    <div class="au-message__item-inner">
-                                                        <div class="au-message__item-text">
-                                                            <div class="avatar-wrap">
-                                                                <div class="avatar">
-                                                                    <img src="images/icon/avatar-02.jpg" alt="John Smith">
-                                                                </div>
-                                                            </div>
-                                                            <div class="text">
-                                                                <h5 class="name" th:text="${feedback.user.username}"></h5>
-                                                                <p th:text="${feedback.food.dietPlan.helper.username}"></p>
-                                                                <p th:text="${feedback.message}"></p>
-                                                                <p th:text="${feedback.rating}"></p>
-                                                                <p th:text="${feedback.food.name}"></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="au-message__item-time">
-                                                            <span th:text="${feedback.dateOfFeedbackProvied}"></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="au-card au-card--no-shadow au-card--no-pad m-b-40">
-                                    <div class="au-card-title" style="background-image:url('images/bg-title-02.jpg');">
-                                        <div class="bg-overlay bg-overlay--blue"></div>
-                                        <h3>
-                                            <i class="zmdi zmdi-comment-text"></i>Feedback-uri Exercitii</h3>
-                                    </div>
-                                    <div class="au-inbox-wrap js-inbox-wrap">
-                                        <div class="au-message js-list-load">
-                                            <div class="au-message-list" style="height: 550px;">
-                                                <div class="au-message__item unread" th:each="feedback: ${exerciseFeedbacks}">
-                                                    <div class="au-message__item-inner">
-                                                        <div class="au-message__item-text">
-                                                            <div class="avatar-wrap">
-                                                                <div class="avatar">
-                                                                    <img src="images/icon/avatar-02.jpg" alt="John Smith">
-                                                                </div>
-                                                            </div>
-                                                            <div class="text">
-                                                                <h5 class="name" th:text="${feedback.user.username}"></h5>
-                                                                <p th:text="${feedback.exercise.trainingPlan.helper.username}"></p>
-                                                                <p th:text="${feedback.message}"></p>
-                                                                <p th:text="${feedback.rating}"></p>
-                                                                <p th:text="${feedback.exercise.name}"></p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="au-message__item-time">
-                                                            <span th:text="${feedback.dateOfFeedbackProvied}"></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+					<div class="row"
+						style="margin-bottom: 70px; position: relative; left: 200px; top: -15px;">
+						<div class="col-md-4" style="margin-bottom: 25px;">
+							<div class="card-type-2"
+								style="height: 265px; border-radius: 37px; position: relative; float: left; padding: 30px;">
+								<img
+									style="height: 60px; width: 60px; position: relative; left: -20px; top: -20px;"
+									width="800" height="800" th:src="@{'images/logo/positive-vote.png'}">
+								<div
+									style="position: relative; top: -5px; justify-content: center; align-items: center; font-weight: 700; color: black; font-size: 20px; text-align: center;">
+									<div
+										style="font-size: 30px; color: #7300e6; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;">
+										<form th:action="@{/view_content_of_all_accounts}"
+											method="post">
+											<input type="hidden" name="contentOption"
+												value="feedbacksFoods" />
+											<button type="submit" class="choose"
+												style="font-weight: 700;">Feedback-uri Alimente</button>
+										</form>
+									</div>
+									<span
+										style="font-size: 12px; color: gray; font-weight: 100; display: block; margin-top: -15px; margin-bottom: 10px; letter-spacing: 2px;">Acceseaza
+										istoricul de tranzactii pentru a vizualiza informatii despre
+										produsele pe care le-ai achizitionat</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4" style="margin-bottom: 25px;">
+							<div class="card-type-2"
+								style="height: 265px; border-radius: 37px; position: relative; float: left; padding: 30px;">
+								<img
+									style="height: 60px; width: 60px; position: relative; left: -20px; top: -20px;"
+									width="800" height="800"
+									th:src="@{'images/logo/interface.png'}">
+								<div
+									style="position: relative; top: -5px; justify-content: center; align-items: center; font-weight: 700; color: black; font-size: 20px; text-align: center;">
+									<div
+										style="font-size: 30px; color: #7300e6; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;">
+										<form th:action="@{/view_content_of_all_accounts}"
+											method="post">
+											<input type="hidden" name="contentOption"
+												value="feedbacksExercises" />
+											<button type="submit" class="choose"
+												style="font-weight: 700;">Feedback-uri Exercitii</button>
+										</form>
+									</div>
+									<span
+										style="font-size: 12px; color: gray; font-weight: 100; display: block; margin-top: -15px; margin-bottom: 10px; letter-spacing: 2px;">Verifica-ti
+										portofelul pentru a-ti putea vizualiza fondul curent si pentru
+										a adauga bani</span>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -305,217 +465,7 @@
 
 	<script th:src="@{/js/main.js}"></script>
 	<script th:inline="javascript">
-    var ctx = document.getElementById("users");
-    if (ctx) {
-      ctx.height = 130;
-      var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: [[${chartNumberOfAccountsByDay.keySet()}]],
-          type: 'line',
-          datasets: [{
-            data: [[${chartNumberOfAccountsByDay.values()}]],
-            label: 'Numar',
-            backgroundColor: 'transparent',
-            borderColor: 'rgba(255,255,255,.55)',
-          },]
-        },
-        options: {
-
-          maintainAspectRatio: false,
-          legend: {
-            display: false
-          },
-          responsive: true,
-          tooltips: {
-            mode: 'index',
-            titleFontSize: 12,
-            titleFontColor: '#000',
-            bodyFontColor: '#000',
-            backgroundColor: '#fff',
-            titleFontFamily: 'Montserrat',
-            bodyFontFamily: 'Montserrat',
-            cornerRadius: 3,
-            intersect: false,
-          },
-          scales: {
-            xAxes: [{
-              gridLines: {
-                color: 'transparent',
-                zeroLineColor: 'transparent'
-              },
-              ticks: {
-                fontSize: 2,
-                fontColor: 'transparent'
-              }
-            }],
-            yAxes: [{
-              display: false,
-              ticks: {
-                display: false,
-                max: 3
-              }
-            }]
-          },
-          title: {
-            display: false,
-          },
-          elements: {
-            line: {
-              tension: 0.00001,
-              borderWidth: 1
-            },
-            point: {
-              radius: 4,
-              hitRadius: 10,
-              hoverRadius: 4
-            }
-          }
-        }
-      });
-    }
-    
-    var ctx = document.getElementById("measurements");
-    if (ctx) {
-      ctx.height = 130;
-      var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: [[${chartNumberOfMeasurementsByDay.keySet()}]],
-          type: 'line',
-          datasets: [{
-            data: [[${chartNumberOfMeasurementsByDay.values()}]],
-            label: 'Numar',
-            backgroundColor: 'transparent',
-            borderColor: 'rgba(255,255,255,.55)',
-          },]
-        },
-        options: {
-
-          maintainAspectRatio: false,
-          legend: {
-            display: false
-          },
-          responsive: true,
-          tooltips: {
-            mode: 'index',
-            titleFontSize: 12,
-            titleFontColor: '#000',
-            bodyFontColor: '#000',
-            backgroundColor: '#fff',
-            titleFontFamily: 'Montserrat',
-            bodyFontFamily: 'Montserrat',
-            cornerRadius: 3,
-            intersect: false,
-          },
-          scales: {
-            xAxes: [{
-              gridLines: {
-                color: 'transparent',
-                zeroLineColor: 'transparent'
-              },
-              ticks: {
-                fontSize: 2,
-                fontColor: 'transparent'
-              }
-            }],
-            yAxes: [{
-              display: false,
-              ticks: {
-                display: false,
-                max: 7
-              }
-            }]
-          },
-          title: {
-            display: false,
-          },
-          elements: {
-            line: {
-              tension: 0.00001,
-              borderWidth: 1
-            },
-            point: {
-              radius: 4,
-              hitRadius: 10,
-              hoverRadius: 4
-            }
-          }
-        }
-      });
-    }
-    
-    
-    var ctx = document.getElementById("userPlans");
-    if (ctx) {
-      ctx.height = 130;
-      var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: [[${chartNumberOfUserPlansByDay.keySet()}]],
-          type: 'line',
-          datasets: [{
-            data: [[${chartNumberOfUserPlansByDay.values()}]],
-            label: 'Numar',
-            backgroundColor: 'transparent',
-            borderColor: 'rgba(255,255,255,.55)',
-          },]
-        },
-        options: {
-
-          maintainAspectRatio: false,
-          legend: {
-            display: false
-          },
-          responsive: true,
-          tooltips: {
-            mode: 'index',
-            titleFontSize: 12,
-            titleFontColor: '#000',
-            bodyFontColor: '#000',
-            backgroundColor: '#fff',
-            titleFontFamily: 'Montserrat',
-            bodyFontFamily: 'Montserrat',
-            cornerRadius: 3,
-            intersect: false,
-          },
-          scales: {
-            xAxes: [{
-              gridLines: {
-                color: 'transparent',
-                zeroLineColor: 'transparent'
-              },
-              ticks: {
-                fontSize: 2,
-                fontColor: 'transparent'
-              }
-            }],
-            yAxes: [{
-              display: false,
-              ticks: {
-                display: false,
-                max: 4
-              }
-            }]
-          },
-          title: {
-            display: false,
-          },
-          elements: {
-            line: {
-              tension: 0.00001,
-              borderWidth: 1
-            },
-            point: {
-              radius: 4,
-              hitRadius: 10,
-              hoverRadius: 4
-            }
-          }
-        }
-      });
-    }
-    let profit = [[${totalProfit}]];
+    let income = [[${totalIncome}]];
     let payments = [[${totalPayments}]];
     var ctx = document.getElementById("profit");
     if (ctx) {
@@ -526,7 +476,7 @@
           datasets: [
             {
               label: "My First dataset",
-              data: [profit,payments],
+              data: [income,payments],
               backgroundColor: [
                 '#00b5e9',
                 '#fa4251'
