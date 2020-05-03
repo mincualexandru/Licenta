@@ -3,180 +3,294 @@
 	xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Sign up</title>
-<base href="/">
+<link th:href="@{../../css/font-face.css}" rel="stylesheet" media="all">
+<link
+	th:href="@{../../vendor/font-awesome-4.7/css/font-awesome.min.css}"
+	rel="stylesheet" media="all">
+<link
+	th:href="@{../../vendor/font-awesome-5/css/fontawesome-all.min.css}"
+	rel="stylesheet" media="all">
+<link
+	th:href="@{../../vendor/mdi-font/css/material-design-iconic-font.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{../../vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+
+<link th:href="@{../../vendor/animsition/animsition.min.css}"
+	rel="stylesheet" media="all">
+<link
+	th:href="@{../../vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{../../vendor/wow/animate.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{../../vendor/css-hamburgers/hamburgers.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{../../vendor/slick/slick.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{../../vendor/select2/select2.min.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{../../vendor/perfect-scrollbar/perfect-scrollbar.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{../../css/theme.css}" rel="stylesheet" media="all">
+<link th:href="@{../../css/cart.css}" rel="stylesheet" media="all">
 <link
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 	rel="stylesheet" id="bootstrap-css">
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" th:href="@{css/style.css}"/>
+<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
+	rel="stylesheet">
+<script
+	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<style>
+.bootstrap-datetimepicker-widget table td.active,
+	.bootstrap-datetimepicker-widget table td.active:hover {
+	background-color: #7300e6;
+}
+
+form .form-control::-webkit-input-placeholder {
+	color: black;
+}
+
+form .form-control::-moz-placeholder {
+	color: black;
+}
+
+form .form-control:-ms-input-placeholder {
+	color: black;
+}
+
+form .form-control:placeholder {
+	color: black;
+}
+</style>
 </head>
-<body>
-	<div class="container">
+<body style="background-color: #7300e6;">
+	<div class="container-fluid">
 		<form class="form-horizontal" role="form" method="POST"
 			th:action="@{/signup}" th:object="${user}" id="signupForm">
-			<div style="position: relative; top: 110px; left: 250px;">
-				<h3>Register</h3>
-				<h5 th:text="${errorMessage}"></h5>
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<label>Nume</label>
-							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-								<input type="text" th:field="*{firstName}"
-									class="form-control validation" id="firstName" placeholder="Nume"
-									autofocus>
-							</div>
-							<div th:unless="${#fields.hasErrors('firstName')}">
-								<p class="errorMessage"></p>
-							</div>
-							<div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<label>Prenume</label>
-							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-								<input type="text" th:field="*{lastName}"
-									class="form-control validation" id="lastName" placeholder="Prenume"
-									autofocus>
-							</div>
-							<div th:unless="${#fields.hasErrors('lastName')}">
-								<p class="errorMessage"></p>
-							</div>
-							<div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<label>Nume Utilizator</label>
+			<div class="row">
+				<div class="col-md-4-5 mx-auto"
+					style="background-color: white; border-radius: 30px; padding: 15px 50px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);">
+					<img id="imageAvatar"
+						style="width: 140px; height: 140px; position: relative; left: 150px; background-color: #7300e6; border-radius: 100px; padding: 10px;"
+						src="/images/avatar/man.png" />
+					<h3
+						style="text-align: center; font-size: 40px; color: black; font-weight: 700; margin: 10px;">Creeaza
+						Cont</h3>
+					<div class="form-row" style="margin-bottom: 5px;">
+						<div class="col">
+							<label style="color: black; font-size: 20px; font-weight: 700;">Nume
+								Utilizator</label>
 							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 								<input type="text" th:field="*{username}"
-									class="form-control validation" id="username" placeholder="Nume Utilizator"
-									autofocus>
+									class="form-control validation" id="username"
+									placeholder="Nume Utilizator..." autofocus
+									style="height: 46px; margin-bottom: 5px; font-size: 15px; border: 3px solid #7300e6; border-radius: 4px;">
 							</div>
-							<div th:unless="${#fields.hasErrors('username')}">
-								<p class="errorMessage"></p>
-							</div>
-							<div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+							<div style="color: red; font-size: 12px; margin-top: -3px;"
+								th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+							<div style="color: red; font-size: 12px; margin-top: -3px;"
+								th:text="${errorMessage}"></div>
 						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<label>Email</label>
-							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-								<input type="text" th:field="*{email}"
-									class="form-control validation" id="email" placeholder="Email"
-									autofocus>
-							</div>
-							<div th:unless="${#fields.hasErrors('email')}">
-								<p class="errorMessage"></p>
-							</div>
-							<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<label>Data Nasterii</label>
-							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-								<input type="date" th:field="*{bornDate}"
-									class="form-control validation" id="bornDate" placeholder="Data Nasterii"
-									autofocus>
-							</div>
-							<div th:unless="${#fields.hasErrors('bornDate')}">
-								<p class="errorMessage"></p>
-							</div>
-							<div th:if="${#fields.hasErrors('bornDate')}" th:errors="*{bornDate}"></div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group has-danger">
-							<label>Parola</label>
+						<div class="col">
+							<label style="color: black; font-size: 20px; font-weight: 700;">Parola</label>
 							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 								<input type="password" th:field="*{password}"
-									class="form-control validation" id="password" placeholder="Parola"
-									>
+									class="form-control validation" id="password"
+									placeholder="Parola Cont..." autofocus
+									style="height: 46px; margin-bottom: 5px; font-size: 15px; border: 3px solid #7300e6; border-radius: 4px;">
 							</div>
-							<div th:unless="${#fields.hasErrors('password')}">
-								<p class="errorMessage"></p>
-							</div>
-							<div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+							<div style="color: red; font-size: 12px; margin-top: -3px;"
+								th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
 						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<label>Numar Telefon</label>
+					<div class="form-row" style="margin-bottom: 5px;">
+						<div class="col">
+							<label style="color: black; font-size: 20px; font-weight: 700;">Nume</label>
 							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-								<input type="text" th:field="*{phoneNumber}"
-									class="form-control validation" id="phoneNumber" placeholder="Numar Telefon"
-									autofocus>
+								<input type="text" th:field="*{firstName}"
+									class="form-control validation" id="firstName"
+									placeholder="Nume..." autofocus
+									style="height: 46px; margin-bottom: 5px; font-size: 15px; border: 3px solid #7300e6; border-radius: 4px;">
 							</div>
-							<div th:unless="${#fields.hasErrors('phoneNumber')}">
-								<p class="errorMessage"></p>
+							<div style="color: red; font-size: 12px; margin-top: -3px;"
+								th:if="${#fields.hasErrors('firstName')}"
+								th:errors="*{firstName}"></div>
+						</div>
+						<div class="col">
+							<label style="color: black; font-size: 20px; font-weight: 700;">Prenume</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+								<input type="text" th:field="*{lastName}"
+									class="form-control validation" id="lastName"
+									placeholder="Prenume..." autofocus
+									style="height: 46px; margin-bottom: 5px; font-size: 15px; border: 3px solid #7300e6; border-radius: 4px;">
 							</div>
-							<div th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></div>
+							<div style="color: red; font-size: 12px; margin-top: -3px;"
+								th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
 						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group has-danger">
-							<label>Alege Rol</label>
+					<div class="form-row" style="margin-bottom: 5px;">
+						<div class="col">
+							<label style="color: black; font-size: 20px; font-weight: 700;">Email</label>
 							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-								<select name="chooseRoleName">
-									<option 
-									th:each="r : ${roles}" 
-									th:text="${r.name}"
-									th:value="${r.name}"
-									th:selected="${r.name} == ${selectedRole} ? true : false"></option>
+								<input type="text" th:field="*{email}"
+									class="form-control validation" id="email"
+									placeholder="Email..." autofocus
+									style="height: 46px; margin-bottom: 5px; font-size: 15px; border: 3px solid #7300e6; border-radius: 4px;">
+							</div>
+							<div style="color: red; font-size: 12px; margin-top: -3px;"
+								th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+						</div>
+						<div class="col">
+							<label style="color: black; font-size: 20px; font-weight: 700;">Numar
+								Telefon</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+								<input type="number" th:field="*{phoneNumber}"
+									class="form-control validation" id="phoneNumber"
+									placeholder="Numar Telefon..." autofocus
+									style="height: 46px; margin-bottom: 5px; font-size: 15px; border: 3px solid #7300e6; border-radius: 4px;">
+							</div>
+							<div style="color: red; font-size: 12px; margin-top: -3px;"
+								th:if="${#fields.hasErrors('phoneNumber')}"
+								th:errors="*{phoneNumber}"></div>
+						</div>
+					</div>
+					<div class="form-row" style="margin-bottom: 5px;">
+						<div class="col">
+							<label style="color: black; font-size: 20px; font-weight: 700;">Sex</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+								<select onchange="run()" id="gender"
+									style="width: -webkit-fill-available; height: 46px; margin-bottom: 5px; font-size: 15px; border: 3px solid #7300e6; border-radius: 4px;"
+									th:field="*{gender}">
+									<option style="height: 46px;" th:each="s : ${sex}"
+										th:text="${s.gender}" th:value="${s}"></option>
 								</select>
 							</div>
-							<div th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}"></div>
+							<div style="color: red; font-size: 12px; margin-top: -3px;"
+								th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></div>
 						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group has-danger">
-							<label>Sex</label>
+						<div class="col">
+							<label style="color: black; font-size: 20px; font-weight: 700;">Tip
+								Cont</label>
 							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-								<select th:field="*{gender}">
-									<option 
-									th:each="s : ${sex}" 
-									th:text="${s.gender}"
-									th:value="${s}"></option>
+								<select name="chooseRoleName"
+									style="width: -webkit-fill-available; height: 46px; margin-bottom: 5px; font-size: 15px; border: 3px solid #7300e6; border-radius: 4px;">
+									<option style="height: 46px;" th:each="r : ${roles}"
+										th:id="${r.name}" th:text="${r.name}" th:value="${r.name}"
+										th:selected="${r.name} == ${selectedRole} ? true : false"></option>
 								</select>
 							</div>
-							<div th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}"></div>
+							<div style="color: red; font-size: 12px; margin-top: -3px;"
+								th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}"></div>
 						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-3"></div>
-					<div class="col-md-6">
-						<button type="submit" class="btn btn-success">
-							<i class="fa fa-user-plus"></i> Register
-						</button>
+					<div style="margin-bottom: 5px;">
+						<label style="color: black; font-size: 20px; font-weight: 700;">Data
+							Nasterii</label>
+						<div class='input-group date' style="width: 210px;"
+							id='datetimepicker1'>
+							<input th:field="*{bornDate}" type='text'
+								style="background-color: white; font-size: 15px; border: 3px solid #7300e6; color: black;"
+								id="startDateInput" name="startDateInput"
+								class="form-control input-lg" /> <span
+								class="input-group-addon input-lg"
+								style="background-color: #7300e6; color: white; font-size: 15px; padding: 10px; border: 3px solid #7300e6; border-left: 0px;"><span
+								class="glyphicon glyphicon-calendar"></span></span>
+						</div>
+						<div style="color: red; font-size: 12px; margin-top: -3px;"
+							th:if="${#fields.hasErrors('bornDate')}" th:errors="*{bornDate}"></div>
 					</div>
+					<button
+						style="margin-right: 40px; padding-left: 25px; padding-right: 25px;"
+						type="submit" class="btnn2">Creaza</button>
 				</div>
 			</div>
 		</form>
 	</div>
 	<script type="text/javascript" th:src="@{/js/signup.js}"></script>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
+	<script
+		src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js
+	"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+	<script th:inline="javascript">
+		$(function() {
+			var bindDatePicker = function() {
+				$(".date").datetimepicker({
+					format : 'YYYY-MM-DD',
+					minDate : '1950-01-01',
+					maxDate : '2005-01-01',
+					icons : {
+						time : "fa fa-clock-o",
+						date : "fa fa-calendar",
+						up : "fa fa-arrow-up",
+						down : "fa fa-arrow-down"
+					}
+				}).find('input:first').on("blur", function() {
+					// check if the date is correct. We can accept dd-mm-yyyy and yyyy-mm-dd.
+					// update the format if it's yyyy-mm-dd
+					var date = parseDate($(this).val());
+
+					if (!isValidDate(date)) {
+						//create date based on momentjs (we have that)
+						date = moment().format('YYYY-MM-DD');
+					}
+
+					$(this).val(date);
+				});
+			}
+
+			var isValidDate = function(value, format) {
+				format = format || false;
+				// lets parse the date to the best of our knowledge
+				if (format) {
+					value = parseDate(value);
+				}
+
+				var timestamp = Date.parse(value);
+
+				return isNaN(timestamp) == false;
+			}
+
+			var parseDate = function(value) {
+				var m = value
+						.match(/^(\d{1,2})(\/|-)?(\d{1,2})(\/|-)?(\d{4})$/);
+				if (m)
+					value = m[5] + '-' + ("00" + m[3]).slice(-2) + '-'
+							+ ("00" + m[1]).slice(-2);
+
+				return value;
+			}
+
+			bindDatePicker();
+		});
+
+		function run() {
+			let gender = document.getElementById('gender').value;
+			let imageAvatar = document.getElementById('imageAvatar');
+			if (gender == 'BARBAT') {
+				imageAvatar.src = '/images/avatar/man.png';
+			} else if (gender == 'FEMEIE') {
+				imageAvatar.src = '/images/avatar/woman.png';
+			}
+		}
+
+		let role_user = document.getElementById('ROLE_USER');
+		let role_trainer = document.getElementById('ROLE_TRAINER');
+		let role_nutritionist = document.getElementById('ROLE_NUTRITIONIST');
+		role_user.innerHTML = 'Utilizator';
+		role_trainer.innerHTML = 'Antrenor';
+		role_nutritionist.innerHTML = 'Nutritionist';
+	</script>
 </body>
 </html>

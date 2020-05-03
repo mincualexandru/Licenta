@@ -1,6 +1,7 @@
 package com.web.serviceimpl;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -85,6 +86,17 @@ public class AccountServiceImpl implements AccountService {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Account user = accountDao.findByUsername(auth.getName());
 		return user;
+	}
+
+	@Override
+	public Set<Account> getHelpers(Account helper) {
+		Set<Integer> learnersIds = accountDao.findAllLearnersByHelperId(helper.getAccountId());
+		Set<Account> learners = new HashSet<>();
+		for (Integer integer : learnersIds) {
+			Account learner = accountDao.findById(integer).get();
+			learners.add(learner);
+		}
+		return learners;
 	}
 
 }

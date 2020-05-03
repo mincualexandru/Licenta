@@ -35,4 +35,7 @@ public interface HelperPlanDao extends CrudRepository<HelperPlan, Integer> {
 
 	Set<HelperPlan> findAllByHelperAccountIdAndDateOfCreationBetween(Integer accountId, Timestamp timestampStartDate,
 			Timestamp timestampEndDate);
+
+	Optional<HelperPlan> findByHelperPlanIdAndTypeOfPlanAndHelperAccountId(int parseInt, String string,
+			Integer accountId);
 }

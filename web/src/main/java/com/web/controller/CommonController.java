@@ -42,7 +42,6 @@ import com.web.service.HelperFeedbackService;
 import com.web.service.HelperPlanService;
 import com.web.service.RoleService;
 import com.web.service.UserDeviceService;
-import com.web.utils.Gender;
 import com.web.utils.Product;
 import com.web.utils.Qualifying;
 
@@ -222,7 +221,6 @@ public class CommonController {
 							product.setProductName(userDevice.getDevice().getName());
 							product.setPrice(userDevice.getDevice().getPrice());
 							product.setType("Dispozitiv");
-							product.setImageName("");
 							product.setDateOfPurchased(userDevice.getDateOfPurchase());
 							products.add(product);
 						}
@@ -238,18 +236,6 @@ public class CommonController {
 							product.setType(userPlan.getHelperPlan().getTypeOfPlan());
 							product.setDateOfPurchased(userPlan.getDateOfPurchase());
 							product.setDescription(userPlan.getHelperPlan().getDescription());
-							if (userPlan.getHelperPlan().getForWho().equals(Gender.BARBAT)) {
-								product.setImageName("800.gif");
-							} else if (userPlan.getHelperPlan().getForWho().equals(Gender.FEMEIE)) {
-								product.setImageName("jumpingrope-dribble.gif");
-							}
-							for (Exercise exercise : userPlan.getHelperPlan().getExercises()) {
-								if (exercise.getExerciseImages().size() > 0) {
-									System.out.println("Exista o imagine pe exercitiu");
-									product.setImageName(
-											exercise.getExerciseImages().stream().findFirst().get().getFileName());
-								}
-							}
 							products.add(product);
 						}
 					}

@@ -193,6 +193,7 @@
 												th:if="${role.name eq 'ROLE_TRAINER' and trainerOrNutritionist.gender.getGender() eq 'Femeie'}">
 												<img
 													th:src="@{'images/helpers/woman_trainer/woman_trainer'+${iterStat.index+1}+'.png'}"
+													onerror="this.src='/images/di.png';this.onerror='';"
 													style="position: absolute; left: 30%; top: 50%; transform: translate(-50%, -50%); width: 400px; height: 450px;"
 													alt="green apple slice">
 											</th:block>
@@ -200,6 +201,7 @@
 												th:if="${role.name eq 'ROLE_TRAINER' and trainerOrNutritionist.gender.getGender() eq 'Barbat'}">
 												<img
 													th:src="@{'images/helpers/man_trainer/man_trainer'+${iterStat.index+1}+'.png'}"
+													onerror="this.src='/images/di.png';this.onerror='';"
 													style="position: absolute; left: 30%; top: 50%; transform: translate(-50%, -50%); width: 400px; height: 450px;"
 													alt="green apple slice">
 											</th:block>
@@ -207,6 +209,7 @@
 												th:if="${role.name eq 'ROLE_NUTRITIONIST' and trainerOrNutritionist.gender.getGender() eq 'Femeie'}">
 												<img
 													th:src="@{'images/helpers/woman_nutritionist/woman_nutritionist'+${iterStat.index+1}+'.png'}"
+													onerror="this.src='/images/di.png';this.onerror='';"
 													style="position: absolute; left: 30%; top: 50%; transform: translate(-50%, -50%); width: 400px; height: 450px;"
 													alt="green apple slice">
 											</th:block>
@@ -214,6 +217,7 @@
 												th:if="${role.name eq 'ROLE_NUTRITIONIST' and trainerOrNutritionist.gender.getGender() eq 'Barbat'}">
 												<img
 													th:src="@{'images/helpers/man_nutritionist/man_nutritionist'+${iterStat.index+1}+'.png'}"
+													onerror="this.src='/images/di.png';this.onerror='';"
 													style="position: absolute; left: 30%; top: 50%; transform: translate(-50%, -50%); width: 400px; height: 450px;"
 													alt="green apple slice">
 											</th:block>
@@ -270,11 +274,11 @@
 										</th:block>
 										<th:block th:if="${#lists.size(trainerOrNutritionist.plans)}">
 											<li
-												th:text="${'Antrenamente Propuse: ' + trainerOrNutritionist.plans.size()}"></li>
+												th:text="${'Planuri Propuse: ' + trainerOrNutritionist.plans.size()}"></li>
 										</th:block>
 										<th:block
 											th:unless="${#lists.size(trainerOrNutritionist.plans)}">
-											<li th:text="${'Antrenamente Propuse: 0 '}"></li>
+											<li th:text="${'Planuri Propuse: 0 '}"></li>
 										</th:block>
 									</ul>
 									<div class="btn-group">

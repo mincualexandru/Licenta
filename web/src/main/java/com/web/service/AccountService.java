@@ -28,4 +28,6 @@ public interface AccountService {
 	Set<Integer> findAllLearnersByHelperId(Integer accountId);
 
 	Account getAccountConnected();
+
+	Set<Account> getHelpers(Account helper);
 }

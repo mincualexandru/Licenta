@@ -33,4 +33,7 @@ public interface HelperPlanService {
 	Set<HelperPlan> findAllByHelperAccountIdAndDateOfCreationBetween(Integer accountId, Timestamp timestampStartDate,
 			Timestamp timestampEndDate);
 
+	Optional<HelperPlan> findByHelperPlanIdAndTypeOfPlanAndHelperAccountId(int parseInt, String string,
+			Integer accountId);
+
 }

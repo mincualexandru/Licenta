@@ -335,26 +335,56 @@
 														Cumparate</h3>
 
 													<div class="slider">
-														<a th:each="product, iter: ${products}"
-															th:href="${'#slide-'+ product.productId}"
-															th:text="${iter.index + 1}"></a>
 														<div class="slides">
-															<div th:each="product: ${products}">
+															<div style="border-radius: 30px; overflow: hidden;"
+																th:each="product: ${products}">
 																<div th:id="${'slide-'+ product.productId}">
 																	<div class="wrapper-slider">
 																		<div class="product-img">
-																			<img
-																				style="display: block; position: absolute; top: 50%; left: 50%; min-height: 100%; min-width: 100%; transform: translate(-50%, -50%);"
-																				th:src="@{'images/'+${product.imageName}}">
+																			<th:block th:if="${product.type eq 'Dispozitiv'}">
+																				<th:block
+																					th:if="${product.productName eq 'Bratara'}">
+																					<img
+																						style="display: block; position: absolute; top: 50%; left: 35%; min-height: 85%; min-width: 120%; transform: translate(-50%, -50%);"
+																						th:src="@{'images/devices/band/band.jpg'}">
+																				</th:block>
+																				<th:block
+																					th:if="${product.productName eq 'Cantar Inteligent'}">
+																					<img
+																						style="display: block; position: absolute; top: 40%; left: 35%; min-height: 130%; min-width: 140%; transform: translate(-50%, -50%);"
+																						th:src="@{'images/devices/scale/scale.jpg'}">
+																				</th:block>
+																			</th:block>
+																			<th:block th:if="${product.type eq 'Antrenament'}">
+																				<th:block
+																					th:if="${product.forWho.getGender() eq 'Barbat'}">
+																					<img
+																						style="display: block; position: absolute; top: 50%; left: 62%; min-height: 100%; min-width: 140%; transform: translate(-50%, -50%);"
+																						th:src="@{'images/plans/trainings/man/default_training.jpg'}">
+																				</th:block>
+																				<th:block
+																					th:if="${product.forWho.getGender() eq 'Femeie'}">
+																					<img
+																						style="display: block; position: absolute; top: 50%; left: 62%; min-height: 100%; min-width: 140%; transform: translate(-50%, -50%);"
+																						th:src="@{'images/plans/trainings/woman/woman_training7.jpg'}">
+																				</th:block>
+																			</th:block>
+																			<th:block th:if="${product.type eq 'Dieta'}">
+																				<img
+																					style="display: block; position: absolute; top: 50%; left: 35%; min-height: 85%; min-width: 120%; transform: translate(-50%, -50%);"
+																					th:src="@{'images/plans/diets/default-diet.jpg'}">
+																			</th:block>
 																		</div>
-																		<div class="product-info">
-																			<div class="product-text">
+																		<div class="product-info"
+																			style="position: relative; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); border-top-right-radius: 30px; border-bottom-right-radius: 30px; width: 380px;">
+																			<div class="product-text"
+																				style="z-index: 2; color: black; text-align: left; margin-left: 50px; font-size: 15px; position: relative; top: 30px;">
 																				<h1 th:text="${product.productName}"></h1>
 																				<h2 th:text="${product.dateOfPurchased}"></h2>
 																				<p th:text="${product.description}"></p>
 																			</div>
 																			<div
-																				style="position: relative; left: 22px; top: 35px;">
+																				style="position: relative; left: 22px; top: 35px;     z-index: 2;">
 																				<h1 th:text="${product.price + ' LEI'}"></h1>
 																			</div>
 																		</div>

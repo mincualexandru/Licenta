@@ -90,9 +90,10 @@ public class AuthenticationController {
 	public String signupSave(@Valid @ModelAttribute("user") Account user, BindingResult bindingResult,
 			RedirectAttributes attr, Model model, @RequestParam String chooseRoleName) {
 
+		System.out.println("Rol Ales este " + chooseRoleName);
 		Account userExist = accountService.findByUsername(user.getUsername());
 		if (userExist != null) {
-			attr.addFlashAttribute("errorMessage", "Acest utilizator deja exista ! Selecteaza alt nume de utilizator.");
+			attr.addFlashAttribute("errorMessage", "**Numele de utilizator exista");
 			return "redirect:/signup";
 		}
 

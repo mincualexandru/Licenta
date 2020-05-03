@@ -149,7 +149,7 @@ public class TrainerController {
 		Timestamp timestampEnd = Timestamp.valueOf(LocalDate.now().atStartOfDay().plusDays(1).minusSeconds(1));
 		Account learner = new Account();
 		if (helper.isActive()) {
-			if (checkId(learnerId) && accountService.findById(Integer.parseInt(learnerId)).isPresent()) {
+			if (checkLearner(helper, learnerId)) {
 				learner = accountService.findById(Integer.parseInt(learnerId)).get();
 				exercisesDoneForLearner = exerciseDoneService.findAllByUserAccountId(learner.getAccountId());
 				for (ExerciseDone exerciseDone : exercisesDoneForLearner) {
@@ -193,6 +193,15 @@ public class TrainerController {
 			return "redirect:/trainer";
 		}
 
+	}
+
+	private boolean checkLearner(Account helper, String learnerId) {
+		Set<Account> learners = accountService.getHelpers(helper);
+		if (checkId(learnerId) && accountService.findById(Integer.parseInt(learnerId)).isPresent()
+				&& learners.contains(accountService.findById(Integer.parseInt(learnerId)).get())) {
+			return true;
+		}
+		return false;
 	}
 
 	@GetMapping(path = { "/training_plans" })
@@ -265,8 +274,7 @@ public class TrainerController {
 	public String editTrainingPlan(Model model, @PathVariable("id") String trainingPlanId) {
 		Account account = accountService.getAccountConnected();
 		if (account.isActive()) {
-			if (checkId(trainingPlanId) && helperPlanService
-					.findByHelperPlanIdAndTypeOfPlan(Integer.parseInt(trainingPlanId), "Antrenament").isPresent()) {
+			if (checkTrainingPlan(account, trainingPlanId)) {
 				if (!model.containsAttribute("trainingPlan")) {
 					HelperPlan trainingPlan = helperPlanService
 							.findByHelperPlanIdAndTypeOfPlan(Integer.parseInt(trainingPlanId), "Antrenament").get();
@@ -281,6 +289,19 @@ public class TrainerController {
 			return "redirect:/trainer";
 		}
 
+	}
+
+	private boolean checkTrainingPlan(Account account, String trainingPlanId) {
+		if (checkId(trainingPlanId)
+				&& helperPlanService.findByHelperPlanIdAndTypeOfPlanAndHelperAccountId(Integer.parseInt(trainingPlanId),
+						"Antrenament", account.getAccountId()).isPresent()) {
+			HelperPlan trainingPlan = helperPlanService.findByHelperPlanIdAndTypeOfPlanAndHelperAccountId(
+					Integer.parseInt(trainingPlanId), "Antrenament", account.getAccountId()).get();
+			if (userPlanService.findAllByHelperPlanHelperPlanId(trainingPlan.getHelperPlanId()).size() == 0) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@PostMapping(path = { "/edit_training_plan_save" })
@@ -315,8 +336,7 @@ public class TrainerController {
 	public String createExerciseForTrainingPlan(Model model, @PathVariable("id") String trainingPlanId) {
 		Account account = accountService.getAccountConnected();
 		if (account.isActive()) {
-			if (checkId(trainingPlanId) && helperPlanService
-					.findByHelperPlanIdAndTypeOfPlan(Integer.parseInt(trainingPlanId), "Antrenament").isPresent()) {
+			if (checkTrainingPlan(account, trainingPlanId)) {
 				if (!model.containsAttribute("exercise")) {
 					Exercise newExercise = new Exercise();
 					model.addAttribute("exercise", newExercise);
@@ -361,12 +381,11 @@ public class TrainerController {
 		if (account.getRoles().contains(roleService.findByName("ROLE_TRAINER").get())) {
 			roleTrainer = true;
 		}
-		if (checkId(exerciseId) && exerciseService.findById(Integer.parseInt(exerciseId)).isPresent()) {
+		if (checkExercise(account, exerciseId)) {
 			Exercise exercise = exerciseService.findById(Integer.parseInt(exerciseId)).get();
 			Set<ExerciseAdvice> exerciseAdvice = exercise.getExerciseAdvices();
 			List<ExerciseAdvice> exerciseAdviceSorted = exerciseAdvice.stream()
 					.sorted((e1, e2) -> e1.getAdvice().compareTo(e2.getAdvice())).collect(Collectors.toList());
-			model.addAttribute("account", account);
 			model.addAttribute("exercise", exercise);
 			model.addAttribute("exerciseAdviceSorted", exerciseAdviceSorted);
 			model.addAttribute("exerciseImage", new ExerciseImage());
@@ -374,8 +393,28 @@ public class TrainerController {
 		} else {
 			model.addAttribute("inexistentValue", true);
 		}
+		model.addAttribute("account", account);
 		return "common/view_exercise";
 
+	}
+
+	private boolean checkExercise(Account account, String exerciseId) {
+		if (checkId(exerciseId) && exerciseService.findById(Integer.parseInt(exerciseId)).isPresent()) {
+			Exercise exercise = exerciseService.findById(Integer.parseInt(exerciseId)).get();
+			if (account.getRoles().contains(roleService.findByName("ROLE_TRAINER").get())) {
+				if (exercise.getTrainingPlan().getHelper().getAccountId() == account.getAccountId()) {
+					return true;
+				}
+			}
+			if (account.getRoles().contains(roleService.findByName("ROLE_USER").get())) {
+				for (UserPlan userPlan : exercise.getTrainingPlan().getUserPlans()) {
+					if (userPlan.getUser().getAccountId() == account.getAccountId()) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	@PostMapping(path = { "/add_photo_for_exercise_save" })

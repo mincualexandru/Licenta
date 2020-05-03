@@ -203,8 +203,7 @@ public class NutritionistController {
 	public String editDietPlan(Model model, @PathVariable("id") String dietPlanId) {
 		Account account = accountService.getAccountConnected();
 		if (account.isActive()) {
-			if (checkId(dietPlanId) && helperPlanService
-					.findByHelperPlanIdAndTypeOfPlan(Integer.parseInt(dietPlanId), "Dieta").isPresent()) {
+			if (checkDietPlan(account, dietPlanId)) {
 				if (!model.containsAttribute("dietPlan")) {
 					HelperPlan dietPlan = helperPlanService
 							.findByHelperPlanIdAndTypeOfPlan(Integer.parseInt(dietPlanId), "Dieta").get();
@@ -218,6 +217,19 @@ public class NutritionistController {
 		} else {
 			return "redirect:/nutritionist";
 		}
+	}
+
+	private boolean checkDietPlan(Account account, String dietPlanId) {
+		if (checkId(dietPlanId)
+				&& helperPlanService.findByHelperPlanIdAndTypeOfPlanAndHelperAccountId(Integer.parseInt(dietPlanId),
+						"Dieta", account.getAccountId()).isPresent()) {
+			HelperPlan dietPlan = helperPlanService.findByHelperPlanIdAndTypeOfPlanAndHelperAccountId(
+					Integer.parseInt(dietPlanId), "Dieta", account.getAccountId()).get();
+			if (userPlanService.findAllByHelperPlanHelperPlanId(dietPlan.getHelperPlanId()).size() == 0) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@PostMapping(path = { "/edit_diet_plan_save" })
@@ -250,8 +262,7 @@ public class NutritionistController {
 	public String createFoodForDietPlan(Model model, @PathVariable("id") String dietPlanId) {
 		Account account = accountService.getAccountConnected();
 		if (account.isActive()) {
-			if (checkId(dietPlanId) && helperPlanService
-					.findByHelperPlanIdAndTypeOfPlan(Integer.parseInt(dietPlanId), "Dieta").isPresent()) {
+			if (checkDietPlan(account, dietPlanId)) {
 				if (!model.containsAttribute("food")) {
 					Food newFood = new Food();
 					model.addAttribute("food", newFood);
@@ -288,7 +299,7 @@ public class NutritionistController {
 	@GetMapping(path = { "/view_food/{id}" })
 	public String viewExercise(Model model, @PathVariable("id") String foodId) {
 		Account user = accountService.getAccountConnected();
-		if (checkId(foodId) && foodService.findById(Integer.parseInt(foodId)).isPresent()) {
+		if (checkFood(user, foodId)) {
 			Food food = foodService.findById(Integer.parseInt(foodId)).get();
 			Set<FoodRecommendation> foodRecommendation = food.getRecommendations();
 			List<FoodRecommendation> foodRecommendationSorted = foodRecommendation.stream()
@@ -317,7 +328,6 @@ public class NutritionistController {
 				}
 
 			}
-			model.addAttribute("account", user);
 			model.addAttribute("food", food);
 			model.addAttribute("foodRecommendationSorted", foodRecommendationSorted);
 			model.addAttribute("foodImage", new FoodImage());
@@ -325,8 +335,28 @@ public class NutritionistController {
 		} else {
 			model.addAttribute("inexistentValue", true);
 		}
+		model.addAttribute("account", user);
 		return "common/view_food";
 
+	}
+
+	private boolean checkFood(Account account, String foodId) {
+		if (checkId(foodId) && foodService.findById(Integer.parseInt(foodId)).isPresent()) {
+			Food food = foodService.findById(Integer.parseInt(foodId)).get();
+			if (account.getRoles().contains(roleService.findByName("ROLE_NUTRITIONIST").get())) {
+				if (food.getDietPlan().getHelper().getAccountId() == account.getAccountId()) {
+					return true;
+				}
+			}
+			if (account.getRoles().contains(roleService.findByName("ROLE_USER").get())) {
+				for (UserPlan userPlan : food.getDietPlan().getUserPlans()) {
+					if (userPlan.getUser().getAccountId() == account.getAccountId()) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	@PostMapping(path = { "/add_photo_for_food_save" })
@@ -406,7 +436,7 @@ public class NutritionistController {
 	public String viewProgressNutritionist(Model model, @PathVariable("id") String learnerId) {
 		Account helper = accountService.getAccountConnected();
 		if (helper.isActive()) {
-			if (checkId(learnerId) && accountService.findById(Integer.parseInt(learnerId)).isPresent()) {
+			if (checkLearner(helper, learnerId)) {
 				Account learner = accountService.findById(Integer.parseInt(learnerId)).get();
 				Map<String, Integer> chartFoodEaten = new TreeMap<>();
 				Map<String, Integer> chartAccumulatedCalories = new TreeMap<>();
@@ -465,6 +495,15 @@ public class NutritionistController {
 			return "redirect:/nutritionist";
 		}
 
+	}
+
+	private boolean checkLearner(Account helper, String learnerId) {
+		Set<Account> learners = accountService.getHelpers(helper);
+		if (checkId(learnerId) && accountService.findById(Integer.parseInt(learnerId)).isPresent()
+				&& learners.contains(accountService.findById(Integer.parseInt(learnerId)).get())) {
+			return true;
+		}
+		return false;
 	}
 
 	private boolean checkId(String userDeviceId) {

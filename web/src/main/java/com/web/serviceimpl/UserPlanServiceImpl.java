@@ -84,4 +84,9 @@ public class UserPlanServiceImpl implements UserPlanService {
 		return userPlanDao.findAllByHelperPlanHelperAccountIdAndDateOfPurchaseBetween(accountId, timestampStartDate,
 				timestampEndDate);
 	}
+
+	@Override
+	public Set<UserPlan> findAllByHelperPlanHelperPlanId(int helperPlanId) {
+		return userPlanDao.findAllByHelperPlanHelperPlanId(helperPlanId);
+	}
 }

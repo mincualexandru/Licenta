@@ -37,4 +37,6 @@ public interface UserPlanDao extends CrudRepository<UserPlan, Integer> {
 
 	Set<UserPlan> findAllByHelperPlanHelperAccountIdAndDateOfPurchaseBetween(Integer accountId,
 			Timestamp timestampStartDate, Timestamp timestampEndDate);
+
+	Set<UserPlan> findAllByHelperPlanHelperPlanId(int helperPlanId);
 }

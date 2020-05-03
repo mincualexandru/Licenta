@@ -219,29 +219,34 @@
 														<th:block th:if="${product.type == 'Dieta'}">
 															<img style="height: 160px;"
 																th:src="@{'images/plans/diets/diet'+${iterStat.index + 2}+'.jpg'}"
+																onerror="this.src='/images/di.png';this.onerror='';"
 																alt="" class="itemImg" />
 														</th:block>
 														<th:block
 															th:if="${product.type == 'Antrenament' and product.forWho.getGender() eq 'Barbat'}">
 															<img style="height: 160px;"
 																th:src="@{'images/plans/trainings/man/man_training'+${iterStat.index + 2}+'.jpg'}"
+																onerror="this.src='/images/di.png';this.onerror='';"
 																alt="" class="itemImg" />
 														</th:block>
 														<th:block
-															th:if="${product.type == 'Dieta' and product.forWho.getGender() eq 'Fmeie'}">
+															th:if="${product.type == 'Dieta' and product.forWho.getGender() eq 'Femeie'}">
 															<img style="height: 160px;"
 																th:src="@{'images/plans/trainings/woman/woman_training'+${iterStat.index + 2}+'.jpg'}"
+																onerror="this.src='/images/di.png';this.onerror='';"
 																alt="" class="itemImg" />
 														</th:block>
 														<th:block th:if="${product.productName == 'Bratara'}">
 															<img style="height: 160px;"
 																th:src="@{'images/devices/band/'+${product.imageName}}"
+																onerror="this.src='/images/di.png';this.onerror='';"
 																alt="" class="itemImg" />
 														</th:block>
 														<th:block
 															th:if="${product.productName == 'Cantar Inteligent'}">
 															<img style="height: 160px;"
 																th:src="@{'images/devices/scale/'+${product.imageName}}"
+																onerror="this.src='/images/di.png';this.onerror='';"
 																alt="" class="itemImg" />
 														</th:block>
 													</div>

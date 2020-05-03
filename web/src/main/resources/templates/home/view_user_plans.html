@@ -190,7 +190,7 @@
 															style="height: 300px; margin-top: -20px;">
 															<img
 																th:src="@{'images/plans/trainings/man/man_training'+${iterStat.index+1}+'.jpg'}"
-																onerror="if (this.src != 'images/di.png') this.src = ''images/di.png'';"
+																onerror="this.src='/images/di.png';this.onerror='';"
 																class="img scale-img" width="800" height="800"
 																style="height: 80%; width: 90%" alt="green apple slice">
 														</div>
@@ -201,7 +201,7 @@
 															style="height: 300px; margin-top: -20px;">
 															<img
 																th:src="@{'images/plans/trainings/woman/woman_training'+${iterStat.index+1}+'.jpg'}"
-																onerror="if (this.src != 'images/di.png') this.src = ''images/di.png'';"
+																onerror="this.src='/images/di.png';this.onerror='';"
 																class="img scale-img" width="800" height="800"
 																style="height: 80%; width: 90%" alt="green apple slice">
 														</div>
@@ -212,7 +212,7 @@
 															style="height: 300px; margin-top: -20px;">
 															<img
 																th:src="@{'images/plans/diets/diet'+${iterStat.index+1}+'.jpg'}"
-																onerror="if (this.src != 'images/di.png') this.src = ''images/di.png'';"
+																onerror="this.src='/images/di.png';this.onerror='';"
 																class="img scale-img" width="800" height="800"
 																style="height: 80%; width: 90%" alt="green apple slice">
 														</div>

@@ -40,7 +40,7 @@ public class Account {
 	private Integer accountId;
 
 	@Column(name = "name")
-	@Pattern(regexp = "^[a-zA-Z](_(?!(\\.|_))|\\.(?!(_|\\.))|[a-zA-Z]){3,18}[a-zA-Z]$", message = "Nume utilizator introdus gresit")
+	@Pattern(regexp = "^[a-zA-Z](_(?!(\\.|_))|\\.(?!(_|\\.))|[a-zA-Z]){3,18}[a-zA-Z]$", message = "**Numele de utilizator introdus gresit")
 	// poate contine doar litere/_/punct
 	// _. nu se poate
 	// __ / .. nu se poate
@@ -48,30 +48,28 @@ public class Account {
 	private String username;
 
 	@Column(name = "first_name")
-	@Pattern(regexp = "^[A-Z][a-zA-Z]{3,15}$", message = "Numele de familie introdus gresit")
+	@Pattern(regexp = "^[A-Z][a-zA-Z]{3,15}$", message = "**Numele de familie introdus gresit")
 	private String firstName;
 
 	@Column(name = "last_name")
-	@Pattern(regexp = "^[A-Z][a-zA-Z]{3,15}(?: [A-Z][a-zA-Z]*){0,2}$", message = "Prenumele introdus gresit")
+	@Pattern(regexp = "^[A-Z][a-zA-Z]{3,15}(?: [A-Z][a-zA-Z]*){0,2}$", message = "**Prenumele introdus gresit")
 	private String lastName;
 
 	@Column(name = "password")
-	@Size(min = 3, message = "Valoarea minima a dimensiunii campului este de 3 caractere")
+	@Size(min = 3, message = "**Parola trebuie sa aiba minim 3 caractere")
 	private String password;
 
 	@Column(name = "email")
-	@Pattern(regexp = "\\S+@\\S+\\.\\S+", message = "Adresa de email formata gresit")
+	@Pattern(regexp = "\\S+@\\S+\\.\\S+", message = "**Adresa de email formata gresit")
 	private String email;
 
 	@Column(name = "phone_number")
-	@Pattern(regexp = "^[0-9]{10}$", message = "Valoarea dimensiunii campului este de 10 cifre")
+	@Pattern(regexp = "^[0-9]{10}$", message = "**Numarul trebuie sa aiba minim 10 cifre")
 	private String phoneNumber;
 
 	@Column(name = "born_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	// @Pattern(regexp = "^\\d{4}\\-(0?[1-9]|1[012])\\-(0?[1-9]|[12][0-9]|3[01])$",
-	// message="Data introdusa nu este corecta")
-	@Past(message = "Nu poti introduce o data din viitor")
+	@Past(message = "**Nu poti introduce o data din viitor")
 	private LocalDate bornDate;
 
 	@Column(name = "active")

@@ -79,4 +79,10 @@ public class HelperPlanServiceImpl implements HelperPlanService {
 				timestampEndDate);
 	}
 
+	@Override
+	public Optional<HelperPlan> findByHelperPlanIdAndTypeOfPlanAndHelperAccountId(int parseInt, String string,
+			Integer accountId) {
+		return helperPlanDao.findByHelperPlanIdAndTypeOfPlanAndHelperAccountId(parseInt, string, accountId);
+	}
+
 }

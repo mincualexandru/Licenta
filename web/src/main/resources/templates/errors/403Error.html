@@ -4,31 +4,47 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<title>404</title>
+<link th:href="@{css/font-face.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-4.7/css/font-awesome.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/font-awesome-5/css/fontawesome-all.min.css}"
+	rel="stylesheet" media="all">
+<link
+	th:href="@{vendor/mdi-font/css/material-design-iconic-font.min.css}"
+	rel="stylesheet" media="all">
 
-<title>403</title>
+<link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
 
-<!-- Google font -->
-<link href="https://fonts.googleapis.com/css?family=Fredoka+One"
-	rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Raleway:400,700"
-	rel="stylesheet">
-
-<!-- Custom stlylesheet -->
-<link type="text/css" rel="stylesheet" href="css/style.css" />
-<link rel="stylesheet" th:href="@{/css/errorCSS.css}"
-	href="../../static/css/errorCSS.css" />
+<link th:href="@{vendor/animsition/animsition.min.css}" rel="stylesheet"
+	media="all">
+<link
+	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/wow/animate.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/css-hamburgers/hamburgers.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/slick/slick.css}" rel="stylesheet" media="all">
+<link th:href="@{vendor/select2/select2.min.css}" rel="stylesheet"
+	media="all">
+<link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{css/theme.css}" rel="stylesheet" media="all">
 </head>
 
-<body>
-	<div id="notfound">
-		<div class="notfound">
-			<div class="notfound-404">
-				<h1>403</h1>
+<body style="background-color: #7300e6;">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-9 mx-auto">
+				<div
+					style="text-align: center; font-size: 70px; color: white; font-weight: 700; position: relative; top: 200px;">
+					Ne pare rau! <br> Nu poti accesa aceasta pagina <br> <a
+						href="/home" class="btnn2"
+						style="padding: 3px 15px; margin-top: 30px; color: #7300e6; background-color: white; font-size: 30px; position: relative; left: -60px; top: -10px;">Pagina
+						Principala</a>
+				</div>
 			</div>
-			<h2>Oops, you can't access this page!</h2>
-			<a th:href="@{/home}"> <span class="arrow"></span>Go home
-			</a>
 		</div>
 	</div>
 </body>

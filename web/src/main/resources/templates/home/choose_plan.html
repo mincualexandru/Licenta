@@ -192,7 +192,7 @@
 								<th:block th:if="${plan.typeOfPlan eq 'Dieta'}">
 									<img
 										th:src="@{'images/plans/diets/diet'+${iterStat.index+1}+'.jpg'}"
-										onerror="if (this.src != 'images/di.png') this.src = ''images/di.png'';"
+										onerror="this.src='/images/di.png';this.onerror='';"
 										style="position: absolute; left: 24%; top: 50%; transform: translate(-50%, -50%); width: 230px; height: 250px;"
 										alt="green apple slice">
 								</th:block>
@@ -200,7 +200,7 @@
 									th:if="${plan.typeOfPlan eq 'Antrenament' and user.gender.getGender() eq 'Barbat'}">
 									<img
 										th:src="@{'images/plans/trainings/man/man_training'+${iterStat.index+1}+'.jpg'}"
-										onerror="if (this.src != 'images/di.png') this.src = ''images/di.png'';"
+										onerror="this.src='/images/di.png';this.onerror='';"
 										style="position: absolute; left: 24%; top: 50%; transform: translate(-50%, -50%); width: 230px; height: 250px;"
 										alt="green apple slice">
 								</th:block>
@@ -208,7 +208,7 @@
 									th:if="${plan.typeOfPlan eq 'Antrenament' and user.gender.getGender() eq 'Femeie'}">
 									<img
 										th:src="@{'images/plans/trainings/woman/woman_training'+${iterStat.index+1}+'.jpg'}"
-										onerror="if (this.src != 'images/di.png') this.src = ''images/di.png'';"
+										onerror="this.src='/images/di.png';this.onerror='';"
 										style="position: absolute; left: 24%; top: 50%; transform: translate(-50%, -50%); width: 230px; height: 250px;"
 										alt="green apple slice">
 								</th:block>

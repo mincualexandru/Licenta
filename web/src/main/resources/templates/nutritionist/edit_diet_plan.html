@@ -77,9 +77,9 @@
 								src="/images/logo/kcalaccumulated.png"><span
 								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Creeaza
 									Dieta</span></a></li>
-						<li><a href="/purchased_diet_plans" class="links"
-							style=""><img style="height: 40px; width: 40px;" width="800"
-								height="800" src="/images/logo/burn.png"><span
+						<li><a href="/purchased_diet_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/burn.png"><span
 								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Diete
 									Vandute</span></a></li>
 						<li><a href="/view_feedbacks" class="links" style=""><img
@@ -121,9 +121,9 @@
 								src="/images/logo/kcalaccumulated.png"><span
 								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Creeaza
 									Dieta</span></a></li>
-						<li><a href="/purchased_diet_plans" class="links"
-							style=""><img style="height: 40px; width: 40px;" width="800"
-								height="800" src="/images/logo/burn.png"><span
+						<li><a href="/purchased_diet_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/burn.png"><span
 								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Diete
 									Vandute</span></a></li>
 						<li><a href="/view_feedbacks" class="links" style=""><img
@@ -142,84 +142,89 @@
 		<div class="page-container">
 			<div class="main-content">
 				<div class="section__content section__content--p30">
-					<div class="container-fluid">
-						<form class="form-horizontal" role="form" method="post"
-							th:action="@{/edit_diet_plan_save}"
-							th:object="${dietPlan}">
-							<input type="hidden" name="dietPlanId"
+					<div th:if="${inexistentValue}"
+						style="font-size: 90px; color: white; font-weight: 800; text-align: center; position: relative; top: 200px;">
+						Valoarea <br> introdusa nu exista
+					</div>
+					<div th:unless="${inexistentValue}">
+						<div class="container-fluid">
+							<form class="form-horizontal" role="form" method="post"
+								th:action="@{/edit_diet_plan_save}" th:object="${dietPlan}">
+								<input type="hidden" name="dietPlanId"
 									th:value="${dietPlan.helperPlanId}" />
-							<div class="row">
-								<div class="col-md-6 mx-auto"
-									style="background-color: white; border-radius: 30px; padding: 30px 50px; position: relative; top: -20px;">
-									<img
-										style="width: 150px; height: 150px; position: relative; left: 175px;"
-										src="/images/logo/popsicle.png" />
-									<h3
-										style="text-align: center; font-size: 45px; color: #7300e6; font-weight: 700; margin-bottom: 15px;">Dieta
-										Noua</h3>
-									<div style="margin-bottom: 10px;">
-										<label
-											style="color: black; font-weight: 100; font-size: 20px;">Nume</label>
-										<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-											<input type="text" th:field="*{name}"
-												class="form-control validation" id="firstName"
-												placeholder="Nume" autofocus
-												style="margin-bottom: 5px; font-size: 18px;">
+								<div class="row">
+									<div class="col-md-6 mx-auto"
+										style="background-color: white; border-radius: 30px; padding: 30px 50px; position: relative; top: -20px;">
+										<img
+											style="width: 150px; height: 150px; position: relative; left: 175px;"
+											src="/images/logo/popsicle.png" />
+										<h3
+											style="text-align: center; font-size: 45px; color: #7300e6; font-weight: 700; margin-bottom: 15px;">Dieta
+											Noua</h3>
+										<div style="margin-bottom: 10px;">
+											<label
+												style="color: black; font-weight: 100; font-size: 20px;">Nume</label>
+											<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+												<input type="text" th:field="*{name}"
+													class="form-control validation" id="firstName"
+													placeholder="Nume" autofocus
+													style="margin-bottom: 5px; font-size: 18px;">
+											</div>
+											<div style="color: red;" th:if="${#fields.hasErrors('name')}"
+												th:errors="*{name}"></div>
 										</div>
-										<div style="color: red;" th:if="${#fields.hasErrors('name')}"
-											th:errors="*{name}"></div>
-									</div>
-									<div style="margin-bottom: 10px;">
-										<label
-											style="color: black; font-weight: 100; font-size: 20px;">Pentru
-											cine?</label>
-										<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-											<select
-												style="    width: -webkit-fill-available; height: 41px; margin-bottom: 5px; font-size: 18px;"
-												th:field="*{forWho}">
-												<option style="height: 40px;" th:each="s : ${sex}"
-													th:text="${s.gender}" th:value="${s}"></option>
-											</select>
+										<div style="margin-bottom: 10px;">
+											<label
+												style="color: black; font-weight: 100; font-size: 20px;">Pentru
+												cine?</label>
+											<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+												<select
+													style="width: -webkit-fill-available; height: 41px; margin-bottom: 5px; font-size: 18px;"
+													th:field="*{forWho}">
+													<option style="height: 40px;" th:each="s : ${sex}"
+														th:text="${s.gender}" th:value="${s}"></option>
+												</select>
+											</div>
+											<div style="color: red;"
+												th:if="${#fields.hasErrors('forWho')}" th:errors="*{forWho}"></div>
 										</div>
-										<div style="color: red;"
-											th:if="${#fields.hasErrors('forWho')}" th:errors="*{forWho}"></div>
-									</div>
-									<div>
-										<label
-											style="color: black; font-weight: 100; font-size: 20px;">Pret</label>
-										<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-											<input type="number" th:field="*{price}"
-												class="form-control validation" id="price"
-												placeholder="Pret" autofocus
-												style="margin-bottom: 5px; font-size: 18px;">
+										<div>
+											<label
+												style="color: black; font-weight: 100; font-size: 20px;">Pret</label>
+											<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+												<input type="number" th:field="*{price}"
+													class="form-control validation" id="price"
+													placeholder="Pret" autofocus
+													style="margin-bottom: 5px; font-size: 18px;">
+											</div>
+											<div style="color: red;"
+												th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
 										</div>
-										<div style="color: red;" th:if="${#fields.hasErrors('price')}"
-											th:errors="*{price}"></div>
-									</div>
-									<div>
-										<label
-											style="color: black; font-weight: 100; font-size: 20px;">Descriere</label>
-										<div class="input-group mb-2 mr-sm-2 mb-sm-0">
-											<textarea style="resize: none; margin-bottom: 20px;" rows="4"
-												cols="50" th:field="*{description}"
-												class="form-control validation" id="description"
-												placeholder="Descriere" autofocus></textarea>
+										<div>
+											<label
+												style="color: black; font-weight: 100; font-size: 20px;">Descriere</label>
+											<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+												<textarea style="resize: none; margin-bottom: 20px;"
+													rows="4" cols="50" th:field="*{description}"
+													class="form-control validation" id="description"
+													placeholder="Descriere" autofocus></textarea>
+											</div>
+											<div style="color: red;"
+												th:if="${#fields.hasErrors('description')}"
+												th:errors="*{description}"></div>
 										</div>
-										<div style="color: red;" th:if="${#fields.hasErrors('description')}"
-											th:errors="*{description}"></div>
+										<input type="hidden" name="typeOfPlan" value="Dieta">
+										<button
+											style="margin-right: 40px; padding-left: 25px; padding-right: 25px; margin-bottom: -10px;"
+											type="submit" class="btnn2">Editeaza</button>
 									</div>
-									<input type="hidden" name="typeOfPlan" value="Dieta">
-									<button
-										style="margin-right: 40px; padding-left: 25px; padding-right: 25px; margin-bottom: -10px;"
-										type="submit" class="btnn2">Editeaza</button>
 								</div>
-							</div>
-						</form>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<script type="text/javascript" th:src="@{/js/signup.js}"></script>
+		<script type="text/javascript" th:src="@{/js/signup.js}"></script>
 </body>
 </html>
