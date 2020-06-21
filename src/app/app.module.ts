@@ -9,7 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 import { DataTransferComponent } from './data-transfer/data-transfer.component';
 import { FormUploadComponent } from './form-upload/form-upload.component';
-import { DeviceCardComponent } from './data-transfer/device-card/device-card.component';
+import { DeviceCardItemComponent } from './data-transfer/device-card-item/device-card-item.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -45,14 +45,20 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
 import { UserDetailsComponent } from './user-details/user-details.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { SuccessUploadComponent } from './success-upload/success-upload.component';
+import { WINDOW_PROVIDERS } from './window.providers';
+import { HostService } from './services/host.service';
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     DataTransferComponent,
     FormUploadComponent,
-    DeviceCardComponent,
-    UserDetailsComponent
+    DeviceCardItemComponent,
+    UserDetailsComponent,
+    NotFoundComponent,
+    SuccessUploadComponent
   ],
   imports: [
     BrowserModule,
@@ -111,6 +117,7 @@ import { UserDetailsComponent } from './user-details/user-details.component';
     MatTreeModule,
     FormsModule
   ],
+  providers: [WINDOW_PROVIDERS, HostService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

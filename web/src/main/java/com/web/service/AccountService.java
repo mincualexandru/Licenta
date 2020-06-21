@@ -21,7 +21,7 @@ public interface AccountService {
 
 	Set<Account> findAllByActive(boolean b);
 
-	Account findByUsername(String name);
+	Optional<Account> findByUsername(String name);
 
 	Set<Account> findAllByRolesNameOrRolesName(String trainer, String nutritionist);
 
@@ -29,5 +29,9 @@ public interface AccountService {
 
 	Account getAccountConnected();
 
-	Set<Account> getHelpers(Account helper);
+	Set<Account> getLearners(Account helper);
+
+	boolean checkId(String userDeviceId);
+
+	boolean checkLearner(Account helper, String learnerId);
 }

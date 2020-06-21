@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 <head>
-	<title>Fit Buddy</title>
-	<link rel="stylesheet" type="text/css" href="css/authentication.css">
-	<link href="https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap" rel="stylesheet">
-	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
+<title>Fit Buddy</title>
+<link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+<link
+	href="https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap"
+	rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="css/authentication.css">
 </head>
 <body>
 	<div>
@@ -12,36 +16,66 @@
 	</div>
 	<div class="container">
 		<div class="img">
-			<img style="filter: hue-rotate(230deg) brightness(0.8)" src="images/authentication/man.png">
+			<img style="filter: hue-rotate(230deg) brightness(0.8)"
+				src="images/authentication/man.png">
 		</div>
 		<div class="login-content">
 			<form name='f' action="login" method='POST'>
-				<img src="images/authentication/young.png" style="filter: hue-rotate(230deg) brightness(0.7) contrast(2); height: 100px;">
+				<div th:if="${param.error}">
+					<div class="alert alert-danger"
+						style="background-color: #7300e6; color: white; font-size: 17px;">
+						Nume de utilizator sau parola incorecte.</div>
+				</div>
+				<div th:if="${param.logout}">
+					<div class="alert alert-info" style="background-color: #7300e6; color: white; font-size: 18px;">Te-ai deconectat.</div>
+				</div>
+				<div th:if="${accountCreated}">
+					<div class="alert alert-danger"
+						style="background-color: #7300e6; color: white; font-size: 17px;">
+						Cont creat cu succes.</div>
+				</div>
+				<div th:if="${virtualWalletCreated}">
+					<div class="alert alert-danger"
+						style="background-color: #7300e6; color: white; font-size: 17px;">
+						Ai primit un portofel virtual.</div>
+				</div>
+				<div th:if="${deviceCreated}">
+					<div class="alert alert-danger"
+						style="background-color: #7300e6; color: white; font-size: 17px;">
+						Ai primit un dispozitiv implicit.</div>
+				</div>
+				<img src="images/authentication/young.png"
+					style="filter: hue-rotate(230deg) brightness(0.7) contrast(2); height: 100px;">
 				<h2 class="title" style="color: #7300e6">Fit Buddy</h2>
-           		<div class="input-div one">
-           		   <div class="i">
-           		   		<i class="fas fa-user" style="color: #7300e6"></i>
-           		   </div>
-           		   <div class="div">
-           		   		<h5 style="color: #7300e6">Nume Utilizator</h5>
-           		   		<input type="text" id="name" name="name" value='' class="input" style="color: #7300e6">
-           		   </div>
-           		</div>
-           		<div class="input-div pass">
-           		   <div class="i"> 
-           		    	<i class="fas fa-lock" style="color: #7300e6"></i>
-           		   </div>
-           		   <div class="div">
-           		    	<h5 style="color: #7300e6">Parola</h5>
-           		    	<input type="password" id="password" name="password" class="input" style="color: #7300e6">
-            	   </div>
-            	</div>
-            	<input name="submit" type="submit" class="btn" value="Login" style="background-color: #7300e6;">
-            </form>
-        </div>
-    </div>
-    <script type="text/javascript" src="js/main.js"></script>
-    <script>
+				<div class="input-div one">
+					<div class="i">
+						<i class="fas fa-user" style="color: #7300e6"></i>
+					</div>
+					<div class="div">
+						<h5 style="color: #7300e6">Nume Utilizator</h5>
+						<input type="text" id="name" name="name" value='' class="input"
+							style="color: #7300e6">
+					</div>
+				</div>
+				<div class="input-div pass">
+					<div class="i">
+						<i class="fas fa-lock" style="color: #7300e6"></i>
+					</div>
+					<div class="div">
+						<h5 style="color: #7300e6">Parola</h5>
+						<input type="password" id="password" name="password" class="input"
+							style="color: #7300e6">
+					</div>
+				</div>
+				<input name="submit" type="submit" class="btn" value="Login"
+					style="background-color: #7300e6;"> <a href="/signup"
+					class="btn"
+					style="background-color: #7300e6; color: white; line-height: 36px;">Creeaza
+					Cont</a>
+			</form>
+		</div>
+	</div>
+	<script>
     const inputs = document.querySelectorAll(".input");
 
 
@@ -62,6 +96,11 @@
     	input.addEventListener("focus", addcl);
     	input.addEventListener("blur", remcl);
     });
+    
+    window.history.forward(); 
+    function noBack() { 
+        window.history.forward(); 
+    } 
 
     </script>
 </body>

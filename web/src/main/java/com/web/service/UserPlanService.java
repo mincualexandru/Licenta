@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.Set;
 
+import com.web.model.Account;
+import com.web.model.HelperPlan;
 import com.web.model.UserPlan;
 
 public interface UserPlanService {
@@ -35,4 +37,6 @@ public interface UserPlanService {
 			Timestamp timestampStartDate, Timestamp timestampEndDate);
 
 	Set<UserPlan> findAllByHelperPlanHelperPlanId(int helperPlanId);
+
+	void createUserPlan(Account account, HelperPlan dietPlan);
 }

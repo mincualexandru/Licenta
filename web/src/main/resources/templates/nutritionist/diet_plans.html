@@ -3,30 +3,7 @@
 	xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Diet Plans</title>
-<link th:href="@{css/font-face.css}" rel="stylesheet" media="all">
-<link th:href="@{vendor/font-awesome-4.7/css/font-awesome.min.css}"
-	rel="stylesheet" media="all">
-<link th:href="@{vendor/font-awesome-5/css/fontawesome-all.min.css}"
-	rel="stylesheet" media="all">
-<link
-	th:href="@{vendor/mdi-font/css/material-design-iconic-font.min.css}"
-	rel="stylesheet" media="all">
-
 <link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
-	rel="stylesheet" media="all">
-
-<link th:href="@{vendor/animsition/animsition.min.css}" rel="stylesheet"
-	media="all">
-<link
-	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
-	rel="stylesheet" media="all">
-<link th:href="@{vendor/wow/animate.css}" rel="stylesheet" media="all">
-<link th:href="@{vendor/css-hamburgers/hamburgers.min.css}"
-	rel="stylesheet" media="all">
-<link th:href="@{vendor/slick/slick.css}" rel="stylesheet" media="all">
-<link th:href="@{vendor/select2/select2.min.css}" rel="stylesheet"
-	media="all">
-<link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
 	rel="stylesheet" media="all">
 <link th:href="@{css/theme.css}" rel="stylesheet" media="all">
 <link th:href="@{css/cart.css}" rel="stylesheet" media="all">
@@ -69,9 +46,9 @@
 								src="/images/logo/kcalaccumulated.png"><span
 								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Creeaza
 									Dieta</span></a></li>
-						<li><a href="/purchased_diet_plans" class="links"
-							style=""><img style="height: 40px; width: 40px;" width="800"
-								height="800" src="/images/logo/burn.png"><span
+						<li><a href="/purchased_diet_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/burn.png"><span
 								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Diete
 									Vandute</span></a></li>
 						<li><a href="/view_feedbacks" class="links" style=""><img
@@ -113,9 +90,9 @@
 								src="/images/logo/kcalaccumulated.png"><span
 								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Creeaza
 									Dieta</span></a></li>
-						<li><a href="/purchased_diet_plans" class="links"
-							style=""><img style="height: 40px; width: 40px;" width="800"
-								height="800" src="/images/logo/burn.png"><span
+						<li><a href="/purchased_diet_plans" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="/images/logo/burn.png"><span
 								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Diete
 									Vandute</span></a></li>
 						<li><a href="/view_feedbacks" class="links" style=""><img
@@ -135,8 +112,19 @@
 			<div class="main-content">
 				<div class="section__content section__content--p30">
 					<div th:unless="${#lists.size(dietPlans)}"
-						style="font-size: 90px; color: white; font-weight: 800; text-align: center; position: relative; top: 200px;">Nu
-						exita planuri de dieta momentan</div>
+						style="color: white; font-size: 25px; letter-spacing: 2px; position: relative; top: 200px; left:80px">
+						<div class="col-md-6 mx-auto">
+							<ul style="list-style: hangul-consonant;">
+								<li>Toate planurile au fost cumparate</li>
+								<li style="list-style: none;">sau</li>
+								<li>Nu ai creat niciun plan momentan</li>
+							</ul>
+							<div style="font-size: 25px;">
+								Creeaza o noua dieta de <a href="/create_diet_plan"
+									style="color: red; font-size: 35px;">aici</a>
+							</div>
+						</div>
+					</div>
 					<div th:if="${#lists.size(dietPlans)}">
 						<h3
 							style="text-align: center; font-size: 60px; margin-top: 30px; margin-bottom: 30px; color: white; font-weight: 700;">Diete
@@ -153,6 +141,7 @@
 														style="height: 300px; margin-top: -20px;">
 														<img
 															th:src="@{'images/plans/diets/diet'+${iterStat.index+1}+'.jpg'}"
+															onerror="this.src='/images/di.png';this.onerror='';"
 															class="img scale-img" width="800" height="800"
 															style="height: 80%; width: 90%" alt="green apple slice">
 													</div>
@@ -164,18 +153,21 @@
 																th:value="${plan.helperPlanId}" />
 															<button type="submit">
 																<h2 th:text="${plan.name}" class="choose"
-																	style="font-size: 25px; font-weight: 700; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden; text-align: center;"></h2>
+																	style="font-size: 25px; font-weight: 700; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden; text-align: center; margin-bottom: 0px;"></h2>
 															</button>
 														</form>
 													</th:block>
 													<th:block th:if="${plan.foods.size() eq 0 }">
 														<h2
-															style="margin-bottom: 15px; font-size: 25px; font-weight: 700; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden; text-align: center;"
+															style="font-size: 25px; font-weight: 700; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden; text-align: center; margin-bottom: 0px;"
 															th:text="${plan.name}"></h2>
 													</th:block>
 													<h3
 														style="font-size: 20px; margin-bottom: 10px; font-weight: 100;"
 														th:text="${'Special pentru: ' + plan.forWho.getGender()}"></h3>
+													<h3
+														style="font-size: 20px; margin-bottom: 10px; font-weight: 100;"
+														th:text="${'Pret: ' + plan.price + ' LEI'}"></h3>
 													<h6
 														style="font-size: 15px; margin-bottom: 25px; font-weight: 100;"
 														th:text="${'Data Creare: ' + plan.dateOfCreation}"></h6>

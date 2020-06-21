@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.web.dao.FoodFeedbackDao;
+import com.web.model.Account;
+import com.web.model.Food;
 import com.web.model.FoodFeedback;
 import com.web.service.FoodFeedbackService;
 
@@ -44,6 +46,16 @@ public class FoodFeedbackServiceImpl implements FoodFeedbackService {
 	@Override
 	public Set<FoodFeedback> findAllByUserAccountId(Integer integer) {
 		return foodFeedbackDao.findAllByUserAccountId(integer);
+	}
+
+	@Override
+	public void createFeedbackForFood(String messageReview, Integer number, Account user, Food food) {
+		FoodFeedback foodFeedback = new FoodFeedback();
+		foodFeedback.setFood(food);
+		foodFeedback.setMessage(messageReview);
+		foodFeedback.setRating(number);
+		foodFeedback.setUser(user);
+		foodFeedbackDao.save(foodFeedback);
 	}
 
 }

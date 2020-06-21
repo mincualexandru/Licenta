@@ -11,8 +11,10 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.web.dao.ExerciseDao;
 import com.web.dao.MeasurementDao;
 import com.web.model.Measurement;
+import com.web.model.UserDevice;
 import com.web.service.MeasurementService;
 
 @Service("measurementService")
@@ -20,6 +22,9 @@ public class MeasurementServiceImpl implements MeasurementService {
 
 	@Autowired
 	private MeasurementDao measurementDao;
+
+	@Autowired
+	private ExerciseDao exerciseDao;
 
 	@Override
 	public void save(Measurement measurement) {
@@ -155,5 +160,31 @@ public class MeasurementServiceImpl implements MeasurementService {
 	@Override
 	public void saveAll(Set<Measurement> measurements) {
 		measurementDao.saveAll(measurements);
+	}
+
+	@Override
+	public void createMeasurement(Integer exerciseId, Measurement measurement, UserDevice userDevice,
+			String nameOfMeasurement, String unitOfMeasurement) {
+		measurement.setStartDate(new Timestamp(System.currentTimeMillis()));
+		measurement.setEndDate(null);
+		measurement.setName(nameOfMeasurement);
+		measurement.setUnitOfMeasurement(unitOfMeasurement);
+		measurement.setValue(exerciseDao.findById(exerciseId).get().getCaloriesBurned());
+		measurement.setUserDevice(userDevice);
+		measurement.setFromXml(false);
+	}
+
+	@Override
+	public Measurement createMeasurementForHeightOrWeight(Float value, UserDevice userDevice, String name,
+			String unitOfMeasurement) {
+		Measurement measurementForHeightOrWeight = new Measurement();
+		measurementForHeightOrWeight.setStartDate(new Timestamp(System.currentTimeMillis()));
+		measurementForHeightOrWeight.setEndDate(null);
+		measurementForHeightOrWeight.setFromXml(false);
+		measurementForHeightOrWeight.setName(name);
+		measurementForHeightOrWeight.setUnitOfMeasurement(unitOfMeasurement);
+		measurementForHeightOrWeight.setValue(value);
+		measurementForHeightOrWeight.setUserDevice(userDevice);
+		return measurementForHeightOrWeight;
 	}
 }

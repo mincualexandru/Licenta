@@ -3,6 +3,8 @@ package com.web.service;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.web.model.ExerciseImage;
@@ -25,4 +27,7 @@ public interface ExerciseImageService {
 	void saveImage(MultipartFile imageFile, ExerciseImage exerciseImage, HelperPlan helperPlan) throws Exception;
 
 	void deleteByExerciseImagesIdAndExerciseExerciseId(Integer photoId, Integer exerciseId);
+
+	@Transactional
+	void deleteImage(ExerciseImage exerciseImage);
 }

@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import com.web.dao.MeasurementDao;
 import com.web.dao.UserDeviceDao;
 import com.web.model.Account;
+import com.web.model.Device;
 import com.web.model.Measurement;
 import com.web.model.UserDevice;
 import com.web.service.UserDeviceService;
@@ -98,5 +99,23 @@ public class UserDeviceServiceImpl implements UserDeviceService {
 	@Override
 	public Optional<UserDevice> findTopByOrderByDateOfPurchaseDesc() {
 		return userDeviceDao.findTopByOrderByDateOfPurchaseDesc();
+	}
+
+	@Override
+	public void createUserDevice(Account user, Device newDevice) {
+		UserDevice userDevice = new UserDevice();
+		userDevice.setDevice(newDevice);
+		userDevice.setUser(user);
+		userDevice.setBought(true);
+		userDeviceDao.save(userDevice);
+	}
+
+	@Override
+	public void addDeviceToUser(Account account, Device device) {
+		UserDevice userDevice = new UserDevice();
+		userDevice.setDevice(device);
+		userDevice.setUser(account);
+		userDevice.setBought(false);
+		userDeviceDao.save(userDevice);
 	}
 }

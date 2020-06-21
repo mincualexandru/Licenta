@@ -5,11 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -26,27 +22,18 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.web.model.Account;
 import com.web.model.Food;
 import com.web.model.FoodEaten;
-import com.web.model.FoodImage;
-import com.web.model.FoodRecommendation;
 import com.web.model.HelperPlan;
-import com.web.model.TypeMeasurement;
-import com.web.model.UserDevice;
 import com.web.model.UserPlan;
 import com.web.service.AccountService;
 import com.web.service.FoodEatenService;
-import com.web.service.FoodImageService;
-import com.web.service.FoodRecommendationService;
 import com.web.service.FoodService;
 import com.web.service.HelperFeedbackService;
 import com.web.service.HelperPlanService;
-import com.web.service.RoleService;
-import com.web.service.TypeMeasurementService;
 import com.web.service.UserDeviceService;
 import com.web.service.UserPlanService;
 import com.web.utils.Gender;
@@ -66,12 +53,6 @@ public class NutritionistController {
 	private FoodService foodService;
 
 	@Autowired
-	private FoodImageService foodImageService;
-
-	@Autowired
-	private FoodRecommendationService foodRecommendationService;
-
-	@Autowired
 	private UserPlanService userPlanService;
 
 	@Autowired
@@ -82,12 +63,6 @@ public class NutritionistController {
 
 	@Autowired
 	private UserDeviceService userDeviceService;
-
-	@Autowired
-	private RoleService roleService;
-
-	@Autowired
-	private TypeMeasurementService typeMeasurementService;
 
 	@GetMapping(path = { "/nutritionist" })
 	public String nutritionist(Model model) {
@@ -101,12 +76,7 @@ public class NutritionistController {
 				account.getAccountId(), timestampStartDate, timestampEndDate);
 		Set<UserPlan> userPlansToday = userPlanService.findAllByHelperPlanHelperAccountIdAndDateOfPurchaseBetween(
 				account.getAccountId(), timestampStartDate, timestampEndDate);
-		Set<Integer> learnersIds = accountService.findAllLearnersByHelperId(account.getAccountId());
-		Set<Account> learners = new HashSet<>();
-		for (Integer integer : learnersIds) {
-			Account learner = accountService.findById(integer).get();
-			learners.add(learner);
-		}
+		Set<Account> learners = accountService.getLearners(account);
 		Set<FoodEaten> foodEatenToday = new HashSet<>();
 		learners.forEach(
 				element -> foodEatenToday.addAll(foodEatenService.findAllByUserAccountIdAndDateOfExecutionBetween(
@@ -115,7 +85,7 @@ public class NutritionistController {
 		learners.forEach(element -> allFoods.addAll(element.getFoodEaten()));
 		Map<Food, Long> favoriteFoods = allFoods.stream().map(element -> element.getFood())
 				.collect(Collectors.groupingBy(e -> e, Collectors.counting()));
-		Map<Food, Long> favoriteFoodDesc = sortFoods(favoriteFoods, false);
+		Map<Food, Long> favoriteFoodDesc = foodService.sortFoods(favoriteFoods, false);
 		model.addAttribute("account", account);
 		model.addAttribute("learners", learners);
 		model.addAttribute("plansCreatedToday", plansCreatedToday);
@@ -123,17 +93,6 @@ public class NutritionistController {
 		model.addAttribute("userPlansToday", userPlansToday);
 		model.addAttribute("favoriteFoodDesc", favoriteFoodDesc);
 		return "nutritionist/nutritionist";
-
-	}
-
-	private static Map<Food, Long> sortFoods(Map<Food, Long> unsortMap, final boolean order) {
-		List<Entry<Food, Long>> list = new LinkedList<>(unsortMap.entrySet());
-		list.sort((o1, o2) -> order
-				? o1.getValue().compareTo(o2.getValue()) == 0 ? o1.getKey().compareTo(o2.getKey())
-						: o1.getValue().compareTo(o2.getValue())
-				: o2.getValue().compareTo(o1.getValue()) == 0 ? o2.getKey().compareTo(o1.getKey())
-						: o2.getValue().compareTo(o1.getValue()));
-		return list.stream().collect(Collectors.toMap(Entry::getKey, Entry::getValue, (a, b) -> b, LinkedHashMap::new));
 
 	}
 
@@ -203,7 +162,7 @@ public class NutritionistController {
 	public String editDietPlan(Model model, @PathVariable("id") String dietPlanId) {
 		Account account = accountService.getAccountConnected();
 		if (account.isActive()) {
-			if (checkDietPlan(account, dietPlanId)) {
+			if (helperPlanService.checkPlan(account, dietPlanId, "Dieta")) {
 				if (!model.containsAttribute("dietPlan")) {
 					HelperPlan dietPlan = helperPlanService
 							.findByHelperPlanIdAndTypeOfPlan(Integer.parseInt(dietPlanId), "Dieta").get();
@@ -217,19 +176,6 @@ public class NutritionistController {
 		} else {
 			return "redirect:/nutritionist";
 		}
-	}
-
-	private boolean checkDietPlan(Account account, String dietPlanId) {
-		if (checkId(dietPlanId)
-				&& helperPlanService.findByHelperPlanIdAndTypeOfPlanAndHelperAccountId(Integer.parseInt(dietPlanId),
-						"Dieta", account.getAccountId()).isPresent()) {
-			HelperPlan dietPlan = helperPlanService.findByHelperPlanIdAndTypeOfPlanAndHelperAccountId(
-					Integer.parseInt(dietPlanId), "Dieta", account.getAccountId()).get();
-			if (userPlanService.findAllByHelperPlanHelperPlanId(dietPlan.getHelperPlanId()).size() == 0) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	@PostMapping(path = { "/edit_diet_plan_save" })
@@ -262,7 +208,7 @@ public class NutritionistController {
 	public String createFoodForDietPlan(Model model, @PathVariable("id") String dietPlanId) {
 		Account account = accountService.getAccountConnected();
 		if (account.isActive()) {
-			if (checkDietPlan(account, dietPlanId)) {
+			if (helperPlanService.checkPlan(account, dietPlanId, "Dieta")) {
 				if (!model.containsAttribute("food")) {
 					Food newFood = new Food();
 					model.addAttribute("food", newFood);
@@ -296,197 +242,44 @@ public class NutritionistController {
 		}
 	}
 
-	@GetMapping(path = { "/view_food/{id}" })
-	public String viewExercise(Model model, @PathVariable("id") String foodId) {
-		Account user = accountService.getAccountConnected();
-		if (checkFood(user, foodId)) {
-			Food food = foodService.findById(Integer.parseInt(foodId)).get();
-			Set<FoodRecommendation> foodRecommendation = food.getRecommendations();
-			List<FoodRecommendation> foodRecommendationSorted = foodRecommendation.stream()
-					.sorted((e1, e2) -> e1.getRecommendation().compareTo(e2.getRecommendation()))
-					.collect(Collectors.toList());
-			if (user.getRoles().contains(roleService.findByName("ROLE_USER").get())) {
-				LocalDate date = LocalDate.now();
-				LocalDateTime startDateTime = date.atStartOfDay();
-				LocalDateTime endDateTime = date.atStartOfDay().plusDays(1).minusSeconds(1);
-				Timestamp timestampStartDate = Timestamp.valueOf(startDateTime);
-				Timestamp timestampEndDate = Timestamp.valueOf(endDateTime);
-				Set<FoodEaten> foodsEatenByUser = foodEatenService.findAllByUserAccountIdAndDateOfExecutionBetween(
-						user.getAccountId(), timestampStartDate, timestampEndDate);
-				if (foodsEatenByUser.size() > 0) {
-					Integer sumOfAccumulatedCaloriesToday = foodsEatenByUser.stream()
-							.mapToInt(o -> Math.round(o.getFood().getCalories())).sum();
-					TypeMeasurement typeMeasurement = typeMeasurementService
-							.findByType("HKQuantityTypeIdentifierActiveEnergyAccumulated");
-					LocalDateTime currentDateTime = LocalDateTime.now();
-					if (sumOfAccumulatedCaloriesToday > typeMeasurement.getGoalMax() / 2
-							&& endDateTime.minusHours(12).isBefore(currentDateTime)
-							&& endDateTime.minusHours(3).isAfter(currentDateTime)) {
-						model.addAttribute("attentionToCalories", true);
-						model.addAttribute("sumOfAccumulatedCaloriesToday", sumOfAccumulatedCaloriesToday);
-					}
-				}
-
-			}
-			model.addAttribute("food", food);
-			model.addAttribute("foodRecommendationSorted", foodRecommendationSorted);
-			model.addAttribute("foodImage", new FoodImage());
-			model.addAttribute("foodRecommendation", new FoodRecommendation());
-		} else {
-			model.addAttribute("inexistentValue", true);
-		}
-		model.addAttribute("account", user);
-		return "common/view_food";
-
-	}
-
-	private boolean checkFood(Account account, String foodId) {
-		if (checkId(foodId) && foodService.findById(Integer.parseInt(foodId)).isPresent()) {
-			Food food = foodService.findById(Integer.parseInt(foodId)).get();
-			if (account.getRoles().contains(roleService.findByName("ROLE_NUTRITIONIST").get())) {
-				if (food.getDietPlan().getHelper().getAccountId() == account.getAccountId()) {
-					return true;
-				}
-			}
-			if (account.getRoles().contains(roleService.findByName("ROLE_USER").get())) {
-				for (UserPlan userPlan : food.getDietPlan().getUserPlans()) {
-					if (userPlan.getUser().getAccountId() == account.getAccountId()) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-	@PostMapping(path = { "/add_photo_for_food_save" })
-	public String addPhotoForExerciseSave(Model model, @RequestParam Integer foodId,
-			@RequestParam("imageFile") MultipartFile imageFile, @ModelAttribute("foodImage") FoodImage foodImage) {
-		Account account = accountService.getAccountConnected();
-		if (account.isActive()) {
-			foodImage.setFileName(imageFile.getOriginalFilename());
-			Food food = foodService.findById(foodId).get();
-			foodImage.setFood(food);
-			try {
-				foodImageService.saveImage(imageFile, foodImage);
-				foodImage.setPath("/images/plans/diets/");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			foodImageService.save(foodImage);
-			return "redirect:/view_food/" + foodId;
-		} else {
-			return "redirect:/nutritionist";
-		}
-	}
-
-	@PostMapping(path = { "/add_recommendation_for_food_save" })
-	public String addAdviceForExerciseSave(Model model,
-			@ModelAttribute("foodRecommendation") FoodRecommendation foodRecommendation, @RequestParam Integer foodId) {
-		Account account = accountService.getAccountConnected();
-		if (account.isActive()) {
-			foodRecommendation.setFood(foodService.findById(foodId).get());
-			foodRecommendationService.save(foodRecommendation);
-			return "redirect:/view_food/" + foodId;
-		} else {
-			return "redirect:/nutritionist";
-		}
-	}
-
-	@PostMapping(path = { "/delete_photo_from_food" })
-	public String deletePhotoFromExercise(Model model, @RequestParam Integer foodId, @RequestParam Integer photoId) {
-		Account account = accountService.getAccountConnected();
-		if (account.isActive()) {
-			foodImageService.deleteByFoodImageIdAndFoodFoodId(photoId, foodId);
-			return "redirect:/view_food/" + foodId;
-		} else {
-			return "redirect:/nutritionist";
-		}
-	}
-
-	@PostMapping(path = { "/edit_recommendation_food" })
-	public String editAdviceExercise(Model model, @RequestParam Integer foodId, @RequestParam Integer recommendationId,
-			@RequestParam String editName) {
-		Account account = accountService.getAccountConnected();
-		if (account.isActive()) {
-			FoodRecommendation advice = foodRecommendationService
-					.findByFoodRecommendationIdAndFoodFoodId(recommendationId, foodId);
-			advice.setRecommendation(editName);
-			foodRecommendationService.save(advice);
-			return "redirect:/view_food/" + foodId;
-		} else {
-			return "redirect:/nutritionist";
-		}
-	}
-
-	@PostMapping(path = { "/delete_recommendation_food" })
-	public String deleteAdviceExercise(Model model, @RequestParam Integer foodId,
-			@RequestParam Integer recommendationId) {
-		Account account = accountService.getAccountConnected();
-		if (account.isActive()) {
-			foodRecommendationService.delete(
-					foodRecommendationService.findByFoodRecommendationIdAndFoodFoodId(recommendationId, foodId));
-			return "redirect:/view_food/" + foodId;
-		} else {
-			return "redirect:/nutritionist";
-		}
-	}
-
 	@GetMapping(path = { "/view_progress_nutritionist/{id}" })
 	public String viewProgressNutritionist(Model model, @PathVariable("id") String learnerId) {
 		Account helper = accountService.getAccountConnected();
 		if (helper.isActive()) {
-			if (checkLearner(helper, learnerId)) {
+			if (accountService.checkLearner(helper, learnerId)) {
 				Account learner = accountService.findById(Integer.parseInt(learnerId)).get();
 				Map<String, Integer> chartFoodEaten = new TreeMap<>();
 				Map<String, Integer> chartAccumulatedCalories = new TreeMap<>();
-				Integer numberOfFoodNotEaten = 0;
-				Set<Food> allFoods = foodService.findAllNotEatenFoods();
-				numberOfFoodNotEaten = allFoods.size();
-				Integer numberOfFoodEaten = 0;
 				Set<FoodEaten> foodEatenForLearner = foodEatenService.findAllByUserAccountId(learner.getAccountId());
 				String previousValue = null;
 				Integer numberOfFoodEatenByDay = 0;
 				Integer numberOfCaloriesPerFoodDay = 0;
-				for (FoodEaten foodEaten : foodEatenForLearner) {
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-					LocalDateTime startDateTime = foodEaten.getDateOfExecution().toLocalDateTime();
-					LocalDate startDate = startDateTime.toLocalDate();
-					String formatDate = startDate.format(formatter);
-					String value = formatDate;
-					if (!value.equals(previousValue)) {
-						numberOfFoodEatenByDay = 0;
-						numberOfCaloriesPerFoodDay = 0;
-						previousValue = value;
-					}
-					numberOfFoodEatenByDay++;
-					numberOfCaloriesPerFoodDay += Math.round(foodEaten.getFood().getCalories());
-					chartFoodEaten.put(value, numberOfFoodEatenByDay);
-					chartAccumulatedCalories.put(value, numberOfCaloriesPerFoodDay);
-				}
-				numberOfFoodEaten = foodEatenForLearner.size();
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 				boolean noFeedbackWasProvided = true;
 				Timestamp timestampStart = Timestamp.valueOf(LocalDate.now().atStartOfDay());
 				Timestamp timestampEnd = Timestamp.valueOf(LocalDate.now().atStartOfDay().plusDays(1).minusSeconds(1));
+				for (FoodEaten foodEaten : foodEatenForLearner) {
+					String startDate = foodEaten.getDateOfExecution().toLocalDateTime().toLocalDate().format(formatter);
+					if (!startDate.equals(previousValue)) {
+						numberOfFoodEatenByDay = 0;
+						numberOfCaloriesPerFoodDay = 0;
+						previousValue = startDate;
+					}
+					numberOfFoodEatenByDay++;
+					numberOfCaloriesPerFoodDay += Math.round(foodEaten.getFood().getCalories());
+					chartFoodEaten.put(startDate, numberOfFoodEatenByDay);
+					chartAccumulatedCalories.put(startDate, numberOfCaloriesPerFoodDay);
+				}
 				if (helperFeedbackService.findFirstByHelperAccountIdAndDateOfFeedbackProviedBetween(
 						learner.getAccountId(), timestampStart, timestampEnd).isPresent()) {
 					noFeedbackWasProvided = false;
 				}
-				for (UserDevice userDevice : learner.getUserDevices()) {
-					userDeviceService.getHeightAndWeight(model, userDevice);
-				}
-				for (UserDevice userDevice : learner.getUserDevices()) {
-					userDeviceService.getHeightAndWeight(model, userDevice);
-				}
-				model.addAttribute("account", helper);
+				learner.getUserDevices().forEach(userDevice -> userDeviceService.getHeightAndWeight(model, userDevice));
 				model.addAttribute("learner", learner);
 				model.addAttribute("noFeedbackWasProvided", noFeedbackWasProvided);
-				model.addAttribute("numberOfFoodNotEaten", numberOfFoodNotEaten);
-				model.addAttribute("numberOfFoodEaten", numberOfFoodEaten);
 				model.addAttribute("chartAccumulatedCalories", chartAccumulatedCalories);
 				model.addAttribute("chartFoodEaten", chartFoodEaten);
 				model.addAttribute("foodEatenForLearner", foodEatenForLearner);
-				model.addAttribute("allFoods", allFoods);
 			} else {
 				model.addAttribute("inexistentValue", true);
 			}
@@ -495,23 +288,5 @@ public class NutritionistController {
 			return "redirect:/nutritionist";
 		}
 
-	}
-
-	private boolean checkLearner(Account helper, String learnerId) {
-		Set<Account> learners = accountService.getHelpers(helper);
-		if (checkId(learnerId) && accountService.findById(Integer.parseInt(learnerId)).isPresent()
-				&& learners.contains(accountService.findById(Integer.parseInt(learnerId)).get())) {
-			return true;
-		}
-		return false;
-	}
-
-	private boolean checkId(String userDeviceId) {
-		try {
-			int num = Integer.parseInt(userDeviceId);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
 	}
 }

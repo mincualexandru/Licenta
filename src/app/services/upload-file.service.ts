@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent, HttpRequest } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { User } from '../models/user.model';
 
 @Injectable({
@@ -8,9 +8,12 @@ import { User } from '../models/user.model';
 })
 export class UploadFileService {
 
-  //SERVER_URL: string = "https://172.20.10.2:8443/";
+  SERVER_URL: string = "https://172.20.10.2:8443/";
 
-  SERVER_URL: string = "https://localhost:8443/";
+  approvalMessage = new BehaviorSubject<string>(null);
+  currentApprovalMessage = this.approvalMessage.asObservable();
+
+  //SERVER_URL: string = "https://localhost:8443/";
 
   constructor(private http: HttpClient) { }
 
@@ -26,5 +29,9 @@ export class UploadFileService {
     });
 
     return this.http.request(req);
+  }
+  
+  transferMessage(message: string) {
+      this.approvalMessage.next(message);
   }
 }

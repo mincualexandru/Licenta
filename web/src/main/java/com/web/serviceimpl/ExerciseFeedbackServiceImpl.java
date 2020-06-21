@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.web.dao.ExerciseFeedbackDao;
+import com.web.model.Account;
+import com.web.model.Exercise;
 import com.web.model.ExerciseFeedback;
 import com.web.service.ExerciseFeedbackService;
 
@@ -44,5 +46,15 @@ public class ExerciseFeedbackServiceImpl implements ExerciseFeedbackService {
 	@Override
 	public Set<ExerciseFeedback> findAllByUserAccountId(Integer integer) {
 		return exerciseFeedbackDao.findAllByUserAccountId(integer);
+	}
+
+	@Override
+	public void createFeedbackForExercise(String messageReview, Integer number, Account user, Exercise exercise) {
+		ExerciseFeedback exerciseFeedback = new ExerciseFeedback();
+		exerciseFeedback.setExercise(exercise);
+		exerciseFeedback.setUser(user);
+		exerciseFeedback.setMessage(messageReview);
+		exerciseFeedback.setRating(number);
+		exerciseFeedbackDao.save(exerciseFeedback);
 	}
 }

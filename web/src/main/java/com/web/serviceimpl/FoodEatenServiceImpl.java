@@ -1,6 +1,8 @@
 package com.web.serviceimpl;
 
 import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 
@@ -8,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.web.dao.FoodEatenDao;
+import com.web.model.Account;
+import com.web.model.Food;
 import com.web.model.FoodEaten;
 import com.web.service.FoodEatenService;
 
@@ -57,6 +61,27 @@ public class FoodEatenServiceImpl implements FoodEatenService {
 	@Override
 	public Optional<FoodEaten> findTopByUserAccountIdOrderByDateOfExecutionDesc(Integer accountId) {
 		return foodEatenDao.findTopByUserAccountIdOrderByDateOfExecutionDesc(accountId);
+	}
+
+	@Override
+	public boolean checkIfTenDaysFoodHavePassed(boolean passedTenDaysFoodEaten, LocalDateTime dateTimeNow,
+			Integer accountId) {
+		if (foodEatenDao.findTopByUserAccountIdOrderByDateOfExecutionDesc(accountId).isPresent()) {
+			FoodEaten foodEaten = foodEatenDao.findTopByUserAccountIdOrderByDateOfExecutionDesc(accountId).get();
+			Duration duration = Duration.between(foodEaten.getDateOfExecution().toLocalDateTime(), dateTimeNow);
+			if (duration.toDays() > 10) {
+				passedTenDaysFoodEaten = true;
+			}
+		}
+		return passedTenDaysFoodEaten;
+	}
+
+	@Override
+	public void addFoodToEat(Account account, Food food) {
+		FoodEaten foodEaten = new FoodEaten();
+		foodEaten.setFood(food);
+		foodEaten.setUser(account);
+		foodEatenDao.save(foodEaten);
 	}
 
 }

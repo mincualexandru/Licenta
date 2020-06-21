@@ -4,7 +4,9 @@ import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.Set;
 
+import com.web.model.Account;
 import com.web.model.HelperFeedback;
+import com.web.utils.Qualifying;
 
 public interface HelperFeedbackService {
 
@@ -24,4 +26,6 @@ public interface HelperFeedbackService {
 
 	Optional<HelperFeedback> findFirstByHelperAccountIdAndDateOfFeedbackProviedBetween(Integer helperId,
 			Timestamp startDate, Timestamp endDate);
+
+	void helperCreateFeedbackForLearner(Account helper, Integer learnerId, String reason, Qualifying qualifying);
 }

@@ -3,35 +3,6 @@
 	xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Sign up</title>
-<link th:href="@{../../css/font-face.css}" rel="stylesheet" media="all">
-<link
-	th:href="@{../../vendor/font-awesome-4.7/css/font-awesome.min.css}"
-	rel="stylesheet" media="all">
-<link
-	th:href="@{../../vendor/font-awesome-5/css/fontawesome-all.min.css}"
-	rel="stylesheet" media="all">
-<link
-	th:href="@{../../vendor/mdi-font/css/material-design-iconic-font.min.css}"
-	rel="stylesheet" media="all">
-
-<link th:href="@{../../vendor/bootstrap-4.1/bootstrap.min.css}"
-	rel="stylesheet" media="all">
-
-<link th:href="@{../../vendor/animsition/animsition.min.css}"
-	rel="stylesheet" media="all">
-<link
-	th:href="@{../../vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
-	rel="stylesheet" media="all">
-<link th:href="@{../../vendor/wow/animate.css}" rel="stylesheet"
-	media="all">
-<link th:href="@{../../vendor/css-hamburgers/hamburgers.min.css}"
-	rel="stylesheet" media="all">
-<link th:href="@{../../vendor/slick/slick.css}" rel="stylesheet"
-	media="all">
-<link th:href="@{../../vendor/select2/select2.min.css}" rel="stylesheet"
-	media="all">
-<link th:href="@{../../vendor/perfect-scrollbar/perfect-scrollbar.css}"
-	rel="stylesheet" media="all">
 <link th:href="@{../../css/theme.css}" rel="stylesheet" media="all">
 <link th:href="@{../../css/cart.css}" rel="stylesheet" media="all">
 <link
@@ -76,10 +47,10 @@ form .form-control:placeholder {
 		<form class="form-horizontal" role="form" method="POST"
 			th:action="@{/signup}" th:object="${user}" id="signupForm">
 			<div class="row">
-				<div class="col-md-4-5 mx-auto"
+				<div class="col-md-6 mx-auto"
 					style="background-color: white; border-radius: 30px; padding: 15px 50px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);">
 					<img id="imageAvatar"
-						style="width: 140px; height: 140px; position: relative; left: 150px; background-color: #7300e6; border-radius: 100px; padding: 10px;"
+						style="width: 140px; height: 140px; position: relative; left: 280px; background-color: #7300e6; border-radius: 100px; padding: 10px;"
 						src="/images/avatar/man.png" />
 					<h3
 						style="text-align: center; font-size: 40px; color: black; font-weight: 700; margin: 10px;">Creeaza
@@ -214,10 +185,11 @@ form .form-control:placeholder {
 			</div>
 		</form>
 	</div>
-	<script type="text/javascript" th:src="@{/js/signup.js}"></script>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
 		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
 		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 	<script
 		src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js
 	"></script>
@@ -237,12 +209,9 @@ form .form-control:placeholder {
 						down : "fa fa-arrow-down"
 					}
 				}).find('input:first').on("blur", function() {
-					// check if the date is correct. We can accept dd-mm-yyyy and yyyy-mm-dd.
-					// update the format if it's yyyy-mm-dd
 					var date = parseDate($(this).val());
 
 					if (!isValidDate(date)) {
-						//create date based on momentjs (we have that)
 						date = moment().format('YYYY-MM-DD');
 					}
 
@@ -252,7 +221,6 @@ form .form-control:placeholder {
 
 			var isValidDate = function(value, format) {
 				format = format || false;
-				// lets parse the date to the best of our knowledge
 				if (format) {
 					value = parseDate(value);
 				}
@@ -284,6 +252,8 @@ form .form-control:placeholder {
 				imageAvatar.src = '/images/avatar/woman.png';
 			}
 		}
+		
+		run();
 
 		let role_user = document.getElementById('ROLE_USER');
 		let role_trainer = document.getElementById('ROLE_TRAINER');

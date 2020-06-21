@@ -1,0 +1,8 @@
+.mat-grid-tile {
+    padding-top: 170px !important;
+}
+
+.mat-card {
+    max-width: 300px;
+    margin: auto;
+}

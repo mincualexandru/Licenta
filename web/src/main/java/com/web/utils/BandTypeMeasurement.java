@@ -3,7 +3,7 @@ package com.web.utils;
 public enum BandTypeMeasurement {
 
 	ENERGYBURNED("HKQuantityTypeIdentifierActiveEnergyBurned"), HEARTRATE("HKQuantityTypeIdentifierHeartRate"),
-	STEPCOUNT("HKQuantityTypeIdentifierStepCount"), SLEEPANALYSISASSLEEP("HKCategoryValueSleepAnalysisAsleep");
+	STEPCOUNT("HKQuantityTypeIdentifierStepCount"), SLEEPANALYSISASSLEEP("HKCategoryTypeIdentifierSleepAnalysis");
 
 	private final String bandTypeMeasurement;
 

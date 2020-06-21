@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.web.dao.HelperPlanDao;
+import com.web.dao.UserPlanDao;
+import com.web.model.Account;
 import com.web.model.HelperPlan;
+import com.web.service.AccountService;
 import com.web.service.HelperPlanService;
 
 @Service("helperPlanService")
@@ -16,6 +19,12 @@ public class HelperPlanServiceImpl implements HelperPlanService {
 
 	@Autowired
 	private HelperPlanDao helperPlanDao;
+
+	@Autowired
+	private UserPlanDao userPlanDao;
+
+	@Autowired
+	private AccountService accountService;
 
 	@Override
 	public void save(HelperPlan helperPlan) {
@@ -83,6 +92,20 @@ public class HelperPlanServiceImpl implements HelperPlanService {
 	public Optional<HelperPlan> findByHelperPlanIdAndTypeOfPlanAndHelperAccountId(int parseInt, String string,
 			Integer accountId) {
 		return helperPlanDao.findByHelperPlanIdAndTypeOfPlanAndHelperAccountId(parseInt, string, accountId);
+	}
+
+	@Override
+	public boolean checkPlan(Account account, String dietPlanId, String typeOfPlan) {
+		if (accountService.checkId(dietPlanId)
+				&& helperPlanDao.findByHelperPlanIdAndTypeOfPlanAndHelperAccountId(Integer.parseInt(dietPlanId),
+						typeOfPlan, account.getAccountId()).isPresent()) {
+			HelperPlan dietPlan = helperPlanDao.findByHelperPlanIdAndTypeOfPlanAndHelperAccountId(
+					Integer.parseInt(dietPlanId), typeOfPlan, account.getAccountId()).get();
+			if (userPlanDao.findAllByHelperPlanHelperPlanId(dietPlan.getHelperPlanId()).size() == 0) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

@@ -5,6 +5,7 @@ import { throwError, Subject, BehaviorSubject, Observable } from "rxjs";
 import { Router } from "@angular/router";
 import { environment } from "../../environments/environment";
 import { User } from "../models/user.model";
+import { UploadFileService } from "./upload-file.service";
 
 export interface AuthResponseData {
   accountId: number;
@@ -31,9 +32,9 @@ export class AuthService {
 
   user = new BehaviorSubject<User>(null);
 
-  _user = this.user.asObservable();
-
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private uploadService: UploadFileService) {
+    this.user = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('userData')));
+  }
 
   login(userName: string, password: string) {
     console.log("URL " + this.SERVER_URL);
@@ -57,16 +58,17 @@ export class AuthService {
             respData.gender,
             respData.role
           );
-        })
+        }),
+        catchError(this.handleError)
       );
   }
 
   
   logout() {
-    this.user.next(null);
     this.router.navigate(["/auth"]);
-    localStorage.removeItem("userData");
-    localStorage.removeItem("roleData");
+    localStorage.clear();
+    this.uploadService.approvalMessage.next(null);
+    this.user.next(null);
   }
 
   private handleAuthentication(
@@ -95,7 +97,11 @@ export class AuthService {
       gender,
       role
     );
-    this.user.next(user);
     localStorage.setItem("userData", JSON.stringify(user));
+    this.user.next(user);
   }
+
+  handleError(error) {
+    return throwError(error);
+}
 }

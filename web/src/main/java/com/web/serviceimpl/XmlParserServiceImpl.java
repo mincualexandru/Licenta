@@ -56,8 +56,7 @@ public class XmlParserServiceImpl implements XmlParserService {
 			removeEmptyNodes(doc);
 			NodeList childNodes = parentNode.getChildNodes();
 			getAllMeasurements(childNodes, userDevices);
-			int lenght = childNodes.getLength();
-			if (lenght != 0) {
+			if (childNodes.getLength() != 0) {
 				return true;
 			}
 		} catch (ParserConfigurationException e) {
@@ -117,10 +116,8 @@ public class XmlParserServiceImpl implements XmlParserService {
 				measure.setStartDate(startTimestamp);
 				measure.setEndDate(endTimestamp);
 				measure.setUnitOfMeasurement(unitOfMeasurement);
-				if (value.equals("HKCategoryValueSleepAnalysisAsleep")
-						|| value.equals("HKCategoryValueSleepAnalysisAwake")
-						|| value.equals("HKCategoryValueSleepAnalysisInBed")) {
-					measure.setName(value);
+				if (name.equals("HKCategoryTypeIdentifierSleepAnalysis")) {
+					measure.setName(name);
 					Integer difference = (int) (parsedEndDate.getTime() - parsedStartDate.getTime());
 					Integer differenceMinutes = difference / (60 * 1000);
 					measure.setValue(differenceMinutes);

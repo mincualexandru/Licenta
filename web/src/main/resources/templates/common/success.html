@@ -2,16 +2,10 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Sign up</title>
+<title>Success</title>
 <base href="/">
-<link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-	rel="stylesheet" id="bootstrap-css">
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
+<link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
 <link rel="stylesheet" type="text/css" th:href="@{css/style.css}" />
 <style>
 h1 {
@@ -63,11 +57,20 @@ i {
 	</div>
 	<script>
 		let message = '[[${message}]]';
+		let serverName = '[[${serverName}]]';
 		function redirect() {
 			if (message === 'height_or_weight_is_not_set') {
-				window.location = "https://localhost:8443/set_height_and_weight";
+				if(serverName == 'localhost') {
+					window.location = "https://localhost:8443/set_height_and_weight";
+				} else if(serverName != 'localhost') {
+					window.location = "https://172.20.10.2:8443/set_height_and_weight";
+				}
 			} else {
-				window.location = "https://localhost:8443/home";
+				if(serverName == 'localhost') {
+					window.location = "https://localhost:8443/home";
+				} else if(serverName != 'localhost') {
+					window.location = "https://172.20.10.2:8443/home";
+				}
 			}
 		}
 		setTimeout('redirect()', 1500);

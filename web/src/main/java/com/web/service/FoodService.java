@@ -1,8 +1,10 @@
 package com.web.service;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import com.web.model.Account;
 import com.web.model.Food;
 
 public interface FoodService {
@@ -25,4 +27,9 @@ public interface FoodService {
 	Set<Food> findAllByDietPlanHelperPlanIdAndDietPlanTypeOfPlan(Integer trainingPlanId, String string);
 
 	Optional<Food> findTopByDietPlanHelperAccountIdOrderByCreateDateTimeDesc(Integer accountId);
+
+	Map<Food, Long> sortFoods(Map<Food, Long> unsortMap, final boolean order);
+
+	boolean checkFood(Account account, String foodId);
+
 }

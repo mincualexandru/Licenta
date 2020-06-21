@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.Set;
 
+import com.web.model.Account;
 import com.web.model.HelperPlan;
 
 public interface HelperPlanService {
@@ -36,4 +37,5 @@ public interface HelperPlanService {
 	Optional<HelperPlan> findByHelperPlanIdAndTypeOfPlanAndHelperAccountId(int parseInt, String string,
 			Integer accountId);
 
+	boolean checkPlan(Account account, String dietPlanId, String typeOfPlan);
 }

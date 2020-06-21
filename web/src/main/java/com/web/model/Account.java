@@ -40,19 +40,17 @@ public class Account {
 	private Integer accountId;
 
 	@Column(name = "name")
-	@Pattern(regexp = "^[a-zA-Z](_(?!(\\.|_))|\\.(?!(_|\\.))|[a-zA-Z]){3,18}[a-zA-Z]$", message = "**Numele de utilizator introdus gresit")
-	// poate contine doar litere/_/punct
-	// _. nu se poate
-	// __ / .. nu se poate
-	//
+	@Pattern(regexp = "(?=.*[a-z])(?=.*(\\d)).{5,}", message = "**Campul trebuie sa contina minim 5 caractere, o litera si o cifra")
 	private String username;
 
 	@Column(name = "first_name")
-	@Pattern(regexp = "^[A-Z][a-zA-Z]{3,15}$", message = "**Numele de familie introdus gresit")
+	@Pattern(regexp = "[A-Z][a-zA-Z]+", message = "**Campul trebuie sa aibe prima litera mare, cifrele fiind interzise")
+	@Size(min = 3, message = "**Numele de familie trebuie sa aiba minim 3 caractere")
 	private String firstName;
 
 	@Column(name = "last_name")
-	@Pattern(regexp = "^[A-Z][a-zA-Z]{3,15}(?: [A-Z][a-zA-Z]*){0,2}$", message = "**Prenumele introdus gresit")
+	@Pattern(regexp = "[A-Z][a-zA-Z]+", message = "**Campul trebuie sa aibe prima litera mare, cifrele fiind interzise")
+	@Size(min = 3, message = "**Prenumele trebuie sa aiba minim 3 caractere")
 	private String lastName;
 
 	@Column(name = "password")

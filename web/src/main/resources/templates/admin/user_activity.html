@@ -11,35 +11,9 @@
 <meta name="keywords" content="au theme template">
 
 <title>Dashboard</title>
-
-<link th:href="@{css/font-face.css}" rel="stylesheet" media="all">
-<link th:href="@{vendor/font-awesome-4.7/css/font-awesome.min.css}"
-	rel="stylesheet" media="all">
-<link th:href="@{vendor/font-awesome-5/css/fontawesome-all.min.css}"
-	rel="stylesheet" media="all">
-<link
-	th:href="@{vendor/mdi-font/css/material-design-iconic-font.min.css}"
-	rel="stylesheet" media="all">
-
 <link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
 	rel="stylesheet" media="all">
-
-<link th:href="@{vendor/animsition/animsition.min.css}" rel="stylesheet"
-	media="all">
-<link
-	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
-	rel="stylesheet" media="all">
-<link th:href="@{vendor/wow/animate.css}" rel="stylesheet" media="all">
-<link th:href="@{vendor/css-hamburgers/hamburgers.min.css}"
-	rel="stylesheet" media="all">
-<link th:href="@{vendor/slick/slick.css}" rel="stylesheet" media="all">
-<link th:href="@{vendor/select2/select2.min.css}" rel="stylesheet"
-	media="all">
-<link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
-	rel="stylesheet" media="all">
-
 <link th:href="@{css/theme.css}" rel="stylesheet" media="all">
-
 </head>
 
 <body>
@@ -134,7 +108,7 @@
 			<div class="menu-sidebar__content js-scrollbar1">
 				<nav class="navbar-sidebar">
 					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
-					<li><a href="/admin" class="links" style=""><img
+						<li><a href="/admin" class="links" style=""><img
 								style="height: 40px; width: 40px;" width="800" height="800"
 								src="images/logo/home.png"><span
 								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Admin</span></a></li>
@@ -206,7 +180,7 @@
 								style="font-size: 60px; font-weight: 600; text-align: center; color: white; margin-bottom: 60px;"
 								th:text="${account.username}"></div>
 							<div th:if="${#lists.size(account.userDevices)}">
-								<div class="row" style="position: relative; left: 200px;">
+								<div class="row">
 									<div class="col-md-12">
 										<div class="row">
 											<div class="col-md-4"
@@ -563,7 +537,9 @@
 							<div class="row">
 								<div
 									th:if="${passedTenDaysFoodEaten && passedTenDaysExerciseDone}">
-									<h4 style="color: white; font-size: 35px; font-weight: 600;">Dezactiveaza
+									<div class="row">
+										<div class="col-md-8 mx-auto">
+											<h4 style="color: white; font-size: 35px; font-weight: 600;">Dezactiveaza
 										Cont</h4>
 									<ul style="list-style: hangul-consonant;">
 										<th:block th:if="${passedTenDaysFoodEaten}">
@@ -579,6 +555,8 @@
 												unul dintre antrenorii tai</li>
 										</th:block>
 									</ul>
+										</div>
+									</div>
 									<form th:action="@{/disable_account}" method="post">
 										<input type="hidden" name="accountId"
 											th:value="${account.accountId}" />
@@ -590,20 +568,25 @@
 							</div>
 						</div>
 						<div th:if="${account.active == false}">
-							<h4 style="color: white; font-size: 35px; font-weight: 600;">Dezactiveaza
-								Cont</h4>
-							<ul style="list-style: hangul-consonant;">
-								<th:block th:if="${passedTenDaysFoodEaten}">
-									<li style="color: white; font-size: 25px; letter-spacing: 2px;">Au
-										trecut 10 zile de cand ai consumat un aliment propus de unul
-										dintre nutritionistii tai</li>
-								</th:block>
-								<th:block th:if="${passedTenDaysExerciseDone}">
-									<li style="color: white; font-size: 25px; letter-spacing: 2px;">Au
-										trecut 10 zile de cand ai efectuat un exercitiu propus de unul
-										dintre antrenorii tai</li>
-								</th:block>
-							</ul>
+							<div class="row">
+								<div class="col-md-8 mx-auto">
+									<h4 style="color: white; font-size: 35px; font-weight: 600;">Cont Dezactivat</h4>
+									<ul style="list-style: hangul-consonant;">
+										<th:block th:if="${passedTenDaysFoodEaten}">
+											<li
+												style="color: white; font-size: 25px; letter-spacing: 2px;">Au
+												trecut 10 zile de cand a consumat un aliment propus de unul
+												dintre nutritionistii sai</li>
+										</th:block>
+										<th:block th:if="${passedTenDaysExerciseDone}">
+											<li
+												style="color: white; font-size: 25px; letter-spacing: 2px;">Au
+												trecut 10 zile de cand a efectuat un exercitiu propus de
+												unul dintre antrenorii sai</li>
+										</th:block>
+									</ul>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -616,7 +599,6 @@
 		crossorigin="anonymous"></script>
 	<script
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-	<script src="https://code.highcharts.com/modules/data.js"></script>
 	<script src="https://code.highcharts.com/stock/highstock.js"></script>
 	<script src="https://code.highcharts.com/modules/drilldown.js"></script>
 	<script src="https://code.highcharts.com/modules/exporting.js"></script>

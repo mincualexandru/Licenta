@@ -1,6 +1,7 @@
 package com.web.service;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 
@@ -24,4 +25,9 @@ public interface ExerciseDoneService {
 
 	Set<ExerciseDone> findAllByUserAccountIdAndDateOfExecutionBetween(Integer accountId, Timestamp timestampStartDate,
 			Timestamp timestampEndDate);
+
+	boolean checkIfTenDaysExerciseHavePassed(boolean passedTenDaysExerciseDone, LocalDateTime dateTimeNow,
+			Integer accountId);
+
+	void addExerciseDone(Integer accountId, Integer exerciseId);
 }

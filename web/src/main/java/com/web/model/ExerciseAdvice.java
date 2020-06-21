@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "exercises_advices")
@@ -24,6 +25,7 @@ public class ExerciseAdvice {
 	private Exercise exercise;
 
 	@Column(name = "advice")
+	@Size(min = 3, message = "**Sfatul trebuie sa aiba minim 3 caractere")
 	private String advice;
 
 	public ExerciseAdvice() {

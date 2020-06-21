@@ -6,7 +6,9 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.web.dao.AccountDao;
 import com.web.dao.TransactionDao;
+import com.web.model.Account;
 import com.web.model.Transaction;
 import com.web.service.TransactionService;
 
@@ -15,6 +17,9 @@ public class TransactionServiceImpl implements TransactionService {
 
 	@Autowired
 	private TransactionDao transactionDao;
+
+	@Autowired
+	private AccountDao accountDao;
 
 	@Override
 	public void save(Transaction transaction) {
@@ -40,6 +45,17 @@ public class TransactionServiceImpl implements TransactionService {
 	@Override
 	public Set<Transaction> findAll() {
 		return transactionDao.findAll();
+	}
+
+	@Override
+	public void createTransaction(Account user) {
+		Transaction transaction = new Transaction();
+		transaction.setAccount(user);
+		transaction.setAvailableBalance(0);
+		transaction.setPayments(0);
+		transactionDao.save(transaction);
+		user.setTransaction(transaction);
+		accountDao.save(user);
 	}
 
 }

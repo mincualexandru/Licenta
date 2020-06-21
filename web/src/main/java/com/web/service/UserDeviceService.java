@@ -6,6 +6,7 @@ import java.util.Set;
 import org.springframework.ui.Model;
 
 import com.web.model.Account;
+import com.web.model.Device;
 import com.web.model.UserDevice;
 
 public interface UserDeviceService {
@@ -32,4 +33,8 @@ public interface UserDeviceService {
 	boolean checkIfDeviceIsPresent(Account account, String nameOfDevice);
 
 	Optional<UserDevice> findTopByOrderByDateOfPurchaseDesc();
+
+	void createUserDevice(Account user, Device newDevice);
+
+	void addDeviceToUser(Account account, Device device);
 }

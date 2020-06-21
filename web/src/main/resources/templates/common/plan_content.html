@@ -2,31 +2,8 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Purchased Training Plans</title>
-<link th:href="@{css/font-face.css}" rel="stylesheet" media="all">
-<link th:href="@{vendor/font-awesome-4.7/css/font-awesome.min.css}"
-	rel="stylesheet" media="all">
-<link th:href="@{vendor/font-awesome-5/css/fontawesome-all.min.css}"
-	rel="stylesheet" media="all">
-<link
-	th:href="@{vendor/mdi-font/css/material-design-iconic-font.min.css}"
-	rel="stylesheet" media="all">
-
+<title>Plan Content</title>
 <link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
-	rel="stylesheet" media="all">
-
-<link th:href="@{vendor/animsition/animsition.min.css}" rel="stylesheet"
-	media="all">
-<link
-	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
-	rel="stylesheet" media="all">
-<link th:href="@{vendor/wow/animate.css}" rel="stylesheet" media="all">
-<link th:href="@{vendor/css-hamburgers/hamburgers.min.css}"
-	rel="stylesheet" media="all">
-<link th:href="@{vendor/slick/slick.css}" rel="stylesheet" media="all">
-<link th:href="@{vendor/select2/select2.min.css}" rel="stylesheet"
-	media="all">
-<link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
 	rel="stylesheet" media="all">
 <link th:href="@{css/theme.css}" rel="stylesheet" media="all">
 <link th:href="@{css/cart.css}" rel="stylesheet" media="all">
@@ -308,13 +285,13 @@
 					<div class="section__content section__content--p30">
 						<div th:if="${trainingPlanId}">
 							<div th:if="${role.name == 'ROLE_USER'}">
-								<div th:unless="${#lists.size(notPerformedExercises)}"
+								<div th:unless="${#lists.size(exercises)}"
 									style="font-size: 90px; color: white; font-weight: 800; text-align: center; position: relative; top: 200px;">Ai
 									facut toate exercitiile</div>
-								<div th:if="${#lists.size(notPerformedExercises)}">
+								<div th:if="${#lists.size(exercises)}">
 									<h3 th:text="${selectedTrainingPlan.name}"
 										style="text-align: center; font-size: 60px; margin-top: 30px; margin-bottom: 30px; color: white; font-weight: 700;"></h3>
-									<th:block th:each="exercise: ${notPerformedExercises}">
+									<th:block th:each="exercise: ${exercises}">
 										<input type="hidden" th:value="${exercise.caloriesBurned}" />
 										<input type="hidden" th:value="${exercise.numberOfSeries}" />
 										<input type="hidden" th:value="${exercise.numberOfReps}" />
@@ -344,28 +321,28 @@
 																		Total Calorii Arse:
 																		<div
 																			style="margin-top: -15px; color: #7300e6; margin-right: 10px; margin-left: 5px; font-weight: 900; font-size: 40px;"
-																			th:text="${#aggregates.sum(notPerformedExercises.![caloriesBurned])}"></div>
+																			th:text="${#aggregates.sum(exercises.![caloriesBurned])}"></div>
 																		Total Numar Serii:
 																		<div
 																			style="margin-top: -15px; color: #7300e6; margin-right: 10px; margin-left: 5px; font-weight: 900; font-size: 40px;"
-																			th:text="${#aggregates.sum(notPerformedExercises.![numberOfSeries])}"></div>
+																			th:text="${#aggregates.sum(exercises.![numberOfSeries])}"></div>
 																		Total Numar Repetari:
 																		<div
 																			style="margin-top: -15px; color: #7300e6; margin-right: 10px; margin-left: 5px; font-weight: 900; font-size: 40px;"
-																			th:text="${#aggregates.sum(notPerformedExercises.![numberOfReps])}"></div>
+																			th:text="${#aggregates.sum(exercises.![numberOfReps])}"></div>
 																	</div>
 																	<div
 																		style="color: black; font-size: 40px; display: block; margin-right: 20px; font-weight: 600; margin-top: -20px;">Exercitii:</div>
 																	<a
 																		style="margin-bottom: 20px !important; background: #7300e6; font-weight: 700; padding: 15px; border: none; border-radius: 60px; width: auto; font-size: 15px; height: 40px; display: inline-flex; text-decoration: none; align-items: center; justify-content: center; margin: 0 10px 0.5rem 0; position: relative; color: white;"
-																		th:each="exercise, iter : ${notPerformedExercises}"
+																		th:each="exercise, iter : ${exercises}"
 																		th:href="${'#slide-'+ exercise.exerciseId}"
 																		th:id="${'slide'+ iter.index}"
 																		th:text="${exercise.name}"></a>
 																</div>
 															</div>
 															<div class="slides" style="margin-top: 40px;">
-																<div th:each="exercise, iter : ${notPerformedExercises}"
+																<div th:each="exercise, iter : ${exercises}"
 																	style="border-radius: 30px; overflow: hidden;">
 																	<div th:id="${'slide-'+ exercise.exerciseId}" style="">
 																		<div class="wrapper-slider">
@@ -374,13 +351,13 @@
 																					th:if="${exercise.exerciseImages.size() > 0 and exercise.trainingPlan.forWho.getGender() eq 'Barbat'}">
 																					<img
 																						style="padding: 30px; display: block; position: absolute; top: 50%; left: 50%; min-height: 100%; min-width: 100%; transform: translate(-50%, -50%);"
-																						th:src="@{'images/plans/trainings/man/exercise/'+${exercise.exerciseImages[0].fileName}}">
+																						th:src="@{'uploadedimages/exercises/man/'+${exercise.exerciseImages[0].fileName}}">
 																				</th:block>
 																				<th:block
 																					th:if="${exercise.exerciseImages.size() > 0 and exercise.trainingPlan.forWho.getGender() eq 'Femeie'}">
 																					<img
 																						style="padding: 30px; display: block; position: absolute; top: 50%; left: 50%; min-height: 100%; min-width: 100%; transform: translate(-50%, -50%);"
-																						th:src="@{'images/plans/trainings/woman/exercise/'+${exercise.exerciseImages[0].fileName}}">
+																						th:src="@{'uploadedimages/exercises/woman/'+${exercise.exerciseImages[0].fileName}}">
 																				</th:block>
 																				<th:block
 																					th:if="${exercise.exerciseImages.size() eq 0}">
@@ -506,13 +483,13 @@
 																					th:if="${exercise.exerciseImages.size() > 0 and exercise.trainingPlan.forWho.getGender() eq 'Barbat'}">
 																					<img
 																						style="padding: 30px; display: block; position: absolute; top: 50%; left: 50%; min-height: 100%; min-width: 100%; transform: translate(-50%, -50%);"
-																						th:src="@{'images/plans/trainings/man/exercise/'+${exercise.exerciseImages[0].fileName}}">
+																						th:src="@{'uploadedimages/exercises/man/'+${exercise.exerciseImages[0].fileName}}">
 																				</th:block>
 																				<th:block
 																					th:if="${exercise.exerciseImages.size() > 0 and exercise.trainingPlan.forWho.getGender() eq 'Femeie'}">
 																					<img
 																						style="padding: 30px; display: block; position: absolute; top: 50%; left: 50%; min-height: 100%; min-width: 100%; transform: translate(-50%, -50%);"
-																						th:src="@{'images/plans/trainings/woman/exercise/'+${exercise.exerciseImages[0].fileName}}">
+																						th:src="@{'uploadedimages/exercises/woman/'+${exercise.exerciseImages[0].fileName}}">
 																				</th:block>
 																				<th:block
 																					th:if="${exercise.exerciseImages.size() eq 0}">
@@ -575,13 +552,13 @@
 						<div th:if="${dietPlanId}">
 							<div th:each="role, iterStat : ${account.roles}">
 								<div th:if="${role.name == 'ROLE_USER'}">
-									<div th:unless="${#lists.size(notEatenFoods)}"
+									<div th:unless="${#lists.size(foods)}"
 										style="font-size: 90px; color: white; font-weight: 800; text-align: center; position: relative; top: 130px;">Ai
 										consumat toate alimentele</div>
-									<div th:if="${#lists.size(notEatenFoods)}">
+									<div th:if="${#lists.size(foods)}">
 										<h3 th:text="${selectedDietPlan.name}"
 											style="text-align: center; font-size: 60px; margin-top: 30px; margin-bottom: 30px; color: white; font-weight: 700;"></h3>
-										<th:block th:each="food: ${notEatenFoods}">
+										<th:block th:each="food: ${foods}">
 											<input type="hidden" th:value="${food.calories}" />
 											<input type="hidden" th:value="${food.protein}" />
 											<input type="hidden" th:value="${food.carbohydrates}" />
@@ -604,27 +581,27 @@
 																			Total Calorii:
 																			<div
 																				style="margin-top: -15px; color: #7300e6; margin-right: 10px; margin-left: 5px; font-weight: 900; font-size: 40px;"
-																				th:text="${#aggregates.sum(notEatenFoods.![calories])}"></div>
+																				th:text="${#aggregates.sum(foods.![calories])}"></div>
 																			Total Proteine:
 																			<div
 																				style="margin-top: -15px; color: #7300e6; margin-right: 10px; margin-left: 5px; font-weight: 900; font-size: 40px;"
-																				th:text="${#aggregates.sum(notEatenFoods.![protein])}"></div>
+																				th:text="${#aggregates.sum(foods.![protein])}"></div>
 																			Total Carbohidrati:
 																			<div
 																				style="margin-top: -15px; color: #7300e6; margin-right: 10px; margin-left: 5px; font-weight: 900; font-size: 40px;"
-																				th:text="${#aggregates.sum(notEatenFoods.![T(Math).floor(carbohydrates)])}"></div>
+																				th:text="${#aggregates.sum(foods.![T(Math).floor(carbohydrates)])}"></div>
 																		</div>
 																		<div
 																			style="color: black; font-size: 40px; display: block; margin-right: 20px; font-weight: 600; margin-top: -20px;">Alimente:</div>
 																		<a
 																			style="margin-bottom: 20px !important; background: #7300e6; font-weight: 700; padding: 15px; border: none; border-radius: 60px; width: auto; font-size: 15px; height: 40px; display: inline-flex; text-decoration: none; align-items: center; justify-content: center; margin: 0 10px 0.5rem 0; position: relative; color: white;"
-																			th:each="food, iter : ${notEatenFoods}"
+																			th:each="food, iter : ${foods}"
 																			th:href="${'#slide-'+ food.foodId}"
 																			th:id="${'slide'+ iter.index}" th:text="${food.name}"></a>
 																	</div>
 																</div>
 																<div class="slides" style="margin-top: 40px;">
-																	<div th:each="food, iter : ${notEatenFoods}"
+																	<div th:each="food, iter : ${foods}"
 																		style="border-radius: 30px; overflow: hidden;">
 																		<div th:id="${'slide-'+ food.foodId}" style="">
 																			<div class="wrapper-slider">
@@ -632,7 +609,7 @@
 																					<th:block th:if="${food.images.size() > 0}">
 																						<img
 																							style="padding: 30px; display: block; position: absolute; top: 50%; left: 50%; min-height: 100%; min-width: 100%; transform: translate(-50%, -50%);"
-																							th:src="@{'images/plans/diets/'+${food.images[0].fileName}}">
+																							th:src="@{'uploadedimages/foods/'+${food.images[0].fileName}}">
 																					</th:block>
 																					<th:block th:if="${food.images.size() eq 0}">
 																						<img
@@ -773,7 +750,7 @@
 																					<th:block th:if="${food.images.size() > 0}">
 																						<img
 																							style="padding: 30px; display: block; position: absolute; top: 50%; left: 50%; min-height: 100%; min-width: 100%; transform: translate(-50%, -50%);"
-																							th:src="@{'images/plans/diets/'+${food.images[0].fileName}}">
+																							th:src="@{'uploadedimages/foods/'+${food.images[0].fileName}}">
 																					</th:block>
 																					<th:block th:if="${food.images.size() eq 0}">
 																						<img

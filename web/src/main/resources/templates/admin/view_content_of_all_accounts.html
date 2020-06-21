@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>View Plans</title>
+<link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
+	rel="stylesheet" media="all">
+<link th:href="@{css/theme.css}" rel="stylesheet" media="all">
+<link th:href="@{css/cart.css}" rel="stylesheet" media="all">
+<style>
+.table tbody td, .table tbody th {
+	border: 0;
+	padding: 15px;
+}
+
+tr:nth-last-child(-n+1) td:nth-last-child(-n+3) {
+	border: 0 !important;
+}
+
+.table-hover>tbody>tr:hover {
+	background-color: #e6ccff;
+}
+
+thead tr:nth-child(1) th {
+	background: white;
+	position: sticky;
+	top: 0;
+	z-index: 10;
+	border-bottom: 0;
+}
+
+.table-responsive {
+	height: 350px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	background-color: white;
+	border-radius: 30px;
+	overflow-x: hidden;
+	background-color: white;
+}
+
+table {
+	border-spacing: 0;
+	width: 100%;
+	display: table;
+	border-collapse: separate;
+}
+
+.modal-backdrop {
+	display: none;
+}
+
+.modal {
+	background: rgba(0, 0, 0, 0.5);
+}
+</style>
+</head>
+<body>
+	<div class="page-wrapper">
+		<header style="background-color: white;"
+			class="header-mobile d-block d-lg-none">
+			<div class="header-mobile__bar">
+				<div class="container-fluid">
+					<div class="header-mobile-inner">
+						<a class="logo" href="index.html"> <img
+							src="/images/logo/Screenshot_18.png">
+						</a>
+						<button class="hamburger hamburger--slider" type="button">
+							<span class="hamburger-box"> <span class="hamburger-inner"></span>
+							</span>
+						</button>
+					</div>
+				</div>
+			</div>
+			<nav class="navbar-mobile">
+				<div class="container-fluid">
+					<ul class="navbar-mobile__list list-unstyled">
+						<li><a href="/admin" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Admin</span></a></li>
+						<li><a href="/accounts" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Conturi</span></a></li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="plans" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/portfolio.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Planuri</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="devices" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/smartwatch2.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Dispozitive</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption"
+									value="feedbacksExercises" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/positive-vote.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Feedback-uri
+										Exercitii</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="feedbacksFoods" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/interface.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Feedback-uri
+										Alimente</span>
+								</button>
+							</form>
+						</li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<aside style="background-color: white;"
+			class="menu-sidebar d-none d-lg-block">
+			<div class="logo">
+				<a href="#"> <img src="/images/logo/Screenshot_18.png">
+				</a>
+			</div>
+			<div class="menu-sidebar__content js-scrollbar1">
+				<nav class="navbar-sidebar">
+					<ul class="list-unstyled navbar__list" style="padding-left: 0px;">
+						<li><a href="/admin" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/home.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Admin</span></a></li>
+						<li><a href="/accounts" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/trainer.jpg"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Conturi</span></a></li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="plans" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/portfolio.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Planuri</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="devices" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/smartwatch2.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Dispozitive</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption"
+									value="feedbacksExercises" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/positive-vote.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Feedback-uri
+										Exercitii</span>
+								</button>
+							</form>
+						</li>
+						<li class="links">
+							<form style="padding: 15px 0;"
+								th:action="@{/view_content_of_all_accounts}" method="post">
+								<input type="hidden" name="contentOption" value="feedbacksFoods" />
+								<button type="submit">
+									<img style="height: 40px; width: 40px;" width="800"
+										height="800" src="images/logo/interface.png"><span
+										style="position: relative; top: 5px; left: 15px; font-size: 17px; color: #7300e6 !important; font-weight: 700;">Feedback-uri
+										Alimente</span>
+								</button>
+							</form>
+						</li>
+						<li><a href="/logout" class="links" style=""><img
+								style="height: 40px; width: 40px;" width="800" height="800"
+								src="images/logo/logout.png"><span
+								style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
+					</ul>
+				</nav>
+			</div>
+		</aside>
+		<div class="page-container">
+			<div class="main-content">
+				<div class="section__content section__content--p30">
+					<div class="row">
+						<div class="col-md-12">
+							<th:block th:if="${plans}">
+								<div
+									style="text-align: center; font-size: 70px; color: white; font-weight: 700; margin-bottom: 60px;">Planuri Create</div>
+							</th:block>
+							<th:block th:if="${devices}">
+								<div
+									style="text-align: center; font-size: 70px; color: white; font-weight: 700; margin-bottom: 60px;">Dispozitive Create</div>
+							</th:block>
+							<th:block th:if="${exerciseFeedbacks}">
+								<div
+									style="text-align: center; font-size: 70px; color: white; font-weight: 700; margin-bottom: 60px;">Feedback-uri Exercitii</div>
+							</th:block>
+							<th:block th:if="${foodFeedbacks}">
+								<div
+									style="text-align: center; font-size: 70px; color: white; font-weight: 700; margin-bottom: 60px;">Feedback-uri Alimente</div>
+							</th:block>
+							<div class="row" style="position: relative; left: 105px;">
+								<th:block th:if="${plans}">
+									<div class="col-md-5" th:each="plan, iterStat : ${plans}"
+										style="margin-bottom: 25px;">
+										<div class="card-type-2"
+											style="height: 220px; border-radius: 37px; position: relative; float: left; padding: 30px; background-color: white;">
+											<th:block th:if="${plan.typeOfPlan eq 'Dieta'}">
+												<img
+													style="height: 60px; width: 60px; position: relative; left: -15px; top: -20px;"
+													width="800" height="800" th:src="@{'images/logo/body.png'}">
+											</th:block>
+											<th:block
+												th:if="${plan.typeOfPlan eq 'Antrenament' and plan.forWho.getGender() eq 'Barbat'}">
+												<img
+													style="height: 60px; width: 60px; position: relative; left: -15px; top: -20px;"
+													width="800" height="800" th:src="@{'images/logo/body.png'}">
+											</th:block>
+											<th:block
+												th:if="${plan.typeOfPlan eq 'Antrenament' and plan.forWho.getGender() eq 'Femeie'}">
+												<img
+													style="height: 60px; width: 60px; position: relative; left: -15px; top: -20px;"
+													width="800" height="800" th:src="@{'images/logo/body.png'}">
+											</th:block>
+											<div
+												style="position: relative; left: 60px; top: -35px; justify-content: center; align-items: center; font-weight: 700; color: black; font-size: 20px; text-align: center; width: 330px;">
+												<div
+													style="margin-bottom: 15px; font-size: 25px; color: #7300e6; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;"
+													th:text="${plan.name}"></div>
+												<span th:text="${'Data Creare ' + plan.dateOfCreation}"
+													style="font-size: 12px; color: #7300e6; font-weight: 100; display: block; margin-top: -15px; margin-bottom: 15px; letter-spacing: 2px;"></span>
+												<span th:text="${'Expert: ' + plan.helper.username}"
+													style="font-size: 12px; color: #7300e6; font-weight: 100; display: block; margin-top: -15px; margin-bottom: 15px; letter-spacing: 2px;"></span>
+												<span th:text="${'Gen: ' + plan.forWho}"
+													style="font-size: 12px; color: #7300e6; font-weight: 100; display: block; margin-top: -15px; margin-bottom: 15px; letter-spacing: 2px;"></span>
+												<span th:text="${'Pret: ' + plan.price + ' LEI'}"
+													style="font-size: 25px; color: #7300e6; font-weight: 600; display: block; margin-top: -15px; margin-bottom: 10px; letter-spacing: 2px;"></span>
+											</div>
+										</div>
+									</div>
+								</th:block>
+								<th:block th:if="${devices}">
+									<div class="col-md-5" th:each="device, iterStat : ${devices}"
+										style="margin-bottom: 25px;">
+										<div class="card-type-2"
+											style="height: 200px; border-radius: 37px; position: relative; float: left; padding: 30px; background-color: white;">
+											<th:block th:if="${device.name eq 'Fit Buddy'}">
+												<img
+													style="height: 80px; width: 80px; border-radius: 50px; position: relative; left: -15px; top: -20px;"
+													width="800" height="800"
+													th:src="@{'images/devices/fit_buddy/4e56fc0b-28d1-4bd4-98c6-697e5a8e4721_rw_1200.gif'}">
+											</th:block>
+											<th:block th:if="${device.name eq 'Cantar Inteligent'}">
+												<img
+													style="height: 80px; width: 100px; position: relative; left: -15px; top: -20px;"
+													width="800" height="800"
+													th:src="@{'images/devices/scale/scale.png'}">
+											</th:block>
+											<th:block th:if="${device.name eq 'Bratara'}">
+												<img
+													style="height: 80px; width: 100px; position: relative; left: -15px; top: -20px;"
+													width="800" height="800"
+													th:src="@{'images/devices/band/band.png'}">
+											</th:block>
+											<div
+												style="position: relative; left: 60px; top: -60px; justify-content: center; align-items: center; font-weight: 700; color: black; font-size: 20px; text-align: center; width: 330px;">
+												<div
+													style="margin-bottom: 15px; font-size: 25px; color: #7300e6; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;"
+													th:text="${device.name}"></div>
+												<span th:text="${device.company}"
+													style="font-size: 12px; color: #7300e6; font-weight: 100; display: block; margin-top: -15px; margin-bottom: 15px; letter-spacing: 2px;"></span>
+												<span th:text="${device.serialNumber}"
+													style="font-size: 12px; color: #7300e6; font-weight: 100; display: block; margin-top: -15px; margin-bottom: 15px; letter-spacing: 2px;"></span>
+												<span th:text="${'Pret: ' + device.price + ' LEI'}"
+													style="font-size: 25px; color: #7300e6; font-weight: 600; display: block; margin-top: -15px; margin-bottom: 10px; letter-spacing: 2px;"></span>
+											</div>
+										</div>
+									</div>
+								</th:block>
+								<th:block th:if="${exerciseFeedbacks}">
+									<div class="col-md-5"
+										th:each="feedback, iterStat : ${exerciseFeedbacks}"
+										style="margin-bottom: 25px;">
+										<div class="card-type-2"
+											style="height: auto; border-radius: 37px; position: relative; float: left; padding: 30px; min-height: 100%;">
+											<th:block
+												th:if="${feedback.user.gender.getGender() eq 'Barbat'}">
+												<img
+													style="height: 60px; width: 60px; position: relative; left: -20px; top: -20px; background-color: #d3d3d3; border-radius: 30px; border: 3px solid #d3d3d3;"
+													width="800" height="800"
+													th:src="@{'images/avatar/man.png'}">
+											</th:block>
+											<th:block
+												th:if="${feedback.user.gender.getGender() eq 'Femeie'}">
+												<img
+													style="height: 60px; width: 60px; position: relative; left: -20px; top: -20px; background-color: #d3d3d3; border-radius: 30px; border: 3px solid #d3d3d3;"
+													width="800" height="800"
+													th:src="@{'images/avatar/woman.png'}">
+											</th:block>
+											<div
+												style="position: relative; top: -5px; justify-content: center; align-items: center; font-weight: 700; color: black; font-size: 20px; text-align: center;">
+												<div th:text="${feedback.exercise.name}" class="choose"
+													style="font-size: 30px; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;">
+												</div>
+												<div
+													style="font-size: 12px; color: gray; font-weight: 100; margin-top: -10px; margin-bottom: 10px; letter-spacing: 2px;">
+													Cursant: <span th:text="${feedback.user.username}"
+														style="font-size: 25px; color: #7300e6; letter-spacing: 0px; font-weight: 700;">
+													</span>
+												</div>
+												<div
+													style="font-size: 12px; color: gray; font-weight: 100; margin-bottom: 10px; letter-spacing: 2px; display: flex; justify-content: center; align-items: baseline;">
+													Nota Exercitiu:
+													<th:block
+														th:each="i: ${#numbers.sequence(1, feedback.rating)}">
+														<img src="images/logo/favourites.png"
+															class="fa-size-tip flaticon-size"
+															style="width: 30px; height: 30px;">
+													</th:block>
+												</div>
+												<div
+													style="font-size: 12px; color: gray; font-weight: 100; margin-bottom: 10px; letter-spacing: 2px;">
+													Inclus in:
+													<div th:text="${feedback.exercise.trainingPlan.name}"
+														style="font-size: 25px; color: #7300e6; letter-spacing: 0px; font-weight: 700;">
+													</div>
+												</div>
+												<div
+													style="font-size: 12px; color: gray; font-weight: 100; margin-bottom: 10px; letter-spacing: 2px;">
+													Data Feedback: <span
+														th:text="${feedback.dateOfFeedbackProvied}"></span>
+												</div>
+												<div
+													style="font-size: 18px; color: #7300e6; font-weight: 100; margin-bottom: 10px; font-weight: 700; letter-spacing: 2px;">
+													Mesaj:
+													<div th:text="${feedback.message}"
+														style="display: inline-block; font-size: 12px; color: gray; letter-spacing: 2px; font-weight: 100;">
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</th:block>
+								<th:block th:if="${foodFeedbacks}">
+									<div class="col-md-5" style="margin-bottom: 25px;"
+										th:each="feedback, iterStat : ${foodFeedbacks}">
+										<div class="card-type-2"
+											style="height: auto; border-radius: 37px; position: relative; float: left; padding: 30px; min-height: 100%;">
+											<th:block
+												th:if="${feedback.user.gender.getGender() eq 'Barbat'}">
+												<img
+													style="height: 60px; width: 60px; position: relative; left: -20px; top: -20px; background-color: #d3d3d3; border-radius: 30px; border: 3px solid #d3d3d3;"
+													width="800" height="800"
+													th:src="@{'images/avatar/man.png'}">
+											</th:block>
+											<th:block
+												th:if="${feedback.user.gender.getGender() eq 'Femeie'}">
+												<img
+													style="height: 60px; width: 60px; position: relative; left: -20px; top: -20px; background-color: #d3d3d3; border-radius: 30px; border: 3px solid #d3d3d3;"
+													width="800" height="800"
+													th:src="@{'images/avatar/woman.png'}">
+											</th:block>
+											<div
+												style="position: relative; top: -5px; justify-content: center; align-items: center; font-weight: 700; color: black; font-size: 20px; text-align: center;">
+												<div th:text="${feedback.food.name}" class="choose"
+													style="font-size: 30px; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;">
+												</div>
+												<div
+													style="font-size: 12px; color: gray; font-weight: 100; margin-top: -10px; margin-bottom: 10px; letter-spacing: 2px;">
+													Cursant: <span th:text="${feedback.user.username}"
+														style="font-size: 25px; color: #7300e6; letter-spacing: 0px; font-weight: 700;">
+													</span>
+												</div>
+												<div
+													style="font-size: 12px; color: gray; font-weight: 100; margin-bottom: 10px; letter-spacing: 2px; display: flex; justify-content: center; align-items: baseline;">
+													Nota Aliment:
+													<th:block
+														th:each="i: ${#numbers.sequence(1, feedback.rating)}">
+														<img src="images/logo/favourites.png"
+															class="fa-size-tip flaticon-size"
+															style="width: 30px; height: 30px;">
+													</th:block>
+												</div>
+												<div
+													style="font-size: 12px; color: gray; font-weight: 100; margin-bottom: 10px; letter-spacing: 2px;">
+													Inclus in:
+													<div th:text="${feedback.food.dietPlan.name}"
+														style="font-size: 25px; color: #7300e6; letter-spacing: 0px; font-weight: 700;">
+													</div>
+												</div>
+												<div
+													style="font-size: 12px; color: gray; font-weight: 100; margin-bottom: 10px; letter-spacing: 2px;">
+													Data Feedback: <span
+														th:text="${feedback.dateOfFeedbackProvied}"></span>
+												</div>
+												<div
+													style="font-size: 18px; color: #7300e6; font-weight: 100; margin-bottom: 10px; font-weight: 700; letter-spacing: 2px;">
+													Mesaj:
+													<div th:text="${feedback.message}"
+														style="display: inline-block; font-size: 12px; color: gray; letter-spacing: 2px; font-weight: 100;">
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</th:block>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>

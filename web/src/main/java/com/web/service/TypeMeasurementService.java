@@ -19,7 +19,7 @@ public interface TypeMeasurementService {
 
 	TypeMeasurement findByType(String chartOption);
 
-	void deleteByDeviceIdAndTypeMeasurementId(Integer deviceId, Integer typeMeasurementId);
-
 	Set<TypeMeasurement> findTypeMeasurementsForFitBuddy();
+
+	void deleteAllByDeviceId(Integer deviceId);
 }

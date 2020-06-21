@@ -5,11 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -26,25 +22,18 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.web.model.Account;
 import com.web.model.Exercise;
-import com.web.model.ExerciseAdvice;
 import com.web.model.ExerciseDone;
-import com.web.model.ExerciseImage;
 import com.web.model.HelperPlan;
-import com.web.model.UserDevice;
 import com.web.model.UserPlan;
 import com.web.service.AccountService;
-import com.web.service.ExerciseAdviceService;
 import com.web.service.ExerciseDoneService;
-import com.web.service.ExerciseImageService;
 import com.web.service.ExerciseService;
 import com.web.service.HelperFeedbackService;
 import com.web.service.HelperPlanService;
-import com.web.service.RoleService;
 import com.web.service.UserDeviceService;
 import com.web.service.UserPlanService;
 import com.web.utils.ExerciseCategory;
@@ -66,12 +55,6 @@ public class TrainerController {
 	private ExerciseService exerciseService;
 
 	@Autowired
-	private ExerciseImageService exerciseImageService;
-
-	@Autowired
-	private ExerciseAdviceService exerciseAdviceService;
-
-	@Autowired
 	private UserPlanService userPlanService;
 
 	@Autowired
@@ -82,9 +65,6 @@ public class TrainerController {
 
 	@Autowired
 	private UserDeviceService userDeviceService;
-
-	@Autowired
-	private RoleService roleService;
 
 	@GetMapping(path = { "/trainer" })
 	public String trainer(Model model, RedirectAttributes redirectAttributes) {
@@ -112,7 +92,7 @@ public class TrainerController {
 		learners.forEach(element -> allExercises.addAll(element.getExerciseDone()));
 		Map<Exercise, Long> favoriteExercises = allExercises.stream().map(element -> element.getExercise())
 				.collect(Collectors.groupingBy(e -> e, Collectors.counting()));
-		Map<Exercise, Long> favoriteExercisesDesc = sortExercises(favoriteExercises, false);
+		Map<Exercise, Long> favoriteExercisesDesc = exerciseService.sortExercises(favoriteExercises, false);
 		model.addAttribute("account", account);
 		model.addAttribute("learners", learners);
 		model.addAttribute("plansCreatedToday", plansCreatedToday);
@@ -122,24 +102,11 @@ public class TrainerController {
 		return "trainer/trainer";
 	}
 
-	private static Map<Exercise, Long> sortExercises(Map<Exercise, Long> unsortMap, final boolean order) {
-		List<Entry<Exercise, Long>> list = new LinkedList<>(unsortMap.entrySet());
-		list.sort((o1, o2) -> order
-				? o1.getValue().compareTo(o2.getValue()) == 0 ? o1.getKey().compareTo(o2.getKey())
-						: o1.getValue().compareTo(o2.getValue())
-				: o2.getValue().compareTo(o1.getValue()) == 0 ? o2.getKey().compareTo(o1.getKey())
-						: o2.getValue().compareTo(o1.getValue()));
-		return list.stream().collect(Collectors.toMap(Entry::getKey, Entry::getValue, (a, b) -> b, LinkedHashMap::new));
-
-	}
-
 	@GetMapping(path = { "/view_progress/{id}" })
 	public String viewProgress(Model model, @PathVariable("id") String learnerId) {
 		Account helper = accountService.getAccountConnected();
 		Map<String, Integer> chartExercisesDone = new TreeMap<>();
 		Map<String, Integer> chartBurnedCalories = new TreeMap<>();
-		Integer numberOfExercisesUnDone = 0;
-		Integer numberOfExercisesDone = 0;
 		Set<ExerciseDone> exercisesDoneForLearner = new HashSet<>();
 		String previousValue = null;
 		Integer numberOfExercisesDoneByDay = 0;
@@ -147,44 +114,36 @@ public class TrainerController {
 		boolean noFeedbackWasProvided = true;
 		Timestamp timestampStart = Timestamp.valueOf(LocalDate.now().atStartOfDay());
 		Timestamp timestampEnd = Timestamp.valueOf(LocalDate.now().atStartOfDay().plusDays(1).minusSeconds(1));
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		Account learner = new Account();
 		if (helper.isActive()) {
-			if (checkLearner(helper, learnerId)) {
+			if (accountService.checkLearner(helper, learnerId)) {
 				learner = accountService.findById(Integer.parseInt(learnerId)).get();
 				exercisesDoneForLearner = exerciseDoneService.findAllByUserAccountId(learner.getAccountId());
 				for (ExerciseDone exerciseDone : exercisesDoneForLearner) {
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-					LocalDateTime startDateTime = exerciseDone.getDateOfExecution().toLocalDateTime();
-					LocalDate startDate = startDateTime.toLocalDate();
-					String formatDate = startDate.format(formatter);
-					String value = formatDate;
-					if (!value.equals(previousValue)) {
+					String startDate = exerciseDone.getDateOfExecution().toLocalDateTime().toLocalDate()
+							.format(formatter);
+					if (!startDate.equals(previousValue)) {
 						numberOfExercisesDoneByDay = 0;
 						numberOfCaloriesPerExerciseDay = 0;
-						previousValue = value;
+						previousValue = startDate;
 					}
 					numberOfExercisesDoneByDay++;
 					numberOfCaloriesPerExerciseDay += exerciseDone.getExercise().getCaloriesBurned();
-					chartExercisesDone.put(value, numberOfExercisesDoneByDay);
-					chartBurnedCalories.put(value, numberOfCaloriesPerExerciseDay);
+					chartExercisesDone.put(startDate, numberOfExercisesDoneByDay);
+					chartBurnedCalories.put(startDate, numberOfCaloriesPerExerciseDay);
 				}
-				numberOfExercisesDone = exercisesDoneForLearner.size();
-
 				if (helperFeedbackService.findFirstByHelperAccountIdAndDateOfFeedbackProviedBetween(
 						learner.getAccountId(), timestampStart, timestampEnd).isPresent()) {
 					noFeedbackWasProvided = false;
 				}
-				for (UserDevice userDevice : learner.getUserDevices()) {
-					userDeviceService.getHeightAndWeight(model, userDevice);
-				}
+				learner.getUserDevices().forEach(userDevice -> userDeviceService.getHeightAndWeight(model, userDevice));
 			} else {
 				model.addAttribute("inexistentValue", true);
 			}
 			model.addAttribute("account", helper);
 			model.addAttribute("learner", learner);
 			model.addAttribute("noFeedbackWasProvided", noFeedbackWasProvided);
-			model.addAttribute("numberOfExercisesUnDone", numberOfExercisesUnDone);
-			model.addAttribute("numberOfExercisesDone", numberOfExercisesDone);
 			model.addAttribute("chartBurnedCalories", chartBurnedCalories);
 			model.addAttribute("chartExercisesDone", chartExercisesDone);
 			model.addAttribute("exercisesDoneForLearner", exercisesDoneForLearner);
@@ -193,15 +152,6 @@ public class TrainerController {
 			return "redirect:/trainer";
 		}
 
-	}
-
-	private boolean checkLearner(Account helper, String learnerId) {
-		Set<Account> learners = accountService.getHelpers(helper);
-		if (checkId(learnerId) && accountService.findById(Integer.parseInt(learnerId)).isPresent()
-				&& learners.contains(accountService.findById(Integer.parseInt(learnerId)).get())) {
-			return true;
-		}
-		return false;
 	}
 
 	@GetMapping(path = { "/training_plans" })
@@ -274,7 +224,7 @@ public class TrainerController {
 	public String editTrainingPlan(Model model, @PathVariable("id") String trainingPlanId) {
 		Account account = accountService.getAccountConnected();
 		if (account.isActive()) {
-			if (checkTrainingPlan(account, trainingPlanId)) {
+			if (helperPlanService.checkPlan(account, trainingPlanId, "Antrenament")) {
 				if (!model.containsAttribute("trainingPlan")) {
 					HelperPlan trainingPlan = helperPlanService
 							.findByHelperPlanIdAndTypeOfPlan(Integer.parseInt(trainingPlanId), "Antrenament").get();
@@ -289,19 +239,6 @@ public class TrainerController {
 			return "redirect:/trainer";
 		}
 
-	}
-
-	private boolean checkTrainingPlan(Account account, String trainingPlanId) {
-		if (checkId(trainingPlanId)
-				&& helperPlanService.findByHelperPlanIdAndTypeOfPlanAndHelperAccountId(Integer.parseInt(trainingPlanId),
-						"Antrenament", account.getAccountId()).isPresent()) {
-			HelperPlan trainingPlan = helperPlanService.findByHelperPlanIdAndTypeOfPlanAndHelperAccountId(
-					Integer.parseInt(trainingPlanId), "Antrenament", account.getAccountId()).get();
-			if (userPlanService.findAllByHelperPlanHelperPlanId(trainingPlan.getHelperPlanId()).size() == 0) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	@PostMapping(path = { "/edit_training_plan_save" })
@@ -336,7 +273,7 @@ public class TrainerController {
 	public String createExerciseForTrainingPlan(Model model, @PathVariable("id") String trainingPlanId) {
 		Account account = accountService.getAccountConnected();
 		if (account.isActive()) {
-			if (checkTrainingPlan(account, trainingPlanId)) {
+			if (helperPlanService.checkPlan(account, trainingPlanId, "Antrenament")) {
 				if (!model.containsAttribute("exercise")) {
 					Exercise newExercise = new Exercise();
 					model.addAttribute("exercise", newExercise);
@@ -371,138 +308,6 @@ public class TrainerController {
 			}
 		} else {
 			return "redirect:/trainer";
-		}
-	}
-
-	@GetMapping(path = { "/view_exercise/{id}" })
-	public String viewExercise(Model model, @PathVariable("id") String exerciseId) {
-		Account account = accountService.getAccountConnected();
-		boolean roleTrainer = false;
-		if (account.getRoles().contains(roleService.findByName("ROLE_TRAINER").get())) {
-			roleTrainer = true;
-		}
-		if (checkExercise(account, exerciseId)) {
-			Exercise exercise = exerciseService.findById(Integer.parseInt(exerciseId)).get();
-			Set<ExerciseAdvice> exerciseAdvice = exercise.getExerciseAdvices();
-			List<ExerciseAdvice> exerciseAdviceSorted = exerciseAdvice.stream()
-					.sorted((e1, e2) -> e1.getAdvice().compareTo(e2.getAdvice())).collect(Collectors.toList());
-			model.addAttribute("exercise", exercise);
-			model.addAttribute("exerciseAdviceSorted", exerciseAdviceSorted);
-			model.addAttribute("exerciseImage", new ExerciseImage());
-			model.addAttribute("exerciseAdvice", new ExerciseAdvice());
-		} else {
-			model.addAttribute("inexistentValue", true);
-		}
-		model.addAttribute("account", account);
-		return "common/view_exercise";
-
-	}
-
-	private boolean checkExercise(Account account, String exerciseId) {
-		if (checkId(exerciseId) && exerciseService.findById(Integer.parseInt(exerciseId)).isPresent()) {
-			Exercise exercise = exerciseService.findById(Integer.parseInt(exerciseId)).get();
-			if (account.getRoles().contains(roleService.findByName("ROLE_TRAINER").get())) {
-				if (exercise.getTrainingPlan().getHelper().getAccountId() == account.getAccountId()) {
-					return true;
-				}
-			}
-			if (account.getRoles().contains(roleService.findByName("ROLE_USER").get())) {
-				for (UserPlan userPlan : exercise.getTrainingPlan().getUserPlans()) {
-					if (userPlan.getUser().getAccountId() == account.getAccountId()) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-	@PostMapping(path = { "/add_photo_for_exercise_save" })
-	public String addPhotoForExerciseSave(Model model, @RequestParam Integer exerciseId,
-			@RequestParam("imageFile") MultipartFile imageFile,
-			@ModelAttribute("exerciseImage") ExerciseImage exerciseImage) {
-		Account account = accountService.getAccountConnected();
-		if (account.isActive()) {
-			HelperPlan helperPlan = exerciseService.findById(exerciseId).get().getTrainingPlan();
-			exerciseImage.setFileName(imageFile.getOriginalFilename());
-			Exercise exercise = exerciseService.findById(exerciseId).get();
-			exerciseImage.setExercise(exercise);
-			try {
-				exerciseImageService.saveImage(imageFile, exerciseImage, helperPlan);
-				if (helperPlan.getForWho().getGender().equals("Barbat")) {
-					exerciseImage.setPath("/images/plans/trainings/man/exercise/");
-				} else if (helperPlan.getForWho().getGender().equals("Femeie")) {
-					exerciseImage.setPath("/images/plans/trainings/woman/exercise/");
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			;
-			exerciseImageService.save(exerciseImage);
-			return "redirect:/view_exercise/" + exerciseId;
-		} else {
-			return "redirect:/trainer";
-		}
-	}
-
-	@PostMapping(path = { "/add_advice_for_exercise_save" })
-	public String addAdviceForExerciseSave(Model model, @ModelAttribute("exerciseAdvice") ExerciseAdvice exerciseAdvice,
-			@RequestParam Integer exerciseId) {
-		Account account = accountService.getAccountConnected();
-		if (account.isActive()) {
-			exerciseAdvice.setExercise(exerciseService.findById(exerciseId).get());
-			exerciseAdviceService.save(exerciseAdvice);
-			return "redirect:/view_exercise/" + exerciseId;
-		} else {
-			return "redirect:/trainer";
-		}
-	}
-
-	@PostMapping(path = { "/delete_photo_from_exercise" })
-	public String deletePhotoFromExercise(Model model, @RequestParam Integer exerciseId,
-			@RequestParam Integer photoId) {
-		Account account = accountService.getAccountConnected();
-		if (account.isActive()) {
-			exerciseImageService.deleteByExerciseImagesIdAndExerciseExerciseId(photoId, exerciseId);
-			return "redirect:/view_exercise/" + exerciseId;
-		} else {
-			return "redirect:/trainer";
-		}
-	}
-
-	@PostMapping(path = { "/edit_advice_exercise" })
-	public String editAdviceExercise(Model model, @RequestParam Integer exerciseId, @RequestParam Integer adviceId,
-			@RequestParam String editName) {
-		Account account = accountService.getAccountConnected();
-		if (account.isActive()) {
-			ExerciseAdvice advice = exerciseAdviceService.findByExerciseAdviceIdAndExerciseExerciseId(adviceId,
-					exerciseId);
-			advice.setAdvice(editName);
-			exerciseAdviceService.save(advice);
-			return "redirect:/view_exercise/" + exerciseId;
-		} else {
-			return "redirect:/trainer";
-		}
-	}
-
-	@PostMapping(path = { "/delete_advice_exercise" })
-	public String deleteAdviceExercise(Model model, @RequestParam Integer exerciseId, @RequestParam Integer adviceId) {
-		Account account = accountService.getAccountConnected();
-		if (account.isActive()) {
-			exerciseAdviceService
-					.delete(exerciseAdviceService.findByExerciseAdviceIdAndExerciseExerciseId(adviceId, exerciseId));
-			return "redirect:/view_exercise/" + exerciseId;
-		} else {
-			return "redirect:/trainer";
-		}
-	}
-
-	private boolean checkId(String userDeviceId) {
-		try {
-			int num = Integer.parseInt(userDeviceId);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
 		}
 	}
 }

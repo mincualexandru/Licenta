@@ -1,0 +1,23 @@
+.mat-card {
+    max-width: 300px;
+    margin: auto;
+}
+
+.mat-card-avatar {
+    background-size: cover;
+    width: 60px;
+    height: 35px;
+}
+
+img {
+    height: 200px;
+    width: 250px;
+    position:relative;
+    left: 20px;
+    margin-top: 20px !important;
+    margin-bottom: 40px;
+}
+
+.mat-card-actions {
+    display: flex;
+}

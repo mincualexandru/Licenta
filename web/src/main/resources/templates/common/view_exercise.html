@@ -2,33 +2,10 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Home</title>
-<link th:href="@{../css/font-face.css}" rel="stylesheet" media="all">
-<link th:href="@{../vendor/font-awesome-4.7/css/font-awesome.min.css}"
-	rel="stylesheet" media="all">
-<link th:href="@{../vendor/font-awesome-5/css/fontawesome-all.min.css}"
-	rel="stylesheet" media="all">
-<link
-	th:href="@{../vendor/mdi-font/css/material-design-iconic-font.min.css}"
-	rel="stylesheet" media="all">
-
+<title>View Exercise</title>
+	<script src="https://kit.fontawesome.com/8f58d13ed0.js"
+	crossorigin="anonymous"></script>
 <link th:href="@{../vendor/bootstrap-4.1/bootstrap.min.css}"
-	rel="stylesheet" media="all">
-
-<link th:href="@{../vendor/animsition/animsition.min.css}"
-	rel="stylesheet" media="all">
-<link
-	th:href="@{../vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
-	rel="stylesheet" media="all">
-<link th:href="@{../vendor/wow/animate.css}" rel="stylesheet"
-	media="all">
-<link th:href="@{../vendor/css-hamburgers/hamburgers.min.css}"
-	rel="stylesheet" media="all">
-<link th:href="@{../vendor/slick/slick.css}" rel="stylesheet"
-	media="all">
-<link th:href="@{../vendor/select2/select2.min.css}" rel="stylesheet"
-	media="all">
-<link th:href="@{../vendor/perfect-scrollbar/perfect-scrollbar.css}"
 	rel="stylesheet" media="all">
 <link th:href="@{../css/theme.css}" rel="stylesheet" media="all">
 <link th:href="@{../css/cart.css}" rel="stylesheet" media="all">
@@ -374,12 +351,12 @@
 														<th:block
 															th:if="${photo.fileName != null and exercise.trainingPlan.forWho.getGender() eq 'Barbat'}">
 															<img style="padding: 30px;" width="600" height="400"
-																th:src="@{${'/images/plans/trainings/man/exercise/' + photo.fileName}}">
+																th:src="@{${'/uploadedimages/exercises/man/' + photo.fileName}}">
 														</th:block>
 														<th:block
 															th:if="${photo.fileName != null and exercise.trainingPlan.forWho.getGender() eq 'Femeie'}">
 															<img style="padding: 30px;" width="600" height="400"
-																th:src="@{${'/images/plans/trainings/woman/exercise/' + photo.fileName}}">
+																th:src="@{${'/uploadedimages/exercises/woman/' + photo.fileName}}">
 														</th:block>
 														<th:block th:if="${photo.fileName eq null}">
 															<img style="padding: 30px;" width="600" height="400"
@@ -521,6 +498,7 @@
 																								th:value="${exercise.exerciseId}" />
 																							<div id="showErrorAboutMe"></div>
 																						</div>
+																						<div style="color: red;" th:if="${#fields.hasErrors('advice')}" th:errors="*{advice}"></div>
 																					</div>
 																				</div>
 																			</div>
@@ -588,6 +566,11 @@
 																									type="hidden" th:value="${exercise.exerciseId}"
 																									name="exerciseId" />
 																								<div th:id="showError+${adv.exerciseAdviceId}"></div>
+																							</div>
+																							<div style="color: red;" th:if="${exerciseIdSelected == adv.exerciseAdviceId}">
+																								<div style="color: red;" th:if="${errorAdvice}">
+																								**Sfatul trebuie sa aiba minim 3 caractere
+																								</div>
 																							</div>
 																						</div>
 																					</div>
@@ -715,12 +698,12 @@
 													<th:block
 														th:if="${exercise.trainingPlan.forWho.getGender() eq 'Barbat'}">
 														<img style="padding: 30px;" width="600" height="400"
-															th:src="@{${'/images/plans/trainings/man/exercise/' + photo.fileName}}">
+															th:src="@{${'/uploadedimages/exercises/man/' + photo.fileName}}">
 													</th:block>
 													<th:block
 														th:if="${exercise.trainingPlan.forWho.getGender() eq 'Femeie'}">
 														<img style="padding: 30px;" width="600" height="400"
-															th:src="@{${'/images/plans/trainings/woman/exercise/' + photo.fileName}}">
+															th:src="@{${'/uploadedimages/exercises/woman/' + photo.fileName}}">
 													</th:block>
 													<div class="desc"
 														th:if="${exercise.trainingPlan.userPlans.size() eq 0}">
@@ -750,7 +733,6 @@
 		crossorigin="anonymous"></script>
 	<script
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-	<script type="text/javascript" th:src="@{/js/validationcv.js}"></script>
 	<script>
 		function getFile() {
 			document.getElementById("upfile").click();

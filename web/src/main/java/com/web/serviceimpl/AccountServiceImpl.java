@@ -28,6 +28,9 @@ public class AccountServiceImpl implements AccountService {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+	@Autowired
+	private AccountService accountService;
+
 	@Override
 	public void save(Account user) {
 		accountDao.save(user);
@@ -55,6 +58,11 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public void saveUser(Account user, String chooseRoleName) {
+		if (chooseRoleName.equals("ROLE_TRAINER") || chooseRoleName.equals("ROLE_NUTRITIONIST")) {
+			user.setActive(false);
+		} else {
+			user.setActive(true);
+		}
 		user.getRoles().add(roleDao.findByName(chooseRoleName).get());
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		user.setDateOfCreation(new Timestamp(System.currentTimeMillis()));
@@ -62,7 +70,7 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public Account findByUsername(String name) {
+	public Optional<Account> findByUsername(String name) {
 		return accountDao.findByUsername(name);
 	}
 
@@ -84,12 +92,16 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public Account getAccountConnected() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Account user = accountDao.findByUsername(auth.getName());
-		return user;
+		if (accountDao.findByUsername(auth.getName()).isPresent()) {
+			Account user = accountDao.findByUsername(auth.getName()).get();
+			return user;
+		} else {
+			return null;
+		}
 	}
 
 	@Override
-	public Set<Account> getHelpers(Account helper) {
+	public Set<Account> getLearners(Account helper) {
 		Set<Integer> learnersIds = accountDao.findAllLearnersByHelperId(helper.getAccountId());
 		Set<Account> learners = new HashSet<>();
 		for (Integer integer : learnersIds) {
@@ -97,6 +109,26 @@ public class AccountServiceImpl implements AccountService {
 			learners.add(learner);
 		}
 		return learners;
+	}
+
+	@Override
+	public boolean checkId(String userDeviceId) {
+		try {
+			int num = Integer.parseInt(userDeviceId);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean checkLearner(Account helper, String learnerId) {
+		Set<Account> learners = accountService.getLearners(helper);
+		if (checkId(learnerId) && accountDao.findById(Integer.parseInt(learnerId)).isPresent()
+				&& learners.contains(accountDao.findById(Integer.parseInt(learnerId)).get())) {
+			return true;
+		}
+		return false;
 	}
 
 }

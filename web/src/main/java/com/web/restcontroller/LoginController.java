@@ -22,26 +22,30 @@ public class LoginController {
 
 	@PostMapping("/loginResource")
 	public AccountRest loginResource(@RequestParam String userName, @RequestParam String password) {
-		Account userConnected = userDAO.findByUsername(userName);
-		if (userConnected.isActive()) {
-			if (bCryptPasswordEncoder.matches(password, userConnected.getPassword())) {
-				Role selectedRole = null;
-				for (Role role : userConnected.getRoles()) {
-					selectedRole = role;
+		if (userDAO.findByUsername(userName).isPresent()) {
+			Account userConnected = userDAO.findByUsername(userName).get();
+			if (userConnected.isActive()) {
+				if (bCryptPasswordEncoder.matches(password, userConnected.getPassword())) {
+					Role selectedRole = null;
+					for (Role role : userConnected.getRoles()) {
+						selectedRole = role;
+					}
+					AccountRest accountRest = new AccountRest();
+					accountRest.setAccountId(userConnected.getAccountId());
+					accountRest.setActive(userConnected.isActive());
+					accountRest.setBornDate(userConnected.getBornDate());
+					accountRest.setEmail(userConnected.getEmail());
+					accountRest.setFirstName(userConnected.getFirstName());
+					accountRest.setGender(userConnected.getGender().getGender());
+					accountRest.setLastName(userConnected.getLastName());
+					accountRest.setPassword(userConnected.getPassword());
+					accountRest.setPhoneNumber(userConnected.getPhoneNumber());
+					accountRest.setRole(selectedRole.getName());
+					accountRest.setUsername(userConnected.getUsername());
+					return accountRest;
+				} else {
+					return null;
 				}
-				AccountRest accountRest = new AccountRest();
-				accountRest.setAccountId(userConnected.getAccountId());
-				accountRest.setActive(userConnected.isActive());
-				accountRest.setBornDate(userConnected.getBornDate());
-				accountRest.setEmail(userConnected.getEmail());
-				accountRest.setFirstName(userConnected.getFirstName());
-				accountRest.setGender(userConnected.getGender().getGender());
-				accountRest.setLastName(userConnected.getLastName());
-				accountRest.setPassword(userConnected.getPassword());
-				accountRest.setPhoneNumber(userConnected.getPhoneNumber());
-				accountRest.setRole(selectedRole.getName());
-				accountRest.setUsername(userConnected.getUsername());
-				return accountRest;
 			} else {
 				return null;
 			}

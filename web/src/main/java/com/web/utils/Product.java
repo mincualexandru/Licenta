@@ -26,7 +26,7 @@ public class Product {
 	}
 
 	public Product(Integer productId, String productName, Integer price, String companyName, Gender forWho, String type,
-			Timestamp dateOfPurchased) {
+			Timestamp dateOfPurchased, String description) {
 		super();
 		this.productId = productId;
 		this.productName = productName;
@@ -35,6 +35,21 @@ public class Product {
 		this.forWho = forWho;
 		this.type = type;
 		this.dateOfPurchased = dateOfPurchased;
+		this.description = description;
+	}
+
+	public Product(Integer productId, String productName, Integer price, String companyName, Gender forWho, String type,
+			Timestamp dateOfPurchased, String description, String image) {
+		super();
+		this.productId = productId;
+		this.productName = productName;
+		this.price = price;
+		this.companyName = companyName;
+		this.forWho = forWho;
+		this.type = type;
+		this.dateOfPurchased = dateOfPurchased;
+		this.description = description;
+		this.imageName = image;
 	}
 
 	public Integer getProductId() {

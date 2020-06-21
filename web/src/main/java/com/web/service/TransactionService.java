@@ -3,6 +3,7 @@ package com.web.service;
 import java.util.Optional;
 import java.util.Set;
 
+import com.web.model.Account;
 import com.web.model.Transaction;
 
 public interface TransactionService {
@@ -15,4 +16,6 @@ public interface TransactionService {
 	void deleteById(Integer id);
 
 	Set<Transaction> findAll();
+
+	void createTransaction(Account user);
 }

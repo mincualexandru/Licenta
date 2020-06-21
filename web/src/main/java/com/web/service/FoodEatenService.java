@@ -1,9 +1,12 @@
 package com.web.service;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 
+import com.web.model.Account;
+import com.web.model.Food;
 import com.web.model.FoodEaten;
 
 public interface FoodEatenService {
@@ -23,4 +26,8 @@ public interface FoodEatenService {
 			Timestamp timestampEndDate);
 
 	Optional<FoodEaten> findTopByUserAccountIdOrderByDateOfExecutionDesc(Integer accountId);
+
+	boolean checkIfTenDaysFoodHavePassed(boolean passedTenDaysFoodEaten, LocalDateTime dateTimeNow, Integer accountId);
+
+	void addFoodToEat(Account account, Food food);
 }

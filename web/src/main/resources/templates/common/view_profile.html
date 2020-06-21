@@ -4,38 +4,12 @@
 <head>
 <title>View Profile</title>
 <base href="/">
-<link
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-	rel="stylesheet" id="bootstrap-css">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
-<link th:href="@{css/font-face.css}" rel="stylesheet" media="all">
-<link th:href="@{vendor/font-awesome-4.7/css/font-awesome.min.css}"
-	rel="stylesheet" media="all">
-<link th:href="@{vendor/font-awesome-5/css/fontawesome-all.min.css}"
-	rel="stylesheet" media="all">
-<link
-	th:href="@{vendor/mdi-font/css/material-design-iconic-font.min.css}"
-	rel="stylesheet" media="all">
-
 <link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
-	rel="stylesheet" media="all">
-
-<link th:href="@{vendor/animsition/animsition.min.css}" rel="stylesheet"
-	media="all">
-<link
-	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
-	rel="stylesheet" media="all">
-<link th:href="@{vendor/wow/animate.css}" rel="stylesheet" media="all">
-<link th:href="@{vendor/css-hamburgers/hamburgers.min.css}"
-	rel="stylesheet" media="all">
-<link th:href="@{vendor/slick/slick.css}" rel="stylesheet" media="all">
-<link th:href="@{vendor/select2/select2.min.css}" rel="stylesheet"
-	media="all">
-<link th:href="@{vendor/perfect-scrollbar/perfect-scrollbar.css}"
 	rel="stylesheet" media="all">
 <link th:href="@{css/theme.css}" rel="stylesheet" media="all">
 <link rel="stylesheet" type="text/css" th:href="@{css/style.css}" />
+<script src="https://kit.fontawesome.com/8f58d13ed0.js"
+	crossorigin="anonymous"></script>
 </head>
 <body>
 	<div th:each="role, iterStat : ${account.roles}">
@@ -140,56 +114,6 @@
 								<li><a href="/logout" class="links" style=""><img
 										style="height: 40px; width: 40px;" width="800" height="800"
 										src="images/logo/logout.png"><span
-										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
-							</th:block>
-							<th:block th:if="${role.name eq 'ROLE_USER'}">
-								<li><a href="/home" class="links" style=""><img
-										style="height: 40px; width: 40px;" width="800" height="800"
-										src="/images/logo/home.png"><span
-										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
-								<li><a href="/choose_helper" class="links" style=""><img
-										style="height: 40px; width: 40px;" width="800" height="800"
-										src="/images/logo/trainer.jpg"><span
-										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
-											Experti</span></a></li>
-								<li><a href="/choose_plan" class="links" style=""><img
-										style="height: 40px; width: 40px;" width="800" height="800"
-										src="/images/logo/strategy.png"><span
-										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
-											Planuri</span></a></li>
-								<li><a href="/choose_device" class="links" style=""><img
-										style="height: 40px; width: 40px;" width="800" height="800"
-										src="/images/logo/smartwatch2.png"><span
-										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
-											Dispozitive</span></a></li>
-								<li><a href="/shopping_cart" class="links" style=""><img
-										style="height: 40px; width: 40px;" width="800" height="800"
-										src="/images/logo/supermarket.png"><span
-										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
-											Cumparaturi</span></a></li>
-								<li><a href="/view_user_plans" class="links" style=""><img
-										style="height: 40px; width: 40px;" width="800" height="800"
-										src="/images/logo/fitness-plan.jpg"><span
-										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
-											Cumparate</span></a></li>
-								<li><a href="/view_user_devices" class="links" style=""><img
-										style="height: 40px; width: 40px;" width="800" height="800"
-										src="/images/logo/smartwatch3.png"><span
-										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
-											Cumparate</span></a></li>
-								<li><a href="/foods_eaten" class="links" style=""><img
-										style="height: 40px; width: 40px;" width="800" height="800"
-										src="/images/logo/popsicle.png"><span
-										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
-											Consumate</span></a></li>
-								<li><a href="/exercises_done" class="links" style=""><img
-										style="height: 40px; width: 40px;" width="800" height="800"
-										src="/images/logo/exercise.png"><span
-										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
-											Efectuate</span></a></li>
-								<li><a href="/logout" class="links" style=""><img
-										style="height: 40px; width: 40px;" width="800" height="800"
-										src="/images/logo/logout.png"><span
 										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
 							</th:block>
 							<th:block th:if="${role.name eq 'ROLE_NUTRITIONIST'}">
@@ -321,56 +245,6 @@
 										src="images/logo/logout.png"><span
 										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
 							</th:block>
-							<th:block th:if="${role.name eq 'ROLE_USER'}">
-								<li><a href="/home" class="links" style=""><img
-										style="height: 40px; width: 40px;" width="800" height="800"
-										src="/images/logo/home.png"><span
-										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Home</span></a></li>
-								<li><a href="/choose_helper" class="links" style=""><img
-										style="height: 40px; width: 40px;" width="800" height="800"
-										src="/images/logo/trainer.jpg"><span
-										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
-											Experti</span></a></li>
-								<li><a href="/choose_plan" class="links" style=""><img
-										style="height: 40px; width: 40px;" width="800" height="800"
-										src="/images/logo/strategy.png"><span
-										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
-											Planuri</span></a></li>
-								<li><a href="/choose_device" class="links" style=""><img
-										style="height: 40px; width: 40px;" width="800" height="800"
-										src="/images/logo/smartwatch2.png"><span
-										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alege
-											Dispozitive</span></a></li>
-								<li><a href="/shopping_cart" class="links" style=""><img
-										style="height: 40px; width: 40px;" width="800" height="800"
-										src="/images/logo/supermarket.png"><span
-										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Cos
-											Cumparaturi</span></a></li>
-								<li><a href="/view_user_plans" class="links" style=""><img
-										style="height: 40px; width: 40px;" width="800" height="800"
-										src="/images/logo/fitness-plan.jpg"><span
-										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Planuri
-											Cumparate</span></a></li>
-								<li><a href="/view_user_devices" class="links" style=""><img
-										style="height: 40px; width: 40px;" width="800" height="800"
-										src="/images/logo/smartwatch3.png"><span
-										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Dispozitive
-											Cumparate</span></a></li>
-								<li><a href="/foods_eaten" class="links" style=""><img
-										style="height: 40px; width: 40px;" width="800" height="800"
-										src="/images/logo/popsicle.png"><span
-										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Alimente
-											Consumate</span></a></li>
-								<li><a href="/exercises_done" class="links" style=""><img
-										style="height: 40px; width: 40px;" width="800" height="800"
-										src="/images/logo/exercise.png"><span
-										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Exercitii
-											Efectuate</span></a></li>
-								<li><a href="/logout" class="links" style=""><img
-										style="height: 40px; width: 40px;" width="800" height="800"
-										src="/images/logo/logout.png"><span
-										style="position: relative; top: 5px; left: 15px; font-size: 17px;">Logout</span></a></li>
-							</th:block>
 							<th:block th:if="${role.name eq 'ROLE_NUTRITIONIST'}">
 								<li><a href="/trainer" class="links" style=""><img
 										style="height: 40px; width: 40px;" width="800" height="800"
@@ -479,8 +353,6 @@
 										<div class="profile-card-form__container"
 											style="margin-left: 30px; margin-right: 30px;">
 											<div style="text-align: center; color: #7300e6;">
-												<i class="fas fa-4x fa-user-edit" aria-hidden="true"
-													style="margin-bottom: 20px;"></i>
 												<h2 style="margin-bottom: 20px; color: #7300e6;">Editeaza
 													Informatii Cont</h2>
 											</div>
@@ -1346,37 +1218,6 @@
 		crossorigin="anonymous"></script>
 	<script
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-	<script type="text/javascript" th:src="@{/js/validationcv.js}"></script>
-	<script src="https://code.highcharts.com/modules/data.js"></script>
-	<script src="https://code.highcharts.com/stock/highstock.js"></script>
-	<script src="https://code.highcharts.com/modules/drilldown.js"></script>
-	<script src="https://code.highcharts.com/modules/exporting.js"></script>
-	<script src="https://code.highcharts.com/modules/export-data.js"></script>
-	<script src="https://code.highcharts.com/modules/accessibility.js"></script>
-	<script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
-	<script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
-	<script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
-	<script th:src="@{/vendor/slick/slick.min.js}">
-		
-	</script>
-	<script th:src="@{/vendor/wow/wow.min.js}"></script>
-	<script th:src="@{/vendor/animsition/animsition.min.js}"></script>
-	<script
-		th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
-		
-	</script>
-	<script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
-	<script th:src="@{/vendor/counter-up/jquery.counterup.min.js}">
-		
-	</script>
-	<script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
-	<script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
-	<script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
-	<script th:src="@{/vendor/select2/select2.min.js}">
-		
-	</script>
-
-	<script th:src="@{/js/main.js}"></script>
 	<script>
 		var messageBox = document.querySelector('.js-message');
 		var btn = document.querySelector('.js-message-btn');

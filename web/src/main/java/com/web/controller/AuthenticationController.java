@@ -1,6 +1,5 @@
 package com.web.controller;
 
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -19,9 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.web.model.Account;
 import com.web.model.Device;
 import com.web.model.Role;
-import com.web.model.Transaction;
 import com.web.model.TypeMeasurement;
-import com.web.model.UserDevice;
 import com.web.service.AccountService;
 import com.web.service.DeviceService;
 import com.web.service.RoleService;
@@ -56,6 +53,10 @@ public class AuthenticationController {
 	@GetMapping(path = { "/", "/login" })
 	public String login() {
 		logger.info("This is an info log entry");
+		Account account = accountService.getAccountConnected();
+		if (account != null) {
+			return "redirect:/home";
+		}
 		return "authentication/login";
 	}
 
@@ -65,23 +66,11 @@ public class AuthenticationController {
 			Account user = new Account();
 			model.addAttribute("user", user);
 		}
-
 		String chooseRoleName = (String) model.asMap().get("chooseRoleName");
-		model.addAttribute("selectedRole", chooseRoleName);
-
 		Set<Role> roles = roleService.findAll();
-		Iterator<Role> iter = roles.iterator();
-		while (iter.hasNext()) {
-			Role role = iter.next();
-			if (role.getName().equals("ROLE_ADMIN")) {
-				iter.remove();
-				break;
-
-			}
-		}
-
+		roles.removeIf(element -> element.getName().equals("ROLE_ADMIN"));
+		model.addAttribute("selectedRole", chooseRoleName);
 		model.addAttribute("sex", Gender.values());
-
 		model.addAttribute("roles", roles);
 		return "authentication/signup";
 	}
@@ -89,12 +78,12 @@ public class AuthenticationController {
 	@PostMapping(value = { "/signup" })
 	public String signupSave(@Valid @ModelAttribute("user") Account user, BindingResult bindingResult,
 			RedirectAttributes attr, Model model, @RequestParam String chooseRoleName) {
-
-		System.out.println("Rol Ales este " + chooseRoleName);
-		Account userExist = accountService.findByUsername(user.getUsername());
-		if (userExist != null) {
-			attr.addFlashAttribute("errorMessage", "**Numele de utilizator exista");
-			return "redirect:/signup";
+		if (accountService.findByUsername(user.getUsername()).isPresent()) {
+			Account userExist = accountService.findByUsername(user.getUsername()).get();
+			if (userExist != null) {
+				attr.addFlashAttribute("errorMessage", "**Numele de utilizator exista");
+				return "redirect:/signup";
+			}
 		}
 
 		if (bindingResult.hasErrors()) {
@@ -104,36 +93,21 @@ public class AuthenticationController {
 			return "redirect:/signup";
 		} else {
 			if (chooseRoleName.equals("ROLE_USER")) {
-				user.setActive(true);
 				accountService.saveUser(user, chooseRoleName);
-				Transaction transaction = new Transaction();
-				transaction.setAccount(user);
-				transaction.setAvailableBalance(0);
-				transaction.setPayments(0);
-				transactionService.save(transaction);
-				user.setTransaction(transaction);
-				accountService.save(user);
-				Set<TypeMeasurement> typeMeasurements = typeMeasurementService.findAll();
+				transactionService.createTransaction(user);
 				Device newDevice = new Device();
-				UserDevice userDevice = new UserDevice();
-				typeMeasurements.removeAll(typeMeasurements);
-				typeMeasurements = typeMeasurementService.findTypeMeasurementsForFitBuddy();
+				Set<TypeMeasurement> typeMeasurements = typeMeasurementService.findTypeMeasurementsForFitBuddy();
 				deviceService.createDevice(newDevice, typeMeasurements, "Fit Buddy", 0);
 				deviceService.save(newDevice);
-				userDevice.setDevice(newDevice);
-				userDevice.setUser(user);
-				userDevice.setBought(true);
-				userDeviceService.save(userDevice);
+				userDeviceService.createUserDevice(user, newDevice);
+				attr.addFlashAttribute("deviceCreated", true);
+				attr.addFlashAttribute("accountCreated", true);
+				attr.addFlashAttribute("virtualWalletCreated", true);
 			} else if (chooseRoleName.equals("ROLE_TRAINER") || chooseRoleName.equals("ROLE_NUTRITIONIST")) {
-				user.setActive(false);
 				accountService.saveUser(user, chooseRoleName);
-				Transaction transaction = new Transaction();
-				transaction.setAccount(user);
-				transaction.setAvailableBalance(0);
-				transaction.setPayments(0);
-				transactionService.save(transaction);
-				user.setTransaction(transaction);
-				accountService.save(user);
+				transactionService.createTransaction(user);
+				attr.addFlashAttribute("virtualWalletCreated", true);
+				attr.addFlashAttribute("accountCreated", true);
 			}
 		}
 

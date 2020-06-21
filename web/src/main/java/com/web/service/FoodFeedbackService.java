@@ -3,6 +3,8 @@ package com.web.service;
 import java.util.Optional;
 import java.util.Set;
 
+import com.web.model.Account;
+import com.web.model.Food;
 import com.web.model.FoodFeedback;
 
 public interface FoodFeedbackService {
@@ -17,4 +19,6 @@ public interface FoodFeedbackService {
 	Set<FoodFeedback> findAll();
 
 	Set<FoodFeedback> findAllByUserAccountId(Integer integer);
+
+	void createFeedbackForFood(String messageReview, Integer number, Account user, Food food);
 }

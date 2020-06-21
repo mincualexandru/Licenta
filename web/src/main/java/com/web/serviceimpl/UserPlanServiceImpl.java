@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.web.dao.UserPlanDao;
+import com.web.model.Account;
+import com.web.model.HelperPlan;
 import com.web.model.UserPlan;
 import com.web.service.UserPlanService;
 
@@ -88,5 +90,14 @@ public class UserPlanServiceImpl implements UserPlanService {
 	@Override
 	public Set<UserPlan> findAllByHelperPlanHelperPlanId(int helperPlanId) {
 		return userPlanDao.findAllByHelperPlanHelperPlanId(helperPlanId);
+	}
+
+	@Override
+	public void createUserPlan(Account account, HelperPlan dietPlan) {
+		UserPlan userPlan = new UserPlan();
+		userPlan.setHelperPlan(dietPlan);
+		userPlan.setUser(account);
+		userPlan.setBought(false);
+		userPlanDao.save(userPlan);
 	}
 }

@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import com.web.model.Measurement;
+import com.web.model.UserDevice;
 
 public interface MeasurementService {
 
@@ -62,4 +63,10 @@ public interface MeasurementService {
 			Timestamp timestampStartDate, Timestamp timestampEndDate);
 
 	void saveAll(Set<Measurement> measurements);
+
+	void createMeasurement(Integer exerciseId, Measurement measurement, UserDevice userDevice, String nameOfMeasurement,
+			String unitOfMeasurement);
+
+	Measurement createMeasurementForHeightOrWeight(Float value, UserDevice userDevice, String name,
+			String unitOfMeasurement);
 }

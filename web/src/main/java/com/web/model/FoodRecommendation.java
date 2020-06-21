@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "foods_recommendations")
@@ -24,6 +25,7 @@ public class FoodRecommendation {
 	private Food food;
 
 	@Column(name = "recommendation")
+	@Size(min = 3, message = "**Beneficiul trebuie sa aiba minim 3 caractere")
 	private String recommendation;
 
 	public FoodRecommendation() {

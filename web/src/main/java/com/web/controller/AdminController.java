@@ -1,7 +1,6 @@
 package com.web.controller;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
@@ -16,12 +15,9 @@ import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -137,8 +133,7 @@ public class AdminController {
 
 	@GetMapping(path = { "/accounts" })
 	public String getAllUsers(Model model) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Account account = accountService.findByUsername(auth.getName());
+		Account account = accountService.getAccountConnected();
 		LOGGER.info("Numele contului curent este " + account.getUsername());
 		Set<Account> accounts = accountService.findAll();
 		accounts.removeIf(element -> element.getUsername() == account.getUsername());
@@ -161,27 +156,6 @@ public class AdminController {
 		return "admin/view_account_details";
 	}
 
-	@PostMapping(path = { "/create-user-save" })
-	public String createUserSave(Model model, @ModelAttribute("user") Account user) {
-		accountService.save(user);
-		return "redirect:/accounts";
-	}
-
-	@PostMapping(path = { "/delete-user" })
-	public String deleteUser(Model model, @RequestParam Integer userId) {
-		Account user = accountService.findById(userId).get();
-		accountService.delete(user);
-		return "redirect:/accounts";
-	}
-
-	@PostMapping(path = { "/update-user" })
-	public String modifyUser(Model model, @RequestParam Integer userId, @RequestParam String name) {
-		Account user = accountService.findById(userId).get();
-		user.setUsername(name);
-		accountService.save(user);
-		return "redirect:/accounts";
-	}
-
 	@PostMapping(path = { "/user_activity" })
 	public String userActivity(Model model, @RequestParam Integer accountId) {
 		Account account = accountService.findById(accountId).get();
@@ -193,21 +167,18 @@ public class AdminController {
 		userDevices.forEach(userDevice -> measurements.addAll(userDevice.getMeasurements()));
 		List<Measurement> userMeasurementsSorted = measurements.stream()
 				.sorted((e1, e2) -> e1.getStartDate().compareTo(e2.getStartDate())).collect(Collectors.toList());
-		LOGGER.info(userMeasurementsSorted.size());
 		Map<String, Integer> chartMeasurements = new TreeMap<>();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		for (Measurement measurement : userMeasurementsSorted) {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			LocalDateTime startDateTime = measurement.getStartDate().toLocalDateTime();
-			LocalDate startDate = startDateTime.toLocalDate();
-			String formatDate = startDate.format(formatter);
-			String value = formatDate;
-			if (!value.equals(previousValue)) {
+			String startDate = measurement.getStartDate().toLocalDateTime().toLocalDate().format(formatter);
+			if (!startDate.equals(previousValue)) {
 				number = 0;
-				previousValue = value;
+				previousValue = startDate;
 			}
 			number++;
-			chartMeasurements.put(value, number);
+			chartMeasurements.put(startDate, number);
 		}
+
 		boolean passedTenDaysExerciseDone = false;
 		boolean passedTenDaysFoodEaten = false;
 		LocalDateTime dateTimeNow = LocalDateTime.now();
@@ -240,21 +211,25 @@ public class AdminController {
 	@PostMapping(path = { "/helper_activity" })
 	public String helperActivity(Model model, @RequestParam Integer accountId) {
 		Account account = accountService.findById(accountId).get();
-		System.out.println(account.getRoles().contains(roleService.findByName("ROLE_TRAINER").get()));
 		Set<HelperPlan> helperPlans = account.getPlans();
 		Set<Exercise> exercises = new HashSet<>();
 		Set<Food> foods = new HashSet<>();
 		Set<Account> learners = new HashSet<>();
+
 		helperPlans.forEach(element -> foods.addAll(element.getFoods()));
 		helperPlans.forEach(element -> exercises.addAll(element.getExercises()));
+
+		accountService.findAllLearnersByHelperId(account.getAccountId())
+				.forEach(element -> learners.add(accountService.findById(element).get()));
+
 		List<Exercise> exercisesSorted = exercises.stream()
 				.sorted((e1, e2) -> e1.getCreateDateTime().compareTo(e2.getCreateDateTime()))
 				.collect(Collectors.toList());
+
 		List<Food> foodsSorted = foods.stream()
 				.sorted((e1, e2) -> e1.getCreateDateTime().compareTo(e2.getCreateDateTime()))
 				.collect(Collectors.toList());
-		accountService.findAllLearnersByHelperId(account.getAccountId())
-				.forEach(element -> learners.add(accountService.findById(element).get()));
+
 		Integer number = null;
 		String previousValue = null;
 		Map<String, Integer> chart = new TreeMap<>();
@@ -268,8 +243,9 @@ public class AdminController {
 			number++;
 			chart.put(formatDate, number);
 		}
-		for (Food exerciseDone : foodsSorted) {
-			String formatDate = exerciseDone.getCreateDateTime().toLocalDateTime().toLocalDate().format(formatter);
+
+		for (Food foodEaten : foodsSorted) {
+			String formatDate = foodEaten.getCreateDateTime().toLocalDateTime().toLocalDate().format(formatter);
 			if (!formatDate.equals(previousValue)) {
 				number = 0;
 				previousValue = formatDate;
@@ -277,10 +253,12 @@ public class AdminController {
 			number++;
 			chart.put(formatDate, number);
 		}
+
 		model.addAttribute("account", account);
 		model.addAttribute("learners", learners);
 		model.addAttribute("plans", helperPlans);
 		model.addAttribute("chart", chart);
+
 		return "admin/helper_activity";
 	}
 

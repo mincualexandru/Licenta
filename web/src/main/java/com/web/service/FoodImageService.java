@@ -23,4 +23,6 @@ public interface FoodImageService {
 	void saveImage(MultipartFile imageFile, FoodImage foodImage) throws Exception;
 
 	void deleteByFoodImageIdAndFoodFoodId(Integer imageId, Integer foodId);
+
+	void deleteImage(FoodImage foodImage);
 }

@@ -5,9 +5,6 @@
 <title>Home</title>
 <link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
 	rel="stylesheet" media="all">
-<link
-	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
-	rel="stylesheet" media="all">
 <link th:href="@{css/theme.css}" rel="stylesheet" media="all">
 <link th:href="@{css/cart.css}" rel="stylesheet" media="all">
 <style>
@@ -314,6 +311,41 @@ table {
 												style="font-size: 12px; color: gray; font-weight: 100; display: block; margin-top: -15px; margin-bottom: 10px; letter-spacing: 2px;">Acceseaza-ti
 												profilul pentru vizualizarea si modificarea informatiilor
 												contului tau.</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="container-fluid">
+							<div class="row" style="margin-bottom: 70px;">
+								<div class="col-md-5 mx-auto"
+									style="margin-bottom: 50px; margin-top: -50px;">
+									<div class="card-type-2"
+										style="height: 265px; border-radius: 37px; position: relative; float: left; padding: 30px;">
+										<img
+											style="height: 60px; width: 60px; position: relative; left: -20px; top: -20px;"
+											width="800" height="800"
+											th:src="@{'images/logo/data-transfer.png'}">
+										<div
+											style="position: relative; top: -5px; justify-content: center; align-items: center; font-weight: 700; color: black; font-size: 20px; text-align: center;">
+											<div
+												style="font-size: 30px; color: #7300e6; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;">
+												<th:block th:if="${serverName == 'localhost'}">
+													<a href="http://localhost:4200" class="choose">Mobile
+													Data Transfer</a>
+												</th:block>
+												<th:block th:if="${serverName != 'localhost'}">
+													<a href="https://mobile-data-transfer-2020.web.app/" class="choose">Mobile
+													Data Transfer</a>
+												</th:block>
+											</div>
+											<span
+												style="font-size: 12px; color: gray; font-weight: 100; display: block; margin-top: -15px; margin-bottom: 10px; letter-spacing: 2px;">
+												Foloseste Mobile Data Transfer pentru a-ti incarca fisierul
+												cu datele din dispozitivele cumparate. Dupa ce o sa faci
+												acest lucru te poti intoarce in Fit Buddy in sectiunea
+												"Dispozitive Cumparate" pentru a-ti vizualiza datele
+												incarcate. </span>
 										</div>
 									</div>
 								</div>
@@ -830,7 +862,7 @@ table {
 												style="position: relative; justify-content: center; align-items: center; font-weight: 700; color: black; font-size: 20px; text-align: center;">
 												<div
 													style="font-size: 45px; color: #7300e6; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;">
-													<a href="/choose_plans" class="choose">Planuri</a>
+													<a href="/choose_plan" class="choose">Planuri</a>
 												</div>
 												<span
 													style="font-size: 12px; color: gray; font-weight: 100; display: block; margin-top: -15px; margin-bottom: 10px; letter-spacing: 2px;">Alege-ti
@@ -958,7 +990,7 @@ table {
 																		alt="green apple slice">
 																</th:block>
 																<th:block
-																	th:if="${plan.typeOfPlan eq 'Antrenament' and user.gender.getGender() eq 'Barbat'}">
+																	th:if="${plan.typeOfPlan eq 'Antrenament' and plan.forWho.getGender() eq 'Barbat'}">
 																	<img
 																		th:src="@{'images/plans/trainings/man/man_training'+${iterStat.index+1}+'.jpg'}"
 																		onerror="if (this.src != 'images/plans/trainings/man/default_training.jpg') this.src = 'images/plans/trainings/man/default_training.jpg';"
@@ -966,7 +998,7 @@ table {
 																		alt="green apple slice">
 																</th:block>
 																<th:block
-																	th:if="${plan.typeOfPlan eq 'Antrenament' and user.gender.getGender() eq 'Femeie'}">
+																	th:if="${plan.typeOfPlan eq 'Antrenament' and plan.forWho.getGender() eq 'Femeie'}">
 																	<img
 																		th:src="@{'images/plans/trainings/woman/woman_training'+${iterStat.index+1}+'.jpg'}"
 																		onerror="if (this.src != 'images/plans/trainings/woman/default_training.jpg') this.src = ''images/plans/trainings/woman/default_training.jpg'';"
@@ -987,10 +1019,10 @@ table {
 																		<span style="font-size: 35px; color: white;"
 																			th:text="${plan.price + ' LEI'}"></span>
 																	</div>
-																	<div style="font-size: 12px; margin-bottom: 15px;">Lorem
-																		Ipsum has been the industry's standard dummy text ever
-																		since the 1500s, when an unknown printer took a galley
-																		of type and scrambled it to make a type specimen book.</div>
+																	<div style="font-size: 12px; margin-bottom: 15px;" th:text="${plan.description}"></div>
+																	<div
+																		th:if="${plan.forWho.getGender() != user.gender.getGender()}"
+																		style="color: red;">Nu ai acces la acest plan</div>
 																</div>
 															</section>
 														</div>

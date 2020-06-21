@@ -1,10 +1,92 @@
-<div *ngIf="user.role === 'ROLE_USER'">
-    <app-device-card 
-    *ngFor = "let device of devices"
-    [device]="device"
-    [user]="user"></app-device-card>
-    <form-upload></form-upload>
+<div *ngIf="user.role === 'ROLE_USER' && deviceExist">
+    <app-user-details></app-user-details>
+    <app-device-card-item *ngFor="let device of devices" [device]="device" [user]="user"></app-device-card-item>
+    <app-form-upload *ngIf="!success"></app-form-upload>
+    <app-success-upload *ngIf="success"></app-success-upload>
 </div>
-<div *ngIf="user.role === 'ROLE_TRAINER'">
-    <h6>Ne pare rau, contul tau are rol de {{ user.role }}</h6>
+<div *ngIf="user.role === 'ROLE_USER' && !(deviceExist)">
+    <app-user-details></app-user-details>
+    <div *ngFor="let device of devices">
+        <div *ngIf="device.name === 'Fit Buddy'">
+            <app-device-card-item [device]="device" [user]="user">
+            </app-device-card-item>
+        </div>
+    </div>
+    <div style="margin-bottom: 20px;">
+        <mat-card style="height: 470px;">
+            <mat-card-header>
+                <mat-card-title>Urmarirea Corpului</mat-card-title>
+                <mat-card-subtitle>Date Diversificate</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content style="text-align: center;">
+                <h4 style="margin-top: 40px; margin-bottom: 40px;">Pentru vizualizarea <br>mai multor date recomandam
+                    achizitionarea urmatoarelor dispozitive</h4>
+                <mat-grid-list cols="2" style="margin-top: -20px;">
+                    <mat-grid-tile>
+                        <mat-card style="box-shadow: none;">
+                            <mat-card-header>
+                                <mat-card-title>Bratara</mat-card-title>
+                                <mat-card-subtitle>Xiaomi</mat-card-subtitle>
+                            </mat-card-header>
+                            <img mat-card-image src="/assets/img/band.jpg" style="margin-bottom: -10px;">
+                            <mat-card-content>
+                            </mat-card-content>
+                        </mat-card>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <mat-card style="box-shadow: none;">
+                            <mat-card-header>
+                                <mat-card-title>Cantar</mat-card-title>
+                                <mat-card-subtitle>Xiaomi</mat-card-subtitle>
+                            </mat-card-header>
+                            <img mat-card-image src="/assets/img/scale.jpg" style="margin-bottom: -10px;">
+                            <mat-card-content>
+                            </mat-card-content>
+                        </mat-card>
+                    </mat-grid-tile>
+                </mat-grid-list>
+                <h4 style="margin-top: 60px; margin-bottom: 40px;">
+                    <a target="blank" href="https://localhost:8443/" *ngIf="hostName == 'localhost'">Conecteaza-te</a>
+                    <a target="blank" href="https://172.20.10.2:8443/" *ngIf="hostName == '172.20.10.2'">Conecteaza-te</a>
+                    <br>
+                    si cumpara un dispozitiv
+                </h4>
+            </mat-card-content>
+        </mat-card>
+    </div>
 </div>
+<div *ngIf="!(user.role === 'ROLE_USER')">
+    <app-user-details></app-user-details>
+    <mat-card style="margin-bottom: 20px;">
+        <mat-card-header>
+
+            <div *ngIf="user.role === 'ROLE_TRAINER'">
+                <mat-card-title style="letter-spacing: 2px;">Rol</mat-card-title>
+                <mat-card-subtitle style="letter-spacing: 2px;">ANTRENOR</mat-card-subtitle>
+            </div>
+            <div *ngIf="user.role === 'ROLE_NUTRITIONIST'">
+                <mat-card-title style="letter-spacing: 2px;">Rol</mat-card-title>
+                <mat-card-subtitle style="letter-spacing: 2px;">NUTRITIONIST</mat-card-subtitle>
+            </div>
+        </mat-card-header>
+        <img mat-card-image style="height: 130px;" src="/assets/img/Screenshot_18.png">
+        <mat-card-content style="text-align: center;">
+            <h4 style="color:#7300e6; font-weight: 700;">Mobile Data Transfer</h4>
+            <h4>nu este disponibil</h4>
+            <h4 style="margin-top: 20px;">Intoarce-te la <span style="color: #7300e6;
+                font-weight: 700;
+                font-size: 30px;">Fit Buddy</span></h4>
+        </mat-card-content>
+    </mat-card>
+</div>
+<mat-card style="background-color: #3f51b5;
+box-shadow: none;">
+    <mat-card-content style="text-align: center;">
+        <button (click)="onLogout()" style="background-color: white;
+color: #3f51b5;
+margin-bottom: 20px;
+margin-top: 5px;
+font-size: 18px;
+font-weight: 600;" mat-raised-button color="primary" class="btn-block">Logout</button>
+    </mat-card-content>
+</mat-card>

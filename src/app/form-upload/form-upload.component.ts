@@ -8,11 +8,10 @@ import { of } from "rxjs/internal/observable/of";
 import { catchError, map } from "rxjs/operators";
 import { UploadFileService } from "../services/upload-file.service";
 import { AuthService } from "../services/auth.service";
+import { User } from "../models/user.model";
 
-const differentFile = "Fisierul pe care il incarci trebuie sa aiba denumirea 'export.zip'";
-const errorFile = "A aparut o eroare ! Fisierul nu a fost incarcat ! ";
 @Component({
-  selector: "form-upload",
+  selector: "app-form-upload",
   templateUrl: "./form-upload.component.html",
   styleUrls: ["./form-upload.component.css"]
 })
@@ -24,17 +23,16 @@ export class FormUploadComponent implements OnInit {
   ZIP_TYPE = ".zip";
   OTHER_TYPE = "Fisierul este de alt tip";
   typeOfFile: string;
-  alreadyTransferred: boolean;
-  userName: string;
   errorMessageFromServer: string;
   message: string;
+  user: User;
 
   constructor(
     private uploadService: UploadFileService,
     private shared: AuthService
   ) {
-    shared._user.subscribe((r) => {
-      this.userName = r.username;
+    shared.user.subscribe((r) => {
+      this.user = r;
     });
   }
 
@@ -45,7 +43,6 @@ export class FormUploadComponent implements OnInit {
     this.selectedFiles = event.target.files;
     this.selectedFile = this.selectedFiles.item(0);
     this.verifyTheTypeOfFile();
-    this.alreadyTransferred = false;
   }
 
   private verifyTheTypeOfFile() {
@@ -60,7 +57,7 @@ export class FormUploadComponent implements OnInit {
     this.progress.percentage = 0;
     this.currentFileUpload = this.selectedFiles.item(0);
     this.uploadService
-      .pushFileToStorage(this.currentFileUpload, this.userName)
+      .pushFileToStorage(this.currentFileUpload, this.user.username)
       .pipe(
         catchError((error: HttpErrorResponse) => {
           if (error.status === 417) {
@@ -75,10 +72,7 @@ export class FormUploadComponent implements OnInit {
             (100 * event.loaded) / event.total
           );
           this.message = "Ai incarcat cu succes fisierul !";
-        } else if (event.body === differentFile) {
-          this.message = differentFile;
-        } else if(event.body === errorFile) {
-          this.message = errorFile;
+          setTimeout(() => this.uploadService.transferMessage("success"), 1500);
         }
       });
 

@@ -2,11 +2,8 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Home</title>
+<title>View Learners</title>
 <link th:href="@{vendor/bootstrap-4.1/bootstrap.min.css}"
-	rel="stylesheet" media="all">
-<link
-	th:href="@{vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}"
 	rel="stylesheet" media="all">
 <link th:href="@{css/theme.css}" rel="stylesheet" media="all">
 <link th:href="@{css/cart.css}" rel="stylesheet" media="all">
@@ -193,7 +190,7 @@
 								style="text-align: center; font-size: 60px; margin-top: 30px; margin-bottom: 30px; color: white; font-weight: 700;">Cursanti</h3>
 							<div class="container-fluid">
 								<div class="row"
-									style="margin-bottom: 70px; position: relative; left: 150px; top: -15px;">
+									style="margin-bottom: 70px; position: relative; top: -15px;">
 									<div class="col-md-3" style="margin-bottom: 25px;"
 										th:each="account, iterStat : ${learners}">
 										<div class="card-type-2"
@@ -253,31 +250,10 @@
 				</div>
 			</div>
 		</div>
-	</div>
-	<script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
-	<script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
-	<script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
-	<script th:src="@{/vendor/slick/slick.min.js}">
-		
-	</script>
-	<script th:src="@{/vendor/wow/wow.min.js}"></script>
-	<script th:src="@{/vendor/animsition/animsition.min.js}"></script>
+	</div><script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
 	<script
-		th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
-		
-	</script>
-	<script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
-	<script th:src="@{/vendor/counter-up/jquery.counterup.min.js}">
-		
-	</script>
-	<script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
-	<script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
-	<script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
-	<script th:src="@{/vendor/select2/select2.min.js}">
-		
-	</script>
-
-	<script th:src="@{/js/main.js}"></script>
-	<script type="text/javascript" th:src="@{/js/validationcv.js}"></script>
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </body>
 </html>

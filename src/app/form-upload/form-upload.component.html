@@ -1,8 +1,10 @@
 <div style="margin-bottom:20px;">
   <mat-card>
-
+    <mat-card-header>
+      <mat-card-title style="font-size: 19px;">Incarca fisier Apple Health</mat-card-title>
+    </mat-card-header>
     <img mat-card-image src="/assets/img/logo.png"
-      alt="Card image cap" style="height: 200px;
+      alt="Card image cap" style="height: 230px;
       width: 250px;
       margin: auto;">
       <mat-card-content>
@@ -17,21 +19,27 @@
               <div *ngIf="selectedFile && !message" style="color: #3f51b5; margin-top: 20px;
               margin-bottom: -20px; text-align: center;">
                 {{ selectedFile.name }}</div>
-              <div *ngIf="message" style="color: #3f51b5;
-              font-size: 12px;
-              font-weight: 600;
-              text-align: center;
-              margin-top: 15px;
-              margin-bottom: -30px;">
-                <p>{{ message }}</p>
-              </div>
+                <div *ngIf="message" style="color: #3f51b5;
+                font-size: 12px;
+                font-weight: 600;
+                text-align: center;
+                margin-top: 15px;
+                margin-bottom: -30px;">
+                  <p>{{ message }}</p>
+                </div>
               <input id="myInput" type="file" style="visibility:hidden;" (change)="selectFile($event)"
                 multiple="multiple" accept=".zip" class="form-control" />
               <button mat-raised-button color="primary" class="btn-block" onclick="document.getElementById('myInput').click()">Alege Fisier</button>
-              <div *ngIf="typeOfFile === OTHER_TYPE" style="color: red;
+              <div *ngIf="this.selectedFile != null && this.selectedFile.name != 'export.zip'" style="
+              color: red;
                 font-size: 12px;
                 font-weight: 600;
                 margin-top: 15px;">
+                <p>Numele fisierului trebuie sa fie export.zip</p>
+              </div>
+              <div *ngIf="typeOfFile === OTHER_TYPE" style="color: red;
+                font-size: 12px;
+                font-weight: 600;">
                 <p>Acest tip de fisier nu poate fi transferat.</p>
                 <p>Selecteaza alt fisier</p>
               </div>
@@ -41,7 +49,7 @@
                 margin-top: 15px;">
                 <p>{{ errorMessageFromServer }}</p>
               </div>
-              <button [disabled]="!selectedFiles || typeOfFile === OTHER_TYPE" mat-raised-button color="primary" class="btn-block" (click)="upload()">Incarca Fisier</button>
+              <button [disabled]="!selectedFiles || typeOfFile === OTHER_TYPE || this.selectedFile.name != 'export.zip'" mat-raised-button color="primary" class="btn-block" (click)="upload()">Incarca Fisier</button>
             </div>
       </mat-card-content>
 </mat-card>
